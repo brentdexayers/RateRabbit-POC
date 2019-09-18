@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:300,400,400i,600,700&display=swap');
+
+// Bootstrap requires
+@import "~bootstrap/scss/functions";
+@import "@/assets/css/variables";
+@import "~bootstrap/scss/bootstrap";
+
+// Global Styles
+html {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  padding-top: 110px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+section {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+// For each breakpoint, define the maximum width of the container in a media query
+@mixin make-container-half-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints, $start: true) {
+  @each $breakpoint, $container-max-width in $max-widths {
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      max-width: ($container-max-width / 2);
+      @if $start {
+        margin-left: calc(50vw - #{($container-max-width / 2)});
+        padding-left: $grid-gutter-width;
+      } @else {
+        margin-right: calc(50vw - #{($container-max-width / 2)});
+        margin-left: calc(50vw + #{$grid-gutter-width});
+        padding-right: $grid-gutter-width;
+      }
+    }
+  }
+}
+
+.container {
+  padding-left: #{$grid-gutter-width};
+  padding-right: #{$grid-gutter-width};
+  &-start {
+    @include make-container-half-widths();
+  }
+  &-end {
+    @include make-container-half-widths($start: false);
+  }
+}
+
+
+
+aside {
+  // margin-right: $grid-gutter-width;
+}
+
+/*
+** Typography
+*/
+
+blockquote {
+  font-size: 16px;
+  line-height: 26px;
+  font-style: italic;
+  position: relative;
+  &::before {
+    background-image: url(~assets/icons/icon-quote.png);
+    content: "";
+    height: 51px;
+    width: 60px;
+    display: block;
+    position: absolute;
+    left: -76px;
+    top: -23px;
+  }
+  &.green,
+  &.primary {
+    &::before {
+      background-image: url(~assets/icons/icon-quote-green.png);
+    }
+  }
+  footer {
+    font-size: 14px;
+    line-height: 28px;
+    margin-top: 10px;
+    &::before {
+      content: "\2014";
+      margin-right: .5em;
+    }
+  }
+}
+
+.link-text {
+  color: $primary;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/*
+** Buttons
+*/
+.btn {
+  white-space: nowrap;
+}
