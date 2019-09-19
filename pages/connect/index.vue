@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Form from '~/components/pages/connect/ConnectForm.vue'
+import Form from '~/components/forms/ConnectForm.vue'
 
 export default {
   layout: 'default',

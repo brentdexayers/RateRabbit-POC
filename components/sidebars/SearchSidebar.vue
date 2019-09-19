@@ -24,6 +24,7 @@ export default {
   flex-basis: 353px;
   flex-direction: column;
   margin-top: -106px;
+  margin-bottom: 2.5625rem;
   form {
     background-color: $white;
     border: 1px solid #DEDEDE;

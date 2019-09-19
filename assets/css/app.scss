@@ -63,17 +63,43 @@ section {
 
 
 aside {
-  // margin-right: $grid-gutter-width;
+  margin-right: $grid-gutter-width;
+  @include media-breakpoint-down('sm') {
+    margin-right: 0;
+  }
 }
 
 /*
 ** Typography
 */
 
+// h1 {}
+// h2 {}
+
+ul {
+  padding-left: $spacer;
+  // list-style: none;
+  margin-bottom: 2.625rem;
+  li {
+    margin-bottom: .75em;
+    position: relative;
+    // &:not(.nav-item) {
+    //   &::before {
+    //     content: ".";
+    //     display: inline-block;
+    //     left: -#{$spacer};
+    //     position: absolute;
+    //     top: -.25em;
+    //   }
+    // }
+  }
+  // &.list-unstyled li::before {
+  //   display: none;
+  // }
+}
+
 blockquote {
-  font-size: 16px;
-  line-height: 26px;
-  font-style: italic;
+  padding-left: 76px;
   position: relative;
   &::before {
     background-image: url(~assets/icons/icon-quote.png);
@@ -82,7 +108,7 @@ blockquote {
     width: 60px;
     display: block;
     position: absolute;
-    left: -76px;
+    left: 0;
     top: -23px;
   }
   &.green,
@@ -92,7 +118,9 @@ blockquote {
     }
   }
   footer {
-    font-size: 14px;
+    // font-size: 14px;
+    font-size: 16px;
+    font-style: italic;
     line-height: 28px;
     margin-top: 10px;
     &::before {
@@ -102,13 +130,37 @@ blockquote {
   }
 }
 
-.link-text {
-  color: $primary;
-  cursor: pointer;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
+.link {
+  &-text {
+    color: $primary;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
+  &-decorated {
+    display: inline-block;
+    font-weight: $font-weight-semibold;
+    margin-bottom: 2em;
+    text-decoration: none;
+    &::after {
+      content: "";
+      background-image: url(~assets/icons/icon-arrow-forward-green.png);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      background-size: contain;
+      display: inline-block;
+      height: 1rem;
+      margin-left: .125rem;
+      width: 1rem;
+    }
+  }
+}
+
+p a {
+  color: $primary;
+  text-decoration: underline;
 }
 
 /*
@@ -116,4 +168,19 @@ blockquote {
 */
 .btn {
   white-space: nowrap;
+}
+
+/*
+** Boxes
+*/
+.box {
+  background-color: $lily-white;
+  margin-bottom: 2.625rem;
+  padding: 31px 38px 41px;
+  p, a {
+    margin-bottom: 1em;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
 }

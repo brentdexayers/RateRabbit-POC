@@ -27,6 +27,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .wrapper--squeeze {
   background-color: $light;
@@ -34,6 +35,9 @@ export default {
   flex-direction: row;
   .page-content {
     padding-top: 67px;
+  }
+  @include media-breakpoint-down('sm') {
+    flex-direction: column;
   }
 }
 </style>

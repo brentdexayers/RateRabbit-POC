@@ -45,12 +45,14 @@ export default {
   padding-top: 80px;
   text-align: center;
   &__title {
+    color: $white;
     font-size: 64px;
     font-weight: bold;
     letter-spacing: 0.82px;
     margin-bottom: 60px;
   }
   &__subtitle {
+    color: $white;
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 0.82px;

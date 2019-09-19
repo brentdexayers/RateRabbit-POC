@@ -11,9 +11,7 @@
     <div class="wrapper wrapper--content layout--default__wrapper layout--default__wrapper--content">
       <div class="container layout--default__container">
         <Sidebar />
-        <div class="container container--page-content layout--default__container__container">
-          <nuxt />
-        </div>
+        <nuxt />
       </div>
     </div>
     <Footer />
@@ -52,6 +50,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .layout--default {
   &__wrapper--banner {
@@ -79,6 +78,9 @@ export default {
     > .container {
       display: flex;
       flex-direction: row;
+      @include media-breakpoint-down('sm') {
+        flex-direction: column;
+      }
     }
   }
 }
