@@ -9,7 +9,11 @@
         Apply for a Loan
       </nuxt-link>
     </li>
-    <li class="nav-item dropdown">
+    <li
+      class="nav-item dropdown"
+      @mouseover="dropdownShow"
+      @mouseout="dropdownHide"
+    >
       <nuxt-link
         id="navbarDropdownAbout"
         to="/about"
@@ -20,7 +24,7 @@
       </nuxt-link>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
         <nuxt-link
-          to="whychoose"
+          to="/about/whychoose"
           class="dropdown-item"
           @click.native="navItemClicked"
         >
@@ -78,10 +82,37 @@
 </template>
 
 <script>
+import getClosest from '~/mixins/getClosest.js'
+
 export default {
+  mixins: [getClosest],
+  data () {
+    return {
+      dropdowns: [
+        {
+          about: {
+            show: false
+          }
+        }
+      ]
+    }
+  },
   methods: {
-    navItemClicked () {
+    navItemClicked (event) {
+      // const dropdown = this.getClosest(event.target, '.dropdown')
       this.$parent.closeMainNav()
+      const dropdowns = document.getElementsByClassName('dropdown')
+      for (let i = 0; i < dropdowns.length; i++) {
+        dropdowns[i].classList.remove('show')
+      }
+    },
+    dropdownShow (event) {
+      const dropdown = this.getClosest(event.target, '.dropdown')
+      dropdown.classList.add('show')
+    },
+    dropdownHide (event) {
+      const dropdown = this.getClosest(event.target, '.dropdown')
+      dropdown.classList.remove('show')
     }
   }
 }
@@ -114,6 +145,9 @@ export default {
           }
         }
       }
+      .nuxt-link-active {
+        color: $primary;
+      }
       .dropdown {
         &-toggle {
           &::after {
@@ -144,7 +178,7 @@ export default {
             }
           }
         }
-        &:hover .dropdown-menu {
+        &.show .dropdown-menu {
           display: block;
         }
       }

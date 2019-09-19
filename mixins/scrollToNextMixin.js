@@ -1,4 +1,7 @@
+import getClosest from '~/mixins/getClosest.js'
+
 export default {
+  mixins: [getClosest],
   methods: {
     scrollToNext (event) {
       event.preventDefault()
@@ -9,30 +12,6 @@ export default {
       const nextScrollToPosition = nextOffset.top - nav.offsetHeight
       window.scrollTo(0, nextScrollToPosition)
       // this.scrollToY(nextScrollToPosition, 1000, 'easeInOutSine') // See below
-    },
-    getClosest (el, selector) {
-      // Element.matches() polyfill
-      if (!Element.prototype.matches) {
-        Element.prototype.matches =
-          Element.prototype.matchesSelector ||
-          Element.prototype.mozMatchesSelector ||
-          Element.prototype.msMatchesSelector ||
-          Element.prototype.oMatchesSelector ||
-          Element.prototype.webkitMatchesSelector ||
-          function (s) {
-            const matches = this.document.querySelectorAll(s)
-            let i = matches.length
-            while (--i >= 0 && matches.item(i) !== this) {}
-            return i > -1
-          }
-      }
-      // Get the closest matching element
-      for (; el && el !== document; el = el.parentNode) {
-        if (el.matches(selector)) {
-          return el
-        }
-      }
-      return null
     },
     offset (el) {
       const rect = el.getBoundingClientRect()

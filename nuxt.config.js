@@ -69,6 +69,10 @@ export default {
     extend (config, ctx) {
     }
   },
+  router: {
+    linkActiveClass: 'active-parent',
+    linkExactActiveClass: 'active'
+  },
   /*
   ** Router base
   */

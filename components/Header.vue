@@ -141,7 +141,7 @@ body.main-nav--open {
         display: none;
       }
       @include media-breakpoint-down('md') {
-        background: white;
+        background: $white;
         bottom: 0;
         box-shadow: 0px 4px 10px -10px;
         left: 0;

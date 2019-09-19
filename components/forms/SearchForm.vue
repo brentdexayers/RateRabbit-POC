@@ -529,7 +529,7 @@ export default {
   props: {
     cta: {
       type: String,
-      default: 'Submit'
+      default: 'Search Live Rates'
     }
   },
   data () {
