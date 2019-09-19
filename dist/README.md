@@ -1,11 +1,27 @@
-# STATIC
+# raterabbit.com
 
-**This directory is not required, you can delete it if you don't want to use it.**
+> RateRabbit web app front-end
 
-This directory contains your static files.
-Each file inside this directory is mapped to `/`.
-Thus you'd want to delete this README.md before deploying to production.
+## Build Setup
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+``` bash
+# install dependencies
+$ npm run install
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/assets#static).
+# serve with hot reload at localhost:3000
+$ npm run dev
+
+# build for production and launch server
+$ npm run build
+$ npm run start
+
+# generate static project
+$ npm run generate
+
+# generate static project and deploy to GitHub pages
+$ npm run generate:gh-pages
+$ git add dist && git commit -m "generate static files for gh-pages"
+$ npm run deploy
+```
+
+For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
