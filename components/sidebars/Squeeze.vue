@@ -60,6 +60,7 @@ export default {
     margin-right: auto;
     max-width: 290px;
     &__header {
+      color: $white;
       font-size: 36px;
       font-weight: bold;
       line-height: 40px;
@@ -102,6 +103,7 @@ export default {
     flex: 1 0 40%;
   }
   @include media-breakpoint-down('sm') {
+    display: none;
     flex: 1 0 100%;
     max-width: 100%;
   }

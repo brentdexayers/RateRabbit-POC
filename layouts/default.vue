@@ -69,6 +69,9 @@ export default {
       margin-left: 33.333333%;
       margin-left: calc(33.333333% + #{$grid-gutter-width});
       margin-left: calc(353px + #{$grid-gutter-width});
+      @include media-breakpoint-down('sm') {
+        margin-left: 0;
+      }
     }
   }
   &__wrapper--content {

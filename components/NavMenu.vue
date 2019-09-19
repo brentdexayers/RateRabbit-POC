@@ -1,39 +1,76 @@
 <template>
   <ul class="navbar-nav site-header__navbar__nav">
     <li class="nav-item">
-      <nuxt-link to="apply" class="nav-link">
+      <nuxt-link
+        to="/apply"
+        class="nav-link"
+        @click.native="navItemClicked"
+      >
         Apply for a Loan
       </nuxt-link>
     </li>
     <li class="nav-item dropdown">
-      <nuxt-link id="navbarDropdownAbout" to="/about" class="nav-link dropdown-toggle">
+      <nuxt-link
+        id="navbarDropdownAbout"
+        to="/about"
+        class="nav-link dropdown-toggle"
+        @click.native="navItemClicked"
+      >
         About Us
       </nuxt-link>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
-        <nuxt-link to="whychoose" class="dropdown-item">
+        <nuxt-link
+          to="whychoose"
+          class="dropdown-item"
+          @click.native="navItemClicked"
+        >
           Why Choose RateRabbit
         </nuxt-link>
-        <nuxt-link to="/about/trackrecord" class="dropdown-item">
+        <nuxt-link
+          to="/about/trackrecord"
+          class="dropdown-item"
+          @click.native="navItemClicked"
+        >
           Our Track Record
         </nuxt-link>
-        <nuxt-link to="/about/faq" class="dropdown-item">
+        <nuxt-link
+          to="/about/faq"
+          class="dropdown-item"
+          @click.native="navItemClicked"
+        >
           Faq's
         </nuxt-link>
-        <nuxt-link to="/about/help" class="dropdown-item">
+        <nuxt-link
+          to="/about/help"
+          class="dropdown-item"
+          @click.native="navItemClicked"
+        >
           Help Guides
         </nuxt-link>
-        <nuxt-link to="/connect" class="dropdown-item">
+        <nuxt-link
+          to="/connect"
+          class="dropdown-item"
+          @click.native="navItemClicked"
+        >
           Contact Us
         </nuxt-link>
       </div>
     </li>
     <li class="nav-item">
-      <nuxt-link to="/about/help" class="nav-link">
+      <nuxt-link
+        to="/about/help"
+        class="nav-link"
+        @click.native="navItemClicked"
+      >
         Help Guides
       </nuxt-link>
     </li>
     <li class="nav-item">
-      <nuxt-link to="/connect" class="nav-link">
+      <nuxt-link
+        to="/connect"
+        class="nav-link"
+        @click.native="navItemClicked"
+      >
         Contact
       </nuxt-link>
     </li>
@@ -41,7 +78,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    navItemClicked () {
+      this.$parent.closeMainNav()
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -54,6 +97,7 @@ export default {}
     // parent component
     &__nav {
       > li {
+        margin-bottom: 0;
         margin-left: 10px;
         margin-right: 10px;
         > a {

@@ -43,12 +43,12 @@ export default {
 
 .article--search {
   margin: 0 auto;
-  max-width: 420px;
   padding-bottom: 326px;
 
   .title {
     color: $gray-600;
     font-size: 21px;
+    font-weight: $font-weight-normal;
     margin-bottom: 22px;
   }
   .form--search-rates {

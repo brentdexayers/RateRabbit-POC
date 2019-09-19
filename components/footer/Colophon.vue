@@ -11,37 +11,37 @@
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/help">
           Help Guides
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/connect">
           Connect with a Loan Consultant
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/testimonials">
           Testimonials
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/about">
           About Us
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/promos">
           Promo Codes
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/licensing">
           Licensing
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="#">
+        <nuxt-link to="/connect">
           Contact Us
         </nuxt-link>
       </li>
@@ -57,11 +57,16 @@
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .site-footer__colophon {
-  color: #ffffff;
+  color: $white;
   text-align: left;
+  @include media-breakpoint-down('xs') {
+    text-align: center;
+  }
   h4 {
+    color: $white;
     font-size: 21px;
     font-style: italic;
     font-weight: normal;
@@ -77,19 +82,36 @@
   }
   &__nav {
     justify-content: space-between;
-    li, a {
-      color: #ffffff;
-      font-size: 14px;
-      line-height: 32px;
-      font-weight: normal;
+    margin-left: -.5rem;
+    margin-right: -.5rem;
+    li {
+      margin-left: .5rem;
+      margin-right: .5rem;
+      @include media-breakpoint-down('xs') {
+        flex: 1 0 100%;
+      }
+      a {
+        color: $white;
+        font-size: 14px;
+        line-height: 32px;
+        font-weight: normal;
+      }
       &:hover {
-        color: $green;
-        text-decoration: none;
+        a {
+          color: $green;
+          text-decoration: none;
+        }
+      }
+    }
+    @media screen and (max-width: 925px) {
+      &::after {
+        content: "";
+        flex: auto;
       }
     }
   }
   .colophon {
-    color: #ffffff;
+    color: $white;
     font-size: 14px;
     line-height: 32px;
     font-weight: normal;

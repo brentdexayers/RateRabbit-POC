@@ -16,6 +16,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .sidebar--search-form {
   display: inline-flex;
@@ -59,6 +60,9 @@ export default {
     .form--search-rates__spacer {
       margin-bottom: 30px;
     }
+  }
+  @include media-breakpoint-down('sm') {
+    display: none;
   }
 }
 </style>

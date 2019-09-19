@@ -78,24 +78,11 @@ aside {
 
 ul {
   padding-left: $spacer;
-  // list-style: none;
   margin-bottom: 2.625rem;
-  li {
-    margin-bottom: .75em;
-    position: relative;
-    // &:not(.nav-item) {
-    //   &::before {
-    //     content: ".";
-    //     display: inline-block;
-    //     left: -#{$spacer};
-    //     position: absolute;
-    //     top: -.25em;
-    //   }
-    // }
-  }
-  // &.list-unstyled li::before {
-  //   display: none;
-  // }
+}
+li {
+  margin-bottom: .75em;
+  position: relative;
 }
 
 blockquote {

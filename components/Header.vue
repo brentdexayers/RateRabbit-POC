@@ -13,7 +13,7 @@
           aria-controls="mainNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          @click="mainNav.toggle = !mainNav.toggle"
+          @click="toggleMainNav"
         >
           <span class="navbar-toggler-icon" />
         </button>
@@ -29,7 +29,7 @@
             aria-controls="mainNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
-            @click="mainNav.toggle = !mainNav.toggle"
+            @click="toggleMainNav"
           >
             <span class="navbar-toggler-icon" />
           </button>
@@ -61,6 +61,26 @@ export default {
         toggle: false
       }
     }
+  },
+  mounted () {
+    window.addEventListener('resize', this.closeMainNav)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.closeMainNav)
+  },
+  methods: {
+    toggleMainNav () {
+      this.mainNav.toggle = !this.mainNav.toggle
+      if (this.mainNav.toggle) {
+        document.body.classList.add('main-nav--open')
+      } else {
+        document.body.classList.remove('main-nav--open')
+      }
+    },
+    closeMainNav () {
+      this.mainNav.toggle = false
+      document.body.classList.remove('main-nav--open')
+    }
   }
 }
 </script>
@@ -68,6 +88,13 @@ export default {
 <style lang="scss">
 @import '@/assets/css/variables.scss';
 @import '~bootstrap/scss/mixins.scss';
+
+body.main-nav--open {
+  @include media-breakpoint-down('md') {
+    overflow-y: hidden;
+    max-height: 100vh;
+  }
+}
 
 .site-header {
   left: 0;
@@ -110,6 +137,9 @@ export default {
     }
     &__nav-wrapper {
       justify-content: center;
+      .phone {
+        display: none;
+      }
       @include media-breakpoint-down('md') {
         background: white;
         bottom: 0;
@@ -147,7 +177,7 @@ export default {
           align-items: center;
           border: $btn-border-width solid $primary;
           border-radius: $btn-border-radius;
-          display: none;
+          display: block;
           font-size: $font-size-lg;
           font-family: $font-family-condensed;
           line-height: 1;

@@ -21,10 +21,14 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .site-footer__cta {
   color: #ffffff;
   text-align: center;
+  @include media-breakpoint-down('xs') {
+    margin: auto;
+  }
   .btn {
     margin-bottom: 13px;
   }

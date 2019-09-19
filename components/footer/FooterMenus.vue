@@ -2,7 +2,7 @@
   <div
     class="site-footer__menus row"
   >
-    <div class="col">
+    <div class="col-6 col-sm-6 col-lg mb-4">
       <h5 class="site-footer__menus__menu-title">
         Home Purchase
       </h5>
@@ -24,7 +24,7 @@
         </li>
       </ul>
     </div>
-    <div class="col">
+    <div class="col-6 col-sm-6 col-lg mb-4">
       <h5 class="site-footer__menus__menu-title">
         Refinance
       </h5>
@@ -46,7 +46,7 @@
         </li>
       </ul>
     </div>
-    <div class="col">
+    <div class="col-6 col-sm-6 col-lg mb-4">
       <h5 class="site-footer__menus__menu-title">
         Customer Service
       </h5>
@@ -80,15 +80,19 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .site-footer__menus {
-  color: #ffffff;
-  margin-bottom: 102px;
+  color: $white;
+  margin-bottom: #{$spacer * 4.875};
   text-align: left;
+  @include media-breakpoint-down('xs') {
+    text-align: center;
+  }
   &__menu {
     flex-direction: column;
     li, a {
-      color: #ffffff;
+      color: $white;
       font-size: 18px;
       line-height: 32px;
       &:hover {
@@ -98,6 +102,7 @@ export default {
     }
   }
   &__menu-title {
+    color: $white;
     font-size: 11px;
     font-weight: bold;
     letter-spacing: 0.82px;

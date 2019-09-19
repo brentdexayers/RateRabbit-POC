@@ -29,15 +29,24 @@ export default {
 @import '@/assets/css/variables.scss';
 @import '~bootstrap/scss/mixins.scss';
 
-.wrapper--squeeze {
-  background-color: $light;
-  display: flex;
-  flex-direction: row;
-  .page-content {
-    padding-top: 67px;
+.layout--squeeze {
+  &__wrapper {
+    background-color: $light;
+    display: flex;
+    flex-direction: row;
+    .page-content {
+      padding-top: 67px;
+    }
+    @include media-breakpoint-down('sm') {
+      flex-direction: column;
+    }
   }
-  @include media-breakpoint-down('sm') {
-    flex-direction: column;
+  &__container {
+    // margin-right: $grid-gutter-width;
+    max-width: calc(420px + #{$grid-gutter-width * 2}) !important;
+    // @include media-breakpoint-down('md') {
+    //   margin-right: auto;
+    // }
   }
 }
 </style>
