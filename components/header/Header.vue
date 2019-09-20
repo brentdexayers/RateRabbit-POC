@@ -34,7 +34,7 @@
             <span class="navbar-toggler-icon" />
           </button>
           <NavMenu />
-          <Phone />
+          <PhoneLink class="site-header__navbar__phone" />
         </div>
         <LoanConsultantCTA />
       </div>
@@ -43,16 +43,16 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import NavMenu from '~/components/NavMenu.vue'
-import Phone from '~/components/Phone.vue'
-import LoanConsultantCTA from '~/components/LoanConsultantCTA.vue'
+import Logo from '~/components/globals/Logo.vue'
+import NavMenu from '~/components/header/NavMenu.vue'
+import PhoneLink from '~/components/globals/PhoneLink.vue'
+import LoanConsultantCTA from '~/components/header/LoanConsultantCTA.vue'
 
 export default {
   components: {
     Logo,
     NavMenu,
-    Phone,
+    PhoneLink,
     LoanConsultantCTA
   },
   data () {
@@ -136,11 +136,33 @@ body.main-nav--open {
         }
       }
     }
+    &__phone {
+      display: none;
+      align-items: center;
+      border: $btn-border-width solid $primary;
+      border-radius: $btn-border-radius;
+      font-size: $font-size-lg;
+      font-family: $font-family-condensed;
+      line-height: 1;
+      margin-top: 30px;
+      padding: 22px 49px;
+      @include media-breakpoint-down('md') {
+        display: inline-flex;
+      }
+      &::before {
+        content: "";
+        background-image: url(~assets/icons/icon-call.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: inline-block;
+        height: 30px;
+        margin-right: .25em;
+        width: 30px;
+      }
+    }
     &__nav-wrapper {
       justify-content: center;
-      .phone {
-        display: none;
-      }
       @include media-breakpoint-down('md') {
         background: $white;
         bottom: 0;
@@ -172,31 +194,6 @@ body.main-nav--open {
           }
           &-item {
             padding: 0;
-          }
-        }
-        .phone {
-          align-items: center;
-          border: $btn-border-width solid $primary;
-          border-radius: $btn-border-radius;
-          display: block;
-          font-size: $font-size-lg;
-          font-family: $font-family-condensed;
-          line-height: 1;
-          margin-top: 30px;
-          padding: 22px 49px;
-          @include media-breakpoint-down('md') {
-            display: inline-flex;
-          }
-          &::before {
-            content: "";
-            background-image: url(~assets/icons/icon-call.png);
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            display: inline-block;
-            height: 30px;
-            margin-right: .25em;
-            width: 30px;
           }
         }
       }

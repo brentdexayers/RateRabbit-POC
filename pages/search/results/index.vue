@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import SearchResults from '~/components/SearchResults.vue'
+import SearchResults from '~/components/search/SearchResults.vue'
 
 export default {
   layout: 'default',

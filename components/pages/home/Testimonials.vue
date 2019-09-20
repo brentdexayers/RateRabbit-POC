@@ -1,16 +1,61 @@
 <template>
   <section class="section--testimonials">
     <div class="container-start section--testimonials__container-left">
-      <blockquote class="primary">
-        I give very high marks to Rate Rabbit. My loan consultant got me locked in when I asked him to and at what turned out to be a very good rate. The whole process went fast and smooth. I was very pleased and will certainly recommend your firm.
-        <footer>Rick H, California</footer>
-      </blockquote>
+      <vue-glide
+        :per-view="1"
+      >
+        <vue-glide-slide
+          v-for="(testimonial, index) in featuredTestimonials"
+          :key="index"
+        >
+          <blockquote
+            class="primary"
+            :data-testimonial-index="index"
+          >
+            {{ testimonial.content }}
+            <footer>
+              {{ testimonial.citation }}
+            </footer>
+          </blockquote>
+        </vue-glide-slide>
+        <template slot="control">
+          <button data-glide-dir="<">
+            &lt;
+          </button><button data-glide-dir=">">
+            &gt;
+          </button>
+        </template>
+      </vue-glide>
     </div>
     <div class="section--testimonials__container-right">
       <img src="~assets/images/testimonials/testimonial-1.png" class="testimonial-image img-fluid">
     </div>
   </section>
 </template>
+
+<script>
+import { Glide, GlideSlide } from 'vue-glide-js'
+import testimonials from '~/mixins/testimonials.js'
+
+export default {
+  components: {
+    [Glide.name]: Glide,
+    [GlideSlide.name]: GlideSlide
+  },
+  data () {
+    return {
+      testimonials
+    }
+  },
+  computed: {
+    featuredTestimonials () {
+      return this.testimonials.filter(function (t) {
+        return t.featured
+      })
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
@@ -34,6 +79,32 @@
       padding-left: 8.333333%;
       padding-top: 150px;
       width: 100%;
+    }
+  }
+  .glide {
+    position: unset;
+    &__slides {
+      align-items: center;
+    }
+    &__slide {
+      padding-top: #{$spacer * 1.5};
+    }
+    [data-glide-el="controls"] {
+      bottom: 164px;
+      left: 0;
+      position: absolute;
+      button {
+        background: -moz-linear-gradient(45deg,  rgba($green,1) 0%, rgba($light-green,1) 100%);
+        background: -webkit-linear-gradient(45deg,  rgba($green,1) 0%,rgba($light-green,1) 100%);
+        background: linear-gradient(45deg,  rgba($green,1) 0%,rgba($light-green,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#009646', endColorstr='#9ecd33',GradientType=1 );
+        border: none;
+        height: 60px;
+        width: 60px;
+        margin: 0;
+        padding: 0;
+        color: $white;
+      }
     }
   }
 }

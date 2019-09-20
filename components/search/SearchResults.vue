@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import SearchResultsDetails from '~/components/SearchResultsDetails.vue'
+import SearchResultsDetails from '~/components/search/SearchResultsDetails.vue'
 
 export default {
   components: {

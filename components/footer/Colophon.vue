@@ -11,7 +11,7 @@
         </nuxt-link>
       </li>
       <li>
-        <nuxt-link to="/help">
+        <nuxt-link to="/about/help">
           Help Guides
         </nuxt-link>
       </li>

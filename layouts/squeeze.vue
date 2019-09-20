@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Header from '~/components/Header.vue'
-import Sidebar from '~/components/sidebars/Squeeze.vue'
+import Header from '~/components/header/Header.vue'
+import Sidebar from '~/components/sidebars/SqueezeSidebar.vue'
 import Footer from '~/components/footer/Footer.vue'
 
 export default {

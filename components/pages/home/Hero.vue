@@ -7,7 +7,16 @@
       <h1 class="title hero__title">
         Fast Easy Mortgage Rates in 10 Seconds or Less
       </h1>
-      <CTAButton cta="Search Live Rates" />
+      <div class="hero__cta">
+        <nuxt-link to="/search" class="hero__cta__button">
+          <span class="hero__cta__button__text">
+            Search Live Rates
+          </span>
+        </nuxt-link>
+        <p class="hero__cta__disclaimer">
+          No Personal Information Required
+        </p>
+      </div>
     </div>
     <GoToNextSection />
   </section>
@@ -15,12 +24,10 @@
 
 <script>
 import GoToNextSection from '~/components/GoToNextSection.vue'
-import CTAButton from '~/components/CTAButton.vue'
 
 export default {
   components: {
-    GoToNextSection,
-    CTAButton
+    GoToNextSection
   }
 }
 </script>
@@ -57,6 +64,46 @@ export default {
     font-weight: bold;
     letter-spacing: 0.82px;
     text-transform: uppercase;
+  }
+  &__cta {
+    display: inline-flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    &__button {
+      align-items: center;
+      justify-content: center;
+      background: rgba(27,102,39,0.65);
+      border-radius: 45.5px;
+      color: #ffffff;
+      display: inline-flex;
+      flex: 0 1 auto;
+      font-size: 44px;
+      height: 80px;
+      padding-left: 73px;
+      padding-right: 73px;
+      &:hover {
+        text-decoration: none;
+        color: #ffffff;
+      }
+      &__text {
+        &::after {
+          background: url("~assets/icons/icon-arrow-forward.png");
+          content: "";
+          display: inline-block;
+          height: 24px;
+          margin-left: 10px;
+          max-width: 100%;
+          width: 23px;
+        }
+      }
+    }
+    &__disclaimer {
+      font-style: italic;
+      font-size: 18px;
+      line-height: 22px;
+      opacity: 0.90;
+      margin-top: 14px;
+    }
   }
 }
 </style>

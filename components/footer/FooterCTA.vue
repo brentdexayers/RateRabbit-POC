@@ -4,17 +4,17 @@
       Request an Appointment
     </nuxt-link>
     <p>
-      or Call <Phone />
+      or Call <PhoneLink class="site-footer__cta__phone" />
     </p>
   </div>
 </template>
 
 <script>
-import Phone from '~/components/Phone.vue'
+import PhoneLink from '~/components/globals/PhoneLink.vue'
 
 export default {
   components: {
-    Phone
+    PhoneLink
   }
 }
 </script>
@@ -24,7 +24,7 @@ export default {
 @import '~bootstrap/scss/mixins.scss';
 
 .site-footer__cta {
-  color: #ffffff;
+  color: $white;
   text-align: center;
   @include media-breakpoint-down('xs') {
     margin: auto;
@@ -32,7 +32,7 @@ export default {
   .btn {
     margin-bottom: 13px;
   }
-  .phone {
+  &__phone {
     color: $white;
   }
 }

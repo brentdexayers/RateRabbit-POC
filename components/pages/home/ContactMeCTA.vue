@@ -15,7 +15,7 @@
             Connect Today
           </nuxt-link>
           <p class="text-primary section--contact-cta__phone">
-            or Call <Phone />
+            or Call <PhoneLink />
           </p>
         </div>
       </div>
@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import Phone from '~/components/Phone.vue'
+import PhoneLink from '~/components/globals/PhoneLink.vue'
 
 export default {
   components: {
-    Phone
+    PhoneLink
   }
 }
 </script>
