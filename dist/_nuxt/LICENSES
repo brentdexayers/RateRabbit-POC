@@ -23,6 +23,12 @@
  * Released under the MIT License.
  */
 
+/*!
+ * Glide.js v3.2.4
+ * (c) 2013-2018 Jędrzej Chałubek <jedrzej.chalubek@gmail.com> (http://jedrzejchalubek.com/)
+ * Released under the MIT License.
+ */
+
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.15.0
