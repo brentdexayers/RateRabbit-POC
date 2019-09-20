@@ -18,7 +18,7 @@
 .section--testimonials {
   background-color: $light;
   // background-image: url(~assets/images/testimonials-bg.jpg);
-  background: linear-gradient(180deg, rgba($white,0) 0%, rgba($white,0) calc(100% - 164.01px), rgba($white,1) calc(100% - 164px), rgba($white,1) 100%), url(/_nuxt/assets/images/testimonials-bg.jpg);
+  background: linear-gradient(180deg, rgba($white,0) 0%, rgba($white,0) calc(100% - 164.01px), rgba($white,1) calc(100% - 164px), rgba($white,1) 100%), url(~assets/images/testimonials-bg.jpg);
   background-position: top left;
   background-repeat: no-repeat;
   background-size: cover;

@@ -124,8 +124,9 @@ body.main-nav--open {
           display: block;
         }
         .navbar-toggler-icon {
-          background: no-repeat center center;
           background-image: url(~assets/icons/icon-close.png);
+          background-position: center center;
+          background-repeat: no-repeat;
           background-size: 100% 100%;
           content: "";
           display: inline-block;
