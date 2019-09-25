@@ -52,6 +52,9 @@ export default {
   justify-content: space-between;
   max-width: 488px;
   padding: 67px #{$grid-gutter-width};
+  @include media-breakpoint-down('sm') {
+    display: none;
+  }
   &__intro {
     align-self: center;
     display: flex;

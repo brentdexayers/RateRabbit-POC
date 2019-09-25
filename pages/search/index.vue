@@ -2,7 +2,9 @@
   <article class="page-content article--search">
     <div>
       <h1 class="title">
-        <strong>Search Live Rates</strong> and Lock Your Rate In
+        <strong>Search Live Rates</strong>
+        <br class="d-block d-md-none">
+        and Lock Your Rate In
       </h1>
       <Form cta="Search Live Rates" />
     </div>
@@ -47,8 +49,9 @@ export default {
 
   .title {
     color: $gray-600;
-    font-size: 21px;
+    font-size: $font-size-base;
     font-weight: $font-weight-normal;
+    line-height: 1.428571428571429;
     margin-bottom: 22px;
   }
   .form--search-rates {

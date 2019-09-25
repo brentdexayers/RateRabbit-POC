@@ -1,5 +1,6 @@
 <template>
-  <div class="site-footer__cta">
+  <div class="site-footer__cta" :class="classes">
+    <hr>
     <nuxt-link to="#" class="btn btn-sm btn-outline-primary">
       Request an Appointment
     </nuxt-link>
@@ -15,6 +16,12 @@ import PhoneLink from '~/components/globals/PhoneLink.vue'
 export default {
   components: {
     PhoneLink
+  },
+  props: {
+    classes: {
+      type: String,
+      default: ''
+    }
   }
 }
 </script>
@@ -29,8 +36,18 @@ export default {
   @include media-breakpoint-down('xs') {
     margin: auto;
   }
+  hr {
+    display: none;
+    @include media-breakpoint-down('sm') {
+      display: block;
+      margin-bottom: #{$spacer * 4.875} !important;
+    }
+  }
   .btn {
     margin-bottom: 13px;
+  }
+  p {
+    margin-bottom: 0;
   }
   &__phone {
     color: $white;

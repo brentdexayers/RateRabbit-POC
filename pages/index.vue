@@ -1,10 +1,10 @@
 <template>
-  <article class="page-content article--home">
+  <div class="page-content page--home">
     <Hero />
     <OurPromise />
     <Testimonials />
     <ContactMeCTA />
-  </article>
+  </div>
 </template>
 
 <script>

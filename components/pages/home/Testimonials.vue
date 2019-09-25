@@ -3,6 +3,7 @@
     <div class="container-start section--testimonials__container-left">
       <vue-glide
         :per-view="1"
+        :autoplay="10000"
       >
         <vue-glide-slide
           v-for="(testimonial, index) in featuredTestimonials"
@@ -20,9 +21,9 @@
         </vue-glide-slide>
         <template slot="control">
           <button data-glide-dir="<">
-            &lt;
+            <img src="~assets/icons/icon-chevron-left.png" alt="Previous">
           </button><button data-glide-dir=">">
-            &gt;
+            <img src="~assets/icons/icon-chevron-right.png" alt="Next">
           </button>
         </template>
       </vue-glide>
@@ -34,6 +35,10 @@
 </template>
 
 <script>
+/*
+ * See `Glide JS` documentation here: https://glidejs.com/docs/
+ * See `Vue Glide JS` documentation here: https://antonreshetov.github.io/vue-glide/
+ */
 import { Glide, GlideSlide } from 'vue-glide-js'
 import testimonials from '~/mixins/testimonials.js'
 
@@ -59,6 +64,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .section--testimonials {
   background-color: $light;
@@ -67,21 +73,32 @@ export default {
   background-position: top left;
   background-repeat: no-repeat;
   background-size: cover;
+  @include media-breakpoint-down('sm') {
+    background: url(~assets/images/testimonials-bg.jpg) no-repeat top left, linear-gradient(180deg, rgba($light,1) 0%, rgba($light,1) 100%);
+  }
   &__container {
     &-left {
       align-items: center;
       display: flex;
       justify-content: center;
       padding-bottom: 164px;
+      @include media-breakpoint-down('sm') {
+        padding-bottom: 0;
+      }
     }
     &-right {
       max-width: 50%;
       padding-left: 8.333333%;
       padding-top: 150px;
       width: 100%;
+      @include media-breakpoint-down('sm') {
+        display: none;
+      }
     }
   }
   .glide {
+    padding-top: 80px;
+    padding-bottom: 140px;
     position: unset;
     &__slides {
       align-items: center;
@@ -92,18 +109,30 @@ export default {
     [data-glide-el="controls"] {
       bottom: 164px;
       left: 0;
+      line-height: 0;
       position: absolute;
+      @include media-breakpoint-down('sm') {
+        bottom: 0;
+        left: auto;
+        right: 0;
+      }
       button {
+        align-items: center;
         background: -moz-linear-gradient(45deg,  rgba($green,1) 0%, rgba($light-green,1) 100%);
         background: -webkit-linear-gradient(45deg,  rgba($green,1) 0%,rgba($light-green,1) 100%);
         background: linear-gradient(45deg,  rgba($green,1) 0%,rgba($light-green,1) 100%);
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#009646', endColorstr='#9ecd33',GradientType=1 );
         border: none;
+        color: $white;
         height: 60px;
-        width: 60px;
+        justify-content: center;
         margin: 0;
         padding: 0;
-        color: $white;
+        width: 60px;
+        img {
+          display: flex;
+          margin: auto;
+        }
       }
     }
   }

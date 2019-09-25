@@ -64,7 +64,7 @@
         </li>
       </ul>
     </div>
-    <FooterCTA />
+    <FooterCTA class="col-12 col-md-auto" />
   </div>
 </template>
 

@@ -101,7 +101,7 @@ body.main-nav--open {
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 1000;
+  z-index: 10002;
   &__navbar {
     align-items: center;
     background-color: $white;

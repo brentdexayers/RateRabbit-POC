@@ -19,7 +19,7 @@
         <input type="text" class="form-control" name="email" placeholder="Email Address">
       </div>
     </div>
-    <div class="form-group w-100" />
+    <div class="form-group w-100 form-connect__spacer" />
     <div class="row">
       <div class="form-group col-12 col-md-6">
         <select type="text" class="form-control custom-select" name="loanPurpose" placeholder="Loan Purpose">
@@ -59,6 +59,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .form--connect {
   &__header {
@@ -68,13 +69,23 @@ export default {
     line-height: 32px;
   }
   &__submit {
-    // margin-bottom: 16px;
+    @include media-breakpoint-down('sm') {
+      font-size: $font-size-lg;
+      margin-top: #{$spacer * 1.625};
+      padding-bottom: #{$spacer * 0.6875};
+      padding-top: #{$spacer * 0.6875};
+      width: 100%;
+    }
   }
   &__footer {
     color: $input-placeholder-color;
-    font-size: 12px;
+    font-size: #{$font-size-sm * 0.75};
     font-style: italic;
-    line-height: 16px;
+    line-height: 1.333333333333333;
+    @include media-breakpoint-down('sm') {
+      padding: 0 #{$spacer * 2};
+      text-align: center;
+    }
   }
 }
 </style>

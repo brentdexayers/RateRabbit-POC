@@ -26,12 +26,6 @@ html {
   margin: 0;
 }
 
-section {
-  display: flex;
-  overflow: hidden;
-  position: relative;
-}
-
 // For each breakpoint, define the maximum width of the container in a media query
 @mixin make-container-half-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints, $start: true) {
   @each $breakpoint, $container-max-width in $max-widths {
@@ -50,20 +44,30 @@ section {
 }
 
 .container {
-  padding-left: #{$grid-gutter-width};
-  padding-right: #{$grid-gutter-width};
+  padding-left: #{$spacer * 2};
+  padding-right: #{$spacer * 2};
   &-start {
+    max-width: 100%;
+    padding-left: #{$grid-gutter-width};
+    padding-right: #{$grid-gutter-width};
     @include make-container-half-widths();
   }
   &-end {
+    max-width: 100%;
+    padding-left: #{$grid-gutter-width};
+    padding-right: #{$grid-gutter-width};
     @include make-container-half-widths($start: false);
   }
 }
 
-
+section {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
 
 aside {
-  margin-right: $grid-gutter-width;
+  // margin-right: $grid-gutter-width;
   @include media-breakpoint-down('sm') {
     margin-right: 0;
   }

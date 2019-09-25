@@ -72,23 +72,22 @@
     font-weight: normal;
     line-height: 28px;
     margin-bottom: 36px;
-  }
-  hr {
-    color: transparent;
-    height: 0;
-    width: 100%;
-    border-top: 1px solid rgba(255, 255, 255, 0.20);
-    margin-bottom: 36px;
+    @include media-breakpoint-down('sm') {
+      display: none;
+    }
   }
   &__nav {
     justify-content: space-between;
     margin-left: -.5rem;
     margin-right: -.5rem;
+    @include media-breakpoint-down('sm') {
+      justify-content: center;
+    }
     li {
       margin-left: .5rem;
       margin-right: .5rem;
-      @include media-breakpoint-down('xs') {
-        flex: 1 0 100%;
+      @include media-breakpoint-down('sm') {
+        flex: 0 1 auto;
       }
       a {
         color: $white;
@@ -103,18 +102,21 @@
         }
       }
     }
-    @media screen and (max-width: 925px) {
-      &::after {
-        content: "";
-        flex: auto;
-      }
-    }
+    // @media screen and (max-width: 925px) {
+    //   &::after {
+    //     content: "";
+    //     flex: auto;
+    //   }
+    // }
   }
   .colophon {
     color: $white;
     font-size: 14px;
     line-height: 32px;
     font-weight: normal;
+    @include media-breakpoint-down('sm') {
+      margin-top: #{$spacer * 2.25};
+    }
   }
 }
 </style>

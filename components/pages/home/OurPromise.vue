@@ -64,21 +64,32 @@
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .section--our-promise {
   background-color: $white;
   padding-bottom: 164px;
   padding-top: 150px;
   text-align: center;
+  @include media-breakpoint-down('sm') {
+    padding-bottom: 103px;
+    padding-top: 63px;
+  }
   &__subtitle {
     color: rgba($body-color, 0.5);
     text-transform: uppercase;
-    font-size: $font-size-sm;
+    font-size: $font-size-sm; // ~18px
+    @include media-breakpoint-down('sm') {
+      font-size: #{$font-size-sm * 0.7777777777777778}; // ~14px
+    }
   }
   &__title {
     color: $primary;
-    font-size: #{$font-size-base * 2.476};
+    font-size: #{$font-size-base * 2.476190476190476}; // ~52px
     margin-bottom: 0.627em;
+    @include media-breakpoint-down('sm') {
+      font-size: #{$font-size-base * 1.714285714285714}; // ~36px
+    }
   }
   &__text {
     margin-bottom: #{$spacer * 4.1875};

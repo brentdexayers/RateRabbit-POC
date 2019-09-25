@@ -2,7 +2,9 @@
   <section class="hero">
     <div class="container">
       <h3 class="subtitle hero__subtitle">
-        Home Loans &amp; Direct Lender. Billions Funded.
+        Home Loans &amp; Direct Lender.
+        <br class="d-block d-md-none">
+        Billions Funded.
       </h3>
       <h1 class="title hero__title">
         Fast Easy Mortgage Rates in 10 Seconds or Less
@@ -18,7 +20,7 @@
         </p>
       </div>
     </div>
-    <GoToNextSection />
+    <GoToNextSection classes="d-none d-md-block" />
   </section>
 </template>
 
@@ -34,6 +36,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .hero {
   align-items: center;
@@ -53,14 +56,17 @@ export default {
   text-align: center;
   &__title {
     color: $white;
-    font-size: 64px;
+    font-size: #{$font-size-base * 3.047619047619048}; // ~64px
     font-weight: bold;
     letter-spacing: 0.82px;
     margin-bottom: 60px;
+    @include media-breakpoint-down('sm') {
+      font-size: #{$font-size-base * 2.09523}; // ~44px
+    }
   }
   &__subtitle {
     color: $white;
-    font-size: 14px;
+    font-size: #{$font-size-sm * 0.7777777777777778}; // ~14px
     font-weight: bold;
     letter-spacing: 0.82px;
     text-transform: uppercase;
@@ -77,10 +83,14 @@ export default {
       color: #ffffff;
       display: inline-flex;
       flex: 0 1 auto;
-      font-size: 44px;
+      font-family: $font-family-condensed;
+      font-size: #{$font-size-base * 2.09523}; // ~44px
       height: 80px;
       padding-left: 73px;
       padding-right: 73px;
+      @include media-breakpoint-down('sm') {
+        font-size: #{$font-size-base * 1.523809523809524}; // ~34px
+      }
       &:hover {
         text-decoration: none;
         color: #ffffff;
@@ -99,10 +109,13 @@ export default {
     }
     &__disclaimer {
       font-style: italic;
-      font-size: 18px;
+      font-size: #{$font-size-base * 0.8571428571428571}; // ~18px
       line-height: 22px;
       opacity: 0.90;
       margin-top: 14px;
+      @include media-breakpoint-down('sm') {
+        font-size: #{$font-size-base * 0.6666666666666667}; // ~14px
+      }
     }
   }
 }

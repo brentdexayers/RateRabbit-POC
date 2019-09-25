@@ -2,7 +2,7 @@
   <section class="section--contact-cta">
     <div class="container section--contact-cta__container">
       <div class="row section--contact-cta__row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
           <h2 class="section--contact-cta__title">
             Have a Loan Officer Contact Me
           </h2>
@@ -10,7 +10,7 @@
             Rate Rabbit is committed to providing its customers with the best mortgage rates and the lowest closing fee, combining all applicable closing & lender costs into one low, guaranteed fee.
           </p>
         </div>
-        <div class="col-4 text-center">
+        <div class="col-auto text-center">
           <nuxt-link to="connect" class="btn btn-lg btn-primary section--contact-cta__button">
             Connect Today
           </nuxt-link>
@@ -42,6 +42,7 @@ export default {
   padding-top: 150px;
   &__row {
     align-items: center;
+    justify-content: space-between;
   }
   &__button {
     margin-bottom: #{$spacer * 1.25};

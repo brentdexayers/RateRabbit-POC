@@ -24,8 +24,8 @@ export default {
   flex: 1 0 353px;
   flex-basis: 353px;
   flex-direction: column;
-  margin-top: -106px;
   margin-bottom: 2.5625rem;
+  padding-top: #{$spacer * 2.5};
   form {
     background-color: $white;
     border: 1px solid #DEDEDE;

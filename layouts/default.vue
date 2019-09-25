@@ -1,17 +1,22 @@
 <template>
   <div class="layout--default">
     <Header />
-    <div class="wrapper wrapper--banner layout--default__wrapper layout--default__wrapper--banner">
+    <div class="layout--default__banner" />
+    <div class="wrapper wrapper--content layout--default__wrapper">
       <div class="container layout--default__container">
-        <h1 class="page-title">
-          {{ title }}
-        </h1>
-      </div>
-    </div>
-    <div class="wrapper wrapper--content layout--default__wrapper layout--default__wrapper--content">
-      <div class="container layout--default__container">
-        <Sidebar />
-        <nuxt />
+        <div class="row">
+          <div class="col-auto layout--default__aside">
+            <Sidebar />
+          </div>
+          <div class="col layout--default__content">
+            <div class="layout--default__content__title">
+              <h1 class="page-title">
+                {{ title }}
+              </h1>
+            </div>
+            <nuxt />
+          </div>
+        </div>
       </div>
     </div>
     <Footer />
@@ -53,37 +58,59 @@ export default {
 @import '~bootstrap/scss/mixins.scss';
 
 .layout--default {
-  &__wrapper--banner {
+  background-color: $light;
+  &__banner {
     align-items: center;
     background: linear-gradient(74.78deg, $green 0%, $light-green 100%);
+    height: #{$spacer * 6.875};
+    position: absolute;
+    width: 100%;
+    @include media-breakpoint-down('sm') {
+      height: 6px;
+      position: relative;
+    }
+  }
+  &__wrapper {
+    background-color: transparent;
+    padding-bottom: 132px;
+    // padding-top: 40px;
+    position: relative;
+    z-index: 1001;
+  }
+  &__container {
     display: flex;
-    min-height: 110px;
-    padding-bottom: 27px;
-    padding-top: 27px;
+    flex-direction: row;
+    @include media-breakpoint-down('sm') {
+      flex-direction: column;
+    }
+  }
+  &__content__title {
+    align-items: center;
+    display: flex;
+    font-weight: bold;
+    height: #{$spacer * 6.875};
+    margin-bottom: #{$spacer * 2};
+    @include media-breakpoint-down('sm') {
+      height: auto;
+      margin-bottom: 0;
+      padding-top: #{$spacer * 2.75};
+    }
     .page-title {
       color: $white;
-      font-size: 30px;
-      font-weight: bold;
-      line-height: 56px;
+      font-size: $font-size-lg;
+      line-height: #{$line-height-base * 0.8666666666666667};
       margin-bottom: 0;
-      margin-left: 33.333333%;
-      margin-left: calc(33.333333% + #{$grid-gutter-width});
-      margin-left: calc(353px + #{$grid-gutter-width});
       @include media-breakpoint-down('sm') {
-        margin-left: 0;
+        color: $primary;
+        font-size: $font-size-base;
+        line-height: $line-height-base;
+        margin-bottom: 2em;
       }
     }
   }
-  &__wrapper--content {
-    background-color: $light;
-    padding-bottom: 132px;
-    padding-top: 40px;
-    > .container {
-      display: flex;
-      flex-direction: row;
-      @include media-breakpoint-down('sm') {
-        flex-direction: column;
-      }
+  &__aside {
+    @include media-breakpoint-down('sm') {
+      display: none;
     }
   }
 }

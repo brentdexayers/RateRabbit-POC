@@ -1,6 +1,7 @@
 <template>
   <button
     class="scroll-to-next-section"
+    :class="classes"
     @click="scrollToNext"
   >
     <img src="~assets/icons/icon-chevron-down-sm.png" alt="Continue..." class="icon scroll-to-next-section__icon">
@@ -10,7 +11,13 @@
 <script>
 import scrollToNextMixin from '~/mixins/scrollToNextMixin.js'
 export default {
-  mixins: [scrollToNextMixin]
+  mixins: [scrollToNextMixin],
+  props: {
+    classes: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

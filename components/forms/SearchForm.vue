@@ -464,7 +464,7 @@
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--submit">
         <input
-          class="btn btn-primary"
+          class="btn btn-primary form--search-rates__submit"
           type="submit"
           :value="cta"
         >
@@ -721,6 +721,7 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .form--search-rates {
   &__ltv {
@@ -731,6 +732,15 @@ export default {
     line-height: 25px;
     text-align: center;
     padding: 0 12px;
+  }
+  &__submit {
+    @include media-breakpoint-down('sm') {
+      font-size: $font-size-lg;
+      margin-top: #{$spacer * 1.625};
+      padding-bottom: #{$spacer * 0.6875};
+      padding-top: #{$spacer * 0.6875};
+      width: 100%;
+    }
   }
   &__supplemental-links {
     margin-bottom: 0;

@@ -1,9 +1,9 @@
 <template>
-  <article class="page-content">
+  <div class="page-content">
     <p>
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo autem quia qui optio molestiae aperiam quae ipsam, voluptatibus itaque, numquam ad dolorum, quos maiores corporis consequuntur ex recusandae tempore ducimus!
     </p>
-  </article>
+  </div>
 </template>
 
 <script>
