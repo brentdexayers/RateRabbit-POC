@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar sidebar--squeeze">
+  <aside class="sidebar sidebar--squeeze" :class="classes">
     <div class="sidebar--squeeze__intro">
       <h2 class="sidebar--squeeze__intro__header">
         Real Rates,<br>Real Time.
@@ -35,6 +35,12 @@
 
 <script>
 export default {
+  props: {
+    classes: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 
@@ -51,7 +57,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   max-width: 488px;
-  padding: 67px #{$grid-gutter-width};
+  padding: #{$spacer * 4.125} #{$grid-gutter-width};
   @include media-breakpoint-down('sm') {
     display: none;
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-content page-testimonials">
+  <div class="page-content page--testimonials">
     <blockquote
       v-for="(testimonial, index) in testimonials"
       :key="index"
@@ -39,7 +39,7 @@ export default {
 <style lang="scss">
 @import '@/assets/css/variables.scss';
 
-.page-testimonials {
+.page--testimonials {
   blockquote {
     margin-bottom: #{$spacer * 4};
   }

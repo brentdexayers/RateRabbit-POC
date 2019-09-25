@@ -1,5 +1,5 @@
 <template>
-  <article class="page-content article--search">
+  <div class="page-content page--search">
     <div>
       <h1 class="title">
         <strong>Search Live Rates</strong>
@@ -8,7 +8,7 @@
       </h1>
       <Form cta="Search Live Rates" />
     </div>
-  </article>
+  </div>
 </template>
 
 <script>
@@ -43,10 +43,10 @@ export default {
 @import '~bootstrap/scss/mixins.scss';
 @import '~bootstrap/scss/grid.scss';
 
-.article--search {
+.page--search {
   margin: 0 auto;
+  max-width: #{$spacer * 26.25}; // ~420px
   padding-bottom: 326px;
-
   .title {
     color: $gray-600;
     font-size: $font-size-base;

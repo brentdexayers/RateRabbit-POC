@@ -1,10 +1,10 @@
 <template>
-  <article class="page-content">
-    <p class="page-content__intro">
+  <div class="page-content page--apply">
+    <p class="page--apply__intro">
       Please take a moment to provide the information below and a Loan Consultant will contact you to help you get your best rate quote. <i>Required fields *</i>
     </p>
     <Form />
-  </article>
+  </div>
 </template>
 
 <script>
@@ -33,7 +33,10 @@ export default {
 </script>
 
 <style lang="scss">
-.page-content {
+@import '@/assets/css/variables.scss';
+
+.page--apply {
+  padding-bottom: #{$spacer * 10};
   &__intro {
     margin-bottom: 55px;
   }

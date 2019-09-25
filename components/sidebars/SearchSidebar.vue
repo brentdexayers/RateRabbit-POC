@@ -64,5 +64,10 @@ export default {
   @include media-breakpoint-down('sm') {
     display: none;
   }
+  .form--search-rates{
+    &__ltv {
+      margin-top: $spacer;
+    }
+  }
 }
 </style>

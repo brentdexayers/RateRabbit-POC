@@ -68,101 +68,41 @@
     </div>
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
-      <div class="form-group col-6">
-        <label>Fixed Rates</label>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="fixed10"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="fixed10"
-            type="checkbox"
+      <div
+        v-for="(program, i) in searchForm.loanProgramOptions"
+        :key="i"
+        class="form-group col-6 form--search-rates__form-group--program-options"
+      >
+        <label class="form--search-rates__form-group--program-options__label">
+          {{ program.name }}
+          <template v-if="program.tooltip">
+            <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+            <b-tooltip :target="concat('program-options-tooltip-', i)" triggers="hover">
+              {{ program.tooltip }}
+            </b-tooltip>
+          </template>
+        </label>
+        <ul class="list-unstyled form--search-rates__form-group--program-options__list">
+          <li
+            v-for="(term, j) in program.terms"
+            :key="j"
+            class="custom-control custom-checkbox list-item"
           >
-          <label class="custom-control-label" for="fixed10">10 Year Fixed</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="fixed15"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="fixed15"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="fixed15">15 Year Fixed</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="fixed20"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="fixed20"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="fixed20">20 Year Fixed</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="fixed30"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="fixed30"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="fixed30">30 Year Fixed</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="fixed40"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="fixed40"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="fixed40">40 Year Fixed</label>
-        </div>
-      </div>
-      <div class="form-group col-6">
-        <label>Adjustable Rates</label>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="adjustable3"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="adjustable3"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="adjustable3">3 Year Arm</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="adjustable5"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="adjustable5"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="adjustable5">5 Year Arm</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="adjustable7"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="adjustable7"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="adjustable7">7 Year Arm</label>
-        </div>
-        <div class="custom-control custom-checkbox">
-          <input
-            id="adjustable10"
-            v-model="searchForm.loanProgram"
-            class="custom-control-input"
-            value="adjustable10"
-            type="checkbox"
-          >
-          <label class="custom-control-label" for="adjustable10">10 Year Arm</label>
-        </div>
+            <input
+              :id="term.value"
+              v-model="searchForm.loanProgram"
+              class="custom-control-input"
+              :value="term.value"
+              type="checkbox"
+            >
+            <label
+              class="custom-control-label"
+              :for="term.value"
+            >
+              {{ term.label }}
+            </label>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="form--search-rates__spacer form-group w-100" />
@@ -402,9 +342,13 @@
       </div>
       <div class="form-group col-12 form--search-rates__col--taxes">
         <select
+          id="input-select--taxes"
           v-model="searchForm.taxesInsurance"
+          v-b-tooltip.hover
+          title="Tooltip content for Taxes and Insurance"
+          placement="right"
           name="taxesInsurance"
-          class="custom-select"
+          class="custom-select has-info"
         >
           <option
             value="Taxes and Insurance"
@@ -434,8 +378,11 @@
       <div class="form-group col-12">
         <select
           v-model="searchForm.refinanceType"
+          v-b-tooltip.hover
+          title="Tooltip content for Refinance type"
+          placement="right"
           name="refinanceType"
-          class="custom-select"
+          class="custom-select has-info"
         >
           <option
             value="Refinance Type"
@@ -539,6 +486,56 @@ export default {
         propertyValue: '',
         loanAmount: '',
         ltv: 0,
+        loanProgramOptions: [
+          {
+            name: 'Fixed Rates',
+            tooltip: 'I am a Fixed Rate tooltip',
+            terms: [
+              {
+                label: '10 Year Fixed',
+                value: 'fixed10yr'
+              },
+              {
+                label: '15 Year Fixed',
+                value: 'fixed15yr'
+              },
+              {
+                label: '20 Year Fixed',
+                value: 'fixed20yr'
+              },
+              {
+                label: '30 Year Fixed',
+                value: 'fixed30yr'
+              },
+              {
+                label: '40 Year Fixed',
+                value: 'fixed40yr'
+              }
+            ]
+          },
+          {
+            name: 'Adjustable Rates',
+            tooltip: 'I am an Adjustable Rate tooltip',
+            terms: [
+              {
+                label: '3 Year Arm',
+                value: 'arm3yr'
+              },
+              {
+                label: '5 Year Arm',
+                value: 'arm5yr'
+              },
+              {
+                label: '7 Year Arm',
+                value: 'arm7yr'
+              },
+              {
+                label: '10 Year Arm',
+                value: 'arm10yr'
+              }
+            ]
+          }
+        ],
         loanProgram: [],
         state: 'State',
         stateOptions: [
@@ -714,6 +711,9 @@ export default {
     },
     setCountyOptions () {
       this.searchForm.countyOptionsCurrent = this.searchForm.countyOptionsAll[this.searchForm.state]
+    },
+    concat (value, value1) {
+      return value.concat(value1)
     }
   }
 }
@@ -726,12 +726,29 @@ export default {
 .form--search-rates {
   &__ltv {
     margin: auto;
-    margin-top: 15px;
+    // margin-top: $spacer;
     background-color: $gray-300;
-    font-size: 14px;
-    line-height: 25px;
+    font-size: #{$font-size-sm * 0.875};
+    line-height: 1.785714285714286;
     text-align: center;
-    padding: 0 12px;
+    padding: 0 #{$spacer * 0.75};
+  }
+  &__form-group {
+    &--program-options {
+      &__label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        line-height: 1.75;
+      }
+      &__list {
+        margin-bottom: 0;
+        .list-item {
+          font-size: $font-size-sm;
+          line-height: 1.75;
+          margin-bottom: 2px;
+        }
+      }
+    }
   }
   &__submit {
     @include media-breakpoint-down('sm') {
@@ -757,6 +774,9 @@ export default {
         text-decoration: none;
       }
     }
+  }
+  &__spacer {
+    margin-bottom: #{$spacer * 2};
   }
 }
 </style>

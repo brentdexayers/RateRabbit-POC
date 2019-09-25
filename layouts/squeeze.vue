@@ -2,9 +2,13 @@
   <div class="layout--squeeze">
     <Header />
     <div class="wrapper wrapper--squeeze layout--squeeze__wrapper">
-      <Sidebar />
-      <div class="container container--page-content layout--squeeze__container">
-        <nuxt />
+      <div class="container-fluid layout--squeeze__container">
+        <div class="row">
+          <Sidebar class="col-0 col-md-6 col-lg-5" />
+          <div class="col">
+            <nuxt />
+          </div>
+        </div>
       </div>
     </div>
     <Footer />
@@ -32,21 +36,9 @@ export default {
 .layout--squeeze {
   &__wrapper {
     background-color: $light;
-    display: flex;
-    flex-direction: row;
     .page-content {
-      padding-top: 67px;
+      padding-top: #{$spacer * 4.125};
     }
-    @include media-breakpoint-down('sm') {
-      flex-direction: column;
-    }
-  }
-  &__container {
-    // margin-right: $grid-gutter-width;
-    max-width: calc(420px + #{$grid-gutter-width * 2}) !important;
-    // @include media-breakpoint-down('md') {
-    //   margin-right: auto;
-    // }
   }
 }
 </style>

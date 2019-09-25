@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Phone from '~/mixins/phoneNumber.js'
 
+Vue.filter('concat', function (value, param) {
+  if (!value) { return '' }
+  value = param + value
+  return value
+})
+
 Vue.filter('capitalize', function (value) {
   if (!value) { return '' }
   value = value.toUpperCase()
