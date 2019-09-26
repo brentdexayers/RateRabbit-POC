@@ -46,7 +46,7 @@ export default {
 .page--search {
   margin: 0 auto;
   max-width: #{$spacer * 26.25}; // ~420px
-  padding-bottom: 326px;
+  padding-bottom: #{$spacer * 10};
   .title {
     color: $gray-600;
     font-size: $font-size-base;

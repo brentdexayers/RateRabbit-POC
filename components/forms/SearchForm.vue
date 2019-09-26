@@ -2,26 +2,19 @@
   <form class="form form--search-rates">
     <div class="row">
       <div class="form-group col-12">
+        <label for="loanPurpose">
+          Loan Purpose
+        </label>
         <select
           v-model="searchForm.loanPurpose"
           name="loanPurpose"
           class="custom-select"
         >
           <option
-            value="Loan Purpose"
-            disabled
-            hidden
-            selected
-          >
-            Loan Purpose
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option
             value="Purchase"
           >
@@ -37,24 +30,30 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="propertyValue">
+          Property value
+        </label>
         <input
           v-model="searchForm.propertyValue"
           type="text"
           class="form-control"
           name="propertyValue"
-          placeholder="Property Value"
+          placeholder=""
           @change="calculateLTV"
         >
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="loanAmount">
+          Loan Amount
+        </label>
         <input
           v-model="searchForm.loanAmount"
           type="text"
           class="form-control"
           name="loanAmount"
-          placeholder="Loan Amount"
+          placeholder=""
           @change="calculateLTV"
         >
       </div>
@@ -108,6 +107,9 @@
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--state">
+        <label for="state">
+          State
+        </label>
         <select
           v-model="searchForm.state"
           name="state"
@@ -115,20 +117,10 @@
           @change="setCountyOptions"
         >
           <option
-            value="State"
-            disabled
-            hidden
-            selected
-          >
-            State
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option
             v-for="option in searchForm.stateOptions"
             :key="option.value"
@@ -140,26 +132,19 @@
         </select>
       </div>
       <div class="form-group col-12 form--search-rates__col--county">
+        <label for="county">
+          County
+        </label>
         <select
           v-model="searchForm.county"
           name="county"
           class="custom-select"
         >
           <option
-            value="County"
-            disabled
-            hidden
-            selected
-          >
-            County
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option
             v-for="option in searchForm.countyOptionsCurrent"
             :key="option.value"
@@ -173,26 +158,19 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="propertyType">
+          Property Type
+        </label>
         <select
           v-model="searchForm.propertyType"
           name="propertyType"
           class="custom-select"
         >
           <option
-            value="Property Type"
-            disabled
-            hidden
-            selected
-          >
-            Property Type
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="Single Family">
             Single Family
           </option>
@@ -225,26 +203,19 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="propertyUse">
+          Property Use
+        </label>
         <select
           v-model="searchForm.propertyUse"
           name="propertyUse"
           class="custom-select"
         >
           <option
-            value="Property Use"
-            disabled
-            hidden
-            selected
-          >
-            Property Use
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="Primary Home">
             Primary Home
           </option>
@@ -259,26 +230,19 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="creditRating">
+          Credit Rating
+        </label>
         <select
           v-model="searchForm.creditRating"
           name="creditRating"
           class="custom-select"
         >
           <option
-            value="Credit Rating"
-            disabled
-            hidden
-            selected
-          >
-            Credit Rating
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="740">
             740+ (Excellent)
           </option>
@@ -312,26 +276,19 @@
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--interest">
+        <label for="interestOnly">
+          Interest Only
+        </label>
         <select
           v-model="searchForm.interestOnly"
           name="interestOnly"
           class="custom-select"
         >
           <option
-            value="Interest Only"
-            disabled
-            hidden
-            selected
-          >
-            Interest Only
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="Yes">
             Yes
           </option>
@@ -341,6 +298,13 @@
         </select>
       </div>
       <div class="form-group col-12 form--search-rates__col--taxes">
+        <label for="taxesInsurance">
+          Taxes &amp; Insurance
+          <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+          <b-tooltip target="taxes-tooltip" triggers="hover">
+            Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
+          </b-tooltip>
+        </label>
         <select
           id="input-select--taxes"
           v-model="searchForm.taxesInsurance"
@@ -348,20 +312,10 @@
           class="custom-select has-info"
         >
           <option
-            value="Taxes and Insurance"
-            disabled
-            hidden
-            selected
-          >
-            Taxes &amp; Insurance
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="Yes">
             Yes
           </option>
@@ -369,13 +323,18 @@
             No
           </option>
         </select>
-        <b-tooltip target="input-select--taxes" trigger="hover" position="right">
-          Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
-        </b-tooltip>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
+        <label for="refinanceType">
+          Refinance Type
+          <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+          <b-tooltip target="refinance-type-tooltip" triggers="hover">
+            <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
+            <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
+          </b-tooltip>
+        </label>
         <select
           id="input-select--refinance-type"
           v-model="searchForm.refinanceType"
@@ -383,20 +342,10 @@
           class="custom-select has-info"
         >
           <option
-            value="Refinance Type"
-            disabled
-            hidden
-            selected
-          >
-            Refinance Type
-          </option>
-          <option
             value=""
             disabled
             hidden
-          >
-            ---
-          </option>
+          />
           <option value="Cash Out">
             Cash Out
           </option>
@@ -404,19 +353,16 @@
             No Cash Out
           </option>
         </select>
-        <b-tooltip target="input-select--refinance-type" trigger="hover" position="right">
-          <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
-          <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
-        </b-tooltip>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--submit">
-        <input
+        <button
           class="btn btn-primary form--search-rates__submit"
           type="submit"
-          :value="cta"
         >
+          {{ cta }}
+        </button>
       </div>
     </div>
     <div class="row">
@@ -425,21 +371,23 @@
           <li class="form--search-rates__supplemental-link">
             <p
               class="link-text"
-              @click="searchForm.promoCode = !searchForm.promoCode"
+              :class="{label: searchForm.hasPromoCode}"
+              @click="searchForm.hasPromoCode = !searchForm.hasPromoCode"
             >
               Do you have a promotional code?
             </p>
             <div
-              v-if="searchForm.promoCode"
+              v-show="searchForm.hasPromoCode"
               class="row"
             >
               <div class="form-group col-12">
                 <input
                   id="promoCode"
+                  v-model="searchForm.promoCode"
                   class="form-control"
                   type="text"
                   placeholder="Promo Code"
-                  value=""
+                  tabindex="-1"
                 >
               </div>
             </div>
@@ -447,20 +395,23 @@
           <li class="form--search-rates__supplemental-link">
             <p
               class="link-text"
-              @click="searchForm.signUp = !searchForm.signUp"
+              :class="{'label label-list': searchForm.hasSignUp}"
+              @click="searchForm.hasSignUp = !searchForm.hasSignUp"
             >
               Sign Up for Rate Alerts
             </p>
             <div
-              v-if="searchForm.signUp"
+              v-if="searchForm.hasSignUp"
               class="row"
             >
               <div class="form-group col-12">
                 <div class="custom-control custom-checkbox">
                   <input
                     id="signUp"
+                    v-model="searchForm.signUp"
                     class="custom-control-input"
                     type="checkbox"
+                    tabindex="-1"
                   >
                   <label class="custom-control-label" for="signUp">Yes, I'd like to sign up!</label>
                 </div>
@@ -491,7 +442,7 @@ export default {
         loanProgramOptions: [
           {
             name: 'Fixed Rates',
-            tooltip: 'I am a Fixed Rate tooltip',
+            tooltip: 'Fixed Rates are mortgages in which the interest rate does not change during the entire term of the loan.',
             terms: [
               {
                 label: '10 Year Fixed',
@@ -517,7 +468,7 @@ export default {
           },
           {
             name: 'Adjustable Rates',
-            tooltip: 'I am an Adjustable Rate tooltip',
+            tooltip: 'Adjustable Rates permit the lender to adjust the mortgage interest rate periodically on the basis of changes in a specified index. The interest rates on these loans will be fixed for a specified period of time, then will become adjustable for the remaining years of the loan. Once adjustable, the interest rates may move up or down, as market conditions change.',
             terms: [
               {
                 label: '3 Year Arm',
@@ -698,9 +649,99 @@ export default {
         interestOnly: 'Interest Only',
         taxesInsurance: 'Taxes and Insurance',
         refinanceType: 'Refinance Type',
-        promoCode: false,
+        hasPromoCode: false,
+        promoCode: '',
+        hasSignUp: false,
         signUp: false
       }
+    }
+  },
+  watch: {
+    'searchForm.loanPurpose' (newloanPurpose) {
+      localStorage.loanPurpose = newloanPurpose
+    },
+    'searchForm.propertyValue' (newpropertyValue) {
+      localStorage.propertyValue = newpropertyValue
+    },
+    'searchForm.loanAmount' (newloanAmount) {
+      localStorage.loanAmount = newloanAmount
+    },
+    'searchForm.loanProgram' (newloanProgram) {
+      localStorage.loanProgram = newloanProgram
+    },
+    'searchForm.state' (newstate) {
+      localStorage.state = newstate
+    },
+    'searchForm.county' (newcounty) {
+      localStorage.county = newcounty
+    },
+    'searchForm.propertyType' (newpropertyType) {
+      localStorage.propertyType = newpropertyType
+    },
+    'searchForm.propertyUse' (newpropertyUse) {
+      localStorage.propertyUse = newpropertyUse
+    },
+    'searchForm.creditRating' (newcreditRating) {
+      localStorage.creditRating = newcreditRating
+    },
+    'searchForm.interestOnly' (newinterestOnly) {
+      localStorage.interestOnly = newinterestOnly
+    },
+    'searchForm.taxesInsurance' (newtaxesInsurance) {
+      localStorage.taxesInsurance = newtaxesInsurance
+    },
+    'searchForm.refinanceType' (newrefinanceType) {
+      localStorage.refinanceType = newrefinanceType
+    },
+    'searchForm.promoCode' (newpromoCode) {
+      localStorage.promoCode = newpromoCode
+    },
+    'searchForm.signUp' (newsignUp) {
+      localStorage.signUp = newsignUp
+    }
+  },
+  mounted () {
+    if (localStorage.loanPurpose) {
+      this.searchForm.loanPurpose = localStorage.loanPurpose
+    }
+    if (localStorage.propertyValue) {
+      this.searchForm.propertyValue = localStorage.propertyValue
+    }
+    if (localStorage.loanAmount) {
+      this.searchForm.loanAmount = localStorage.loanAmount
+    }
+    if (localStorage.loanProgram) {
+      this.searchForm.loanProgram = localStorage.loanProgram
+    }
+    if (localStorage.state) {
+      this.searchForm.state = localStorage.state
+    }
+    if (localStorage.county) {
+      this.searchForm.county = localStorage.county
+    }
+    if (localStorage.propertyType) {
+      this.searchForm.propertyType = localStorage.propertyType
+    }
+    if (localStorage.propertyUse) {
+      this.searchForm.propertyUse = localStorage.propertyUse
+    }
+    if (localStorage.creditRating) {
+      this.searchForm.creditRating = localStorage.creditRating
+    }
+    if (localStorage.interestOnly) {
+      this.searchForm.interestOnly = localStorage.interestOnly
+    }
+    if (localStorage.taxesInsurance) {
+      this.searchForm.taxesInsurance = localStorage.taxesInsurance
+    }
+    if (localStorage.refinanceType) {
+      this.searchForm.refinanceType = localStorage.refinanceType
+    }
+    if (localStorage.promoCode) {
+      this.searchForm.promoCode = localStorage.promoCode
+    }
+    if (localStorage.signUp) {
+      this.searchForm.signUp = localStorage.signUp
     }
   },
   methods: {
@@ -737,11 +778,7 @@ export default {
   }
   &__form-group {
     &--program-options {
-      &__label {
-        font-size: $font-size-sm;
-        font-weight: $font-weight-bold;
-        line-height: 1.75;
-      }
+      &__label {}
       &__list {
         margin-bottom: 0;
         .list-item {
@@ -779,6 +816,33 @@ export default {
   }
   &__spacer {
     margin-bottom: #{$spacer * 2};
+  }
+  label,
+  .label {
+    bottom: -0.5em;
+    color: $primary;
+    font-size: #{$font-size-sm * 0.8125};
+    font-weight: $font-weight-normal;
+    margin-left: $input-padding-x;
+    margin-bottom: 0;
+    position: relative;
+    &.form--search-rates__form-group--program-options__label,
+    &.label-list {
+      bottom: inherit;
+      color: $body-color;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-bold;
+      line-height: 1.75;
+      margin-left: 0;
+    }
+    &.custom-control-label {
+      bottom: inherit;
+      color: $body-color;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-normal;
+      line-height: 1.75;
+      margin-left: 0;
+    }
   }
 }
 </style>

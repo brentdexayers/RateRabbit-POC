@@ -17,6 +17,7 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   padding-top: 110px;
+  scroll-behavior: smooth;
 }
 
 *,
@@ -184,11 +185,4 @@ p a {
   background-repeat: no-repeat;
   background-position: calc(100% - 12px) 50%;
   background-size: auto;
-  &.has-info {
-    background:
-      url(~assets/icons/icon-info.png) calc(100% - 38px) 50%/18px 18px no-repeat,
-      url(~assets/icons/icon-dropdown.png) calc(100% - 12px) 50%/auto auto no-repeat,
-      $white;
-    padding-right: #{$spacer * 4};
-  }
 }

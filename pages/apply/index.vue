@@ -36,6 +36,8 @@ export default {
 @import '@/assets/css/variables.scss';
 
 .page--apply {
+  margin: auto;
+  max-width: #{$spacer * 26.25};
   padding-bottom: #{$spacer * 10};
   &__intro {
     margin-bottom: 55px;

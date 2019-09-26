@@ -34,22 +34,16 @@ export default {
     .form-group {
       margin-bottom: 0;
     }
-    label {
-      font-weight: bold;
-      font-size: 16px;
-      line-height: 28px;
-      &.custom-control-label {
-        font-weight: normal;
-      }
-    }
-    input:not([type="submit"]), select {
+    input,
+    select,
+    textarea {
       border-radius: 0;
       border-bottom: 1px solid #{$gray-500};
       border-left: none;
       border-right: none;
       border-top: none;
     }
-    input[type="submit"] {
+    [type="submit"] {
       margin-bottom: 30px;
       margin-top: 40px;
       width: 100%;

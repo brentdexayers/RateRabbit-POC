@@ -20,6 +20,7 @@
       </div>
     </div>
     <Footer />
+    <BackToTop />
   </div>
 </template>
 
@@ -27,12 +28,14 @@
 import Header from '~/components/header/Header.vue'
 import Sidebar from '~/components/sidebars/SearchSidebar.vue'
 import Footer from '~/components/footer/Footer.vue'
+import BackToTop from '~/components/globals/BackToTop.vue'
 
 export default {
   components: {
     Header,
     Sidebar,
-    Footer
+    Footer,
+    BackToTop
   },
   data () {
     return {
