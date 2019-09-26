@@ -60,13 +60,15 @@
             >
               Apply
             </nuxt-link>
-            <a
-              href="#"
-              class="link-decorated results-table__result__link"
-              @click.prevent="showDetails($event, resultIndex, rateIndex)"
-            >
-              See Details
-            </a>
+            <p>
+              <a
+                href="#"
+                class="link-decorated results-table__result__link"
+                @click.prevent="showDetails($event, resultIndex, rateIndex)"
+              >
+                See Details
+              </a>
+            </p>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <a :href="Phone.number | phonelink" class="loan-consultant-cta">
+  <a :href="phone.number.tollFree | phonelink" class="loan-consultant-cta">
     <div class="loan-consultant-cta__icon">
       <img src="~assets/icons/icon-call.png" alt="Call Now" class="icon">
     </div>
@@ -14,7 +14,7 @@
 
 <script>
 import PhoneLink from '~/components/globals/PhoneLink.vue'
-import Phone from '~/mixins/phoneNumber.js'
+import phone from '~/mixins/phoneNumber.js'
 
 export default {
   components: {
@@ -22,7 +22,7 @@ export default {
   },
   data () {
     return {
-      Phone
+      phone
     }
   }
 }

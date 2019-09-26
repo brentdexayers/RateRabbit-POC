@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Phone from '~/mixins/phoneNumber.js'
+import phone from '~/mixins/phoneNumber.js'
 
 Vue.filter('concat', function (value, param) {
   if (!value) { return '' }
@@ -50,7 +50,7 @@ Vue.filter('phone', function (value) {
   if (!value) { return '' }
   const PNF = require('google-libphonenumber').PhoneNumberFormat
   const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
-  const localization = Phone.localization || 'US'
+  const localization = phone.localization || 'US'
   const number = phoneUtil.parseAndKeepRawInput(value, localization)
   // if (!phoneUtil.isValidNumber(number)) { return '' }
   if (!phoneUtil.isValidNumberForRegion(number, localization)) { return '' }
@@ -61,7 +61,22 @@ Vue.filter('phonelink', function (value) {
   if (!value) { return '' }
   const PNF = require('google-libphonenumber').PhoneNumberFormat
   const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
-  const localization = Phone.localization || 'US'
+  const localization = phone.localization || 'US'
   const number = phoneUtil.parseAndKeepRawInput(value, localization)
   return 'tel:' + phoneUtil.format(number, PNF.E164)
+})
+
+Vue.filter('emaillink', function (value) {
+  if (!value) { return '' }
+  return 'mailto:' + value
+})
+
+Vue.filter('anchor', function (value) {
+  if (!value) { return '' }
+  return '#' + value
+})
+
+Vue.filter('nospecialchars', function (value) {
+  if (!value) { return '' }
+  return value.replace(/[^A-Z0-9]+/ig, '_')
 })

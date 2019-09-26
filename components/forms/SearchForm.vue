@@ -344,9 +344,6 @@
         <select
           id="input-select--taxes"
           v-model="searchForm.taxesInsurance"
-          v-b-tooltip.hover
-          title="Tooltip content for Taxes and Insurance"
-          placement="right"
           name="taxesInsurance"
           class="custom-select has-info"
         >
@@ -372,15 +369,16 @@
             No
           </option>
         </select>
+        <b-tooltip target="input-select--taxes" trigger="hover" position="right">
+          Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
+        </b-tooltip>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <select
+          id="input-select--refinance-type"
           v-model="searchForm.refinanceType"
-          v-b-tooltip.hover
-          title="Tooltip content for Refinance type"
-          placement="right"
           name="refinanceType"
           class="custom-select has-info"
         >
@@ -406,6 +404,10 @@
             No Cash Out
           </option>
         </select>
+        <b-tooltip target="input-select--refinance-type" trigger="hover" position="right">
+          <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
+          <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
+        </b-tooltip>
       </div>
     </div>
     <div class="row">

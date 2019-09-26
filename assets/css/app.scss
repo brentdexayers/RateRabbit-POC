@@ -81,7 +81,7 @@ aside {
 // h2 {}
 
 ul {
-  padding-left: $spacer;
+  padding-left: #{$spacer * 1.25};
   margin-bottom: 2.625rem;
 }
 li {
@@ -133,7 +133,7 @@ blockquote {
   &-decorated {
     display: inline-block;
     font-weight: $font-weight-semibold;
-    margin-bottom: 2em;
+    // margin-bottom: 2em;
     text-decoration: none;
     &::after {
       content: "";

@@ -51,6 +51,9 @@ export default {
   }
   &__phone {
     color: $white;
+    &:hover {
+      color: $primary;
+    }
   }
 }
 </style>

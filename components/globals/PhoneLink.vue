@@ -1,6 +1,6 @@
 <template>
-  <a :href="phone.number | phonelink" class="phone__link" :class="classes">
-    {{ phone.number | phone }}
+  <a :href="phoneNumber | phonelink" class="phone__link" :class="classes">
+    {{ phoneNumber | phone }}
   </a>
 </template>
 
@@ -12,6 +12,12 @@ export default {
     classes: {
       type: String,
       default: ''
+    },
+    phoneNumber: {
+      type: String,
+      default () {
+        return phone.number.tollFree
+      }
     }
   },
   data () {

@@ -27,12 +27,14 @@
             >
               Apply
             </nuxt-link>
-            <nuxt-link
-              to="/connect"
-              class="link-decorated"
-            >
-              Talk to a Loan Consultant
-            </nuxt-link>
+            <p>
+              <nuxt-link
+                to="/connect"
+                class="link-decorated"
+              >
+                Talk to a Loan Consultant
+              </nuxt-link>
+            </p>
           </div>
         </div>
         <div class="row">
