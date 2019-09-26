@@ -5,6 +5,8 @@
         Home Loans &amp; Direct Lender.
         <br class="d-block d-md-none">
         Billions Funded.
+        <br class="d-block">
+        A Mortgage Company You Can Trust.
       </h3>
       <h1 class="title hero__title">
         Fast Easy Mortgage Rates in 10 Seconds or Less
