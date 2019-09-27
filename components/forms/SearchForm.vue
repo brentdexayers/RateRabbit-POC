@@ -1,5 +1,11 @@
 <template>
-  <form class="form form--search-rates">
+  <form
+    id=""
+    action=""
+    method="POST"
+    class="form form--search-rates"
+    @submit="validateForm"
+  >
     <div class="row">
       <div class="form-group col-12">
         <label for="loanPurpose">
@@ -68,14 +74,14 @@
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
       <div
-        v-for="(program, i) in searchForm.loanProgramOptions"
+        v-for="(program, i) in searchFormOptions.loanProgramOptions"
         :key="i"
         class="form-group col-6 form--search-rates__form-group--program-options"
       >
         <label class="form--search-rates__form-group--program-options__label">
           {{ program.name }}
           <template v-if="program.tooltip">
-            <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+            <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
             <b-tooltip :target="concat('program-options-tooltip-', i)" triggers="hover">
               {{ program.tooltip }}
             </b-tooltip>
@@ -122,7 +128,7 @@
             hidden
           />
           <option
-            v-for="option in searchForm.stateOptions"
+            v-for="option in searchFormOptions.stateOptions"
             :key="option.value"
             :value="option.value"
             :title="option.text"
@@ -146,7 +152,7 @@
             hidden
           />
           <option
-            v-for="option in searchForm.countyOptionsCurrent"
+            v-for="option in searchFormOptions.countyOptionsCurrent"
             :key="option.value"
             :value="option.value"
             :title="option.text"
@@ -300,7 +306,7 @@
       <div class="form-group col-12 form--search-rates__col--taxes">
         <label for="taxesInsurance">
           Taxes &amp; Insurance
-          <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+          <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="taxes-tooltip" triggers="hover">
             Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
           </b-tooltip>
@@ -329,7 +335,7 @@
       <div class="form-group col-12">
         <label for="refinanceType">
           Refinance Type
-          <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="18" width="18" alt="Additional Information">
+          <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="refinance-type-tooltip" triggers="hover">
             <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
             <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
@@ -434,11 +440,7 @@ export default {
   },
   data () {
     return {
-      searchForm: {
-        loanPurpose: 'Loan Purpose',
-        propertyValue: '',
-        loanAmount: '',
-        ltv: 0,
+      searchFormOptions: {
         loanProgramOptions: [
           {
             name: 'Fixed Rates',
@@ -489,15 +491,12 @@ export default {
             ]
           }
         ],
-        loanProgram: [],
-        state: 'State',
         stateOptions: [
           { text: 'Arizona', value: 'az' },
           { text: 'California', value: 'ca' },
           { text: 'Idaho', value: 'id' },
           { text: 'Massachusetts', value: 'ma' }
         ],
-        county: 'County',
         countyOptionsAll: {
           az: [
             { text: 'APACHE', value: '159' },
@@ -642,18 +641,28 @@ export default {
         },
         countyOptionsCurrent: [
           { text: 'Please select a State', value: '0' }
-        ],
-        propertyType: 'Property Type',
-        propertyUse: 'Property Use',
-        creditRating: 'Credit Rating',
-        interestOnly: 'Interest Only',
-        taxesInsurance: 'Taxes and Insurance',
-        refinanceType: 'Refinance Type',
+        ]
+      },
+      searchForm: {
+        loanPurpose: '',
+        propertyValue: '',
+        loanAmount: '',
+        ltv: 0,
+        loanProgram: [],
+        state: '',
+        county: '',
+        propertyType: '',
+        propertyUse: '',
+        creditRating: '',
+        interestOnly: '',
+        taxesInsurance: '',
+        refinanceType: '',
         hasPromoCode: false,
         promoCode: '',
         hasSignUp: false,
         signUp: false
-      }
+      },
+      formErrors: []
     }
   },
   watch: {
@@ -662,12 +671,14 @@ export default {
     },
     'searchForm.propertyValue' (newpropertyValue) {
       localStorage.propertyValue = newpropertyValue
+      this.calculateLTV()
     },
     'searchForm.loanAmount' (newloanAmount) {
       localStorage.loanAmount = newloanAmount
+      this.calculateLTV()
     },
     'searchForm.loanProgram' (newloanProgram) {
-      localStorage.loanProgram = newloanProgram
+      localStorage.loanProgram = JSON.stringify(newloanProgram)
     },
     'searchForm.state' (newstate) {
       localStorage.state = newstate
@@ -711,10 +722,11 @@ export default {
       this.searchForm.loanAmount = localStorage.loanAmount
     }
     if (localStorage.loanProgram) {
-      this.searchForm.loanProgram = localStorage.loanProgram
+      this.searchForm.loanProgram = JSON.parse(localStorage.loanProgram)
     }
     if (localStorage.state) {
       this.searchForm.state = localStorage.state
+      this.setCountyOptions()
     }
     if (localStorage.county) {
       this.searchForm.county = localStorage.county
@@ -753,10 +765,116 @@ export default {
       }
     },
     setCountyOptions () {
-      this.searchForm.countyOptionsCurrent = this.searchForm.countyOptionsAll[this.searchForm.state]
+      this.searchFormOptions.countyOptionsCurrent = this.searchFormOptions.countyOptionsAll[this.searchForm.state]
     },
     concat (value, value1) {
       return value.concat(value1)
+    },
+    resetSearchForm () {
+      this.searchForm.loanPurpose = ''
+      if (localStorage.loanPurpose) {
+        localStorage.loanPurpose = ''
+      }
+      this.searchForm.propertyValue = ''
+      if (localStorage.propertyValue) {
+        localStorage.propertyValue = ''
+      }
+      this.searchForm.loanAmount = ''
+      if (localStorage.loanAmount) {
+        localStorage.loanAmount = ''
+      }
+      this.searchForm.loanProgram = []
+      if (localStorage.loanProgram) {
+        localStorage.loanProgram = []
+      }
+      this.searchForm.state = ''
+      if (localStorage.state) {
+        localStorage.state = ''
+      }
+      this.searchForm.county = ''
+      if (localStorage.county) {
+        localStorage.county = ''
+      }
+      this.setCountyOptions()
+      this.searchForm.propertyType = ''
+      if (localStorage.propertyType) {
+        localStorage.propertyType = ''
+      }
+      this.searchForm.propertyUse = ''
+      if (localStorage.propertyUse) {
+        localStorage.propertyUse = ''
+      }
+      this.searchForm.creditRating = ''
+      if (localStorage.creditRating) {
+        localStorage.creditRating = ''
+      }
+      this.searchForm.interestOnly = ''
+      if (localStorage.interestOnly) {
+        localStorage.interestOnly = ''
+      }
+      this.searchForm.taxesInsurance = ''
+      if (localStorage.taxesInsurance) {
+        localStorage.taxesInsurance = ''
+      }
+      this.searchForm.refinanceType = ''
+      if (localStorage.refinanceType) {
+        localStorage.refinanceType = ''
+      }
+      this.searchForm.promoCode = ''
+      if (localStorage.promoCode) {
+        localStorage.promoCode = ''
+      }
+      this.searchForm.signUp = ''
+      if (localStorage.signUp) {
+        localStorage.signUp = ''
+      }
+    },
+    validateForm (e) {
+      if (this.searchForm.loanPurpose && this.searchForm.propertyValue && this.searchForm.loanAmount && this.searchForm.loanProgram && this.searchForm.state && this.searchForm.county && this.searchForm.propertyType && this.searchForm.propertyUse && this.searchForm.creditRating && this.searchForm.interestOnly && this.searchForm.taxesInsurance && this.searchForm.refinanceType && this.searchForm.promoCode && this.searchForm.signUp) {
+        return true
+      }
+      this.formErrors = []
+
+      if (!this.searchForm.loanPurpose) {
+        this.formErrors.push('Loan Purpose required.')
+      }
+      if (!this.searchForm.propertyValue) {
+        this.formErrors.push('Property Value required')
+      }
+      if (!this.searchForm.loanAmount) {
+        this.formErrors.push('Loan Amount required')
+      }
+      if (!this.searchForm.loanProgram) {
+        this.formErrors.push('Loan Program required')
+      }
+      if (!this.searchForm.state) {
+        this.formErrors.push('State required')
+      }
+      if (!this.searchForm.county) {
+        this.formErrors.push('County required')
+      }
+      if (!this.searchForm.propertyType) {
+        this.formErrors.push('Property Type required')
+      }
+      if (!this.searchForm.propertyUse) {
+        this.formErrors.push('Property Use required')
+      }
+      if (!this.searchForm.creditRating) {
+        this.formErrors.push('Credit Rating required')
+      }
+      if (!this.searchForm.interestOnly) {
+        this.formErrors.push('Interest Only required')
+      }
+      if (!this.searchForm.taxesInsurance) {
+        this.formErrors.push('Taxes and Insurance required')
+      }
+      if (!this.searchForm.refinanceType) {
+        this.formErrors.push('Refinance Type required')
+      }
+
+      e.preventDefault()
+
+      console.log(this.formErrors)
     }
   }
 }
@@ -816,33 +934,6 @@ export default {
   }
   &__spacer {
     margin-bottom: #{$spacer * 2};
-  }
-  label,
-  .label {
-    bottom: -0.5em;
-    color: $primary;
-    font-size: #{$font-size-sm * 0.8125};
-    font-weight: $font-weight-normal;
-    margin-left: $input-padding-x;
-    margin-bottom: 0;
-    position: relative;
-    &.form--search-rates__form-group--program-options__label,
-    &.label-list {
-      bottom: inherit;
-      color: $body-color;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-bold;
-      line-height: 1.75;
-      margin-left: 0;
-    }
-    &.custom-control-label {
-      bottom: inherit;
-      color: $body-color;
-      font-size: $font-size-sm;
-      font-weight: $font-weight-normal;
-      line-height: 1.75;
-      margin-left: 0;
-    }
   }
 }
 </style>
