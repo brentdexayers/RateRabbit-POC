@@ -1,7 +1,7 @@
 <template>
   <div class="site-footer__cta" :class="classes">
     <hr>
-    <nuxt-link to="#" class="btn btn-sm btn-outline-primary">
+    <nuxt-link to="/connect" class="btn btn-sm btn-outline-primary">
       Request an Appointment
     </nuxt-link>
     <p>

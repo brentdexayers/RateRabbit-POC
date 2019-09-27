@@ -78,8 +78,18 @@ aside {
 ** Typography
 */
 
-// h1 {}
-// h2 {}
+h1 {
+  @include media-breakpoint-down('sm') {
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+  }
+}
+h2 {
+  @include media-breakpoint-down('sm') {
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+  }
+}
 
 ul {
   padding-left: #{$spacer * 1.25};
@@ -143,9 +153,15 @@ blockquote {
       background-repeat: no-repeat;
       background-size: contain;
       display: inline-block;
-      height: 1rem;
-      margin-left: .125rem;
-      width: 1rem;
+      height: .75em;
+      margin-left: .125em;
+      transition: margin-left .15s ease-in-out;
+      width: .75em;
+    }
+    &:hover {
+      &::after {
+        margin-left: .5em;
+      }
     }
   }
 }
@@ -165,15 +181,33 @@ p a {
 /*
 ** Boxes
 */
+.boxes {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .box {
   background-color: $lily-white;
+  font-size: $font-size-sm;
   margin-bottom: 2.625rem;
+  max-width: calc(50% - #{$grid-gutter-width / 2});
   padding: 31px 38px 41px;
+  width: 100%;
   p, a {
     margin-bottom: 1em;
   }
   > *:last-child {
     margin-bottom: 0;
+  }
+  &__links {
+    float: right;
+    margin-left: #{$grid-gutter-width / 2};
+    width: calc(50% - #{$grid-gutter-width / 2});
+    ul {
+      margin-bottom: 0;
+    }
   }
 }
 

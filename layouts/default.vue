@@ -100,13 +100,10 @@ export default {
     }
     .page-title {
       color: $white;
-      font-size: $font-size-lg;
       line-height: #{$line-height-base * 0.8666666666666667};
       margin-bottom: 0;
       @include media-breakpoint-down('sm') {
         color: $primary;
-        font-size: $font-size-base;
-        line-height: $line-height-base;
         margin-bottom: 2em;
       }
     }

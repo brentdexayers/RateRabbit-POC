@@ -8,17 +8,20 @@
       </h5>
       <ul class="nav site-footer__menus__menu">
         <li>
-          <nuxt-link to="#">
+          <nuxt-link
+            to="/search"
+            @click="$emit('setLoanPurpose', 'Purchase')"
+          >
             Apply for a Loan
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="#">
+          <nuxt-link to="/programs/purchase">
             Loan Programs
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="#">
+          <nuxt-link to="/help">
             Help Guides
           </nuxt-link>
         </li>
@@ -30,17 +33,20 @@
       </h5>
       <ul class="nav site-footer__menus__menu">
         <li>
-          <nuxt-link to="#">
+          <nuxt-link
+            to="/search"
+            @click="$emit('setLoanPurpose', 'Refinance')"
+          >
             Apply for a Loan
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="#">
+          <nuxt-link to="/programs/refinance">
             Loan Programs
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="#">
+          <nuxt-link to="/help">
             Help Guides
           </nuxt-link>
         </li>
