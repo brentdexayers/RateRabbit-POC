@@ -6,15 +6,32 @@
     class="form form--search-rates"
     @submit="validateForm"
   >
+    <p v-if="formErrors.length" class="text-danger">
+      <b>Please correct the following error(s):</b>
+      <ul class="list-unstyled">
+        <li
+          v-for="(error, i) in formErrors"
+          :key="i"
+        >
+          {{ error }}
+        </li>
+      </ul>
+    </p>
     <div class="row">
       <div class="form-group col-12">
-        <label for="loanPurpose">
+        <label
+          for="loanPurpose"
+          :class="{ hasvalue: searchForm.loanPurpose }"
+        >
           Loan Purpose
         </label>
         <select
           v-model="searchForm.loanPurpose"
           name="loanPurpose"
           class="custom-select"
+          @set-loan-purpose="searchForm.loanPurpose = $emit"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -36,7 +53,10 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="propertyValue">
+        <label
+          for="propertyValue"
+          :class="{ hasvalue: searchForm.propertyValue }"
+        >
           Property value
         </label>
         <input
@@ -46,12 +66,17 @@
           name="propertyValue"
           placeholder=""
           @change="calculateLTV"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="loanAmount">
+        <label
+          for="loanAmount"
+          :class="{ hasvalue: searchForm.loanAmount }"
+        >
           Loan Amount
         </label>
         <input
@@ -61,6 +86,8 @@
           name="loanAmount"
           placeholder=""
           @change="calculateLTV"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
       </div>
     </div>
@@ -113,7 +140,10 @@
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--state">
-        <label for="state">
+        <label
+          for="state"
+          :class="{ hasvalue: searchForm.state }"
+        >
           State
         </label>
         <select
@@ -121,6 +151,8 @@
           name="state"
           class="custom-select"
           @change="setCountyOptions"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -138,13 +170,18 @@
         </select>
       </div>
       <div class="form-group col-12 form--search-rates__col--county">
-        <label for="county">
+        <label
+          for="county"
+          :class="{ hasvalue: searchForm.county }"
+        >
           County
         </label>
         <select
           v-model="searchForm.county"
           name="county"
           class="custom-select"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -164,13 +201,18 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="propertyType">
+        <label
+          for="propertyType"
+          :class="{ hasvalue: searchForm.propertyType }"
+        >
           Property Type
         </label>
         <select
           v-model="searchForm.propertyType"
           name="propertyType"
           class="custom-select"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -209,13 +251,18 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="propertyUse">
+        <label
+          for="propertyUse"
+          :class="{ hasvalue: searchForm.propertyUse }"
+        >
           Property Use
         </label>
         <select
           v-model="searchForm.propertyUse"
           name="propertyUse"
           class="custom-select"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -236,13 +283,18 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="creditRating">
+        <label
+          for="creditRating"
+          :class="{ hasvalue: searchForm.creditRating }"
+        >
           Credit Rating
         </label>
         <select
           v-model="searchForm.creditRating"
           name="creditRating"
           class="custom-select"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -282,13 +334,18 @@
     <div class="form--search-rates__spacer form-group w-100" />
     <div class="row">
       <div class="form-group col-12 form--search-rates__col--interest">
-        <label for="interestOnly">
+        <label
+          for="interestOnly"
+          :class="{ hasvalue: searchForm.interestOnly }"
+        >
           Interest Only
         </label>
         <select
           v-model="searchForm.interestOnly"
           name="interestOnly"
           class="custom-select"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -304,7 +361,10 @@
         </select>
       </div>
       <div class="form-group col-12 form--search-rates__col--taxes">
-        <label for="taxesInsurance">
+        <label
+          for="taxesInsurance"
+          :class="{ hasvalue: searchForm.taxesInsurance }"
+        >
           Taxes &amp; Insurance
           <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="taxes-tooltip" triggers="hover">
@@ -316,6 +376,8 @@
           v-model="searchForm.taxesInsurance"
           name="taxesInsurance"
           class="custom-select has-info"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -333,7 +395,10 @@
     </div>
     <div class="row">
       <div class="form-group col-12">
-        <label for="refinanceType">
+        <label
+          for="refinanceType"
+          :class="{ hasvalue: searchForm.refinanceType }"
+        >
           Refinance Type
           <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="refinance-type-tooltip" triggers="hover">
@@ -346,6 +411,8 @@
           v-model="searchForm.refinanceType"
           name="refinanceType"
           class="custom-select has-info"
+          @focus="setFocus($event)"
+          @blur="unFocus($event)"
         >
           <option
             value=""
@@ -427,6 +494,12 @@
         </ul>
       </div>
     </div>
+    <button
+      class="btn btn-secondary btn-sm"
+      @click.prevent="resetSearchForm"
+    >
+      Reset
+    </button>
   </form>
 </template>
 
@@ -770,6 +843,14 @@ export default {
     concat (value, value1) {
       return value.concat(value1)
     },
+    setFocus (event) {
+      const self = event.target
+      self.previousElementSibling.classList.add('focused')
+    },
+    unFocus (event) {
+      const self = event.target
+      self.previousElementSibling.classList.remove('focused')
+    },
     resetSearchForm () {
       this.searchForm.loanPurpose = ''
       if (localStorage.loanPurpose) {
@@ -871,10 +952,7 @@ export default {
       if (!this.searchForm.refinanceType) {
         this.formErrors.push('Refinance Type required')
       }
-
       e.preventDefault()
-
-      console.log(this.formErrors)
     }
   }
 }
