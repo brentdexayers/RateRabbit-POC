@@ -38,6 +38,7 @@ export default {
   */
   plugins: [
     '~/plugins/vue-glide',
+    '~/plugins/vue-currency-input',
     '~/plugins/filters'
   ],
   /*

@@ -61,6 +61,7 @@
         </label>
         <input
           v-model="searchForm.propertyValue"
+          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
           type="text"
           class="form-control"
           name="propertyValue"
@@ -81,6 +82,7 @@
         </label>
         <input
           v-model="searchForm.loanAmount"
+          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
           type="text"
           class="form-control"
           name="loanAmount"
