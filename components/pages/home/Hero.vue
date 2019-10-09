@@ -63,7 +63,9 @@ export default {
     letter-spacing: 0.82px;
     margin-bottom: 60px;
     @include media-breakpoint-down('sm') {
-      font-size: #{$font-size-base * 2.09523}; // ~44px
+      // font-size: #{$font-size-base * 2.09523}; // ~44px
+      font-size: #{$font-size-base * 2}; // ~42px
+      line-height: 1.2;
     }
   }
   &__subtitle {
@@ -77,6 +79,9 @@ export default {
     display: inline-flex;
     flex: 1 1 auto;
     flex-direction: column;
+    @include media-breakpoint-down('sm') {
+      width: 100%;
+    }
     &__button {
       align-items: center;
       justify-content: center;
@@ -90,6 +95,7 @@ export default {
       height: 80px;
       padding-left: 73px;
       padding-right: 73px;
+      white-space: nowrap;
       @include media-breakpoint-down('sm') {
         font-size: #{$font-size-base * 1.523809523809524}; // ~34px
       }
