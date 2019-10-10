@@ -1,109 +1,60 @@
 <template>
   <div class="page-content page--about">
     <p>
-      We've talked to hundreds of consumers that say they've felt ripped off or unsure if they really got a good rate and fair closing costs when obtaining a home loan from other lenders. Consumers often question the difference between the costs listed in the "loan estimate" and the final closing documents.
+      Rate Rabbit Home Loans was founded in 2004 specifically to provide our customers with an online experience that allows them to save money, save time, and get the best rate available.
     </p>
     <p>
-      It's true, frequently closing costs end up being much higher than what a borrower sees on their loan estimate, leaving them feeling taken advantage of and frustrated!
-    </p>
-    <p>
-      Rate Rabbit changes all of that by turning the loan estimate into a guaranteed and protected fixed-fee package . We combine all applicable closing and lender costs into one low, guaranteed fee. Rate Rabbit is committed to providing its customers with the best mortgage rates and the lowest closing fee.
-    </p>
-    <p>
-      Rate Rabbit also provides the most convenient and consumer-friendly loan process in the industry. Borrowers can research rates, choose loan programs and apply for loans online 24 hours a day, or request assistance from a Rate Rabbit non-commissioned loan consultant via our toll-free number. It's Easy!
+      We have funded over 5 billion in loans since our inception and have saved our customers millions on their mortgage.
     </p>
     <h2>
-      Our Company
+      Our Success
     </h2>
+    <h3>
+      Our Customers
+    </h3>
     <p>
-      Rate Rabbit is a privately held California corporation based in San Diego. The company has introduced a new, Internet-based method to obtain a home loan. Rate Rabbit combines closing, lender costs into one low, guaranteed fee, and turns the “loan estimate” into a guaranteed and protected fixed-fee package. The one fee guarantee package includes the following costs, and the total of which is guaranteed not to change at closing.
+      Rate Rabbit Home Loans has been successful because of our customers. Over 80% of our customers are either repeat customers or referred by one of our previous customers.
     </p>
-    <ul>
-      <li>
-        Origination Fee
-      </li>
-      <li>
-        Discount Points
-      </li>
-      <li>
-        Appraisal Fee
-      </li>
-      <li>
-        Title Insurance and Related Charges
-      </li>
-      <li>
-        Escrow/Lender Attorney Fee
-      </li>
-      <li>
-        Survey
-      </li>
-      <li>
-        Flood Certification Fee
-      </li>
-      <li>
-        Credit Report Fee
-      </li>
-      <li>
-        Tax Service Fee
-      </li>
-      <li>
-        Underwriting Fee
-      </li>
-      <li>
-        Processing Fee
-      </li>
-      <li>
-        Recording Fees
-      </li>
-      <li>
-        Notary Fee
-      </li>
-      <li>
-        Administration Fee
-      </li>
-    </ul>
+    <h3>
+      Savings
+    </h3>
     <p>
-      Rate Rabbit is committed to providing its customers throughout the United States with the best mortgage rates and the lowest closing fee in the industry.
+      We offer our customers the most competitive rates available, saving our customers thousands/millions (need to pick one here) over the life of the mortgage. Through our state of the art technology, our customers can search live rates without adding any personal information.
+    </p>
+    <h3>
+      Transparency
+    </h3>
+    <p>
+      Our advance rate search fully discloses the rate, apr, closing fees, and third party fees. In fact, we believe you should never be left wondering what your fees will be by guaranteeing the fee disclosed. Yes, you read that correctly, we guarantee our low closing costs!
+    </p>
+    <h3>
+      Convenience
+    </h3>
+    <p>
+      Our customers have 24/7 access to our website and live rate pricing. Even if you apply after hours, one of our Loan Consultants will contact you by the next day.
     </p>
     <p>
-      A Rate Rabbit loan assures consumers protection from last minute changes in costs, and from bait and switch tactics used by aggressive, commissioned sales people. Loan applicants can choose to use our user-friendly Website to shop and compare with an instant quote or to complete the entire loan process online. Rate Rabbit also provides one-on-one customer support by professional, non-commissioned loan consultants to assure a hassle-free loan every time.
+      We also offer you Tools that will help you be prepared for the loan process so you don’t have to wait for us to contact you. You will be ready and your loan can close as fast as possible.
     </p>
-    <h2>
-      Executive Team
-    </h2>
+    <h3>
+      Service
+    </h3>
     <p>
-      Bill Mansy, Founder and President
-    </p>
-    <h2>
-      Headquarters
-    </h2>
-    <address>
-      540 Front St.<br>
-      San Diego, CA 92101
-    </address>
-    <p>
-      Toll-free: <PhoneLink /><br>
-      San Diego Area: <PhoneLink :phone-number="phone.number.local" /><br>
-      Efax: <PhoneLink :phone-number="phone.number.fax" /><br>
-      Email: <EmailLink /><br>
-      Website:
-      <nuxt-link to="/">
-        www.raterabbit.com
-      </nuxt-link>
+      We offer the best customer service in the business. Our customers are our number one reason we have been successful. For that reason, our customers come first!
     </p>
   </div>
 </template>
 
 <script>
-import PhoneLink from '~/components/globals/PhoneLink.vue'
+// import EmailLink from '~/components/globals/EmailLink.vue'
+// import PhoneLink from '~/components/globals/PhoneLink.vue'
 import phone from '~/mixins/phoneNumber.js'
-import EmailLink from '~/components/globals/EmailLink.vue'
 
 export default {
   layout: 'default',
   components: {
-    PhoneLink,
-    EmailLink
+    // PhoneLink,
+    // EmailLink
   },
   data () {
     return {
