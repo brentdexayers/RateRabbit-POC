@@ -16,7 +16,7 @@ export default [
     citation: 'Rhonda W.',
     location: 'California',
     date: '',
-    featured: true
+    featured: false
   },
   {
     content: 'I give very high marks to Rate Rabbit. My loan consultant got me locked in when I asked him to and at what turned out to be a very good rate. The whole process went fast and smooth. I was very pleased and will certainly recommend your firm.',
@@ -37,14 +37,14 @@ export default [
     citation: 'Lori W.',
     location: 'California',
     date: '',
-    featured: false
+    featured: true
   },
   {
     content: 'Best home loan process we ever experienced! Special thanks to the terrific service provided by your staff. Great doing business with you.',
     citation: 'Max S.',
     location: 'California',
     date: '',
-    featured: false
+    featured: true
   },
   {
     content: 'Your staff was great! I really appreciated your services and would recommend Rate Rabbit to anyone looking to obtain a mortgage. Thanks.',

@@ -97,11 +97,18 @@ export default {
     }
   }
   .glide {
-    padding-top: 80px;
-    padding-bottom: 140px;
+    padding-bottom: #{$spacer * 8.75}; // 140px
+    padding-top: #{$spacer * 5}; // 80px
     position: unset;
+    @include media-breakpoint-down('sm') {
+      padding-bottom: #{$spacer * 4}; // 64px
+      padding-top: #{$spacer * 4}; // 64px
+    }
     &__slides {
       align-items: center;
+      @include media-breakpoint-down('sm') {
+        align-items: inherit;
+      }
     }
     &__slide {
       padding-top: #{$spacer * 1.5};

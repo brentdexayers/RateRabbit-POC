@@ -10,6 +10,7 @@
             Rate Rabbit is committed to providing its customers with the best mortgage rates and the lowest closing fee, combining all applicable closing & lender costs into one low, guaranteed fee.
           </p>
         </div>
+        <div class="vertical-col-spacer" />
         <div class="col-auto text-center">
           <nuxt-link to="connect" class="btn btn-lg btn-primary section--contact-cta__button">
             Connect Today
@@ -35,17 +36,25 @@ export default {
 
 <style lang="scss">
 @import '@/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .section--contact-cta {
   background-color: $white;
-  padding-bottom: 164px;
-  padding-top: 150px;
+  padding-bottom: #{$spacer * 10.25}; // 164px;
+  padding-top: #{$spacer * 9.375}; // 150px;
+  @include media-breakpoint-down('sm') {
+    padding-bottom: #{$spacer * 8}; // 128px;
+    padding-top: #{$spacer * 8}; // 128px;
+  }
   &__row {
     align-items: center;
     justify-content: space-between;
   }
   &__button {
     margin-bottom: #{$spacer * 1.25};
+  }
+  &__phone {
+    margin-bottom: 0;
   }
 }
 </style>

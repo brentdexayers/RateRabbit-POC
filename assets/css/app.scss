@@ -27,6 +27,10 @@ html {
   margin: 0;
 }
 
+/*
+** Layout
+*/
+
 // For each breakpoint, define the maximum width of the container in a media query
 @mixin make-container-half-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints, $start: true) {
   @each $breakpoint, $container-max-width in $max-widths {
@@ -74,6 +78,15 @@ aside {
   }
 }
 
+.vertical-col-spacer {
+  display: flex;
+  flex: 1 1 0;
+  height: 2em;
+  @include media-breakpoint-down('sm') {
+    flex: 1 1 100%;
+  }
+}
+
 /*
 ** Typography
 */
@@ -91,6 +104,12 @@ h2 {
   }
 }
 
+p {
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 ul {
   padding-left: #{$spacer * 1.25};
   margin-bottom: 2.625rem;
@@ -101,17 +120,26 @@ li {
 }
 
 blockquote {
-  padding-left: 76px;
+  padding-left: #{$spacer * 4.75}; // 76px
   position: relative;
+  @include media-breakpoint-down('sm') {
+    padding-left: #{$spacer * 4}; // 64px
+  }
   &::before {
     background-image: url(~assets/icons/icon-quote.png);
+    background-repeat: no-repeat;
+    background-size: contain;
     content: "";
-    height: 51px;
-    width: 60px;
     display: block;
-    position: absolute;
+    height: 51px;
     left: 0;
-    top: -23px;
+    position: absolute;
+    top: -#{$spacer * 1.4375}; // -23px
+    width: #{$spacer * 3.75}; // 60px
+    @include media-breakpoint-down('sm') {
+      width: #{$spacer * 3.125}; // 50px
+      top: -#{$spacer * 1.1875}; // -19px
+    }
   }
   &.green,
   &.primary {
