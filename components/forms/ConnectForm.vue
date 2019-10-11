@@ -26,52 +26,58 @@
         <input
           type="text"
           class="form-control form-control-lg"
-          name="phone"
-          placeholder="Primary Phone Number"
+          name="email"
+          placeholder="Email Address"
         >
       </div>
       <div class="form-group col-12 col-md-6">
         <input
           type="text"
           class="form-control form-control-lg"
-          name="email"
-          placeholder="Email Address"
+          name="phone"
+          placeholder="Contact Phone Number"
         >
       </div>
     </div>
     <div class="form-group w-100 form-connect__spacer" />
     <div class="row">
-      <div class="form-group col-12 col-md-6">
+      <div class="form-group col-12">
         <select
-          type="text"
           class="form-control form-control-lg custom-select custom-select-lg"
           name="loanPurpose"
           placeholder="Loan Purpose"
         >
+          <option value="" disabled selected>
+            Loan Purpose
+          </option>
           <option value="Option1">
             Option 1
           </option>
         </select>
       </div>
-      <div class="form-group col-12 col-md-6">
-        <input
-          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-          type="text"
+    </div>
+    <div class="row">
+      <div class="form-group col-12">
+        <textarea
           class="form-control form-control-lg"
-          name="estimatedHomeValue"
-          placeholder="Estimated Home Value/Purchase Amt"
-        >
+          placehoder="Questions/comments"
+        />
       </div>
     </div>
     <div class="row">
-      <div class="form-group col-12 col-md-6">
-        <input
-          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-          type="text"
-          class="form-control form-control-lg"
-          name="desiredLoan"
-          placeholder="Desired Loan Amount"
+      <div class="form-group col-12">
+        <select
+          class="form-control form-control-lg custom-select custom-select-lg"
+          name="howHearAboutUs"
+          placeholder="How did you hear about us?"
         >
+          <option value="" disabled selected>
+            How did you hear about us?
+          </option>
+          <option value="Option1">
+            Option 1
+          </option>
+        </select>
       </div>
     </div>
     <div class="row">

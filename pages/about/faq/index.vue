@@ -1,42 +1,7 @@
 <template>
   <article class="page-content page--faq">
     <h3>
-      <i>
-        Why should I choose an online mortgage lender like Rate Rabbit as opposed to a brick and mortar mortgage lender?
-      </i>
-    </h3>
-    <p>
-      Online mortgage lenders offer numerous advantages to consumers.
-    </p>
-    <p>
-      First, online lenders such as Rate Rabbit provide an easy way to shop and compare mortgage rates.If the loan you want is priced on a website, it is easy to compare it to the quotes on other sites.
-    </p>
-    <p>
-      Price quotes found in the newspaper never provide the detail needed by most shoppers and are always out of date by the time they are published. Telephone and email quotes from brokers and loan officers can’t often be trusted either, unless you know the source and have a relationship or referrals to prove they are trustworthy.
-    </p>
-    <h3>
-      <i>
-        I’ve heard that online mortgage pricing is often better. Why is that?
-      </i>
-    </h3>
-    <p>
-      Online lenders avoid paying the usual costs of maintaining retail lending facilities and are able to pass along the savings to borrowers. There are also numerous online lenders now, and borrowers are benefiting from this competition among online lenders with competitive pricing.
-    </p>
-    <p>
-      With Rate Rabbit, borrowers also save on commissions that they would normally pay to a retail lender.  Rate Rabbit does not employ commission paid loan officers, but instead salaried loan consultants, so their goal is to get you the best deal, not crank up their commission.
-    </p>
-    <h3>
-      <i>
-        What if I don’t like the idea of giving my personal financial information online?
-      </i>
-    </h3>
-    <p>
-      Rate Rabbit provides an encrypted, secure site so you can be sure that your information is not being exposed.  Rate Rabbit also never, ever sells, rents or gives away your personal information. In fact, we have one of the best privacy policies in the online lending industry.  Visit our online privacy policy.
-    </p>
-    <h3>
-      <i>
-        What is included in Rate Rabbit’s fixed closing fee?
-      </i>
+      What is included in Rate Rabbit's fixed closing fee?
     </h3>
     <p>
       Rate Rabbit has revolutionized the way home loans are done by offering a guaranteed and protected fixed-fee package. We combine all applicable closing and lender costs into one low, guaranteed fee every time.
@@ -89,57 +54,116 @@
       </li>
     </ul>
     <h3>
-      <i>
-        Is it really a better value to go with the one fixed-fee instead of getting my own vendors?
-      </i>
+      What makes Rate Rabbit different from other retail and online mortgage lenders?
     </h3>
     <p>
-      Yes, Rate Rabbit has negotiated with the best third-party vendors in the business to get the best fees for your refinance possible.  These vendors give Rate Rabbit their best prices because we give them a consistent, high-volume amount of business. It’s that simple.
-    </p>
-    <h3>
-      <i>
-        What makes Rate Rabbit different from other retail and online mortgage lenders?
-      </i>
-    </h3>
-    <p>
-      Our guarantee of one fixed closing fee is unique. We don’t know of anyone in the industry that is offering our type of refinance loan program and guaranteed fixed-fee on ALL closing costs, not just lending fees.
+      Our guarantee of one fixed closing fee is unique. We don't know of anyone in the industry that is offering our type of refinance loan program and guaranteed fixed-fee on ALL closing costs, not just lending fees.
     </p>
     <p>
-      We are also highly committed to being a lender you can trust. We’ve heard hundreds of horror stories from consumers that feel “burned” by the mortgage loan process. We don’t think there’s an excuse for people being taken advantage of or getting a deal based on their negotiation skills.  We are so confident that you will enjoy our no-nonsense approach to doing loans that you will refer us to your family and friends.
+      We are also highly committed to being a lender you can trust. We do no hide fee's and we make sure you know exactly what you are signing up for. Our goal has always been, and will always be, to get you the best rate possible. We are so confident that you will enjoy our no-nonsense approach to doing loans that you will refer us to your family and friends.
     </p>
     <h3>
-      <i>
-        How do I know I’m getting the best price on my loan closing and not a low ball estimate?
-      </i>
+      How do I know I'm getting the best price on my loan closing and not a low ball estimate?
     </h3>
     <p>
       Rate Rabbit provides a GUARANTEE with every loan, not just a good faith estimate. For refinances we guarantee the total cost of your loan, including all lender and third party fees. On purchases we guarantee the lender fees and appraisal.
     </p>
     <p>
-      Some lenders will often lowball third party costs, which they can’t be held to because they are “estimates.” Sometimes they even mark up the costs as they see fit and keep the difference.
+      Some lenders will often lowball third party costs, which they can't be held to because they are "estimates." Sometimes they even mark up the costs as they see fit and keep the difference.
     </p>
     <p>
       These practices usually occur off-line because details on third-party costs typically is not provided until the borrower receives the Good Faith Estimate, and are not given to the borrower until three business days after the lender has received the loan application.
     </p>
     <p>
-      Rate Rabbit gives you the price quote upfront and takes the “estimate” out of the Good Faith Estimate. One Easy guarantees that you will pay what you see on the Good Faith Estimate.  Last minute changes and fees are not your problem, they’re ours – period.
-    </p>
-    <h2>
-      The One Fee Guarantee:
-    </h2>
-    <p>
-      Our customers are guaranteed protection against any changes to the low interest rates, closing costs, and third-party fees quoted by Rate Rabbit. All applicable lender fees and closing costs are stated upfront in the good faith estimate and will not change. Last minute changes in fees are not your problem, they’re ours – we’ve got them covered.
-    </p>
-    <p>
-      Of course, every home purchase includes costs such as escrow, title, notary, recording, survey (when applicable), taxes, insurance, and prepaid interest, which are covered by each homeowner.
+      Rate Rabbit gives you the price quote upfront and takes the "estimate" out of the Good Faith Estimate. One Easy guarantees that you will pay what you see on the Good Faith Estimate.  Last minute changes and fees are not your problem, they're ours – period.
     </p>
     <h3>
-      <i>
-        What is the best way to get started?
-      </i>
+      What is the best way to get started?
     </h3>
     <p>
-      Simply log on to the Rate Rabbit site www.raterabbit.com and find the loan program that’s right for you. Complete the application online or call one of our non-commissioned loan consultants at <PhoneLink /> to walk you through the process. It’s that easy.
+      Simply <a href="/apply">Apply Now</a> and find the loan program that's right for you. Complete the application online or call one of our non-commissioned loan consultants at <PhoneLink /> to walk you through the process. It's that easy.
+    </p>
+    <h3>
+      What if I don't like the idea of giving my personal financial information online?
+    </h3>
+    <p>
+      Rate Rabbit provides an encrypted, secure site so you can be sure that your information is not being exposed. We also never, ever, sell, rent or give away your personal information to any third party that is not connected to the loan process. In fact, we have one of the best privacy policy in the lending industry. But we understand, if you prefer to get us your documentation a different way, we would be more than happy to take that way. Just talk to your Loan Consultant for more information.
+    </p>
+    <h3>
+      Is it really a better value to go with the one fixed-fee instead of getting my own vendors?
+    </h3>
+    <p>
+      Yes, Rate Rabbit has negotiated with the best third-party vendors in the business to get the best fees for your refinance possible.  These vendors give Rate Rabbit their best prices because we give them a consistent, high-volume amount of business. It's that simple.
+    </p>
+    <h3>
+      What Should I do to prepare for my loan?
+    </h3>
+    <p>
+      At the point that you Apply with us, begin to gather documentation that will help us to quickly process your loan. These documents include:
+    </p>
+    <ul>
+      <li>
+        Pay Stubs for the last 30 days
+      </li>
+      <li>
+        W-2 forms for the last 2 years
+      </li>
+      <li>
+        Bank Statements or other documents that will verify where the down payment and closing costs will be paid from for  Purchase Transactions.
+      </li>
+      <li>
+        Prior two years of Tax Returns
+      </li>
+    </ul>
+    <p>
+      You should also prepare your home for the appraisal if you are going to Refinance your home.
+    </p>
+    <h3>
+      What Documentation do I need?
+    </h3>
+    <ul>
+      <li>
+        Pay Stubs for the last 30 days
+      </li>
+      <li>
+        W-2 forms for the last 2 years
+      </li>
+      <li>
+        Bank Statements or other documents that will verify where the down payment and closing costs will be paid from for Purchase Transactions.
+      </li>
+      <li>
+        Prior two years of Tax Returns
+      </li>
+    </ul>
+    <h3>
+      Why is the Appraisal important?
+    </h3>
+    <p>
+      The appraisal is done to determine the value of the home you will be purchasing or refinancing. This value is used to determine eligibility for certain programs. It will also help to avoid you paying too much for a home that is not currently worth the price it is selling for. If you are refinancing, the appraisal will determine the amount of cash you can take out for updating your home. This report is very important and can affect your loan.
+    </p>
+    <h3>
+      Can I hire an appraiser of my choosing?
+    </h3>
+    <p>
+      Fannie Mae place an Appraiser Independence Requirement (AIR) and has very specific guidelines to ensure the inspection and the value are completely unbiased. For that reason, an appraisal must be ordered following those guidelines.
+    </p>
+    <h3>
+      What should I do to prepare for the appraisal?
+    </h3>
+    <p>
+      Because your appraisal is so important, it is always best to prepare your home before the inspection. Below are some basic items to consider before your inspection. If you are unsure, please contact your Loan Consultant and they will be happy to help you.
+    </p>
+    <h3>
+      Should I pay Points?
+    </h3>
+    <p>
+      Points are a way to lower your interest rate. Each point is equal to 1% of your mortgage amount. Because everyone has different goals and needs, it is best to discuss points with your Loan Consultant. They will help to determine if you should consider paying points or not and will make sure that your decision is in line with your specific goals.
+    </p>
+    <h3>
+      How Will I know if the rates are low enough to Refinance?
+    </h3>
+    <p>
+      We offer you the ability to get notifications when the rate drops below a certain point. Simply sign up for our Rate Notification program and let us keep track of it for you. Once the rates drop to the level you desire, we will contact you via email. At that point, you just need to <a href="/apply">Apply</a> for the rate of your choice or call us at <PhoneLink /> to speak to one of our Loan Consultants. Yes, it's that simple.
     </p>
   </article>
 </template>

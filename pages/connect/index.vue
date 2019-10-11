@@ -1,7 +1,7 @@
 <template>
   <article class="page-content">
     <p class="page-content__intro">
-      Please take a moment to provide the information below and a Loan Consultant will contact you to help you get your best rate quote. <i>Required fields *</i>
+      Have a question or concern? We are here to help.
     </p>
     <Form />
   </article>
