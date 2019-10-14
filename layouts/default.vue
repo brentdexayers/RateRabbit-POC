@@ -78,7 +78,7 @@ export default {
     padding-bottom: 132px;
     // padding-top: 40px;
     position: relative;
-    z-index: 1001;
+    // z-index: 1001;
   }
   &__container {
     display: flex;

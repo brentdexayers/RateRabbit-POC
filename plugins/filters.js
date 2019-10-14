@@ -24,7 +24,7 @@ Vue.filter('percent', function (value) {
 })
 
 Vue.filter('currency', function (value) {
-  if (!value) { return '' }
+  // if (!value) { return '' }
   value = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'

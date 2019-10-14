@@ -1,10 +1,10 @@
 <template>
-  <article class="page-content">
+  <div class="page-content">
     <p>
       Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
     </p>
     <SearchResults />
-  </article>
+  </div>
 </template>
 
 <script>

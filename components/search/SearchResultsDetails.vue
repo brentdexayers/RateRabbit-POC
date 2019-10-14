@@ -11,26 +11,26 @@
       <div class="container">
         <div class="row">
           <div class="col">
-            <h2>
+            <h2 class="search-results-details__term">
               {{ resultDetails.term }}
             </h2>
-            <p>
+            <p class="search-results-details__p">
               <strong>Interest Rate:</strong> {{ resultDetails.rate | percent }}<br>
               <strong>APR:</strong> {{ resultDetails.apr | percent }}<br>
               <strong>One Fee Guarantee:</strong> {{ resultDetails.oneFeeGuarantee | currency }}
             </p>
           </div>
-          <div class="col">
+          <div class="col-12 col-md-5">
             <nuxt-link
               to="/apply"
-              class="btn btn-primary"
+              class="btn btn-primary search-results-details__apply-btn"
             >
               Apply
             </nuxt-link>
-            <p>
+            <p class="search-results-details__connect">
               <nuxt-link
                 to="/connect"
-                class="link-decorated"
+                class="link-decorated search-results-details__connect__link"
               >
                 Talk to a Loan Consultant
               </nuxt-link>
@@ -39,9 +39,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <div class="search-results-details__datetime">
+            <p class="search-results-details__datetime">
               {{ resultDetails.date | datetime }}
-            </div>
+            </p>
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -83,7 +83,7 @@
         <div class="row">
           <div class="col">
             <hr>
-            <p>
+            <p class="search-results-details__table-info">
               <strong>Rate Rabbit has revolutionized the way loans are offered</strong> by turning the good faith estimate into a guaranteed and protected fixed-fee package. We combine closing, lender and third-party costs into one low, guaranteed fee.
             </p>
           </div>
@@ -331,6 +331,7 @@ export default {
 
 <style lang="scss">
 @import '~/assets/css/variables.scss';
+@import '~bootstrap/scss/mixins.scss';
 
 .search-results-details {
   background-color: rgba($black,.16);
@@ -341,7 +342,7 @@ export default {
   right: 0;
   top: 0;
   width: 100%;
-  z-index: 1001;
+  z-index: 20000;
   &__wrapper {
     background-color: $white;
     box-shadow: 0 0 1rem rgba($black,.16);
@@ -349,6 +350,11 @@ export default {
     max-width: 720px;
     padding: #{$spacer * 3.75} #{$spacer * 1.75};
     position: relative;
+    .container {
+      @include media-breakpoint-down('sm') {
+        padding: 0;
+      }
+    }
     .close {
       background-color: transparent;
       background-image: url(~assets/icons/icon-close.png);
@@ -364,10 +370,59 @@ export default {
       width: 1rem;
     }
     table {
-      td + td {
-        text-align: right;
+      margin-bottom: #{$spacer * 4.5};
+      @include media-breakpoint-down('sm') {
+        margin-bottom: #{$spacer * 4};
+      }
+      td {
+        @include media-breakpoint-down('sm') {
+          font-size: $font-size-sm;
+          line-height: 1.3;
+        }
+        + td {
+          text-align: right;
+        }
       }
     }
+  }
+  &__term {
+    font-size: #{$font-size-base * 1.714285714285714};
+  }
+  &__p {
+    margin-bottom: #{$spacer * 4.25} !important;
+    @include media-breakpoint-down('sm') {
+      margin-bottom: #{$spacer * 2.5} !important;
+    }
+  }
+  &__apply-btn {
+    font-size: $font-size-base;
+    margin-bottom: #{$spacer * .75};
+    padding: 7.2px 0;
+    width: 100%;
+  }
+  &__connect {
+    text-align: center;
+    @include media-breakpoint-down('sm') {
+      margin-bottom: #{$spacer * 3.875} !important;
+    }
+    &__link {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-normal;
+    }
+  }
+  &__datetime {
+    font-size: #{$font-size-sm * 0.875};
+    font-style: italic;
+    margin-bottom: 1em;
+    opacity: 0.5;
+    text-align: right;
+    @include media-breakpoint-down('sm') {
+      display: none;
+    }
+  }
+  &__table-info {
+    font-size: $font-size-sm;
+    margin-bottom: #{$spacer * 3.875} !important;
   }
 }
 </style>
