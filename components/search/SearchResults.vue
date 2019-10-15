@@ -3,92 +3,92 @@
     <div
       v-for="(result, resultIndex) in searchResults"
       :key="resultIndex"
+      class="results-table__results"
       :data-result-index="resultIndex"
     >
       <h2>
         {{ result.term }}
       </h2>
-      <div class="results-table--desktop container-fluid">
-        <div class="row results-table--desktop__header">
+      <div class="results-table__header container-fluid">
+        <div class="row">
           <div class="col">
-            <div class="row">
-              <div class="col">
-                {{ 'Rate' | uppercase }}
-              </div>
-              <div class="col">
-                {{ 'APR' | uppercase }}
-              </div>
-              <div class="col">
-                {{ 'Monthly Payment' | uppercase }}
-              </div>
-            </div>
+            {{ 'Rate' | uppercase }}
           </div>
-          <div class="col col-custom">
+          <div class="col">
+            {{ 'APR' | uppercase }}
+          </div>
+          <div class="col">
+            {{ 'Monthly Payment' | uppercase }}
+          </div>
+          <div class="col">
             &nbsp;
           </div>
         </div>
+      </div>
+      <div
+        v-for="(rate, rateIndex) in result.rates"
+        :key="rateIndex"
+        :data-rate-index="rateIndex"
+      >
+        <!-- Desktop view -->
         <div
-          v-for="(rate, rateIndex) in result.rates"
-          :key="rateIndex"
-          class="row results-table--desktop__result"
-          :data-rate-index="rateIndex"
+          class="results-table__result results-table__result--desktop"
         >
-          <div v-if="!rate.oneFeeGuarantee" class="results-table--desktop__result__recommended">
+          <div v-if="!rate.oneFeeGuarantee" class="results-table__result__recommended">
             <img src="~assets/icons/icon-check.png" width="18">
           </div>
-          <div class="col">
-            <div class="row results-table--desktop__result__rates">
-              <div class="col">
-                {{ rate.rate | percent }}
+          <div class="row">
+            <div class="col">
+              <div class="row results-table__result--desktop__rates">
+                <div class="col-4">
+                  {{ rate.rate | percent }}
+                </div>
+                <div class="col-4">
+                  {{ rate.apr | percent }}
+                </div>
+                <div class="col-4">
+                  {{ rate.monthlyPayment | currency }}
+                </div>
               </div>
-              <div class="col">
-                {{ rate.apr | percent }}
-              </div>
-              <div class="col">
-                {{ rate.monthlyPayment | currency }}
+              <div class="row">
+                <div class="col">
+                  <p :class="{ recommended: !rate.oneFeeGuarantee }">
+                    {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
+                    <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
+                      Recommended No-Cost loan
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p :class="{ recommended: !rate.oneFeeGuarantee }">
-                  {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
-                  <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
-                    Recommended No-Cost loan
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col col-custom">
-            <nuxt-link
-              to="#"
-              class="btn btn-sm btn-primary results-table__result__button"
-            >
-              Apply
-            </nuxt-link>
-            <p>
-              <a
-                href="#"
-                class="link-decorated results-table--desktop__result__link"
-                @click.prevent="showDetails($event, resultIndex, rateIndex)"
+            <div class="col-3">
+              <nuxt-link
+                to="#"
+                class="btn btn-sm btn-primary results-table__result--desktop__button"
               >
-                See Details
-              </a>
-            </p>
+                {{ 'Apply' | titlecase }}
+              </nuxt-link>
+              <p class="results-table__result--desktop__link-p">
+                <a
+                  href="#"
+                  class="link-decorated results-table__result--desktop__link"
+                  @click.prevent="showDetails($event, resultIndex, rateIndex)"
+                >
+                  {{ 'See Details' | titlecase }}
+                </a>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="results-table--mobile">
+
+        <!-- Mobile view -->
         <div
-          v-for="(rate, rateIndex) in result.rates"
-          :key="rateIndex"
-          class="results-table--mobile__result"
-          :data-rate-index="rateIndex"
+          class="results-table__result results-table__result--mobile"
         >
-          <div v-if="!rate.oneFeeGuarantee" class="results-table--mobile__result__recommended">
+          <div v-if="!rate.oneFeeGuarantee" class="results-table__result__recommended">
             <img src="~assets/icons/icon-check.png" width="18">
           </div>
-          <div class="results-table--mobile__result__rates">
+          <div class="results-table__result--mobile__rates">
             <div class="row">
               <div class="col">
                 <p>
@@ -143,20 +143,20 @@
           </div>
           <div class="row">
             <div class="col">
-              <nuxt-link
-                to="#"
-                class="btn btn-sm btn-outline-primary results-table--mobile__result__button results-table--mobile__button--details"
+              <a
+                href="#"
+                class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
                 @click.prevent="showDetails($event, resultIndex, rateIndex)"
               >
-                Details
-              </nuxt-link>
+                {{ 'Details' | titlecase }}
+              </a>
             </div>
             <div class="col">
               <nuxt-link
                 to="#"
-                class="btn btn-sm btn-primary results-table--mobile__result__button results-table--mobile__result__button--apply"
+                class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
               >
-                Apply
+                {{ 'Apply' | titlecase }}
               </nuxt-link>
             </div>
           </div>
@@ -248,6 +248,53 @@ export default {
       searchFormData: {}
     }
   },
+  mounted () {
+    if (localStorage.loanPurpose) {
+      this.searchFormData.loanPurpose = localStorage.loanPurpose
+    }
+    if (localStorage.propertyValue) {
+      this.searchFormData.propertyValue = localStorage.propertyValue
+    }
+    if (localStorage.loanAmount) {
+      this.searchFormData.loanAmount = localStorage.loanAmount
+    }
+    if (localStorage.loanProgram) {
+      this.searchFormData.loanProgram = JSON.parse(localStorage.loanProgram)
+    }
+    if (localStorage.state) {
+      this.searchFormData.state = localStorage.state
+    }
+    if (localStorage.county) {
+      this.searchFormData.county = localStorage.county
+    }
+    if (localStorage.propertyType) {
+      this.searchFormData.propertyType = localStorage.propertyType
+    }
+    if (localStorage.propertyUse) {
+      this.searchFormData.propertyUse = localStorage.propertyUse
+    }
+    if (localStorage.creditRating) {
+      this.searchFormData.creditRating = localStorage.creditRating
+    }
+    if (localStorage.interestOnly) {
+      this.searchFormData.interestOnly = localStorage.interestOnly
+    }
+    if (localStorage.taxesInsurance) {
+      this.searchFormData.taxesInsurance = localStorage.taxesInsurance
+    }
+    if (localStorage.refinanceType) {
+      this.searchFormData.refinanceType = localStorage.refinanceType
+    }
+    if (localStorage.promoCode) {
+      this.searchFormData.promoCode = localStorage.promoCode
+    }
+    if (localStorage.signUp) {
+      this.searchFormData.signUp = localStorage.signUp
+    }
+    if (!this.$store.searchForm) {
+      this.$store.commit('updateSearchForm', this.searchFormData)
+    }
+  },
   methods: {
     showDetails (event, resultIndex, rateIndex) {
       this.resultDetails.term = this.searchResults[resultIndex].term
@@ -271,32 +318,33 @@ export default {
 
 .search-results {
   .results-table {
-    &--desktop {
+    &__results {
+      margin-bottom: #{$spacer * 4.125};
+    }
+    &__header {
+      background-color: $white;
+      border: $border-width solid $gray-450;
+      color: rgba($body-color,0.5);
+      font-size: 12px;
+      font-weight: $font-weight-bold;
+      line-height: 28px;
+      padding-left: #{$spacer * 1.25};
+      padding-right: #{$spacer * 1.25};
       @include media-breakpoint-down('sm') {
         display: none;
       }
-      margin-bottom: #{$spacer * 4.125};
-      .col-custom {
-        max-width: 145px;
-        text-align: center;
-      }
-      &__header {
-        background-color: $white;
-        border: $border-width solid $gray-450;
-        color: rgba($body-color,0.5);
-        font-size: 12px;
-        font-weight: $font-weight-bold;
-        line-height: 28px;
-        padding-left: #{$spacer * 1.25};
-        padding-right: #{$spacer * 1.25};
-        .row {
-          align-items: center;
-          .col {
-            white-space: nowrap;
-          }
+      .row {
+        align-items: center;
+        .col {
+          white-space: nowrap;
         }
       }
-      &__result {
+    }
+    &__result {
+      &--desktop {
+        @include media-breakpoint-down('sm') {
+          display: none;
+        }
         background-color: $gray-400;
         border: $border-width solid $gray-450;
         margin-bottom: .25rem;
@@ -305,9 +353,6 @@ export default {
         padding-top: #{$spacer * 2};
         padding-bottom: $spacer;
         position: relative;
-        > .row {
-          align-items: center;
-        }
         &__rates {
           font-size: $font-size-lg;
           font-weight: $font-weight-semibold;
@@ -333,15 +378,15 @@ export default {
             height: 12px;
             width: 12px;
           }
+          &-p {
+            text-align: center;
+          }
         }
       }
-    }
-    &--mobile {
-      margin-bottom: #{$spacer * 4.125};
-      @include media-breakpoint-up('md') {
-        display: none;
-      }
-      &__result {
+      &--mobile {
+        @include media-breakpoint-up('md') {
+          display: none;
+        }
         background-color: $gray-400;
         border: $border-width solid $gray-450;
         margin-bottom: #{$spacer * .25};
@@ -361,9 +406,6 @@ export default {
           width: 100%;
         }
       }
-    }
-    &--desktop__result,
-    &--mobile__result {
       &__recommended {
         background-color: $primary;
         background: -moz-linear-gradient(-45deg,  rgba($primary,1) 0%, rgba($primary,1) 50%, rgba($primary,0) 50.01%, rgba($primary,0) 100%); /* FF3.6-15 */

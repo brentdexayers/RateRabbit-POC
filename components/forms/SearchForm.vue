@@ -721,8 +721,8 @@ export default {
         loanPurpose: '',
         propertyValue: '',
         loanAmount: '',
-        ltv: 0,
-        loanProgram: [],
+        ltv: '',
+        loanProgram: '',
         state: '',
         county: '',
         propertyType: '',
@@ -731,10 +731,29 @@ export default {
         interestOnly: '',
         taxesInsurance: '',
         refinanceType: '',
-        hasPromoCode: false,
+        hasPromoCode: '',
         promoCode: '',
-        hasSignUp: false,
-        signUp: false
+        hasSignUp: '',
+        signUp: ''
+      },
+      searchFormDefaults: {
+        loanPurpose: '',
+        propertyValue: '',
+        loanAmount: '',
+        ltv: '',
+        loanProgram: '',
+        state: '',
+        county: '',
+        propertyType: '',
+        propertyUse: '',
+        creditRating: '',
+        interestOnly: '',
+        taxesInsurance: '',
+        refinanceType: '',
+        hasPromoCode: '',
+        promoCode: '',
+        hasSignUp: '',
+        signUp: ''
       },
       formErrors: []
     }
@@ -832,8 +851,11 @@ export default {
   },
   methods: {
     calculateLTV () {
-      if (this.searchForm.loanAmount > 0 && this.searchForm.propertyValue > 0) {
-        this.searchForm.ltv = (this.searchForm.loanAmount / this.searchForm.propertyValue) * 100
+      if (this.searchForm.loanAmount && this.searchForm.propertyValue) {
+        this.searchForm.ltv = (
+          this.$parseCurrency(this.searchForm.loanAmount, 'en', 'USD') /
+          this.$parseCurrency(this.searchForm.propertyValue, 'en', 'USD')
+        ) * 100
       } else {
         this.searchForm.ltv = 0
       }
@@ -853,8 +875,8 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     resetSearchForm () {
-      Object.keys(this.searchForm).forEach(function (key) {
-        this.searchForm[key] = ''
+      this.searchForm = this.searchFormDefaults
+      Object.keys(this.searchFormDefaults).forEach(function (key) {
         if (localStorage[key]) {
           localStorage[key] = ''
         }

@@ -70,7 +70,8 @@ export default {
     width: 100%;
     @include media-breakpoint-down('sm') {
       height: 6px;
-      position: relative;
+      position: fixed;
+      z-index: 1;
     }
   }
   &__wrapper {

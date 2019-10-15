@@ -15,8 +15,12 @@
               {{ resultDetails.term }}
             </h2>
             <p class="search-results-details__p">
-              <strong>Interest Rate:</strong> {{ resultDetails.rate | percent }}<br>
-              <strong>APR:</strong> {{ resultDetails.apr | percent }}<br>
+              <strong>Interest Rate:</strong> {{ resultDetails.rate | percent }}
+            </p>
+            <p class="search-results-details__p">
+              <strong>APR:</strong> {{ resultDetails.apr | percent }}
+            </p>
+            <p class="search-results-details__p" :class="{ recommended: !resultDetails.oneFeeGuarantee }">
               <strong>One Fee Guarantee:</strong> {{ resultDetails.oneFeeGuarantee | currency }}
             </p>
           </div>
@@ -402,9 +406,28 @@ export default {
     font-size: #{$font-size-base * 1.714285714285714};
   }
   &__p {
-    margin-bottom: #{$spacer * 4.25} !important;
-    @include media-breakpoint-down('sm') {
-      margin-bottom: #{$spacer * 2.5} !important;
+    margin-bottom: 0;
+    &:last-child {
+      margin-bottom: #{$spacer * 4.25} !important;
+      @include media-breakpoint-down('sm') {
+        margin-bottom: #{$spacer * 2.5} !important;
+      }
+    }
+    &.recommended {
+      padding-left: 1em;
+      position: relative;
+      &::before {
+        background-image: url(~assets/icons/icon-verified.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: "";
+        display: block;
+        height: .85em;
+        left: 0;
+        position: absolute;
+        top: .4rem;
+        width: .85em;
+      }
     }
   }
   &__apply-btn {
