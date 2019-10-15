@@ -1,511 +1,528 @@
 <template>
-  <form
-    id=""
-    action=""
-    method="POST"
-    class="form form--search-rates"
-    @submit="validateForm"
-  >
-    <p v-if="formErrors.length" class="text-danger">
-      <b>Please correct the following error(s):</b>
-      <ul class="list-unstyled">
-        <li
-          v-for="(error, i) in formErrors"
-          :key="i"
-        >
-          {{ error }}
-        </li>
-      </ul>
-    </p>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="loanPurpose"
-          :class="{ hasvalue: searchForm.loanPurpose }"
-        >
-          {{ 'Loan Purpose' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.loanPurpose"
-          name="loanPurpose"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option
-            value="Purchase"
+  <div>
+    <form
+      id=""
+      action=""
+      method="POST"
+      class="form form--search-rates"
+      @submit="validateForm"
+    >
+      <p v-if="formErrors.length" class="text-danger">
+        <b>Please correct the following error(s):</b>
+        <ul class="list-unstyled">
+          <li
+            v-for="(error, i) in formErrors"
+            :key="i"
           >
-            Purchase
-          </option>
-          <option
-            value="Refinance"
+            {{ error }}
+          </li>
+        </ul>
+      </p>
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="loanPurpose"
+            :class="{ hasvalue: searchForm.loanPurpose }"
           >
-            Refinance
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="propertyValue"
-          :class="{ hasvalue: searchForm.propertyValue }"
-        >
-          {{ 'Property value' | titlecase }}
-        </label>
-        <input
-          v-model="searchForm.propertyValue"
-          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-          type="text"
-          class="form-control"
-          name="propertyValue"
-          placeholder=""
-          @change="calculateLTV"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="loanAmount"
-          :class="{ hasvalue: searchForm.loanAmount }"
-        >
-          {{ 'Loan Amount' | titlecase }}
-        </label>
-        <input
-          v-model="searchForm.loanAmount"
-          v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-          type="text"
-          class="form-control"
-          name="loanAmount"
-          placeholder=""
-          @change="calculateLTV"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
-          {{ searchForm.ltv }}% loan-to-value
+            {{ 'Loan Purpose' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.loanPurpose"
+            name="loanPurpose"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option
+              value="Purchase"
+            >
+              Purchase
+            </option>
+            <option
+              value="Refinance"
+            >
+              Refinance
+            </option>
+          </select>
         </div>
       </div>
-    </div>
-    <div class="form--search-rates__spacer form-group w-100" />
-    <div class="row">
-      <div
-        v-for="(program, i) in searchFormOptions.loanProgramOptions"
-        :key="i"
-        class="form-group col-6 form--search-rates__form-group--program-options"
-      >
-        <label class="form--search-rates__form-group--program-options__label">
-          {{ program.name }}
-          <template v-if="program.tooltip">
-            <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-            <b-tooltip :target="concat('program-options-tooltip-', i)" triggers="hover">
-              {{ program.tooltip }}
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="propertyValue"
+            :class="{ hasvalue: searchForm.propertyValue }"
+          >
+            {{ 'Property value' | titlecase }}
+          </label>
+          <input
+            v-model="searchForm.propertyValue"
+            v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
+            type="text"
+            class="form-control"
+            name="propertyValue"
+            placeholder=""
+            @change="calculateLTV"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="loanAmount"
+            :class="{ hasvalue: searchForm.loanAmount }"
+          >
+            {{ 'Loan Amount' | titlecase }}
+          </label>
+          <input
+            v-model="searchForm.loanAmount"
+            v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
+            type="text"
+            class="form-control"
+            name="loanAmount"
+            placeholder=""
+            @change="calculateLTV"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
+            {{ searchForm.ltv | percent }} loan-to-value
+          </div>
+        </div>
+      </div>
+      <div class="form--search-rates__spacer form-group w-100" />
+      <div class="row">
+        <div
+          v-for="(program, i) in searchFormOptions.loanProgramOptions"
+          :key="i"
+          class="form-group col-6 form--search-rates__form-group--program-options"
+        >
+          <label class="form--search-rates__form-group--program-options__label">
+            {{ program.name }}
+            <template v-if="program.tooltip">
+              <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+              <b-tooltip :target="concat('program-options-tooltip-', i)" triggers="hover">
+                {{ program.tooltip }}
+              </b-tooltip>
+            </template>
+          </label>
+          <ul class="list-unstyled form--search-rates__form-group--program-options__list">
+            <li
+              v-for="(term, j) in program.terms"
+              :key="j"
+              class="custom-control custom-checkbox list-item"
+            >
+              <input
+                :id="term.value"
+                v-model="searchForm.loanProgram"
+                class="custom-control-input"
+                :value="term.value"
+                type="checkbox"
+              >
+              <label
+                class="custom-control-label"
+                :for="term.value"
+              >
+                {{ term.label }}
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="form--search-rates__spacer form-group w-100" />
+      <div class="row">
+        <div class="form-group col-12 form--search-rates__col--state">
+          <label
+            for="state"
+            :class="{ hasvalue: searchForm.state }"
+          >
+            {{ 'State' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.state"
+            name="state"
+            class="custom-select"
+            @change="setCountyOptions"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option
+              v-for="option in searchFormOptions.stateOptions"
+              :key="option.value"
+              :value="option.value"
+              :title="option.text"
+            >
+              {{ option.text }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-12 form--search-rates__col--county">
+          <label
+            for="county"
+            :class="{ hasvalue: searchForm.county }"
+          >
+            {{ 'County' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.county"
+            name="county"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option
+              v-for="option in searchFormOptions.countyOptionsCurrent"
+              :key="option.value"
+              :value="option.value"
+              :title="option.text"
+            >
+              {{ option.text }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="propertyType"
+            :class="{ hasvalue: searchForm.propertyType }"
+          >
+            {{ 'Property Type' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.propertyType"
+            name="propertyType"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="Single Family">
+              Single Family
+            </option>
+            <option value="Condo (1-4 Story)">
+              Condo (1-4 Story)
+            </option>
+            <option value="Condo (5-8 Story)">
+              Condo (5-8 Story)
+            </option>
+            <option value="Condo (9+ Story)">
+              Condo (9+ Story)
+            </option>
+            <option value="PUD">
+              PUD
+            </option>
+            <option value="2-Unit">
+              2-Unit
+            </option>
+            <option value="3-Unit">
+              3-Unit
+            </option>
+            <option value="4-Unit">
+              4-Unit
+            </option>
+            <option value="Townhouse">
+              Townhouse
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="propertyUse"
+            :class="{ hasvalue: searchForm.propertyUse }"
+          >
+            {{ 'Property Use' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.propertyUse"
+            name="propertyUse"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="Primary Home">
+              Primary Home
+            </option>
+            <option value="Secondary Home">
+              Secondary Home
+            </option>
+            <option value="Investment Property">
+              Investment Property
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="creditRating"
+            :class="{ hasvalue: searchForm.creditRating }"
+          >
+            {{ 'Credit Rating' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.creditRating"
+            name="creditRating"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="740">
+              740+ (Excellent)
+            </option>
+            <option value="720-739">
+              720 - 739
+            </option>
+            <option value="700-719">
+              700 - 719
+            </option>
+            <option value="680-699">
+              680 - 699
+            </option>
+            <option value="660-679">
+              660 - 679
+            </option>
+            <option value="640-659">
+              640 - 659
+            </option>
+            <option value="620-639">
+              620 - 639
+            </option>
+            <option value="600-619">
+              600 - 619
+            </option>
+            <option value="580-599">
+              580 - 599 (Poor)
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form--search-rates__spacer form-group w-100" />
+      <div class="row">
+        <div class="form-group col-12 form--search-rates__col--interest">
+          <label
+            for="interestOnly"
+            :class="{ hasvalue: searchForm.interestOnly }"
+          >
+            {{ 'Interest Only' | titlecase }}
+          </label>
+          <select
+            v-model="searchForm.interestOnly"
+            name="interestOnly"
+            class="custom-select"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
+          >
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="Yes">
+              Yes
+            </option>
+            <option value="No">
+              No
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-12 form--search-rates__col--taxes">
+          <label
+            for="taxesInsurance"
+            :class="{ hasvalue: searchForm.taxesInsurance }"
+          >
+            {{ 'Taxes & Insurance' | titlecase }}
+            <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+            <b-tooltip target="taxes-tooltip" triggers="hover">
+              Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
             </b-tooltip>
-          </template>
-        </label>
-        <ul class="list-unstyled form--search-rates__form-group--program-options__list">
-          <li
-            v-for="(term, j) in program.terms"
-            :key="j"
-            class="custom-control custom-checkbox list-item"
+          </label>
+          <select
+            id="input-select--taxes"
+            v-model="searchForm.taxesInsurance"
+            name="taxesInsurance"
+            class="custom-select has-info"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
           >
-            <input
-              :id="term.value"
-              v-model="searchForm.loanProgram"
-              class="custom-control-input"
-              :value="term.value"
-              type="checkbox"
-            >
-            <label
-              class="custom-control-label"
-              :for="term.value"
-            >
-              {{ term.label }}
-            </label>
-          </li>
-        </ul>
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="Yes">
+              Yes
+            </option>
+            <option value="No">
+              No
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="form--search-rates__spacer form-group w-100" />
-    <div class="row">
-      <div class="form-group col-12 form--search-rates__col--state">
-        <label
-          for="state"
-          :class="{ hasvalue: searchForm.state }"
-        >
-          {{ 'State' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.state"
-          name="state"
-          class="custom-select"
-          @change="setCountyOptions"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option
-            v-for="option in searchFormOptions.stateOptions"
-            :key="option.value"
-            :value="option.value"
-            :title="option.text"
+      <div class="row">
+        <div class="form-group col-12">
+          <label
+            for="refinanceType"
+            :class="{ hasvalue: searchForm.refinanceType }"
           >
-            {{ option.text }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group col-12 form--search-rates__col--county">
-        <label
-          for="county"
-          :class="{ hasvalue: searchForm.county }"
-        >
-          {{ 'County' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.county"
-          name="county"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option
-            v-for="option in searchFormOptions.countyOptionsCurrent"
-            :key="option.value"
-            :value="option.value"
-            :title="option.text"
+            {{ 'Refinance Type' | titlecase }}
+            <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+            <b-tooltip target="refinance-type-tooltip" triggers="hover">
+              <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
+              <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
+            </b-tooltip>
+          </label>
+          <select
+            id="input-select--refinance-type"
+            v-model="searchForm.refinanceType"
+            name="refinanceType"
+            class="custom-select has-info"
+            @focus="setFocus($event)"
+            @blur="unFocus($event)"
           >
-            {{ option.text }}
-          </option>
-        </select>
+            <option
+              value=""
+              disabled
+              hidden
+            />
+            <option value="Cash Out">
+              Cash Out
+            </option>
+            <option value="No Cash Out">
+              No Cash Out
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="propertyType"
-          :class="{ hasvalue: searchForm.propertyType }"
-        >
-          {{ 'Property Type' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.propertyType"
-          name="propertyType"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="Single Family">
-            Single Family
-          </option>
-          <option value="Condo (1-4 Story)">
-            Condo (1-4 Story)
-          </option>
-          <option value="Condo (5-8 Story)">
-            Condo (5-8 Story)
-          </option>
-          <option value="Condo (9+ Story)">
-            Condo (9+ Story)
-          </option>
-          <option value="PUD">
-            PUD
-          </option>
-          <option value="2-Unit">
-            2-Unit
-          </option>
-          <option value="3-Unit">
-            3-Unit
-          </option>
-          <option value="4-Unit">
-            4-Unit
-          </option>
-          <option value="Townhouse">
-            Townhouse
-          </option>
-        </select>
+      <div class="row">
+        <div class="form-group col-12 form--search-rates__col--submit">
+          <button
+            v-if="$route.path == '/search/results'"
+            class="btn btn-outline-primary form--search-rates__submit"
+            type="submit"
+          >
+            Update Search
+          </button>
+          <button
+            v-else
+            class="btn btn-primary form--search-rates__submit"
+            type="submit"
+          >
+            {{ cta }}
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="propertyUse"
-          :class="{ hasvalue: searchForm.propertyUse }"
-        >
-          {{ 'Property Use' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.propertyUse"
-          name="propertyUse"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="Primary Home">
-            Primary Home
-          </option>
-          <option value="Secondary Home">
-            Secondary Home
-          </option>
-          <option value="Investment Property">
-            Investment Property
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="creditRating"
-          :class="{ hasvalue: searchForm.creditRating }"
-        >
-          {{ 'Credit Rating' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.creditRating"
-          name="creditRating"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="740">
-            740+ (Excellent)
-          </option>
-          <option value="720-739">
-            720 - 739
-          </option>
-          <option value="700-719">
-            700 - 719
-          </option>
-          <option value="680-699">
-            680 - 699
-          </option>
-          <option value="660-679">
-            660 - 679
-          </option>
-          <option value="640-659">
-            640 - 659
-          </option>
-          <option value="620-639">
-            620 - 639
-          </option>
-          <option value="600-619">
-            600 - 619
-          </option>
-          <option value="580-599">
-            580 - 599 (Poor)
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="form--search-rates__spacer form-group w-100" />
-    <div class="row">
-      <div class="form-group col-12 form--search-rates__col--interest">
-        <label
-          for="interestOnly"
-          :class="{ hasvalue: searchForm.interestOnly }"
-        >
-          {{ 'Interest Only' | titlecase }}
-        </label>
-        <select
-          v-model="searchForm.interestOnly"
-          name="interestOnly"
-          class="custom-select"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="Yes">
-            Yes
-          </option>
-          <option value="No">
-            No
-          </option>
-        </select>
-      </div>
-      <div class="form-group col-12 form--search-rates__col--taxes">
-        <label
-          for="taxesInsurance"
-          :class="{ hasvalue: searchForm.taxesInsurance }"
-        >
-          {{ 'Taxes & Insurance' | titlecase }}
-          <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-          <b-tooltip target="taxes-tooltip" triggers="hover">
-            Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
-          </b-tooltip>
-        </label>
-        <select
-          id="input-select--taxes"
-          v-model="searchForm.taxesInsurance"
-          name="taxesInsurance"
-          class="custom-select has-info"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="Yes">
-            Yes
-          </option>
-          <option value="No">
-            No
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <label
-          for="refinanceType"
-          :class="{ hasvalue: searchForm.refinanceType }"
-        >
-          {{ 'Refinance Type' | titlecase }}
-          <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-          <b-tooltip target="refinance-type-tooltip" triggers="hover">
-            <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
-            <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
-          </b-tooltip>
-        </label>
-        <select
-          id="input-select--refinance-type"
-          v-model="searchForm.refinanceType"
-          name="refinanceType"
-          class="custom-select has-info"
-          @focus="setFocus($event)"
-          @blur="unFocus($event)"
-        >
-          <option
-            value=""
-            disabled
-            hidden
-          />
-          <option value="Cash Out">
-            Cash Out
-          </option>
-          <option value="No Cash Out">
-            No Cash Out
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12 form--search-rates__col--submit">
-        <button
-          class="btn btn-primary form--search-rates__submit"
-          type="submit"
-        >
-          {{ cta }}
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <ul class="list-unstyled form--search-rates__supplemental-links">
-          <li class="form--search-rates__supplemental-link">
-            <p
-              class="link-text"
-              :class="{label: searchForm.hasPromoCode}"
-              @click="searchForm.hasPromoCode = !searchForm.hasPromoCode"
-            >
-              Do you have a promotional code?
-            </p>
-            <div
-              v-show="searchForm.hasPromoCode"
-              class="row"
-            >
-              <div class="form-group col-12">
-                <input
-                  id="promoCode"
-                  v-model="searchForm.promoCode"
-                  class="form-control"
-                  type="text"
-                  placeholder="Promo Code"
-                  tabindex="-1"
-                >
-              </div>
-            </div>
-          </li>
-          <li class="form--search-rates__supplemental-link">
-            <p
-              class="link-text"
-              :class="{'label label-list': searchForm.hasSignUp}"
-              @click="searchForm.hasSignUp = !searchForm.hasSignUp"
-            >
-              Sign Up for Rate Alerts
-            </p>
-            <div
-              v-if="searchForm.hasSignUp"
-              class="row"
-            >
-              <div class="form-group col-12">
-                <div class="custom-control custom-checkbox">
+      <div class="row">
+        <div class="form-group col-12">
+          <ul class="list-unstyled form--search-rates__supplemental-links">
+            <li class="form--search-rates__supplemental-link">
+              <p
+                class="link-text"
+                :class="{label: searchForm.hasPromoCode}"
+                @click="searchForm.hasPromoCode = !searchForm.hasPromoCode"
+              >
+                Do you have a promotional code?
+              </p>
+              <div
+                v-show="searchForm.hasPromoCode"
+                class="row"
+              >
+                <div class="form-group col-12">
                   <input
-                    id="signUp"
-                    v-model="searchForm.signUp"
-                    class="custom-control-input"
-                    type="checkbox"
+                    id="promoCode"
+                    v-model="searchForm.promoCode"
+                    class="form-control"
+                    type="text"
+                    placeholder="Promo Code"
                     tabindex="-1"
                   >
-                  <label class="custom-control-label" for="signUp">Yes, I'd like to sign up!</label>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+            <li class="form--search-rates__supplemental-link">
+              <p
+                class="link-text"
+                :class="{'label label-list': searchForm.hasSignUp}"
+                @click="searchForm.hasSignUp = !searchForm.hasSignUp"
+              >
+                Sign Up for Rate Alerts
+              </p>
+              <div
+                v-if="searchForm.hasSignUp"
+                class="row"
+              >
+                <div class="form-group col-12">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      id="signUp"
+                      v-model="searchForm.signUp"
+                      class="custom-control-input"
+                      type="checkbox"
+                      tabindex="-1"
+                    >
+                    <label class="custom-control-label" for="signUp">Yes, I'd like to sign up!</label>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <button
-      class="btn btn-secondary btn-sm"
-      @click.prevent="resetSearchForm"
-    >
-      Reset
-    </button>
-  </form>
+      <button
+        class="btn btn-secondary btn-sm"
+        :data-route="$route.path"
+        @click.prevent="resetSearchForm"
+      >
+        Reset
+      </button>
+    </form>
+    <Loader v-if="loader" />
+  </div>
 </template>
 
 <script>
+import Loader from '~/components/search/Loader.vue'
+
 export default {
+  components: {
+    Loader
+  },
   props: {
     cta: {
       type: String,
@@ -722,7 +739,7 @@ export default {
         propertyValue: '',
         loanAmount: '',
         ltv: '',
-        loanProgram: '',
+        loanProgram: [],
         state: '',
         county: '',
         propertyType: '',
@@ -741,7 +758,7 @@ export default {
         propertyValue: '',
         loanAmount: '',
         ltv: '',
-        loanProgram: '',
+        loanProgram: [],
         state: '',
         county: '',
         propertyType: '',
@@ -755,7 +772,8 @@ export default {
         hasSignUp: '',
         signUp: ''
       },
-      formErrors: []
+      formErrors: [],
+      loader: false
     }
   },
   watch: {
@@ -855,7 +873,7 @@ export default {
         this.searchForm.ltv = (
           this.$parseCurrency(this.searchForm.loanAmount, 'en', 'USD') /
           this.$parseCurrency(this.searchForm.propertyValue, 'en', 'USD')
-        ) * 100
+        )
       } else {
         this.searchForm.ltv = 0
       }
@@ -884,15 +902,21 @@ export default {
       this.setCountyOptions()
       this.$store.commit('resetSearchForm')
     },
+    redirect () {
+      window.scrollTo(0, 0)
+      this.$router.push({
+        path: '/search/results'
+      })
+      this.loader = false
+    },
     validateForm (e) {
       e.preventDefault()
       if (this.searchForm.loanPurpose && this.searchForm.propertyValue && this.searchForm.loanAmount && this.searchForm.loanProgram && this.searchForm.state && this.searchForm.county && this.searchForm.propertyType && this.searchForm.propertyUse && this.searchForm.creditRating && this.searchForm.interestOnly && this.searchForm.taxesInsurance && this.searchForm.refinanceType) {
-        // this.$root.$emit('search-form-submit', this.searchForm)
+        this.loader = true
+        /* Do something here to retrieve search result data and push it to the store... */
         this.$store.commit('updateSearchForm', this.searchForm)
-        this.$router.push({
-          path: '/search/results'
-        })
-        return true
+        const timeoutID = window.setTimeout(this.redirect, 2000)
+        return timeoutID
       } else {
         this.formErrors = []
         if (!this.searchForm.loanPurpose) {
