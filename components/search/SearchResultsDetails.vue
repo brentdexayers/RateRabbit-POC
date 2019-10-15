@@ -46,7 +46,7 @@
               <tbody>
                 <tr>
                   <td scope="col">
-                    One Fee Guarantee
+                    {{ 'One Fee Guarantee' | titlecase }}
                   </td>
                   <td scope="col">
                     {{ resultDetails.oneFeeGuarantee | currency }}
@@ -54,23 +54,23 @@
                 </tr>
                 <tr>
                   <td scope="col">
-                    Home Value
+                    {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ homeValue | currency }}
-                  </td>
-                </tr>
-                <tr>
-                  <td scope="col">
-                    Loan Amount
-                  </td>
-                  <td scope="col">
-                    {{ loanAmount | currency }}
+                    {{ formData.propertyValue }}
                   </td>
                 </tr>
                 <tr>
                   <td scope="col">
-                    Monthly Payment
+                    {{ 'Loan Amount' | titlecase }}
+                  </td>
+                  <td scope="col">
+                    {{ formData.loanAmount }}
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    {{ 'Monthly Payment' | titlecase }}
                   </td>
                   <td scope="col">
                     {{ resultDetails.monthlyPayment | currency }}
@@ -320,6 +320,19 @@ export default {
         return null
       }
     }
+  },
+  data () {
+    return {
+      formData: {}
+    }
+  },
+  computed: {
+    searchForm () {
+      return this.$store.state.searchForm
+    }
+  },
+  mounted () {
+    this.formData = this.$store.state.searchForm
   },
   methods: {
     closeDetailsModal (event) {

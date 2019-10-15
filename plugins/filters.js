@@ -9,8 +9,21 @@ Vue.filter('concat', function (value, param) {
 
 Vue.filter('capitalize', function (value) {
   if (!value) { return '' }
+  return value[0].toUpperCase() + value.slice(1)
+})
+
+Vue.filter('uppercase', function (value) {
+  if (!value) { return '' }
   value = value.toUpperCase()
   return value
+})
+
+Vue.filter('titlecase', function (value) {
+  return value
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 })
 
 Vue.filter('percent', function (value) {

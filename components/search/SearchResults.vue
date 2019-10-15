@@ -13,13 +13,13 @@
           <div class="col">
             <div class="row">
               <div class="col">
-                {{ 'Rate' | capitalize }}
+                {{ 'Rate' | uppercase }}
               </div>
               <div class="col">
-                {{ 'APR' | capitalize }}
+                {{ 'APR' | uppercase }}
               </div>
               <div class="col">
-                {{ 'Monthly Payment' | capitalize }}
+                {{ 'Monthly Payment' | uppercase }}
               </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="row">
               <div class="col">
                 <p :class="{ recommended: !rate.oneFeeGuarantee }">
-                  {{ 'One Fee Guarantee' | uppercase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
+                  {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
                   <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
                     Recommended No-Cost loan
                   </span>
@@ -92,7 +92,7 @@
             <div class="row">
               <div class="col">
                 <p>
-                  {{ 'Rate' | uppercase }}
+                  {{ 'Rate' | capitalize }}
                 </p>
               </div>
               <div class="col-auto text-right">
@@ -104,7 +104,7 @@
             <div class="row">
               <div class="col">
                 <p>
-                  {{ 'APR' | uppercase }}
+                  {{ 'APR' | capitalize }}
                 </p>
               </div>
               <div class="col-auto text-right">
@@ -116,7 +116,7 @@
             <div class="row">
               <div class="col">
                 <p>
-                  {{ 'Monthly Payment' | uppercase }}
+                  {{ 'Monthly Payment' | capitalize }}
                 </p>
               </div>
               <div class="col-auto text-right">
@@ -128,7 +128,7 @@
             <div class="row">
               <div class="col">
                 <p :class="{ recommended: !rate.oneFeeGuarantee }">
-                  {{ 'One Fee Guarantee' | uppercase }}
+                  {{ 'One Fee Guarantee' | capitalize }}
                   <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
                     Recommended No-Cost loan
                   </span>
@@ -244,7 +244,8 @@ export default {
       ],
       resultDetails: {
         show: false
-      }
+      },
+      searchFormData: {}
     }
   },
   methods: {

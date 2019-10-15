@@ -23,13 +23,12 @@
           for="loanPurpose"
           :class="{ hasvalue: searchForm.loanPurpose }"
         >
-          Loan Purpose
+          {{ 'Loan Purpose' | titlecase }}
         </label>
         <select
           v-model="searchForm.loanPurpose"
           name="loanPurpose"
           class="custom-select"
-          @set-loan-purpose="searchForm.loanPurpose = $emit"
           @focus="setFocus($event)"
           @blur="unFocus($event)"
         >
@@ -57,7 +56,7 @@
           for="propertyValue"
           :class="{ hasvalue: searchForm.propertyValue }"
         >
-          Property value
+          {{ 'Property value' | titlecase }}
         </label>
         <input
           v-model="searchForm.propertyValue"
@@ -78,7 +77,7 @@
           for="loanAmount"
           :class="{ hasvalue: searchForm.loanAmount }"
         >
-          Loan Amount
+          {{ 'Loan Amount' | titlecase }}
         </label>
         <input
           v-model="searchForm.loanAmount"
@@ -146,7 +145,7 @@
           for="state"
           :class="{ hasvalue: searchForm.state }"
         >
-          State
+          {{ 'State' | titlecase }}
         </label>
         <select
           v-model="searchForm.state"
@@ -176,7 +175,7 @@
           for="county"
           :class="{ hasvalue: searchForm.county }"
         >
-          County
+          {{ 'County' | titlecase }}
         </label>
         <select
           v-model="searchForm.county"
@@ -207,7 +206,7 @@
           for="propertyType"
           :class="{ hasvalue: searchForm.propertyType }"
         >
-          Property Type
+          {{ 'Property Type' | titlecase }}
         </label>
         <select
           v-model="searchForm.propertyType"
@@ -257,7 +256,7 @@
           for="propertyUse"
           :class="{ hasvalue: searchForm.propertyUse }"
         >
-          Property Use
+          {{ 'Property Use' | titlecase }}
         </label>
         <select
           v-model="searchForm.propertyUse"
@@ -289,7 +288,7 @@
           for="creditRating"
           :class="{ hasvalue: searchForm.creditRating }"
         >
-          Credit Rating
+          {{ 'Credit Rating' | titlecase }}
         </label>
         <select
           v-model="searchForm.creditRating"
@@ -340,7 +339,7 @@
           for="interestOnly"
           :class="{ hasvalue: searchForm.interestOnly }"
         >
-          Interest Only
+          {{ 'Interest Only' | titlecase }}
         </label>
         <select
           v-model="searchForm.interestOnly"
@@ -367,7 +366,7 @@
           for="taxesInsurance"
           :class="{ hasvalue: searchForm.taxesInsurance }"
         >
-          Taxes &amp; Insurance
+          {{ 'Taxes & Insurance' | titlecase }}
           <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="taxes-tooltip" triggers="hover">
             Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
@@ -401,7 +400,7 @@
           for="refinanceType"
           :class="{ hasvalue: searchForm.refinanceType }"
         >
-          Refinance Type
+          {{ 'Refinance Type' | titlecase }}
           <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
           <b-tooltip target="refinance-type-tooltip" triggers="hover">
             <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
@@ -854,107 +853,64 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     resetSearchForm () {
-      this.searchForm.loanPurpose = ''
-      if (localStorage.loanPurpose) {
-        localStorage.loanPurpose = ''
-      }
-      this.searchForm.propertyValue = ''
-      if (localStorage.propertyValue) {
-        localStorage.propertyValue = ''
-      }
-      this.searchForm.loanAmount = ''
-      if (localStorage.loanAmount) {
-        localStorage.loanAmount = ''
-      }
-      this.searchForm.loanProgram = []
-      if (localStorage.loanProgram) {
-        localStorage.loanProgram = []
-      }
-      this.searchForm.state = ''
-      if (localStorage.state) {
-        localStorage.state = ''
-      }
-      this.searchForm.county = ''
-      if (localStorage.county) {
-        localStorage.county = ''
-      }
+      Object.keys(this.searchForm).forEach(function (key) {
+        this.searchForm[key] = ''
+        if (localStorage[key]) {
+          localStorage[key] = ''
+        }
+      })
       this.setCountyOptions()
-      this.searchForm.propertyType = ''
-      if (localStorage.propertyType) {
-        localStorage.propertyType = ''
-      }
-      this.searchForm.propertyUse = ''
-      if (localStorage.propertyUse) {
-        localStorage.propertyUse = ''
-      }
-      this.searchForm.creditRating = ''
-      if (localStorage.creditRating) {
-        localStorage.creditRating = ''
-      }
-      this.searchForm.interestOnly = ''
-      if (localStorage.interestOnly) {
-        localStorage.interestOnly = ''
-      }
-      this.searchForm.taxesInsurance = ''
-      if (localStorage.taxesInsurance) {
-        localStorage.taxesInsurance = ''
-      }
-      this.searchForm.refinanceType = ''
-      if (localStorage.refinanceType) {
-        localStorage.refinanceType = ''
-      }
-      this.searchForm.promoCode = ''
-      if (localStorage.promoCode) {
-        localStorage.promoCode = ''
-      }
-      this.searchForm.signUp = ''
-      if (localStorage.signUp) {
-        localStorage.signUp = ''
-      }
+      this.$store.commit('resetSearchForm')
     },
     validateForm (e) {
-      if (this.searchForm.loanPurpose && this.searchForm.propertyValue && this.searchForm.loanAmount && this.searchForm.loanProgram && this.searchForm.state && this.searchForm.county && this.searchForm.propertyType && this.searchForm.propertyUse && this.searchForm.creditRating && this.searchForm.interestOnly && this.searchForm.taxesInsurance && this.searchForm.refinanceType && this.searchForm.promoCode && this.searchForm.signUp) {
-        return true
-      }
-      this.formErrors = []
-
-      if (!this.searchForm.loanPurpose) {
-        this.formErrors.push('Loan Purpose required.')
-      }
-      if (!this.searchForm.propertyValue) {
-        this.formErrors.push('Property Value required')
-      }
-      if (!this.searchForm.loanAmount) {
-        this.formErrors.push('Loan Amount required')
-      }
-      if (!this.searchForm.loanProgram) {
-        this.formErrors.push('Loan Program required')
-      }
-      if (!this.searchForm.state) {
-        this.formErrors.push('State required')
-      }
-      if (!this.searchForm.county) {
-        this.formErrors.push('County required')
-      }
-      if (!this.searchForm.propertyType) {
-        this.formErrors.push('Property Type required')
-      }
-      if (!this.searchForm.propertyUse) {
-        this.formErrors.push('Property Use required')
-      }
-      if (!this.searchForm.creditRating) {
-        this.formErrors.push('Credit Rating required')
-      }
-      if (!this.searchForm.interestOnly) {
-        this.formErrors.push('Interest Only required')
-      }
-      if (!this.searchForm.taxesInsurance) {
-        this.formErrors.push('Taxes and Insurance required')
-      }
-      if (!this.searchForm.refinanceType) {
-        this.formErrors.push('Refinance Type required')
-      }
       e.preventDefault()
+      if (this.searchForm.loanPurpose && this.searchForm.propertyValue && this.searchForm.loanAmount && this.searchForm.loanProgram && this.searchForm.state && this.searchForm.county && this.searchForm.propertyType && this.searchForm.propertyUse && this.searchForm.creditRating && this.searchForm.interestOnly && this.searchForm.taxesInsurance && this.searchForm.refinanceType) {
+        // this.$root.$emit('search-form-submit', this.searchForm)
+        this.$store.commit('updateSearchForm', this.searchForm)
+        this.$router.push({
+          path: '/search/results'
+        })
+        return true
+      } else {
+        this.formErrors = []
+        if (!this.searchForm.loanPurpose) {
+          this.formErrors.push('Loan Purpose required.')
+        }
+        if (!this.searchForm.propertyValue) {
+          this.formErrors.push('Property Value required')
+        }
+        if (!this.searchForm.loanAmount) {
+          this.formErrors.push('Loan Amount required')
+        }
+        if (!this.searchForm.loanProgram) {
+          this.formErrors.push('Loan Program required')
+        }
+        if (!this.searchForm.state) {
+          this.formErrors.push('State required')
+        }
+        if (!this.searchForm.county) {
+          this.formErrors.push('County required')
+        }
+        if (!this.searchForm.propertyType) {
+          this.formErrors.push('Property Type required')
+        }
+        if (!this.searchForm.propertyUse) {
+          this.formErrors.push('Property Use required')
+        }
+        if (!this.searchForm.creditRating) {
+          this.formErrors.push('Credit Rating required')
+        }
+        if (!this.searchForm.interestOnly) {
+          this.formErrors.push('Interest Only required')
+        }
+        if (!this.searchForm.taxesInsurance) {
+          this.formErrors.push('Taxes and Insurance required')
+        }
+        if (!this.searchForm.refinanceType) {
+          this.formErrors.push('Refinance Type required')
+        }
+        window.scrollTo(0, 0)
+      }
     }
   }
 }

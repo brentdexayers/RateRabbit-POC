@@ -2,7 +2,7 @@
   <ul class="navbar-nav site-header__navbar__nav">
     <li class="nav-item">
       <nuxt-link
-        to="/apply"
+        to="/search"
         class="nav-link"
         @click.native="navItemClicked"
       >
