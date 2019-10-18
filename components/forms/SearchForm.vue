@@ -5,13 +5,13 @@
       action=""
       method="POST"
       class="form form--search-rates"
-      @submit="validateForm"
+      @submit.prevent="formValidate"
     >
-      <p v-if="formErrors.length" class="text-danger">
+      <p v-if="errors.length" class="text-danger">
         <b>Please correct the following error(s):</b>
         <ul class="list-unstyled">
           <li
-            v-for="(error, i) in formErrors"
+            v-for="(error, i) in errors"
             :key="i"
           >
             {{ error }}
@@ -22,16 +22,16 @@
         <div class="form-group col-12">
           <label
             for="loanPurpose"
-            :class="{ hasvalue: searchForm.loanPurpose }"
+            :class="{ hasvalue: loanPurpose }"
           >
             {{ 'Loan Purpose' | titlecase }}
           </label>
           <select
-            v-model="searchForm.loanPurpose"
+            v-model="loanPurpose"
             name="loanPurpose"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
@@ -39,14 +39,11 @@
               hidden
             />
             <option
-              value="Purchase"
+              v-for="(option, i) in loanPurposeOptions"
+              :key="i"
+              :value="option.value"
             >
-              Purchase
-            </option>
-            <option
-              value="Refinance"
-            >
-              Refinance
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -55,20 +52,20 @@
         <div class="form-group col-12">
           <label
             for="propertyValue"
-            :class="{ hasvalue: searchForm.propertyValue }"
+            :class="{ hasvalue: propertyValue }"
           >
             {{ 'Property value' | titlecase }}
           </label>
           <input
-            v-model="searchForm.propertyValue"
+            v-model="propertyValue"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
             type="text"
             class="form-control"
             name="propertyValue"
             placeholder=""
             @change="calculateLTV"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
         </div>
       </div>
@@ -76,42 +73,42 @@
         <div class="form-group col-12">
           <label
             for="loanAmount"
-            :class="{ hasvalue: searchForm.loanAmount }"
+            :class="{ hasvalue: loanAmount }"
           >
             {{ 'Loan Amount' | titlecase }}
           </label>
           <input
-            v-model="searchForm.loanAmount"
+            v-model="loanAmount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
             type="text"
             class="form-control"
             name="loanAmount"
             placeholder=""
             @change="calculateLTV"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-auto">
           <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
-            {{ searchForm.ltv | percent }} loan-to-value
+            {{ ltv | percent(0) }} loan-to-value
           </div>
         </div>
       </div>
       <div class="form--search-rates__spacer form-group w-100" />
       <div class="row">
         <div
-          v-for="(program, i) in searchFormOptions.loanProgramOptions"
+          v-for="(program, i) in loanProgramOptions"
           :key="i"
           class="form-group col-6 form--search-rates__form-group--program-options"
         >
           <label class="form--search-rates__form-group--program-options__label">
             {{ program.name }}
             <template v-if="program.tooltip">
-              <img :id="concat('program-options-tooltip-', i)" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-              <b-tooltip :target="concat('program-options-tooltip-', i)" triggers="hover">
+              <img :id="'program-options-tooltip-' + i" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+              <b-tooltip :target="'program-options-tooltip-' + i" triggers="hover">
                 {{ program.tooltip }}
               </b-tooltip>
             </template>
@@ -124,7 +121,7 @@
             >
               <input
                 :id="term.value"
-                v-model="searchForm.loanProgram"
+                v-model="loanProgram"
                 class="custom-control-input"
                 :value="term.value"
                 type="checkbox"
@@ -144,17 +141,16 @@
         <div class="form-group col-12 form--search-rates__col--state">
           <label
             for="state"
-            :class="{ hasvalue: searchForm.state }"
+            :class="{ hasvalue: state }"
           >
             {{ 'State' | titlecase }}
           </label>
           <select
-            v-model="searchForm.state"
+            v-model="state"
             name="state"
             class="custom-select"
-            @change="setCountyOptions"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
@@ -162,42 +158,60 @@
               hidden
             />
             <option
-              v-for="option in searchFormOptions.stateOptions"
+              v-for="option in stateOptions"
               :key="option.value"
               :value="option.value"
-              :title="option.text"
+              :title="option.label"
             >
-              {{ option.text }}
+              {{ option.label }}
             </option>
           </select>
         </div>
         <div class="form-group col-12 form--search-rates__col--county">
           <label
             for="county"
-            :class="{ hasvalue: searchForm.county }"
+            :class="{ hasvalue: county }"
           >
             {{ 'County' | titlecase }}
           </label>
           <select
-            v-model="searchForm.county"
+            v-model="county"
             name="county"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
-            <option
-              value=""
-              disabled
-              hidden
-            />
-            <option
-              v-for="option in searchFormOptions.countyOptionsCurrent"
-              :key="option.value"
-              :value="option.value"
-              :title="option.text"
+            <template
+              v-if="state"
             >
-              {{ option.text }}
-            </option>
+              <option
+                value=""
+                disabled
+                hidden
+              />
+              <option
+                v-for="option in countyOptions[state]"
+                :key="option.value"
+                :value="option.value"
+                :title="option.label"
+              >
+                {{ option.label }}
+              </option>
+            </template>
+            <template
+              v-else
+            >
+              <option
+                v-for="option in countyOptions.default"
+                :key="option.value"
+                :value="option.value"
+                :title="option.label"
+                selected
+                disabled
+              >
+                {{ option.label }}
+              </option>
+            </template>
           </select>
         </div>
       </div>
@@ -205,48 +219,28 @@
         <div class="form-group col-12">
           <label
             for="propertyType"
-            :class="{ hasvalue: searchForm.propertyType }"
+            :class="{ hasvalue: propertyType }"
           >
             {{ 'Property Type' | titlecase }}
           </label>
           <select
-            v-model="searchForm.propertyType"
+            v-model="propertyType"
             name="propertyType"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="Single Family">
-              Single Family
-            </option>
-            <option value="Condo (1-4 Story)">
-              Condo (1-4 Story)
-            </option>
-            <option value="Condo (5-8 Story)">
-              Condo (5-8 Story)
-            </option>
-            <option value="Condo (9+ Story)">
-              Condo (9+ Story)
-            </option>
-            <option value="PUD">
-              PUD
-            </option>
-            <option value="2-Unit">
-              2-Unit
-            </option>
-            <option value="3-Unit">
-              3-Unit
-            </option>
-            <option value="4-Unit">
-              4-Unit
-            </option>
-            <option value="Townhouse">
-              Townhouse
+            <option
+              v-for="(option, i) in propertyTypeOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -255,30 +249,28 @@
         <div class="form-group col-12">
           <label
             for="propertyUse"
-            :class="{ hasvalue: searchForm.propertyUse }"
+            :class="{ hasvalue: propertyUse }"
           >
             {{ 'Property Use' | titlecase }}
           </label>
           <select
-            v-model="searchForm.propertyUse"
+            v-model="propertyUse"
             name="propertyUse"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="Primary Home">
-              Primary Home
-            </option>
-            <option value="Secondary Home">
-              Secondary Home
-            </option>
-            <option value="Investment Property">
-              Investment Property
+            <option
+              v-for="(option, i) in propertyUseOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -287,48 +279,28 @@
         <div class="form-group col-12">
           <label
             for="creditRating"
-            :class="{ hasvalue: searchForm.creditRating }"
+            :class="{ hasvalue: creditRating }"
           >
             {{ 'Credit Rating' | titlecase }}
           </label>
           <select
-            v-model="searchForm.creditRating"
+            v-model="creditRating"
             name="creditRating"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="740">
-              740+ (Excellent)
-            </option>
-            <option value="720-739">
-              720 - 739
-            </option>
-            <option value="700-719">
-              700 - 719
-            </option>
-            <option value="680-699">
-              680 - 699
-            </option>
-            <option value="660-679">
-              660 - 679
-            </option>
-            <option value="640-659">
-              640 - 659
-            </option>
-            <option value="620-639">
-              620 - 639
-            </option>
-            <option value="600-619">
-              600 - 619
-            </option>
-            <option value="580-599">
-              580 - 599 (Poor)
+            <option
+              v-for="(option, i) in creditRatingOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -338,34 +310,35 @@
         <div class="form-group col-12 form--search-rates__col--interest">
           <label
             for="interestOnly"
-            :class="{ hasvalue: searchForm.interestOnly }"
+            :class="{ hasvalue: interestOnly }"
           >
             {{ 'Interest Only' | titlecase }}
           </label>
           <select
-            v-model="searchForm.interestOnly"
+            v-model="interestOnly"
             name="interestOnly"
             class="custom-select"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="Yes">
-              Yes
-            </option>
-            <option value="No">
-              No
+            <option
+              v-for="(option, i) in interestOnlyOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
         <div class="form-group col-12 form--search-rates__col--taxes">
           <label
             for="taxesInsurance"
-            :class="{ hasvalue: searchForm.taxesInsurance }"
+            :class="{ hasvalue: taxesInsurance }"
           >
             {{ 'Taxes & Insurance' | titlecase }}
             <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
@@ -375,22 +348,23 @@
           </label>
           <select
             id="input-select--taxes"
-            v-model="searchForm.taxesInsurance"
+            v-model="taxesInsurance"
             name="taxesInsurance"
             class="custom-select has-info"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="Yes">
-              Yes
-            </option>
-            <option value="No">
-              No
+            <option
+              v-for="(option, i) in taxesInsuranceOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -399,7 +373,7 @@
         <div class="form-group col-12">
           <label
             for="refinanceType"
-            :class="{ hasvalue: searchForm.refinanceType }"
+            :class="{ hasvalue: refinanceType }"
           >
             {{ 'Refinance Type' | titlecase }}
             <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
@@ -410,22 +384,23 @@
           </label>
           <select
             id="input-select--refinance-type"
-            v-model="searchForm.refinanceType"
+            v-model="refinanceType"
             name="refinanceType"
             class="custom-select has-info"
-            @focus="setFocus($event)"
-            @blur="unFocus($event)"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
           >
             <option
               value=""
               disabled
               hidden
             />
-            <option value="Cash Out">
-              Cash Out
-            </option>
-            <option value="No Cash Out">
-              No Cash Out
+            <option
+              v-for="(option, i) in refinanceTypeOptions"
+              :key="i"
+              :value="option.value"
+            >
+              {{ option.label }}
             </option>
           </select>
         </div>
@@ -437,14 +412,14 @@
             class="btn btn-outline-primary form--search-rates__submit"
             type="submit"
           >
-            Update Search
+            {{ 'Update Search' | titlecase }}
           </button>
           <button
             v-else
             class="btn btn-primary form--search-rates__submit"
             type="submit"
           >
-            {{ cta }}
+            {{ 'Search Live Rates' | titlecase }}
           </button>
         </div>
       </div>
@@ -454,19 +429,19 @@
             <li class="form--search-rates__supplemental-link">
               <p
                 class="link-text"
-                :class="{label: searchForm.hasPromoCode}"
-                @click="searchForm.hasPromoCode = !searchForm.hasPromoCode"
+                :class="{label: hasPromoCode}"
+                @click="hasPromoCode = !hasPromoCode"
               >
                 Do you have a promotional code?
               </p>
               <div
-                v-show="searchForm.hasPromoCode"
+                v-show="hasPromoCode"
                 class="row"
               >
                 <div class="form-group col-12">
                   <input
                     id="promoCode"
-                    v-model="searchForm.promoCode"
+                    v-model="promoCode"
                     class="form-control"
                     type="text"
                     placeholder="Promo Code"
@@ -478,20 +453,20 @@
             <li class="form--search-rates__supplemental-link">
               <p
                 class="link-text"
-                :class="{'label label-list': searchForm.hasSignUp}"
-                @click="searchForm.hasSignUp = !searchForm.hasSignUp"
+                :class="{'label label-list': hasSignUp}"
+                @click="hasSignUp = !hasSignUp"
               >
                 Sign Up for Rate Alerts
               </p>
               <div
-                v-if="searchForm.hasSignUp"
+                v-if="hasSignUp"
                 class="row"
               >
                 <div class="form-group col-12">
                   <div class="custom-control custom-checkbox">
                     <input
                       id="signUp"
-                      v-model="searchForm.signUp"
+                      v-model="signUp"
                       class="custom-control-input"
                       type="checkbox"
                       tabindex="-1"
@@ -507,7 +482,7 @@
       <button
         class="btn btn-secondary btn-sm"
         :data-route="$route.path"
-        @click.prevent="resetSearchForm"
+        @click.prevent="formReset"
       >
         Reset
       </button>
@@ -517,446 +492,239 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import Loader from '~/components/search/Loader.vue'
 
 export default {
   components: {
     Loader
   },
-  props: {
-    cta: {
-      type: String,
-      default: 'Search Live Rates'
-    }
-  },
   data () {
     return {
-      searchFormOptions: {
-        loanProgramOptions: [
-          {
-            name: 'Fixed Rates',
-            tooltip: 'Fixed Rates are mortgages in which the interest rate does not change during the entire term of the loan.',
-            terms: [
-              {
-                label: '10 Year Fixed',
-                value: 'fixed10yr'
-              },
-              {
-                label: '15 Year Fixed',
-                value: 'fixed15yr'
-              },
-              {
-                label: '20 Year Fixed',
-                value: 'fixed20yr'
-              },
-              {
-                label: '30 Year Fixed',
-                value: 'fixed30yr'
-              },
-              {
-                label: '40 Year Fixed',
-                value: 'fixed40yr'
-              }
-            ]
-          },
-          {
-            name: 'Adjustable Rates',
-            tooltip: 'Adjustable Rates permit the lender to adjust the mortgage interest rate periodically on the basis of changes in a specified index. The interest rates on these loans will be fixed for a specified period of time, then will become adjustable for the remaining years of the loan. Once adjustable, the interest rates may move up or down, as market conditions change.',
-            terms: [
-              {
-                label: '3 Year Arm',
-                value: 'arm3yr'
-              },
-              {
-                label: '5 Year Arm',
-                value: 'arm5yr'
-              },
-              {
-                label: '7 Year Arm',
-                value: 'arm7yr'
-              },
-              {
-                label: '10 Year Arm',
-                value: 'arm10yr'
-              }
-            ]
-          }
-        ],
-        stateOptions: [
-          { text: 'Arizona', value: 'az' },
-          { text: 'California', value: 'ca' },
-          { text: 'Idaho', value: 'id' },
-          { text: 'Massachusetts', value: 'ma' }
-        ],
-        countyOptionsAll: {
-          az: [
-            { text: 'APACHE', value: '159' },
-            { text: 'COCHISE', value: '160' },
-            { text: 'COCONINO', value: '161' },
-            { text: 'GILA', value: '162' },
-            { text: 'GRAHAM', value: '163' },
-            { text: 'GREENLEE', value: '164' },
-            { text: 'LA PAZ', value: '165' },
-            { text: 'MARICOPA', value: '166' },
-            { text: 'MOHAVE', value: '167' },
-            { text: 'NAVAJO', value: '168' },
-            { text: 'PIMA', value: '169' },
-            { text: 'PINAL', value: '170' },
-            { text: 'PINAL W RT 77', value: '171' },
-            { text: 'SANTA CRUZ', value: '172' },
-            { text: 'YAVAPAI', value: '173' },
-            { text: 'YUMA', value: '174' }
-          ],
-          ca: [
-            { text: 'ALAMEDA', value: '175' },
-            { text: 'ALPINE', value: '176' },
-            { text: 'AMADOR', value: '177' },
-            { text: 'BUTTE', value: '178' },
-            { text: 'CALAVERAS', value: '179' },
-            { text: 'COLUSA', value: '180' },
-            { text: 'CONTRA COSTA', value: '181' },
-            { text: 'DEL NORTE', value: '182' },
-            { text: 'EL DORADO', value: '183' },
-            { text: 'FRESNO', value: '184' },
-            { text: 'GLENN', value: '185' },
-            { text: 'HUMBOLDT', value: '186' },
-            { text: 'IMPERIAL', value: '187' },
-            { text: 'INYO', value: '188' },
-            { text: 'KERN', value: '189' },
-            { text: 'KINGS', value: '190' },
-            { text: 'LAKE', value: '191' },
-            { text: 'LASSEN', value: '192' },
-            { text: 'LOS ANGELES', value: '193' },
-            { text: 'MADERA', value: '194' },
-            { text: 'MARIN', value: '195' },
-            { text: 'MARIPOSA', value: '196' },
-            { text: 'MENDOCINO', value: '197' },
-            { text: 'MERCED', value: '198' },
-            { text: 'MODOC', value: '199' },
-            { text: 'MONO', value: '200' },
-            { text: 'MONTEREY', value: '201' },
-            { text: 'NAPA', value: '202' },
-            { text: 'NEVADA', value: '203' },
-            { text: 'ORANGE', value: '204' },
-            { text: 'PLACER', value: '205' },
-            { text: 'PLUMAS', value: '206' },
-            { text: 'RIVERSIDE', value: '207' },
-            { text: 'SACRAMENTO', value: '208' },
-            { text: 'SAN BENITO', value: '209' },
-            { text: 'SAN BERNARDINO', value: '210' },
-            { text: 'SAN DIEGO', value: '211' },
-            { text: 'SAN FRANCISCO', value: '212' },
-            { text: 'SAN JOAQUIN', value: '213' },
-            { text: 'SAN LUIS OBISPO', value: '214' },
-            { text: 'SAN MATEO', value: '215' },
-            { text: 'SANTA BARBARA', value: '216' },
-            { text: 'SANTA CLARA', value: '217' },
-            { text: 'SANTA CRUZ', value: '218' },
-            { text: 'SHASTA', value: '219' },
-            { text: 'SIERRA', value: '220' },
-            { text: 'SISKIYOU', value: '221' },
-            { text: 'SOLANO', value: '222' },
-            { text: 'SONOMA', value: '223' },
-            { text: 'STANISLAUS', value: '224' },
-            { text: 'SUTTER', value: '225' },
-            { text: 'TEHAMA', value: '226' },
-            { text: 'TRINITY', value: '227' },
-            { text: 'TULARE', value: '228' },
-            { text: 'TUOLUMNE', value: '229' },
-            { text: 'VENTURA', value: '230' },
-            { text: 'YOLO', value: '231' },
-            { text: 'YUBA', value: '232' }
-          ],
-          id: [
-            { text: 'ADA', value: '639' },
-            { text: 'ADAMS', value: '640' },
-            { text: 'BANNOCK', value: '641' },
-            { text: 'BEAR LAKE', value: '642' },
-            { text: 'BENEWAH', value: '643' },
-            { text: 'BINGHAM', value: '644' },
-            { text: 'BLAINE', value: '645' },
-            { text: 'BOISE', value: '646' },
-            { text: 'BONNER', value: '647' },
-            { text: 'BONNEVILLE', value: '648' },
-            { text: 'BOUNDARY', value: '649' },
-            { text: 'BUTTE', value: '650' },
-            { text: 'CAMAS', value: '651' },
-            { text: 'CANYON', value: '652' },
-            { text: 'CARIBOU', value: '653' },
-            { text: 'CASSIA', value: '654' },
-            { text: 'CLARK', value: '655' },
-            { text: 'CLEARWATER', value: '656' },
-            { text: 'CUSTER', value: '657' },
-            { text: 'ELMORE', value: '658' },
-            { text: 'FRANKLIN', value: '659' },
-            { text: 'FREMONT', value: '660' },
-            { text: 'GEM', value: '661' },
-            { text: 'GOODING', value: '662' },
-            { text: 'IDAHO', value: '663' },
-            { text: 'JEFFERSON', value: '664' },
-            { text: 'JEROME', value: '665' },
-            { text: 'KOOTENAI', value: '666' },
-            { text: 'LATAH', value: '667' },
-            { text: 'LEMHI', value: '668' },
-            { text: 'LEWIS', value: '669' },
-            { text: 'LINCOLN', value: '670' },
-            { text: 'MADISON', value: '671' },
-            { text: 'MINIDOKA', value: '672' },
-            { text: 'NEZ PERCE', value: '673' },
-            { text: 'ONEIDA', value: '674' },
-            { text: 'OWYHEE', value: '675' },
-            { text: 'PAYETTE', value: '676' },
-            { text: 'POWER', value: '677' },
-            { text: 'SHOSHONE', value: '678' },
-            { text: 'TETON', value: '679' },
-            { text: 'TWIN FALLS', value: '680' },
-            { text: 'VALLEY', value: '681' },
-            { text: 'WASHINGTON', value: '682' }
-          ],
-          ma: [
-            { text: 'BARNSTABLE', value: '1166' },
-            { text: 'BERKSHIRE', value: '1167' },
-            { text: 'BRISTOL', value: '1168' },
-            { text: 'DUKES', value: '1169' },
-            { text: 'ESSEX', value: '1170' },
-            { text: 'FRANKLIN', value: '1171' },
-            { text: 'HAMPDEN', value: '1172' },
-            { text: 'HAMPSHIRE', value: '1173' },
-            { text: 'MIDDLESEX', value: '1174' },
-            { text: 'NANTUCKET', value: '1175' },
-            { text: 'NORFOLK', value: '1176' },
-            { text: 'PLYMOUTH', value: '1177' },
-            { text: 'SUFFOLK', value: '1178' },
-            { text: 'WORCESTER', value: '1179' }
-          ]
-        },
-        countyOptionsCurrent: [
-          { text: 'Please select a State', value: '0' }
-        ]
-      },
-      searchForm: {
-        loanPurpose: '',
-        propertyValue: '',
-        loanAmount: '',
-        ltv: '',
-        loanProgram: [],
-        state: '',
-        county: '',
-        propertyType: '',
-        propertyUse: '',
-        creditRating: '',
-        interestOnly: '',
-        taxesInsurance: '',
-        refinanceType: '',
-        hasPromoCode: '',
-        promoCode: '',
-        hasSignUp: '',
-        signUp: ''
-      },
-      searchFormDefaults: {
-        loanPurpose: '',
-        propertyValue: '',
-        loanAmount: '',
-        ltv: '',
-        loanProgram: [],
-        state: '',
-        county: '',
-        propertyType: '',
-        propertyUse: '',
-        creditRating: '',
-        interestOnly: '',
-        taxesInsurance: '',
-        refinanceType: '',
-        hasPromoCode: '',
-        promoCode: '',
-        hasSignUp: '',
-        signUp: ''
-      },
-      formErrors: [],
       loader: false
     }
   },
-  watch: {
-    'searchForm.loanPurpose' (newloanPurpose) {
-      localStorage.loanPurpose = newloanPurpose
+  computed: {
+    form () {
+      return this.$store.state.searchform
     },
-    'searchForm.propertyValue' (newpropertyValue) {
-      localStorage.propertyValue = newpropertyValue
-      this.calculateLTV()
+    errors () {
+      return this.$store.state.searchform.errors
     },
-    'searchForm.loanAmount' (newloanAmount) {
-      localStorage.loanAmount = newloanAmount
-      this.calculateLTV()
+    loanPurpose: {
+      get () {
+        return this.$store.state.searchform.fields.loanPurpose.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addLoanPurpose', value)
+      }
     },
-    'searchForm.loanProgram' (newloanProgram) {
-      localStorage.loanProgram = JSON.stringify(newloanProgram)
+    loanPurposeOptions () {
+      return this.$store.state.searchform.fields.loanPurpose.options
     },
-    'searchForm.state' (newstate) {
-      localStorage.state = newstate
+    propertyValue: {
+      get () {
+        return this.$store.state.searchform.fields.propertyValue.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addPropertyValue', value)
+      }
     },
-    'searchForm.county' (newcounty) {
-      localStorage.county = newcounty
+    loanAmount: {
+      get () {
+        return this.$store.state.searchform.fields.loanAmount.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addLoanAmount', value)
+      }
     },
-    'searchForm.propertyType' (newpropertyType) {
-      localStorage.propertyType = newpropertyType
+    ltv () {
+      return this.$store.state.searchform.fields.ltv.value
     },
-    'searchForm.propertyUse' (newpropertyUse) {
-      localStorage.propertyUse = newpropertyUse
+    loanProgram: {
+      get () {
+        return this.$store.state.searchform.fields.loanProgram.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addLoanProgram', value)
+      }
     },
-    'searchForm.creditRating' (newcreditRating) {
-      localStorage.creditRating = newcreditRating
+    loanProgramOptions () {
+      return this.$store.state.searchform.fields.loanProgram.options
     },
-    'searchForm.interestOnly' (newinterestOnly) {
-      localStorage.interestOnly = newinterestOnly
+    state: {
+      get () {
+        return this.$store.state.searchform.fields.state.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addState', value)
+      }
     },
-    'searchForm.taxesInsurance' (newtaxesInsurance) {
-      localStorage.taxesInsurance = newtaxesInsurance
+    stateOptions () {
+      return this.$store.state.searchform.fields.state.options
     },
-    'searchForm.refinanceType' (newrefinanceType) {
-      localStorage.refinanceType = newrefinanceType
+    county: {
+      get () {
+        return this.$store.state.searchform.fields.county.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addCounty', value)
+      }
     },
-    'searchForm.promoCode' (newpromoCode) {
-      localStorage.promoCode = newpromoCode
+    countyOptions () {
+      return this.$store.state.searchform.fields.county.options
     },
-    'searchForm.signUp' (newsignUp) {
-      localStorage.signUp = newsignUp
-    }
-  },
-  mounted () {
-    if (localStorage.loanPurpose) {
-      this.searchForm.loanPurpose = localStorage.loanPurpose
-    }
-    if (localStorage.propertyValue) {
-      this.searchForm.propertyValue = localStorage.propertyValue
-    }
-    if (localStorage.loanAmount) {
-      this.searchForm.loanAmount = localStorage.loanAmount
-    }
-    if (localStorage.loanProgram) {
-      this.searchForm.loanProgram = JSON.parse(localStorage.loanProgram)
-    }
-    if (localStorage.state) {
-      this.searchForm.state = localStorage.state
-      this.setCountyOptions()
-    }
-    if (localStorage.county) {
-      this.searchForm.county = localStorage.county
-    }
-    if (localStorage.propertyType) {
-      this.searchForm.propertyType = localStorage.propertyType
-    }
-    if (localStorage.propertyUse) {
-      this.searchForm.propertyUse = localStorage.propertyUse
-    }
-    if (localStorage.creditRating) {
-      this.searchForm.creditRating = localStorage.creditRating
-    }
-    if (localStorage.interestOnly) {
-      this.searchForm.interestOnly = localStorage.interestOnly
-    }
-    if (localStorage.taxesInsurance) {
-      this.searchForm.taxesInsurance = localStorage.taxesInsurance
-    }
-    if (localStorage.refinanceType) {
-      this.searchForm.refinanceType = localStorage.refinanceType
-    }
-    if (localStorage.promoCode) {
-      this.searchForm.promoCode = localStorage.promoCode
-    }
-    if (localStorage.signUp) {
-      this.searchForm.signUp = localStorage.signUp
+    propertyType: {
+      get () {
+        return this.$store.state.searchform.fields.propertyType.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addPropertyType', value)
+      }
+    },
+    propertyTypeOptions () {
+      return this.$store.state.searchform.fields.propertyType.options
+    },
+    propertyUse: {
+      get () {
+        return this.$store.state.searchform.fields.propertyUse.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addPropertyUse', value)
+      }
+    },
+    propertyUseOptions () {
+      return this.$store.state.searchform.fields.propertyUse.options
+    },
+    creditRating: {
+      get () {
+        return this.$store.state.searchform.fields.creditRating.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addCreditRating', value)
+      }
+    },
+    creditRatingOptions () {
+      return this.$store.state.searchform.fields.creditRating.options
+    },
+    interestOnly: {
+      get () {
+        return this.$store.state.searchform.fields.interestOnly.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addInterestOnly', value)
+      }
+    },
+    interestOnlyOptions () {
+      return this.$store.state.searchform.fields.interestOnly.options
+    },
+    taxesInsurance: {
+      get () {
+        return this.$store.state.searchform.fields.taxesInsurance.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addTaxesInsurance', value)
+      }
+    },
+    taxesInsuranceOptions () {
+      return this.$store.state.searchform.fields.taxesInsurance.options
+    },
+    refinanceType: {
+      get () {
+        return this.$store.state.searchform.fields.refinanceType.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addRefinanceType', value)
+      }
+    },
+    refinanceTypeOptions () {
+      return this.$store.state.searchform.fields.refinanceType.options
+    },
+    hasPromoCode: {
+      get () {
+        return this.$store.state.searchform.fields.hasPromoCode.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addHasPromoCode', value)
+      }
+    },
+    promoCode: {
+      get () {
+        return this.$store.state.searchform.fields.promoCode.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addPromoCode', value)
+      }
+    },
+    hasSignUp: {
+      get () {
+        return this.$store.state.searchform.fields.hasSignUp.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addHasSignUp', value)
+      }
+    },
+    signUp: {
+      get () {
+        return this.$store.state.searchform.fields.signUp.value
+      },
+      set (value) {
+        this.$store.commit('searchform/addSignUp', value)
+      }
     }
   },
   methods: {
+    ...mapMutations({
+      add: 'searchform/add'
+    }),
     calculateLTV () {
-      if (this.searchForm.loanAmount && this.searchForm.propertyValue) {
-        this.searchForm.ltv = (
-          this.$parseCurrency(this.searchForm.loanAmount, 'en', 'USD') /
-          this.$parseCurrency(this.searchForm.propertyValue, 'en', 'USD')
-        )
-      } else {
-        this.searchForm.ltv = 0
+      let ltv = 0
+      if (this.propertyValue && this.loanAmount) {
+        ltv = this.$parseCurrency(this.loanAmount, 'en', 'USD') / this.$parseCurrency(this.propertyValue, 'en', 'USD')
       }
+      this.$store.commit('searchform/addLTV', ltv)
     },
-    setCountyOptions () {
-      this.searchFormOptions.countyOptionsCurrent = this.searchFormOptions.countyOptionsAll[this.searchForm.state]
-    },
-    concat (value, value1) {
-      return value.concat(value1)
-    },
-    setFocus (event) {
+    focusClassAdd (event) {
       const self = event.target
       self.previousElementSibling.classList.add('focused')
     },
-    unFocus (event) {
+    focusClassRemove (event) {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
-    resetSearchForm () {
-      this.searchForm = this.searchFormDefaults
-      Object.keys(this.searchFormDefaults).forEach(function (key) {
-        if (localStorage[key]) {
-          localStorage[key] = ''
+    formReset () {
+      this.$store.commit('searchform/resetFields')
+    },
+    formValidate () {
+      const self = this
+      let formIsValid = true
+      const formErrors = []
+      Object.keys(self.form.fields).forEach(function (key) {
+        if (self.form.fields[key].required && (!self.form.fields[key].value || self.form.fields[key].value.length === 0)) {
+          formIsValid = false
+          formErrors.push(self.form.fields[key].label + ' is required')
         }
       })
-      this.setCountyOptions()
-      this.$store.commit('resetSearchForm')
-    },
-    redirect () {
-      window.scrollTo(0, 0)
-      this.$router.push({
-        path: '/search/results'
-      })
-      this.loader = false
-    },
-    validateForm (e) {
-      e.preventDefault()
-      if (this.searchForm.loanPurpose && this.searchForm.propertyValue && this.searchForm.loanAmount && this.searchForm.loanProgram && this.searchForm.state && this.searchForm.county && this.searchForm.propertyType && this.searchForm.propertyUse && this.searchForm.creditRating && this.searchForm.interestOnly && this.searchForm.taxesInsurance && this.searchForm.refinanceType) {
-        this.loader = true
+      if (formIsValid) {
+        formErrors.length = 0
+        self.$store.commit('searchform/addErrors', formErrors)
+        self.loader = true
         /* Do something here to retrieve search result data and push it to the store... */
-        this.$store.commit('updateSearchForm', this.searchForm)
-        const timeoutID = window.setTimeout(this.redirect, 2000)
+        const timeoutID = window.setTimeout(self.formRedirect, 2000)
+        window.scrollTo(0, 0)
         return timeoutID
       } else {
-        this.formErrors = []
-        if (!this.searchForm.loanPurpose) {
-          this.formErrors.push('Loan Purpose required.')
-        }
-        if (!this.searchForm.propertyValue) {
-          this.formErrors.push('Property Value required')
-        }
-        if (!this.searchForm.loanAmount) {
-          this.formErrors.push('Loan Amount required')
-        }
-        if (!this.searchForm.loanProgram) {
-          this.formErrors.push('Loan Program required')
-        }
-        if (!this.searchForm.state) {
-          this.formErrors.push('State required')
-        }
-        if (!this.searchForm.county) {
-          this.formErrors.push('County required')
-        }
-        if (!this.searchForm.propertyType) {
-          this.formErrors.push('Property Type required')
-        }
-        if (!this.searchForm.propertyUse) {
-          this.formErrors.push('Property Use required')
-        }
-        if (!this.searchForm.creditRating) {
-          this.formErrors.push('Credit Rating required')
-        }
-        if (!this.searchForm.interestOnly) {
-          this.formErrors.push('Interest Only required')
-        }
-        if (!this.searchForm.taxesInsurance) {
-          this.formErrors.push('Taxes and Insurance required')
-        }
-        if (!this.searchForm.refinanceType) {
-          this.formErrors.push('Refinance Type required')
-        }
         window.scrollTo(0, 0)
+        self.$store.commit('searchform/addErrors', formErrors)
       }
+    },
+    formRedirect () {
+      const self = this
+      window.scrollTo(0, 0)
+      self.$router.push({
+        path: '/search/results'
+      })
+      self.loader = false
     }
   }
 }

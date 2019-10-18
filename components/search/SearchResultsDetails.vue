@@ -56,22 +56,26 @@
                     {{ resultDetails.oneFeeGuarantee | currency }}
                   </td>
                 </tr>
-                <tr>
+                <!-- <tr
+                  v-if="formData.propertyValue.value"
+                >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ formData.propertyValue }}
+                    {{ formData.propertyValue.value }}
                   </td>
                 </tr>
-                <tr>
+                <tr
+                  v-if="formData.loanAmount.value"
+                >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ formData.loanAmount }}
+                    {{ formData.loanAmount.value }}
                   </td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td scope="col">
                     {{ 'Monthly Payment' | titlecase }}
@@ -329,14 +333,6 @@ export default {
     return {
       formData: {}
     }
-  },
-  computed: {
-    searchForm () {
-      return this.$store.state.searchForm
-    }
-  },
-  mounted () {
-    this.formData = this.$store.state.searchForm
   },
   methods: {
     closeDetailsModal (event) {

@@ -26,12 +26,12 @@ Vue.filter('titlecase', function (value) {
     .join(' ')
 })
 
-Vue.filter('percent', function (value) {
+Vue.filter('percent', function (value, digits = 3) {
   if (!value) { return '' }
   value = new Intl.NumberFormat('en-US', {
     style: 'percent',
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
   }).format(value)
   return value
 })

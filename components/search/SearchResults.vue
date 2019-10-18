@@ -244,55 +244,7 @@ export default {
       ],
       resultDetails: {
         show: false
-      },
-      searchFormData: {}
-    }
-  },
-  mounted () {
-    if (localStorage.loanPurpose) {
-      this.searchFormData.loanPurpose = localStorage.loanPurpose
-    }
-    if (localStorage.propertyValue) {
-      this.searchFormData.propertyValue = localStorage.propertyValue
-    }
-    if (localStorage.loanAmount) {
-      this.searchFormData.loanAmount = localStorage.loanAmount
-    }
-    if (localStorage.loanProgram) {
-      this.searchFormData.loanProgram = JSON.parse(localStorage.loanProgram)
-    }
-    if (localStorage.state) {
-      this.searchFormData.state = localStorage.state
-    }
-    if (localStorage.county) {
-      this.searchFormData.county = localStorage.county
-    }
-    if (localStorage.propertyType) {
-      this.searchFormData.propertyType = localStorage.propertyType
-    }
-    if (localStorage.propertyUse) {
-      this.searchFormData.propertyUse = localStorage.propertyUse
-    }
-    if (localStorage.creditRating) {
-      this.searchFormData.creditRating = localStorage.creditRating
-    }
-    if (localStorage.interestOnly) {
-      this.searchFormData.interestOnly = localStorage.interestOnly
-    }
-    if (localStorage.taxesInsurance) {
-      this.searchFormData.taxesInsurance = localStorage.taxesInsurance
-    }
-    if (localStorage.refinanceType) {
-      this.searchFormData.refinanceType = localStorage.refinanceType
-    }
-    if (localStorage.promoCode) {
-      this.searchFormData.promoCode = localStorage.promoCode
-    }
-    if (localStorage.signUp) {
-      this.searchFormData.signUp = localStorage.signUp
-    }
-    if (!this.$store.searchForm) {
-      this.$store.commit('updateSearchForm', this.searchFormData)
+      }
     }
   },
   methods: {
