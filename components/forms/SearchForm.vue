@@ -479,13 +479,14 @@
           </ul>
         </div>
       </div>
-      <button
-        class="btn btn-secondary btn-sm"
+      <a
+        href="#"
+        class="link-text lnk-decorated"
         :data-route="$route.path"
         @click.prevent="formReset"
       >
         Reset
-      </button>
+      </a>
     </form>
     <Loader v-if="loader" />
   </div>

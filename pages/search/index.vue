@@ -81,15 +81,18 @@ export default {
       }
     }
     label {
-      color: $gray-600;
-      font-size: $input-font-size;
-      margin-bottom: 0;
-      margin-left: calc(#{$input-padding-x} + #{$input-border-width});
-      // margin-top: -0.75em;
-      pointer-events: none;
-      position: absolute;
-      top: 1em;
-      transition: $transition-base;
+      &:not(.custom-control-label),
+      &:not(.form--search-rates__form-group--program-options__label) {
+        color: $gray-600;
+        font-size: $input-font-size;
+        margin-bottom: 0;
+        margin-left: calc(#{$input-padding-x} + #{$input-border-width});
+        // margin-top: -0.75em;
+        pointer-events: none;
+        position: absolute;
+        top: 1em;
+        transition: $transition-base;
+      }
       img {
         pointer-events: initial;
       }
