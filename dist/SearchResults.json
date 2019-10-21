@@ -1,0 +1,53 @@
+[
+  {
+    "term": "30 Year Fixed",
+    "rates": [
+      {
+        "rate": 0.03250,
+        "apr": 0.03479,
+        "monthlyPayment": 2089.00,
+        "oneFeeGuarantee": 13992.00
+      },
+      {
+        "rate": 0.03875,
+        "apr": 0.03875,
+        "monthlyPayment": 2257.14,
+        "oneFeeGuarantee": 0.00
+      }
+    ]
+  },
+  {
+    "term": "20 Year Fixed",
+    "rates": [
+      {
+        "rate": 0.03250,
+        "apr": 0.03479,
+        "monthlyPayment": 2089.00,
+        "oneFeeGuarantee": 13992.00
+      },
+      {
+        "rate": 0.03875,
+        "apr": 0.03875,
+        "monthlyPayment": 2257.14,
+        "oneFeeGuarantee": 0.00
+      }
+    ]
+  },
+  {
+    "term": "15 Year Fixed",
+    "rates": [
+      {
+        "rate": 0.03250,
+        "apr": 0.03479,
+        "monthlyPayment": 2089.00,
+        "oneFeeGuarantee": 13992.00
+      },
+      {
+        "rate": 0.03875,
+        "apr": 0.03875,
+        "monthlyPayment": 2257.14,
+        "oneFeeGuarantee": 0.00
+      }
+    ]
+  }
+]
