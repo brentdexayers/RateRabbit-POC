@@ -3,21 +3,37 @@
     <p class="page--apply__intro">
       Please take a moment to provide the information below and a Loan Consultant will contact you to help you get your best rate quote. <i>Required fields *</i>
     </p>
+    <code>
+      {{ termIndex }}
+      {{ rateIndex }}
+      {{ results[termIndex].rates[rateIndex] }}
+    </code>
     <Form />
   </div>
 </template>
 
 <script>
-import Form from '~/components/forms/SearchForm.vue'
+import Form from '~/components/forms/ApplicationForm.vue'
 
 export default {
-  layout: 'squeeze',
+  layout: 'default',
   components: {
     Form
   },
   data () {
     return {
       title: 'Apply For a Loan'
+    }
+  },
+  computed: {
+    results () {
+      return this.$store.state.searchresults.results[0]
+    },
+    termIndex () {
+      return this.$store.state.application.termIndex
+    },
+    rateIndex () {
+      return this.$store.state.application.rateIndex
     }
   },
   head () {

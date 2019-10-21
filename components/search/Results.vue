@@ -1,10 +1,13 @@
 <template>
   <div class="search-results">
+    <p>
+      Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
+    </p>
     <div
-      v-for="(result, resultIndex) in searchResults"
-      :key="resultIndex"
+      v-for="(result, termIndex) in results"
+      :key="termIndex"
       class="results-table__results"
-      :data-result-index="resultIndex"
+      :data-result-index="termIndex"
     >
       <h2>
         {{ result.term }}
@@ -55,7 +58,7 @@
                   <p :class="{ recommended: !rate.oneFeeGuarantee }">
                     {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
                     <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
-                      Recommended No-Cost loan
+                      {{ 'Recommended No-Cost loan' | titlecase }}
                     </span>
                   </p>
                 </div>
@@ -63,8 +66,11 @@
             </div>
             <div class="col-3">
               <nuxt-link
-                to="#"
+                to="/apply"
                 class="btn btn-sm btn-primary results-table__result--desktop__button"
+                :data-term="termIndex"
+                :data-rate="rateIndex"
+                @click.native="apply($event, termIndex, rateIndex)"
               >
                 {{ 'Apply' | titlecase }}
               </nuxt-link>
@@ -72,7 +78,7 @@
                 <a
                   href="#"
                   class="link-decorated results-table__result--desktop__link"
-                  @click.prevent="showDetails($event, resultIndex, rateIndex)"
+                  @click.prevent="showDetails($event, termIndex, rateIndex)"
                 >
                   {{ 'See Details' | titlecase }}
                 </a>
@@ -130,7 +136,7 @@
                 <p :class="{ recommended: !rate.oneFeeGuarantee }">
                   {{ 'One Fee Guarantee' | capitalize }}
                   <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
-                    Recommended No-Cost loan
+                    {{ 'Recommended No-Cost loan' | titlecase }}
                   </span>
                 </p>
               </div>
@@ -146,15 +152,16 @@
               <a
                 href="#"
                 class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
-                @click.prevent="showDetails($event, resultIndex, rateIndex)"
+                @click.prevent="showDetails($event, termIndex, rateIndex)"
               >
                 {{ 'Details' | titlecase }}
               </a>
             </div>
             <div class="col">
               <nuxt-link
-                to="#"
+                to="/apply"
                 class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
+                @click.native="apply($event, termIndex, rateIndex)"
               >
                 {{ 'Apply' | titlecase }}
               </nuxt-link>
@@ -163,102 +170,33 @@
         </div>
       </div>
     </div>
-    <SearchResultsDetails
-      v-if="resultDetails.show"
-      :result-details="resultDetails"
-    />
   </div>
 </template>
 
 <script>
-import SearchResultsDetails from '~/components/search/SearchResultsDetails.vue'
 
 export default {
   components: {
-    SearchResultsDetails
-  },
-  props: {
-    phone: {
-      type: String,
-      default: '(888) 395-0395'
-    },
-    classes: {
-      type: String,
-      default: ''
-    }
   },
   data () {
     return {
-      searchResults: [
-        {
-          term: '30 Year Fixed',
-          rates: [
-            {
-              rate: 0.03250,
-              apr: 0.03479,
-              monthlyPayment: 2089.00,
-              oneFeeGuarantee: 13992.00
-            },
-            {
-              rate: 0.03875,
-              apr: 0.03875,
-              monthlyPayment: 2257.14,
-              oneFeeGuarantee: 0.00
-            }
-          ]
-        },
-        {
-          term: '20 Year Fixed',
-          rates: [
-            {
-              rate: 0.03250,
-              apr: 0.03479,
-              monthlyPayment: 2089.00,
-              oneFeeGuarantee: 13992.00
-            },
-            {
-              rate: 0.03875,
-              apr: 0.03875,
-              monthlyPayment: 2257.14,
-              oneFeeGuarantee: 0.00
-            }
-          ]
-        },
-        {
-          term: '15 Year Fixed',
-          rates: [
-            {
-              rate: 0.03250,
-              apr: 0.03479,
-              monthlyPayment: 2089.00,
-              oneFeeGuarantee: 13992.00
-            },
-            {
-              rate: 0.03875,
-              apr: 0.03875,
-              monthlyPayment: 2257.14,
-              oneFeeGuarantee: 0.00
-            }
-          ]
-        }
-      ],
-      resultDetails: {
-        show: false
-      }
+    }
+  },
+  computed: {
+    results () {
+      return this.$store.state.searchresults.results[0]
     }
   },
   methods: {
-    showDetails (event, resultIndex, rateIndex) {
-      this.resultDetails.term = this.searchResults[resultIndex].term
-      this.resultDetails.rate = this.searchResults[resultIndex].rates[rateIndex].rate
-      this.resultDetails.apr = this.searchResults[resultIndex].rates[rateIndex].apr
-      this.resultDetails.oneFeeGuarantee = this.searchResults[resultIndex].rates[rateIndex].oneFeeGuarantee
-      this.resultDetails.monthlyPayment = this.searchResults[resultIndex].rates[rateIndex].monthlyPayment
-      this.resultDetails.date = new Date()
-      this.resultDetails.show = true
+    apply (event, term, rate) {
+      this.$store.commit('application/setTermIndex', term)
+      this.$store.commit('application/setRateIndex', rate)
+      this.$store.commit('searchresults/hideShowDetails')
     },
-    hideDetails () {
-      this.resultDetails = { show: false }
+    showDetails (event, term, rate) {
+      this.$store.commit('application/setTermIndex', term)
+      this.$store.commit('application/setRateIndex', rate)
+      this.$store.commit('searchresults/toggleShowDetails')
     }
   }
 }

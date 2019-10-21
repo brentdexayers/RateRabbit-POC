@@ -1,24 +1,44 @@
 <template>
   <div class="page-content">
-    <p>
-      Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
-    </p>
-    <SearchResults />
+    <Loader v-if="!results" />
+    <Results v-if="results" />
+    <Details v-if="showDetails" />
   </div>
 </template>
 
 <script>
-import SearchResults from '~/components/search/SearchResults.vue'
+import Loader from '~/components/search/Loader.vue'
+import Results from '~/components/search/Results.vue'
+import Details from '~/components/search/Details.vue'
 
 export default {
   layout: 'default',
   components: {
-    SearchResults
+    Loader,
+    Results,
+    Details
   },
   data () {
     return {
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
+  },
+  computed: {
+    results () {
+      return this.$store.state.searchresults.results
+    },
+    showDetails () {
+      return this.$store.state.searchresults.showDetails
+    },
+    termIndex () {
+      return this.$store.state.application.termIndex
+    },
+    rateIndex () {
+      return this.$store.state.application.rateIndex
+    }
+  },
+  async fetch ({ store, params }) {
+    await store.dispatch('searchresults/GET_RESULTS')
   },
   head () {
     return {

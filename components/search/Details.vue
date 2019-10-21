@@ -12,31 +12,34 @@
         <div class="row">
           <div class="col">
             <h2 class="search-results-details__term">
-              {{ resultDetails.term }}
+              {{ searchResults[termIndex].term }}
             </h2>
             <p class="search-results-details__p">
-              <strong>Interest Rate:</strong> {{ resultDetails.rate | percent }}
+              <strong>Interest Rate:</strong> {{ searchResults[termIndex].rates[rateIndex].rate | percent }}
             </p>
             <p class="search-results-details__p">
-              <strong>APR:</strong> {{ resultDetails.apr | percent }}
+              <strong>APR:</strong> {{ searchResults[termIndex].rates[rateIndex].apr | percent }}
             </p>
-            <p class="search-results-details__p" :class="{ recommended: !resultDetails.oneFeeGuarantee }">
-              <strong>One Fee Guarantee:</strong> {{ resultDetails.oneFeeGuarantee | currency }}
+            <p class="search-results-details__p" :class="{ recommended: !searchResults[termIndex].rates[rateIndex].oneFeeGuarantee }">
+              <strong>One Fee Guarantee:</strong> {{ searchResults[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
             </p>
           </div>
           <div class="col-12 col-md-5">
             <nuxt-link
               to="/apply"
               class="btn btn-primary search-results-details__apply-btn"
+              :data-term="termIndex"
+              :data-rate="rateIndex"
+              @click="apply($event, termIndex, rateIndex)"
             >
-              Apply
+              {{ 'Apply' | titlecase }}
             </nuxt-link>
             <p class="search-results-details__connect">
               <nuxt-link
                 to="/connect"
                 class="link-decorated search-results-details__connect__link"
               >
-                Talk to a Loan Consultant
+                {{ 'Talk to a Loan Consultant' }}
               </nuxt-link>
             </p>
           </div>
@@ -44,7 +47,7 @@
         <div class="row">
           <div class="col">
             <p class="search-results-details__datetime">
-              {{ resultDetails.date | datetime }}
+              {{ searchDate | datetime }}
             </p>
             <table class="table table-striped">
               <tbody>
@@ -53,35 +56,35 @@
                     {{ 'One Fee Guarantee' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ resultDetails.oneFeeGuarantee | currency }}
+                    {{ searchResults[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
                   </td>
                 </tr>
-                <!-- <tr
-                  v-if="formData.propertyValue.value"
+                <tr
+                  v-if="searchForm.fields.propertyValue.value"
                 >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ formData.propertyValue.value }}
+                    {{ searchForm.fields.propertyValue.value }}
                   </td>
                 </tr>
                 <tr
-                  v-if="formData.loanAmount.value"
+                  v-if="searchForm.fields.loanAmount.value"
                 >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ formData.loanAmount.value }}
+                    {{ searchForm.fields.loanAmount.value }}
                   </td>
-                </tr> -->
+                </tr>
                 <tr>
                   <td scope="col">
                     {{ 'Monthly Payment' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ resultDetails.monthlyPayment | currency }}
+                    {{ searchResults[termIndex].rates[rateIndex].monthlyPayment | currency }}
                   </td>
                 </tr>
               </tbody>
@@ -321,22 +324,32 @@
 
 <script>
 export default {
-  props: {
-    resultDetails: {
-      type: Object,
-      default () {
-        return null
-      }
-    }
-  },
-  data () {
-    return {
-      formData: {}
+  computed: {
+    searchForm () {
+      return this.$store.state.searchform
+    },
+    searchResults () {
+      return this.$store.state.searchresults.results[0]
+    },
+    searchDate () {
+      return this.$store.state.searchresults.date
+    },
+    termIndex () {
+      return this.$store.state.application.termIndex
+    },
+    rateIndex () {
+      return this.$store.state.application.rateIndex
     }
   },
   methods: {
     closeDetailsModal (event) {
-      this.$parent.hideDetails()
+      // this.$store.commit('application/setTermIndex', null)
+      // this.$store.commit('application/setRateIndex', null)
+      this.$store.commit('searchresults/toggleShowDetails')
+    },
+    apply (event, term, rate) {
+      this.$store.commit('application/setTermIndex', term)
+      this.$store.commit('application/setRateIndex', rate)
     }
   }
 }

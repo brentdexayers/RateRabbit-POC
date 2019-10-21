@@ -1,5 +1,3 @@
-export const strict = false
-
 export const state = () => ({
   errors: [],
   fields: {
@@ -34,7 +32,7 @@ export const state = () => ({
     loanProgram: {
       value: [],
       default: [],
-      label: 'Loan Program',
+      label: 'Loan Programs',
       options: [
         {
           name: 'Fixed Rates',
@@ -86,7 +84,11 @@ export const state = () => ({
         }
       ],
       required: true,
-      type: 'checkbox'
+      type: 'checkbox',
+      error: {
+        required: '$1 are required',
+        invalid: '$1 are invalid'
+      }
     },
     state: {
       value: '',
@@ -410,7 +412,7 @@ export const mutations = {
   addSignUp (state, value) {
     state.fields.signUp.value = value
   },
-  resetFields (state) {
+  reset (state) {
     Object.keys(state.fields).forEach(function (key) {
       state.fields[key].value = state.fields[key].default
     })

@@ -1,23 +1,26 @@
 <template>
   <div>
     <form
-      id=""
-      action=""
+      id="search-rates-form"
+      action="/search/results"
       method="POST"
       class="form form--search-rates"
       @submit.prevent="formValidate"
     >
-      <p v-if="errors.length" class="text-danger">
-        <b>Please correct the following error(s):</b>
-        <ul class="list-unstyled">
+      <div v-if="errors.length" class="form-errors form-errors--wrapper">
+        <p>
+          Please correct the following error(s):
+        </p>
+        <ul class="list form-errors__list">
           <li
             v-for="(error, i) in errors"
             :key="i"
+            class="form-errors__error"
           >
-            {{ error }}
+            <span v-html="error" />
           </li>
         </ul>
-      </p>
+      </div>
       <div class="row">
         <div class="form-group col-12">
           <label
@@ -408,7 +411,7 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
-            v-if="$route.path == '/search/results'"
+            v-if="$route.path == '/search/results' || $route.path == '/apply'"
             class="btn btn-outline-primary form--search-rates__submit"
             type="submit"
           >
@@ -456,7 +459,7 @@
                 :class="{'label label-list': hasSignUp}"
                 @click="hasSignUp = !hasSignUp"
               >
-                Sign Up for Rate Alerts
+                {{ 'Sign Up for Rate Alerts' }}
               </p>
               <div
                 v-if="hasSignUp"
@@ -488,17 +491,14 @@
         Reset
       </a>
     </form>
-    <Loader v-if="loader" />
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import Loader from '~/components/search/Loader.vue'
+// import { mapMutations } from 'vuex'
 
 export default {
   components: {
-    Loader
   },
   data () {
     return {
@@ -675,9 +675,9 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      add: 'searchform/add'
-    }),
+    // ...mapMutations({
+    //   add: 'searchform/add'
+    // }),
     calculateLTV () {
       let ltv = 0
       if (this.propertyValue && this.loanAmount) {
@@ -694,16 +694,26 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     formReset () {
-      this.$store.commit('searchform/resetFields')
+      this.$store.commit('searchform/reset')
+      this.$store.commit('searchresults/reset')
     },
     formValidate () {
       const self = this
       let formIsValid = true
       const formErrors = []
       Object.keys(self.form.fields).forEach(function (key) {
-        if (self.form.fields[key].required && (!self.form.fields[key].value || self.form.fields[key].value.length === 0)) {
-          formIsValid = false
-          formErrors.push(self.form.fields[key].label + ' is required')
+        if (self.form.fields[key].required) {
+          if (!self.form.fields[key].value || self.form.fields[key].value.length === 0) {
+            formIsValid = false
+            if (self.form.fields[key].hasOwnProperty('error') &&
+              self.form.fields[key].error.hasOwnProperty('required') &&
+              self.form.fields[key].error.required) {
+              const errStr = self.form.fields[key].error.required
+              formErrors.push(errStr.replace('$1', '<i>' + self.form.fields[key].label + '</i>'))
+            } else {
+              formErrors.push('<i>' + self.form.fields[key].label + '</i> is required')
+            }
+          }
         }
       })
       if (formIsValid) {
@@ -711,9 +721,12 @@ export default {
         self.$store.commit('searchform/addErrors', formErrors)
         self.loader = true
         /* Do something here to retrieve search result data and push it to the store... */
-        const timeoutID = window.setTimeout(self.formRedirect, 2000)
-        window.scrollTo(0, 0)
-        return timeoutID
+        // const timeoutID = window.setTimeout(self.formRedirect, 2000)
+        // window.scrollTo(0, 0)
+        // return timeoutID
+        self.$router.push({
+          path: '/search/results'
+        })
       } else {
         window.scrollTo(0, 0)
         self.$store.commit('searchform/addErrors', formErrors)
@@ -722,9 +735,6 @@ export default {
     formRedirect () {
       const self = this
       window.scrollTo(0, 0)
-      self.$router.push({
-        path: '/search/results'
-      })
       self.loader = false
     }
   }
@@ -785,6 +795,21 @@ export default {
   }
   &__spacer {
     margin-bottom: #{$spacer * 2};
+  }
+}
+.form-errors {
+  &--wrapper {
+    color: $danger;
+    p {
+      font-weight: $font-weight-bold;
+      margin-bottom: .2em;
+    }
+  }
+  &__list {
+    font-size: $font-size-sm;
+  }
+  &__error {
+    margin-bottom: 0;
   }
 }
 </style>
