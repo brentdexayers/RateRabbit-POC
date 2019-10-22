@@ -24,6 +24,13 @@ export default {
     ]
   },
   /*
+  ** Environment Variables
+  */
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    mode: process.env.NODE_ENV
+  },
+  /*
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },

@@ -24,11 +24,11 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
+    console.log('beforeRouteEnter')
     next((vm) => {
       vm.validateRoute()
     })
   },
-
   computed: {
     results () {
       return this.$store.state.searchresults.results

@@ -10,6 +10,7 @@
 
 <script>
 import scrollToNextMixin from '~/mixins/scrollToNextMixin.js'
+
 export default {
   mixins: [scrollToNextMixin],
   props: {

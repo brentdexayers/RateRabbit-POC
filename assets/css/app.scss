@@ -119,8 +119,10 @@ ul {
   margin-bottom: 2.625rem;
 }
 li {
-  margin-bottom: .75em;
-  position: relative;
+  &:not(.nav-item) {
+    margin-bottom: .75em;
+    position: relative;
+  }
 }
 
 blockquote {

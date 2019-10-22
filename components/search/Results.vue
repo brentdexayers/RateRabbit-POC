@@ -23,7 +23,7 @@
           <div class="col">
             {{ 'Monthly Payment' | uppercase }}
           </div>
-          <div class="col">
+          <div class="col d-md-none d-lg-flex">
             &nbsp;
           </div>
         </div>
@@ -64,25 +64,31 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
-              <nuxt-link
-                to="/apply"
-                class="btn btn-sm btn-primary results-table__result--desktop__button"
-                :data-term="termIndex"
-                :data-rate="rateIndex"
-                @click.native="apply($event, termIndex, rateIndex)"
-              >
-                {{ 'Apply' | titlecase }}
-              </nuxt-link>
-              <p class="results-table__result--desktop__link-p">
-                <a
-                  href="#"
-                  class="link-decorated results-table__result--desktop__link"
-                  @click.prevent="showDetails($event, termIndex, rateIndex)"
-                >
-                  {{ 'See Details' | titlecase }}
-                </a>
-              </p>
+            <div class="col-12 col-lg-3">
+              <div class="row justify-content-between">
+                <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
+                  <nuxt-link
+                    to="/apply"
+                    class="btn btn-sm btn-primary results-table__result--desktop__button"
+                    :data-term="termIndex"
+                    :data-rate="rateIndex"
+                    @click.native="apply($event, termIndex, rateIndex, rate.rate, rate.apr, rate.monthlyPayment, rate.oneFeeGuarantee)"
+                  >
+                    {{ 'Apply' | titlecase }}
+                  </nuxt-link>
+                </div>
+                <div class="col-12 col-md-auto col-lg-12 order-md-first order-lg-last">
+                  <p class="results-table__result--desktop__link-p">
+                    <a
+                      href="#"
+                      class="link-decorated results-table__result--desktop__link"
+                      @click.prevent="showDetails($event, termIndex, rateIndex)"
+                    >
+                      {{ 'See Details' | titlecase }}
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -161,7 +167,7 @@
               <nuxt-link
                 to="/apply"
                 class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
-                @click.native="apply($event, termIndex, rateIndex)"
+                @click.native="apply($event, termIndex, rateIndex, rate.rate, rate.apr, rate.monthlyPayment, rate.oneFeeGuarantee)"
               >
                 {{ 'Apply' | titlecase }}
               </nuxt-link>
@@ -188,10 +194,15 @@ export default {
     }
   },
   methods: {
-    apply (event, term, rate) {
-      this.$store.commit('application/setTermIndex', term)
-      this.$store.commit('application/setRateIndex', rate)
+    apply (event, termIndex, rateIndex, rate, apr, monthlyPayment, oneFeeGuarantee) {
+      this.$store.commit('application/setTermIndex', termIndex)
+      this.$store.commit('application/setRateIndex', rateIndex)
+      this.$store.commit('application/setRate', rate)
+      this.$store.commit('application/setAPR', apr)
+      this.$store.commit('application/setMonthlyPayment', monthlyPayment)
+      this.$store.commit('application/setOneFeeGuarantee', oneFeeGuarantee)
       this.$store.commit('searchresults/hideShowDetails')
+      this.$store.commit('application/setCompleted', false)
     },
     showDetails (event, term, rate) {
       this.$store.commit('application/setTermIndex', term)

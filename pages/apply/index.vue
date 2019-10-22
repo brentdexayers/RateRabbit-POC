@@ -1,53 +1,60 @@
 <template>
   <div class="page-content page--apply">
-    <h3>
-      {{ results[termIndex].term }}
-    </h3>
-    <table class="table table-striped page--apply__table">
-      <tbody>
-        <tr>
-          <td>
-            {{ 'One Free Guarantee' | titlecase }}
-          </td>
-          <td>
-            {{ results[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'Loan Amount' | titlecase }}
-          </td>
-          <td>
-            {{ input.fields.loanAmount.value }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'Interest Rate' | titlecase }}
-          </td>
-          <td>
-            {{ results[termIndex].rates[rateIndex].rate | percent }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'APR' | capitalize }}
-          </td>
-          <td>
-            {{ results[termIndex].rates[rateIndex].apr | percent }}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {{ 'Monthly Payment' | titlecase }}
-          </td>
-          <td>
-            {{ results[termIndex].rates[rateIndex].monthlyPayment | currency }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <Form />
+    <div v-if="!applicationCompleted">
+      <h3>
+        {{ results[termIndex].term }}
+      </h3>
+      <table class="table table-striped page--apply__table">
+        <tbody>
+          <tr>
+            <td>
+              {{ 'One Free Guarantee' | titlecase }}
+            </td>
+            <td>
+              {{ results[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'Loan Amount' | titlecase }}
+            </td>
+            <td>
+              {{ input.fields.loanAmount.value }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'Interest Rate' | titlecase }}
+            </td>
+            <td>
+              {{ results[termIndex].rates[rateIndex].rate | percent }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'APR' | capitalize }}
+            </td>
+            <td>
+              {{ results[termIndex].rates[rateIndex].apr | percent }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ 'Monthly Payment' | titlecase }}
+            </td>
+            <td>
+              {{ results[termIndex].rates[rateIndex].monthlyPayment | currency }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <Form />
+    </div>
+    <div v-else>
+      <h3>
+        Congrats on completing your application!
+      </h3>
+    </div>
   </div>
 </template>
 
@@ -65,10 +72,12 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
+    console.log('beforeRouteEnter')
     next((vm) => {
-      vm.validateRoute()
-      console.log(vm.validateRoute())
-      return true
+      const i = vm.getInput()
+      if (i.errors.length > 0) {
+        return '/search'
+      }
     })
   },
   computed: {
@@ -83,9 +92,20 @@ export default {
     },
     rateIndex () {
       return this.$store.state.application.rateIndex
+    },
+    applicationCompleted: {
+      get () {
+        return this.$store.state.application.completed
+      },
+      set (value) {
+        this.$store.commit('application/setCompletedStatus', value)
+      }
     }
   },
   methods: {
+    getInput () {
+      return this.input
+    },
     validateRoute () {
       let route = true
       if (this.input.errors.length > 0 || this.results.length === 0) {
@@ -94,6 +114,9 @@ export default {
         route = '/search/results'
       }
       return route
+    },
+    toggleApplicationStatus () {
+      this.applicationCompleted = !this.applicationCompleted
     }
   },
   head () {

@@ -7,13 +7,13 @@
       class="form form--search-rates"
       @submit.prevent="formValidate"
     >
-      <div v-if="errors.length" class="form-errors form-errors--wrapper">
+      <div v-if="formErrors.length" class="form-errors form-errors--wrapper">
         <p>
           Please correct the following error(s):
         </p>
         <ul class="list form-errors__list">
           <li
-            v-for="(error, i) in errors"
+            v-for="(error, i) in formErrors"
             :key="i"
             class="form-errors__error"
           >
@@ -411,11 +411,18 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
-            v-if="$route.path == '/search/results' || $route.path == '/apply'"
+            v-if="searchResults.length > 0"
             class="btn btn-outline-primary form--search-rates__submit"
             type="submit"
           >
             {{ 'Update Search' | titlecase }}
+          </button>
+          <button
+            v-else-if="applicationCompleted"
+            class="btn btn-primary form--search-rates__submit"
+            type="submit"
+          >
+            {{ 'Start New Search' | titlecase }}
           </button>
           <button
             v-else
@@ -430,51 +437,48 @@
         <div class="form-group col-12">
           <ul class="list-unstyled form--search-rates__supplemental-links">
             <li class="form--search-rates__supplemental-link">
-              <p
-                class="link-text"
-                :class="{label: hasPromoCode}"
-                @click="hasPromoCode = !hasPromoCode"
-              >
-                Do you have a promotional code?
-              </p>
-              <div
-                v-show="hasPromoCode"
-                class="row"
-              >
-                <div class="form-group col-12">
+              <div class="row">
+                <div class="form-group col-12 mb-3">
+                  <p class="mb-0">
+                    Do you have a promotional code?
+                  </p>
+                  <label
+                    for="promoCode"
+                    :class="{ hasvalue: promoCode }"
+                  >
+                    {{ 'Promo Code' | titlecase }}
+                  </label>
                   <input
-                    id="promoCode"
                     v-model="promoCode"
-                    class="form-control"
                     type="text"
-                    placeholder="Promo Code"
-                    tabindex="-1"
+                    class="form-control"
+                    name="promoCode"
+                    placeholder=""
+                    @focus="focusClassAdd($event)"
+                    @blur="focusClassRemove($event)"
                   >
                 </div>
               </div>
             </li>
             <li class="form--search-rates__supplemental-link">
-              <p
-                class="link-text"
-                :class="{'label label-list': hasSignUp}"
-                @click="hasSignUp = !hasSignUp"
-              >
-                {{ 'Sign Up for Rate Alerts' }}
-              </p>
-              <div
-                v-if="hasSignUp"
-                class="row"
-              >
+              <div class="row">
                 <div class="form-group col-12">
+                  <p class="mb-0">
+                    Sign Up for Rate Alerts?
+                  </p>
                   <div class="custom-control custom-checkbox">
                     <input
                       id="signUp"
                       v-model="signUp"
                       class="custom-control-input"
                       type="checkbox"
-                      tabindex="-1"
                     >
-                    <label class="custom-control-label" for="signUp">Yes, I'd like to sign up!</label>
+                    <label
+                      class="custom-control-label"
+                      for="signUp"
+                    >
+                      Yes, I'd like to sign up!
+                    </label>
                   </div>
                 </div>
               </div>
@@ -494,22 +498,29 @@ export default {
   },
   data () {
     return {
-      loader: false
+      hasSignUp: false,
+      hasPromoCode: false
     }
   },
   computed: {
-    form () {
-      return this.$store.state.searchform
+    applicationCompleted () {
+      return this.$store.state.application.completed
     },
-    errors () {
+    searchResults () {
+      return this.$store.state.searchresults
+    },
+    formFields () {
+      return this.$store.state.searchform.fields
+    },
+    formErrors () {
       return this.$store.state.searchform.errors
     },
     loanPurpose: {
       get () {
-        return this.$store.state.searchform.fields.loanPurpose.value
+        return this.$store.state.application.loanPurpose
       },
       set (value) {
-        this.$store.commit('searchform/addLoanPurpose', value)
+        this.$store.commit('application/setLoanPurpose', value)
       }
     },
     loanPurposeOptions () {
@@ -517,29 +528,34 @@ export default {
     },
     propertyValue: {
       get () {
-        return this.$store.state.searchform.fields.propertyValue.value
+        return this.$store.state.application.propertyValue
       },
       set (value) {
-        this.$store.commit('searchform/addPropertyValue', value)
+        this.$store.commit('application/setPropertyValue', value)
       }
     },
     loanAmount: {
       get () {
-        return this.$store.state.searchform.fields.loanAmount.value
+        return this.$store.state.application.loanAmount
       },
       set (value) {
-        this.$store.commit('searchform/addLoanAmount', value)
+        this.$store.commit('application/setLoanAmount', value)
       }
     },
-    ltv () {
-      return this.$store.state.searchform.fields.ltv.value
+    ltv: {
+      get () {
+        return this.$store.state.application.ltv
+      },
+      set (value) {
+        this.$store.commit('application/setLTV', value)
+      }
     },
     loanProgram: {
       get () {
-        return this.$store.state.searchform.fields.loanProgram.value
+        return this.$store.state.application.loanProgram
       },
       set (value) {
-        this.$store.commit('searchform/addLoanProgram', value)
+        this.$store.commit('application/setLoanProgram', value)
       }
     },
     loanProgramOptions () {
@@ -547,10 +563,10 @@ export default {
     },
     state: {
       get () {
-        return this.$store.state.searchform.fields.state.value
+        return this.$store.state.application.state
       },
       set (value) {
-        this.$store.commit('searchform/addState', value)
+        this.$store.commit('application/setState', value)
       }
     },
     stateOptions () {
@@ -558,10 +574,10 @@ export default {
     },
     county: {
       get () {
-        return this.$store.state.searchform.fields.county.value
+        return this.$store.state.application.county
       },
       set (value) {
-        this.$store.commit('searchform/addCounty', value)
+        this.$store.commit('application/setCounty', value)
       }
     },
     countyOptions () {
@@ -569,10 +585,10 @@ export default {
     },
     propertyType: {
       get () {
-        return this.$store.state.searchform.fields.propertyType.value
+        return this.$store.state.application.propertyType
       },
       set (value) {
-        this.$store.commit('searchform/addPropertyType', value)
+        this.$store.commit('application/setPropertyType', value)
       }
     },
     propertyTypeOptions () {
@@ -580,10 +596,10 @@ export default {
     },
     propertyUse: {
       get () {
-        return this.$store.state.searchform.fields.propertyUse.value
+        return this.$store.state.application.propertyUse
       },
       set (value) {
-        this.$store.commit('searchform/addPropertyUse', value)
+        this.$store.commit('application/setPropertyUse', value)
       }
     },
     propertyUseOptions () {
@@ -591,10 +607,10 @@ export default {
     },
     creditRating: {
       get () {
-        return this.$store.state.searchform.fields.creditRating.value
+        return this.$store.state.application.creditRating
       },
       set (value) {
-        this.$store.commit('searchform/addCreditRating', value)
+        this.$store.commit('application/setCreditRating', value)
       }
     },
     creditRatingOptions () {
@@ -602,10 +618,10 @@ export default {
     },
     interestOnly: {
       get () {
-        return this.$store.state.searchform.fields.interestOnly.value
+        return this.$store.state.application.interestOnly
       },
       set (value) {
-        this.$store.commit('searchform/addInterestOnly', value)
+        this.$store.commit('application/setInterestOnly', value)
       }
     },
     interestOnlyOptions () {
@@ -613,10 +629,10 @@ export default {
     },
     taxesInsurance: {
       get () {
-        return this.$store.state.searchform.fields.taxesInsurance.value
+        return this.$store.state.application.taxesInsurance
       },
       set (value) {
-        this.$store.commit('searchform/addTaxesInsurance', value)
+        this.$store.commit('application/setTaxesInsurance', value)
       }
     },
     taxesInsuranceOptions () {
@@ -624,58 +640,39 @@ export default {
     },
     refinanceType: {
       get () {
-        return this.$store.state.searchform.fields.refinanceType.value
+        return this.$store.state.application.refinanceType
       },
       set (value) {
-        this.$store.commit('searchform/addRefinanceType', value)
+        this.$store.commit('application/setRefinanceType', value)
       }
     },
     refinanceTypeOptions () {
       return this.$store.state.searchform.fields.refinanceType.options
     },
-    hasPromoCode: {
-      get () {
-        return this.$store.state.searchform.fields.hasPromoCode.value
-      },
-      set (value) {
-        this.$store.commit('searchform/addHasPromoCode', value)
-      }
-    },
     promoCode: {
       get () {
-        return this.$store.state.searchform.fields.promoCode.value
+        return this.$store.state.application.promoCode
       },
       set (value) {
-        this.$store.commit('searchform/addPromoCode', value)
-      }
-    },
-    hasSignUp: {
-      get () {
-        return this.$store.state.searchform.fields.hasSignUp.value
-      },
-      set (value) {
-        this.$store.commit('searchform/addHasSignUp', value)
+        this.$store.commit('application/setPromoCode', value)
       }
     },
     signUp: {
       get () {
-        return this.$store.state.searchform.fields.signUp.value
+        return this.$store.state.application.signUp
       },
       set (value) {
-        this.$store.commit('searchform/addSignUp', value)
+        this.$store.commit('application/setSignUp', value)
       }
     }
   },
   methods: {
-    // ...mapMutations({
-    //   add: 'searchform/add'
-    // }),
     calculateLTV () {
       let ltv = 0
       if (this.propertyValue && this.loanAmount) {
         ltv = this.$parseCurrency(this.loanAmount, 'en', 'USD') / this.$parseCurrency(this.propertyValue, 'en', 'USD')
       }
-      this.$store.commit('searchform/addLTV', ltv)
+      this.$store.commit('application/setLTV', ltv)
     },
     focusClassAdd (event) {
       const self = event.target
@@ -687,43 +684,43 @@ export default {
     },
     formValidate () {
       const self = this
+      // Reset application data
       let formIsValid = true
-      const formErrors = []
-      Object.keys(self.form.fields).forEach(function (key) {
-        if (self.form.fields[key].required) {
-          if (!self.form.fields[key].value || self.form.fields[key].value.length === 0) {
+      self.$store.commit('searchform/clearErrors')
+      // Add Errors to form state
+      Object.keys(self.formFields).forEach(function (key) {
+        if (self.formFields[key].required) {
+          if (
+            !self.$store.state.application[key] ||
+            self.$store.state.application[key].length <= 0
+          ) {
             formIsValid = false
-            if (self.form.fields[key].hasOwnProperty('error') &&
-              self.form.fields[key].error.hasOwnProperty('required') &&
-              self.form.fields[key].error.required) {
-              const errStr = self.form.fields[key].error.required
-              formErrors.push(errStr.replace('$1', '<i>' + self.form.fields[key].label + '</i>'))
+            if (
+              self.formFields[key].hasOwnProperty('errorStr') &&
+              self.formFields[key].errorStr.hasOwnProperty('required') &&
+              self.formFields[key].errorStr.required
+            ) {
+              const errStr = self.formFields[key].errorStr.required
+              self.$store.commit('searchform/addError', errStr.replace('$1', '<i>' + self.formFields[key].label + '</i>'))
             } else {
-              formErrors.push('<i>' + self.form.fields[key].label + '</i> is required')
+              self.$store.commit('searchform/addError', '<i>' + self.formFields[key].label + '</i> is required')
             }
           }
         }
       })
-      if (formIsValid) {
-        formErrors.length = 0
-        self.$store.commit('searchform/addErrors', formErrors)
-        self.loader = true
-        /* Do something here to retrieve search result data and push it to the store... */
-        // const timeoutID = window.setTimeout(self.formRedirect, 2000)
-        // window.scrollTo(0, 0)
-        // return timeoutID
+      // After error checking...
+      if (
+        formIsValid &&
+        this.formErrors.length <= 0
+      ) {
+        // Form is valid
         self.$router.push({
           path: '/search/results'
         })
       } else {
-        window.scrollTo(0, 0)
-        self.$store.commit('searchform/addErrors', formErrors)
+        // Form is not valid
       }
-    },
-    formRedirect () {
-      const self = this
       window.scrollTo(0, 0)
-      self.loader = false
     }
   }
 }

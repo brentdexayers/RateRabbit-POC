@@ -2,7 +2,6 @@ export const state = () => ({
   errors: [],
   fields: {
     loanPurpose: {
-      value: '',
       default: '',
       label: 'Loan Purpose',
       options: [
@@ -12,25 +11,21 @@ export const state = () => ({
       required: true
     },
     propertyValue: {
-      value: '',
       default: '',
       label: 'Property Value',
       required: true
     },
     loanAmount: {
-      value: '',
       default: '',
       label: 'Loan Amount',
       required: true
     },
     ltv: {
-      value: 0,
       default: 0,
       label: 'loan-to-value',
       required: false
     },
     loanProgram: {
-      value: [],
       default: [],
       label: 'Loan Programs',
       options: [
@@ -85,13 +80,12 @@ export const state = () => ({
       ],
       required: true,
       type: 'checkbox',
-      error: {
+      errorStr: {
         required: '$1 are required',
         invalid: '$1 are invalid'
       }
     },
     state: {
-      value: '',
       default: '',
       label: 'State',
       options: [
@@ -104,7 +98,6 @@ export const state = () => ({
       type: 'select'
     },
     county: {
-      value: '',
       default: '',
       label: 'County',
       options: {
@@ -256,7 +249,6 @@ export const state = () => ({
       type: 'select'
     },
     propertyType: {
-      value: '',
       default: '',
       label: 'Property Type',
       options: [
@@ -273,7 +265,6 @@ export const state = () => ({
       required: true
     },
     propertyUse: {
-      value: '',
       default: '',
       label: 'Property use',
       options: [
@@ -284,7 +275,6 @@ export const state = () => ({
       required: true
     },
     creditRating: {
-      value: '',
       default: '',
       label: 'Credit Rating',
       options: [
@@ -301,7 +291,6 @@ export const state = () => ({
       required: true
     },
     interestOnly: {
-      value: '',
       default: '',
       label: 'Interest Only',
       options: [
@@ -311,7 +300,6 @@ export const state = () => ({
       required: true
     },
     taxesInsurance: {
-      value: '',
       default: '',
       label: 'Taxes & Insurance',
       options: [
@@ -321,7 +309,6 @@ export const state = () => ({
       required: true
     },
     refinanceType: {
-      value: '',
       default: '',
       label: 'Refinance Type',
       options: [
@@ -331,25 +318,21 @@ export const state = () => ({
       required: true
     },
     hasPromoCode: {
-      value: false,
       default: false,
       label: null,
       required: false
     },
     promoCode: {
-      value: '',
       default: '',
       label: 'Promo Code',
       required: false
     },
     hasSignUp: {
-      value: false,
       default: false,
       label: null,
       required: false
     },
     signUp: {
-      value: '',
       default: '',
       label: 'Sign Up',
       required: false
@@ -361,67 +344,8 @@ export const state = () => ({
 })
 
 export const mutations = {
-  add (state, payload) {
-    Object.assign(state, payload)
-  },
-  addLoanPurpose (state, value) {
-    state.fields.loanPurpose.value = value
-  },
-  addPropertyValue (state, value) {
-    state.fields.propertyValue.value = value
-  },
-  addLoanAmount (state, value) {
-    state.fields.loanAmount.value = value
-  },
-  addLTV (state, value) {
-    state.fields.ltv.value = value
-  },
-  addLoanProgram (state, value) {
-    state.fields.loanProgram.value = value
-  },
-  addState (state, value) {
-    state.fields.state.value = value
-  },
-  addCounty (state, value) {
-    state.fields.county.value = value
-  },
-  addPropertyType (state, value) {
-    state.fields.propertyType.value = value
-  },
-  addPropertyUse (state, value) {
-    state.fields.propertyUse.value = value
-  },
-  addCreditRating (state, value) {
-    state.fields.creditRating.value = value
-  },
-  addInterestOnly (state, value) {
-    state.fields.interestOnly.value = value
-  },
-  addTaxesInsurance (state, value) {
-    state.fields.taxesInsurance.value = value
-  },
-  addRefinanceType (state, value) {
-    state.fields.refinanceType.value = value
-  },
-  addHasPromoCode (state, value) {
-    state.fields.hasPromoCode.value = value
-  },
-  addPromoCode (state, value) {
-    state.fields.promoCode.value = value
-  },
-  addHasSignUp (state, value) {
-    state.fields.hasSignUp.value = value
-  },
-  addSignUp (state, value) {
-    state.fields.signUp.value = value
-  },
-  reset (state) {
-    Object.keys(state.fields).forEach(function (key) {
-      state.fields[key].value = state.fields[key].default
-    })
-  },
-  addErrors (state, errors) {
-    state.errors = errors
+  addError (state, error) {
+    state.errors.push(error)
   },
   clearErrors (state, errors) {
     state.errors = []

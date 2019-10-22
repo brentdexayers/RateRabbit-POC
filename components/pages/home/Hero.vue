@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import GoToNextSection from '~/components/GoToNextSection.vue'
+import GoToNextSection from '~/components/globals/GoToNextSection.vue'
 
 export default {
   components: {

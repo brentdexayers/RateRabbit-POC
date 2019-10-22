@@ -8,14 +8,11 @@ export const mutations = {
   add (state, payload) {
     state.results.push(payload)
   },
-  remove (state, { result }) {
-    state.results.splice(state.results.indexOf(result), 1)
-  },
-  setDate (state, date = false) {
-    if (!date) {
-      date = new Date()
+  setDate (state, payload = false) {
+    if (!payload) {
+      payload = new Date()
     }
-    state.date = date
+    state.date = payload
   },
   showDetails (state) {
     state.showDetails = true
@@ -33,7 +30,8 @@ export const mutations = {
 
 export const actions = {
   async GET_RESULTS ({ commit }) {
-    const { data } = await this.$axios.get('http://localhost:3000/SearchResults.json')
+    commit('reset')
+    const { data } = await this.$axios.get(process.env.baseUrl + '/SearchResults.json')
     commit('add', data)
     const date = new Date()
     commit('setDate', date)

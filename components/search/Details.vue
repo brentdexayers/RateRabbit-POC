@@ -15,13 +15,13 @@
               {{ searchResults[termIndex].term }}
             </h2>
             <p class="search-results-details__p">
-              <strong>Interest Rate:</strong> {{ searchResults[termIndex].rates[rateIndex].rate | percent }}
+              <strong>Interest Rate:</strong> {{ rate.rate | percent }}
             </p>
             <p class="search-results-details__p">
-              <strong>APR:</strong> {{ searchResults[termIndex].rates[rateIndex].apr | percent }}
+              <strong>APR:</strong> {{ rate.apr | percent }}
             </p>
-            <p class="search-results-details__p" :class="{ recommended: !searchResults[termIndex].rates[rateIndex].oneFeeGuarantee }">
-              <strong>One Fee Guarantee:</strong> {{ searchResults[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
+            <p class="search-results-details__p" :class="{ recommended: !rate.oneFeeGuarantee }">
+              <strong>One Fee Guarantee:</strong> {{ rate.oneFeeGuarantee | currency }}
             </p>
           </div>
           <div class="col-12 col-md-5">
@@ -30,7 +30,7 @@
               class="btn btn-primary search-results-details__apply-btn"
               :data-term="termIndex"
               :data-rate="rateIndex"
-              @click="apply($event, termIndex, rateIndex)"
+              @click.native="apply($event, termIndex, rateIndex, rate.rate, rate.apr, rate.monthlyPayment, rate.oneFeeGuarantee)"
             >
               {{ 'Apply' | titlecase }}
             </nuxt-link>
@@ -56,27 +56,27 @@
                     {{ 'One Fee Guarantee' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchResults[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
+                    {{ rate.oneFeeGuarantee | currency }}
                   </td>
                 </tr>
                 <tr
-                  v-if="searchForm.fields.propertyValue.value"
+                  v-if="application.propertyValue"
                 >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchForm.fields.propertyValue.value }}
+                    {{ application.propertyValue }}
                   </td>
                 </tr>
                 <tr
-                  v-if="searchForm.fields.loanAmount.value"
+                  v-if="application.loanAmount"
                 >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchForm.fields.loanAmount.value }}
+                    {{ application.loanAmount }}
                   </td>
                 </tr>
                 <tr>
@@ -84,7 +84,7 @@
                     {{ 'Monthly Payment' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchResults[termIndex].rates[rateIndex].monthlyPayment | currency }}
+                    {{ rate.monthlyPayment | currency }}
                   </td>
                 </tr>
               </tbody>
@@ -325,8 +325,8 @@
 <script>
 export default {
   computed: {
-    searchForm () {
-      return this.$store.state.searchform
+    application () {
+      return this.$store.state.application
     },
     searchResults () {
       return this.$store.state.searchresults.results[0]
@@ -339,17 +339,26 @@ export default {
     },
     rateIndex () {
       return this.$store.state.application.rateIndex
+    },
+    rate () {
+      return this.$store.state.searchresults.results[0][this.termIndex].rates[this.rateIndex]
     }
   },
   methods: {
     closeDetailsModal (event) {
       // this.$store.commit('application/setTermIndex', null)
       // this.$store.commit('application/setRateIndex', null)
-      this.$store.commit('searchresults/toggleShowDetails')
+      this.$store.commit('searchresults/hideShowDetails')
     },
-    apply (event, term, rate) {
-      this.$store.commit('application/setTermIndex', term)
-      this.$store.commit('application/setRateIndex', rate)
+    apply (event, termIndex, rateIndex, rate, apr, monthlyPayment, oneFeeGuarantee) {
+      this.$store.commit('application/setTermIndex', termIndex)
+      this.$store.commit('application/setRateIndex', rateIndex)
+      this.$store.commit('application/setRate', rate)
+      this.$store.commit('application/setAPR', apr)
+      this.$store.commit('application/setMonthlyPayment', monthlyPayment)
+      this.$store.commit('application/setOneFeeGuarantee', oneFeeGuarantee)
+      this.$store.commit('searchresults/hideShowDetails')
+      this.$store.commit('application/setCompleted', false)
     }
   }
 }
