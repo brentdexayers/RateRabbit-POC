@@ -482,14 +482,6 @@
           </ul>
         </div>
       </div>
-      <a
-        href="#"
-        class="link-text lnk-decorated"
-        :data-route="$route.path"
-        @click.prevent="formReset"
-      >
-        Reset
-      </a>
     </form>
   </div>
 </template>
@@ -692,10 +684,6 @@ export default {
     focusClassRemove (event) {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
-    },
-    formReset () {
-      this.$store.commit('searchform/reset')
-      this.$store.commit('searchresults/reset')
     },
     formValidate () {
       const self = this

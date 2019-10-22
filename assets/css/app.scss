@@ -78,6 +78,10 @@ aside {
   }
 }
 
+.row {
+  flex: 1 0 100%;
+}
+
 .vertical-col-spacer {
   display: flex;
   flex: 1 1 0;

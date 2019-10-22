@@ -23,6 +23,12 @@ export default {
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
   },
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.validateRoute()
+    })
+  },
+
   computed: {
     results () {
       return this.$store.state.searchresults.results
@@ -39,6 +45,15 @@ export default {
   },
   async fetch ({ store, params }) {
     await store.dispatch('searchresults/GET_RESULTS')
+  },
+  methods: {
+    validateRoute () {
+      let route = true
+      if (this.results.length > 0) {
+        route = '/search'
+      }
+      return route
+    }
   },
   head () {
     return {

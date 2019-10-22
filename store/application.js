@@ -16,5 +16,10 @@ export const mutations = {
       date = new Date()
     }
     state.date = date
+  },
+  reset (state) {
+    state.termIndex = null
+    state.rateIndex = null
+    state.date = null
   }
 }

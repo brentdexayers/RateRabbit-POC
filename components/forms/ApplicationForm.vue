@@ -1,83 +1,70 @@
 <template>
   <form class="form form-lg form--apply">
-    <p class="form--apply__header">
-      Your Information
-    </p>
+    <h3 class="form--apply__header">
+      Start the loan application process
+    </h3>
     <div class="row">
-      <div class="form-group col-12 col-md-6">
+      <div class="form-group col-12 col-lg-6">
+        <label
+          for="firstName"
+          :class="{ hasvalue: firstName }"
+        >
+          {{ 'First Name' | titlecase }}
+        </label>
         <input
           type="text"
-          class="form-control form-control-lg"
+          class="form-control"
           name="firstName"
-          placeholder="First Name"
+          @focus="focusClassAdd($event)"
+          @blur="focusClassRemove($event)"
         >
       </div>
-      <div class="form-group col-12 col-md-6">
+      <div class="form-group col-12 col-lg-6">
+        <label
+          for="lastName"
+          :class="{ hasvalue: lastName }"
+        >
+          {{ 'Last Name' | titlecase }}
+        </label>
         <input
           type="text"
-          class="form-control form-control-lg"
+          class="form-control"
           name="lastName"
-          placeholder="Last Name"
+          @focus="focusClassAdd($event)"
+          @blur="focusClassRemove($event)"
         >
       </div>
     </div>
     <div class="row">
-      <div class="form-group col-12 col-md-6">
-        <input
-          type="text"
-          class="form-control form-control-lg"
-          name="email"
-          placeholder="Email Address"
+      <div class="form-group col-12 col-lg-6">
+        <label
+          for="phone"
+          :class="{ hasvalue: phone }"
         >
-      </div>
-      <div class="form-group col-12 col-md-6">
+          {{ 'Phone Number' | titlecase }}
+        </label>
         <input
           type="text"
-          class="form-control form-control-lg"
+          class="form-control"
           name="phone"
-          placeholder="Contact Phone Number"
+          @focus="focusClassAdd($event)"
+          @blur="focusClassRemove($event)"
         >
       </div>
-    </div>
-    <div class="form-group w-100 form-connect__spacer" />
-    <div class="row">
-      <div class="form-group col-12">
-        <select
-          class="form-control form-control-lg custom-select custom-select-lg"
-          name="loanPurpose"
-          placeholder="Loan Purpose"
+      <div class="form-group col-12 col-lg-6">
+        <label
+          for="email"
+          :class="{ hasvalue: email }"
         >
-          <option value="" disabled selected>
-            Loan Purpose
-          </option>
-          <option value="Option1">
-            Option 1
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <textarea
-          class="form-control form-control-lg"
-          placehoder="Questions/comments"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-12">
-        <select
-          class="form-control form-control-lg custom-select custom-select-lg"
-          name="howHearAboutUs"
-          placeholder="How did you hear about us?"
+          {{ 'Email Address' | titlecase }}
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          name="email"
+          @focus="focusClassAdd($event)"
+          @blur="focusClassRemove($event)"
         >
-          <option value="" disabled selected>
-            How did you hear about us?
-          </option>
-          <option value="Option1">
-            Option 1
-          </option>
-        </select>
       </div>
     </div>
     <div class="row">
@@ -85,9 +72,9 @@
         <button
           type="submit"
           name="submit"
-          class="btn btn-sm btn-primary form--apply__submit"
+          class="btn btn-primary form--apply__submit"
         >
-          Submit
+          {{ 'Submit' | titlecase }}
         </button>
       </div>
     </div>
@@ -103,6 +90,16 @@
 
 <script>
 export default {
+  methods: {
+    focusClassAdd (event) {
+      const self = event.target
+      self.previousElementSibling.classList.add('focused')
+    },
+    focusClassRemove (event) {
+      const self = event.target
+      self.previousElementSibling.classList.remove('focused')
+    }
+  }
 }
 </script>
 

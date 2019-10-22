@@ -354,6 +354,9 @@ export const state = () => ({
       label: 'Sign Up',
       required: false
     }
+  },
+  submit: {
+    datetime: null
   }
 })
 
@@ -419,5 +422,15 @@ export const mutations = {
   },
   addErrors (state, errors) {
     state.errors = errors
+  },
+  clearErrors (state, errors) {
+    state.errors = []
+  },
+  setDatetime (state, payload = false) {
+    if (payload) {
+      state.submit.datetime = payload
+    } else {
+      state.submit.datetime = new Date()
+    }
   }
 }
