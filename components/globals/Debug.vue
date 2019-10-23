@@ -184,7 +184,7 @@ export default {
       this.applicationDebugShow = false
     },
     searchFormReset () {
-      this.$store.commit('searchform/reset')
+      this.$store.commit('application/reset')
       this.$store.commit('searchform/clearErrors')
     },
     searchResultsReset () {

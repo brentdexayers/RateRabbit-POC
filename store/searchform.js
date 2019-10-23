@@ -338,10 +338,18 @@ export const state = () => ({
       required: false
     }
   },
-  submit: {
-    datetime: null
-  }
+  datetimes: []
 })
+
+export const getters = {
+  getDatetimeLatest: (state) => {
+    return state.datetimes.filter(
+      (datetime) => {
+        return datetime.slice(-1)[0]
+      }
+    )
+  }
+}
 
 export const mutations = {
   addError (state, error) {
@@ -350,11 +358,7 @@ export const mutations = {
   clearErrors (state, errors) {
     state.errors = []
   },
-  setDatetime (state, payload = false) {
-    if (payload) {
-      state.submit.datetime = payload
-    } else {
-      state.submit.datetime = new Date()
-    }
+  addDatetime (state) {
+    state.datetimes.push(new Date())
   }
 }

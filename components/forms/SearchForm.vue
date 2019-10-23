@@ -438,10 +438,12 @@
           <ul class="list-unstyled form--search-rates__supplemental-links">
             <li class="form--search-rates__supplemental-link">
               <div class="row">
-                <div class="form-group col-12 mb-3">
-                  <p class="mb-0">
+                <div class="col-12">
+                  <p class="mb-1">
                     Do you have a promotional code?
                   </p>
+                </div>
+                <div class="form-group col-12 mb-3">
                   <label
                     for="promoCode"
                     :class="{ hasvalue: promoCode }"
@@ -491,7 +493,6 @@
 </template>
 
 <script>
-// import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -503,11 +504,21 @@ export default {
     }
   },
   computed: {
+    loading () {
+      return this.$store.state.searchresults.loading
+    },
     applicationCompleted () {
       return this.$store.state.application.completed
     },
+    latestSubmit () {
+      const latest = () => {
+        const datetimesArray = this.$store.state.searchform.datetimes
+        return datetimesArray.slice(-1)[0]
+      }
+      return latest()
+    },
     searchResults () {
-      return this.$store.state.searchresults
+      return this.$store.state.searchresults.results
     },
     formFields () {
       return this.$store.state.searchform.fields
@@ -711,16 +722,22 @@ export default {
       // After error checking...
       if (
         formIsValid &&
-        this.formErrors.length <= 0
+        self.formErrors.length <= 0
       ) {
         // Form is valid
-        self.$router.push({
-          path: '/search/results'
-        })
+        self.$store.commit('searchform/addDatetime')
+        // self.$store.commit('searchresults/setLoading', true)
+        if (self.$router.history.current.name === 'search-results') {
+          window.scrollTo(0, 0)
+        } else {
+          self.$router.push({
+            name: 'search-results'
+          })
+        }
       } else {
         // Form is not valid
+        window.scrollTo(0, 0)
       }
-      window.scrollTo(0, 0)
     }
   }
 }

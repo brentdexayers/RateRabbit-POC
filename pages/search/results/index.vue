@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <Loader v-if="!results" />
+    <Loader v-if="loading" />
     <Results v-if="results" />
     <Details v-if="showDetails" />
   </div>
@@ -23,15 +23,22 @@ export default {
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
   },
-  beforeRouteEnter (to, from, next) {
-    console.log('beforeRouteEnter')
-    next((vm) => {
-      vm.validateRoute()
-    })
+  watchQuery: ['fetchResults'],
+  middleware ({ store, redirect }) {
+    // if the search form has not been completed appropriately
+    if (
+      store.state.searchform.errors.length > 0 || // we have form errors
+      store.state.searchform.datetimes.length <= 0 // the search form has never been submitted
+    ) {
+      return redirect('/search')
+    }
   },
   computed: {
     results () {
       return this.$store.state.searchresults.results
+    },
+    loading () {
+      return this.$store.state.searchresults.loading
     },
     showDetails () {
       return this.$store.state.searchresults.showDetails

@@ -346,8 +346,6 @@ export default {
   },
   methods: {
     closeDetailsModal (event) {
-      // this.$store.commit('application/setTermIndex', null)
-      // this.$store.commit('application/setRateIndex', null)
       this.$store.commit('searchresults/hideShowDetails')
     },
     apply (event, termIndex, rateIndex, rate, apr, monthlyPayment, oneFeeGuarantee) {

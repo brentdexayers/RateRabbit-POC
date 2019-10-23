@@ -1,9 +1,7 @@
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
-    base: '/RateRabbit-POC/',
-    linkActiveClass: 'active-parent',
-    linkExactActiveClass: 'active'
+    base: '/RateRabbit-POC/'
   }
 } : {}
 
@@ -27,7 +25,7 @@ export default {
   ** Environment Variables
   */
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.DEPLOY_ENV === 'DEVELOPMENT' ? process.env.BASE_URL || 'http://localhost:3000' : (process.env.DEPLOY_ENV === 'GH_PAGES' ? process.env.BASE_URL || 'https://brentdexayers.github.io/RateRabbit-POC' : ''),
     mode: process.env.NODE_ENV
   },
   /*
@@ -96,10 +94,6 @@ export default {
   */
   pageTransition: {
     name: 'page',
-    mode: 'out-in',
-    // duration: {
-    //   enter: 250,
-    //   leave: 250
-    // }
+    mode: 'out-in'
   }
 }

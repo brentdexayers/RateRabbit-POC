@@ -76,13 +76,12 @@ export default {
       height: $input-height-lg;
       padding-top: $spacer;
       transition: $transition-base;
-      &#promoCode {
-        padding-top: $input-padding-y;
-      }
+      // &#promoCode {
+      //   padding-top: $input-padding-y;
+      // }
     }
     label {
-      &:not(.custom-control-label),
-      &:not(.form--search-rates__form-group--program-options__label) {
+      &:not(.custom-control-label) {
         color: $gray-600;
         font-size: $input-font-size;
         margin-bottom: 0;
@@ -112,6 +111,9 @@ export default {
         margin-left: 0;
         pointer-events: inherit;
         position: relative;
+      }
+      &.form--search-rates__form-group--program-options__label {
+        margin-bottom: #{$spacer * 2};
       }
     }
   }

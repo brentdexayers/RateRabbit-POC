@@ -1,18 +1,16 @@
 export const state = () => ({
   results: [],
-  date: null,
-  showDetails: false
+  datetimes: [],
+  showDetails: false,
+  loading: true
 })
 
 export const mutations = {
   add (state, payload) {
     state.results.push(payload)
   },
-  setDate (state, payload = false) {
-    if (!payload) {
-      payload = new Date()
-    }
-    state.date = payload
+  addDatetime (state) {
+    state.datetimes.push(new Date())
   },
   showDetails (state) {
     state.showDetails = true
@@ -22,6 +20,9 @@ export const mutations = {
   },
   toggleShowDetails (state) {
     state.showDetails = !state.showDetails
+  },
+  setLoading (state, payload) {
+    state.loading = payload
   },
   reset (state) {
     state.results.length = 0
@@ -33,7 +34,9 @@ export const actions = {
     commit('reset')
     const { data } = await this.$axios.get(process.env.baseUrl + '/SearchResults.json')
     commit('add', data)
-    const date = new Date()
-    commit('setDate', date)
+    commit('addDatetime')
+    setTimeout(() => {
+      commit('setLoading', false)
+    }, 1000)
   }
 }
