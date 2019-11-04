@@ -411,7 +411,7 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
-            v-if="searchResults.length > 0"
+            v-if="Object.entries(searchResults).length === 0 && searchResults.constructor === Object"
             class="btn btn-outline-primary form--search-rates__submit"
             type="submit"
           >
@@ -518,7 +518,7 @@ export default {
       return latest()
     },
     searchResults () {
-      return this.$store.state.searchresults.results
+      return this.$store.state.searchresults.loanProducts
     },
     formFields () {
       return this.$store.state.searchform.fields

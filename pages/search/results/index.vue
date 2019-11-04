@@ -1,21 +1,26 @@
 <template>
   <div class="page-content">
     <Loader v-if="loading" />
-    <Results v-if="results" />
+    <div class="search-results">
+      <p>
+        Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
+      </p>
+      <LoanProducts v-if="LoanProducts" />
+    </div>
     <Details v-if="showDetails" />
   </div>
 </template>
 
 <script>
 import Loader from '~/components/search/Loader.vue'
-import Results from '~/components/search/Results.vue'
+import LoanProducts from '~/components/search/LoanProductsLoop.vue'
 import Details from '~/components/search/Details.vue'
 
 export default {
   layout: 'default',
   components: {
     Loader,
-    Results,
+    LoanProducts,
     Details
   },
   data () {
@@ -34,8 +39,8 @@ export default {
     }
   },
   computed: {
-    results () {
-      return this.$store.state.searchresults.results
+    LoanProducts () {
+      return this.$store.state.searchresults.loanProducts
     },
     loading () {
       return this.$store.state.searchresults.loading
@@ -51,7 +56,7 @@ export default {
     }
   },
   async fetch ({ store, params }) {
-    await store.dispatch('searchresults/GET_RESULTS')
+    await store.dispatch('searchresults/GET_LOAN_PRODUCTS')
   },
   methods: {
     validateRoute () {

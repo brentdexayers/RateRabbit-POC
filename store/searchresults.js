@@ -1,13 +1,13 @@
 export const state = () => ({
-  results: [],
+  loanProducts: {},
   datetimes: [],
   showDetails: false,
   loading: true
 })
 
 export const mutations = {
-  add (state, payload) {
-    state.results.push(payload)
+  setLoanProducts (state, payload) {
+    state.loanProducts = payload
   },
   addDatetime (state) {
     state.datetimes.push(new Date())
@@ -25,15 +25,15 @@ export const mutations = {
     state.loading = payload
   },
   reset (state) {
-    state.results.length = 0
+    state.loanProducts = {}
   }
 }
 
 export const actions = {
-  async GET_RESULTS ({ commit }) {
+  async GET_LOAN_PRODUCTS ({ commit }) {
     commit('reset')
-    const { data } = await this.$axios.get(process.env.baseUrl + '/SearchResults.json')
-    commit('add', data)
+    const { data } = await this.$axios.get(process.env.baseUrl + '/TestResults.json')
+    commit('setLoanProducts', data)
     commit('addDatetime')
     setTimeout(() => {
       commit('setLoading', false)

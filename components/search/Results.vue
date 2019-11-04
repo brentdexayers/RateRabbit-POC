@@ -1,8 +1,9 @@
 <template>
-  <div class="search-results">
-    <p>
-      Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
-    </p>
+  <div>
+    <pre>
+      results:
+      {{ results }}
+    </pre>
     <div
       v-for="(result, termIndex) in results"
       :key="termIndex"

@@ -278,15 +278,15 @@ export const state = () => ({
       default: '',
       label: 'Credit Rating',
       options: [
-        { label: '740+ (Excellent)', value: '740' },
-        { label: '720 - 739', value: '720-739' },
-        { label: '700 - 719', value: '700-719' },
-        { label: '680 - 699', value: '680-699' },
-        { label: '660 - 679', value: '660-679' },
-        { label: '640 - 659', value: '640-659' },
-        { label: '620 - 639', value: '620-639' },
-        { label: '600 - 619', value: '600-619' },
-        { label: '580 - 599 (Poor)', value: '580-599' }
+        { label: '740+ (Excellent)', value: 740 },
+        { label: '720 - 739', value: 720 },
+        { label: '700 - 719', value: 700 },
+        { label: '680 - 699', value: 680 },
+        { label: '660 - 679', value: 660 },
+        { label: '640 - 659', value: 640 },
+        { label: '620 - 639', value: 620 },
+        { label: '600 - 619', value: 600 },
+        { label: '580 - 599 (Poor)', value: 580 }
       ],
       required: true
     },
