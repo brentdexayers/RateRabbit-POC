@@ -62,13 +62,22 @@ export default {
     ['bootstrap-vue/nuxt', { css: false }],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/proxy'
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api/': {
+      changeOrigin: true,
+      pathRewrite: {'^/api/': ''},
+      target: process.env.NUXT_ENV_AUTH_URL || 'http://development.raterabbit.com:8080/RateRabbit/webapi/'
+    }
   },
   /*
   ** Build configuration

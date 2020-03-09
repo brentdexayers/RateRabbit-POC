@@ -2,10 +2,10 @@
   <div>
     <form
       id="search-rates-form"
+      @submit.prevent="formValidate"
       action="/search/results"
       method="POST"
       class="form form--search-rates"
-      @submit.prevent="formValidate"
     >
       <div v-if="formErrors.length" class="form-errors form-errors--wrapper">
         <p>
@@ -24,17 +24,17 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="loanPurpose"
-            :class="{ hasvalue: loanPurpose }"
+            :class="{ hasvalue: loanpurpose }"
+            for="loanpurpose"
           >
             {{ 'Loan Purpose' | titlecase }}
           </label>
           <select
-            v-model="loanPurpose"
-            name="loanPurpose"
-            class="custom-select"
+            v-model="loanpurpose"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="loanpurpose"
+            class="custom-select"
           >
             <option
               value=""
@@ -42,7 +42,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in loanPurposeOptions"
+              v-for="(option, i) in loanpurposeOptions"
               :key="i"
               :value="option.value"
             >
@@ -54,42 +54,42 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="propertyValue"
-            :class="{ hasvalue: propertyValue }"
+            :class="{ hasvalue: propertyvalue }"
+            for="propertyvalue"
           >
             {{ 'Property value' | titlecase }}
           </label>
           <input
-            v-model="propertyValue"
+            v-model="propertyvalue"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-            type="text"
-            class="form-control"
-            name="propertyValue"
-            placeholder=""
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="propertyvalue"
+            class="form-control"
+            placeholder=""
           >
         </div>
       </div>
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="loanAmount"
-            :class="{ hasvalue: loanAmount }"
+            :class="{ hasvalue: loanamount }"
+            for="loanamount"
           >
             {{ 'Loan Amount' | titlecase }}
           </label>
           <input
-            v-model="loanAmount"
+            v-model="loanamount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
-            type="text"
-            class="form-control"
-            name="loanAmount"
-            placeholder=""
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="loanamount"
+            class="form-control"
+            placeholder=""
           >
         </div>
       </div>
@@ -102,58 +102,19 @@
       </div>
       <div class="form--search-rates__spacer form-group w-100" />
       <div class="row">
-        <div
-          v-for="(program, i) in loanProgramOptions"
-          :key="i"
-          class="form-group col-6 form--search-rates__form-group--program-options"
-        >
-          <label class="form--search-rates__form-group--program-options__label">
-            {{ program.name }}
-            <template v-if="program.tooltip">
-              <img :id="'program-options-tooltip-' + i" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-              <b-tooltip :target="'program-options-tooltip-' + i" triggers="hover">
-                {{ program.tooltip }}
-              </b-tooltip>
-            </template>
-          </label>
-          <ul class="list-unstyled form--search-rates__form-group--program-options__list">
-            <li
-              v-for="(term, j) in program.terms"
-              :key="j"
-              class="custom-control custom-checkbox list-item"
-            >
-              <input
-                :id="term.value"
-                v-model="loanProgram"
-                class="custom-control-input"
-                :value="term.value"
-                type="checkbox"
-              >
-              <label
-                class="custom-control-label"
-                :for="term.value"
-              >
-                {{ term.label }}
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="form--search-rates__spacer form-group w-100" />
-      <div class="row">
-        <div class="form-group col-12 form--search-rates__col--state">
+        <div class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
-            for="state"
             :class="{ hasvalue: state }"
+            for="state"
           >
             {{ 'State' | titlecase }}
           </label>
           <select
             v-model="state"
-            name="state"
-            class="custom-select"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="state"
+            class="custom-select"
           >
             <option
               value=""
@@ -170,68 +131,38 @@
             </option>
           </select>
         </div>
-        <div class="form-group col-12 form--search-rates__col--county">
+        <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            for="county"
-            :class="{ hasvalue: county }"
+            :class="{ hasvalue: zipcode }"
+            for="zipcode"
           >
-            {{ 'County' | titlecase }}
+            {{ 'Zip Code' | titlecase }}
           </label>
-          <select
-            v-model="county"
-            name="county"
-            class="custom-select"
+          <input
+            v-model="zipcode"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="zipcode"
+            class="form-control"
+            placeholder=""
           >
-            <template
-              v-if="state"
-            >
-              <option
-                value=""
-                disabled
-                hidden
-              />
-              <option
-                v-for="option in countyOptions[state]"
-                :key="option.value"
-                :value="option.value"
-                :title="option.label"
-              >
-                {{ option.label }}
-              </option>
-            </template>
-            <template
-              v-else
-            >
-              <option
-                v-for="option in countyOptions.default"
-                :key="option.value"
-                :value="option.value"
-                :title="option.label"
-                selected
-                disabled
-              >
-                {{ option.label }}
-              </option>
-            </template>
-          </select>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="propertyType"
-            :class="{ hasvalue: propertyType }"
+            :class="{ hasvalue: propertytype }"
+            for="propertytype"
           >
             {{ 'Property Type' | titlecase }}
           </label>
           <select
-            v-model="propertyType"
-            name="propertyType"
-            class="custom-select"
+            v-model="propertytype"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="propertytype"
+            class="custom-select"
           >
             <option
               value=""
@@ -239,7 +170,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in propertyTypeOptions"
+              v-for="(option, i) in propertytypeOptions"
               :key="i"
               :value="option.value"
             >
@@ -251,17 +182,17 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="propertyUse"
-            :class="{ hasvalue: propertyUse }"
+            :class="{ hasvalue: propertyuse }"
+            for="propertyuse"
           >
             {{ 'Property Use' | titlecase }}
           </label>
           <select
-            v-model="propertyUse"
-            name="propertyUse"
-            class="custom-select"
+            v-model="propertyuse"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="propertyuse"
+            class="custom-select"
           >
             <option
               value=""
@@ -269,7 +200,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in propertyUseOptions"
+              v-for="(option, i) in propertyuseOptions"
               :key="i"
               :value="option.value"
             >
@@ -281,17 +212,17 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            for="creditRating"
-            :class="{ hasvalue: creditRating }"
+            :class="{ hasvalue: creditrating }"
+            for="creditrating"
           >
             {{ 'Credit Rating' | titlecase }}
           </label>
           <select
-            v-model="creditRating"
-            name="creditRating"
-            class="custom-select"
+            v-model="creditrating"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="creditrating"
+            class="custom-select"
           >
             <option
               value=""
@@ -299,7 +230,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in creditRatingOptions"
+              v-for="(option, i) in creditratingOptions"
               :key="i"
               :value="option.value"
             >
@@ -312,17 +243,17 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--interest">
           <label
-            for="interestOnly"
-            :class="{ hasvalue: interestOnly }"
+            :class="{ hasvalue: interestonly }"
+            for="interestonly"
           >
             {{ 'Interest Only' | titlecase }}
           </label>
           <select
-            v-model="interestOnly"
-            name="interestOnly"
-            class="custom-select"
+            v-model="interestonly"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="interestonly"
+            class="custom-select"
           >
             <option
               value=""
@@ -330,7 +261,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in interestOnlyOptions"
+              v-for="(option, i) in interestonlyOptions"
               :key="i"
               :value="option.value"
             >
@@ -340,8 +271,8 @@
         </div>
         <div class="form-group col-12 form--search-rates__col--taxes">
           <label
-            for="taxesInsurance"
-            :class="{ hasvalue: taxesInsurance }"
+            :class="{ hasvalue: taxesandinsurance }"
+            for="taxesandinsurance"
           >
             {{ 'Taxes & Insurance' | titlecase }}
             <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
@@ -351,11 +282,11 @@
           </label>
           <select
             id="input-select--taxes"
-            v-model="taxesInsurance"
-            name="taxesInsurance"
-            class="custom-select has-info"
+            v-model="taxesandinsurance"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            name="taxesandinsurance"
+            class="custom-select has-info"
           >
             <option
               value=""
@@ -363,43 +294,7 @@
               hidden
             />
             <option
-              v-for="(option, i) in taxesInsuranceOptions"
-              :key="i"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-12">
-          <label
-            for="refinanceType"
-            :class="{ hasvalue: refinanceType }"
-          >
-            {{ 'Refinance Type' | titlecase }}
-            <img id="refinance-type-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-            <b-tooltip target="refinance-type-tooltip" triggers="hover">
-              <p>If you are consolidating a 2nd mortgage, home equity line of credit after the purchase of property, your loan will be considered a "Refinance With Cash Out"</p>
-              <p>You should also choose <strong>Cash Out</strong> if you are netting more than $2000 Cash, if you are paying off a Second Mortgage that was not taken out at the time of purchase or if you are paying off any other consumer debts with the proceeds of this loan.</p>
-            </b-tooltip>
-          </label>
-          <select
-            id="input-select--refinance-type"
-            v-model="refinanceType"
-            name="refinanceType"
-            class="custom-select has-info"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
-          >
-            <option
-              value=""
-              disabled
-              hidden
-            />
-            <option
-              v-for="(option, i) in refinanceTypeOptions"
+              v-for="(option, i) in taxesandinsuranceOptions"
               :key="i"
               :value="option.value"
             >
@@ -412,22 +307,22 @@
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
             v-if="Object.entries(searchResults).length === 0 && searchResults.constructor === Object"
-            class="btn btn-outline-primary form--search-rates__submit"
             type="submit"
+            class="btn btn-outline-primary form--search-rates__submit"
           >
             {{ 'Update Search' | titlecase }}
           </button>
           <button
             v-else-if="applicationCompleted"
-            class="btn btn-primary form--search-rates__submit"
             type="submit"
+            class="btn btn-primary form--search-rates__submit"
           >
             {{ 'Start New Search' | titlecase }}
           </button>
           <button
             v-else
-            class="btn btn-primary form--search-rates__submit"
             type="submit"
+            class="btn btn-primary form--search-rates__submit"
           >
             {{ 'Search Live Rates' | titlecase }}
           </button>
@@ -445,19 +340,19 @@
                 </div>
                 <div class="form-group col-12 mb-3">
                   <label
-                    for="promoCode"
-                    :class="{ hasvalue: promoCode }"
+                    :class="{ hasvalue: promotioncode }"
+                    for="promotioncode"
                   >
                     {{ 'Promo Code' | titlecase }}
                   </label>
                   <input
-                    v-model="promoCode"
-                    type="text"
-                    class="form-control"
-                    name="promoCode"
-                    placeholder=""
+                    v-model="promotioncode"
                     @focus="focusClassAdd($event)"
                     @blur="focusClassRemove($event)"
+                    type="text"
+                    name="promotioncode"
+                    class="form-control"
+                    placeholder=""
                   >
                 </div>
               </div>
@@ -470,14 +365,14 @@
                   </p>
                   <div class="custom-control custom-checkbox">
                     <input
-                      id="signUp"
-                      v-model="signUp"
-                      class="custom-control-input"
+                      id="signup"
+                      v-model="signup"
                       type="checkbox"
+                      class="custom-control-input"
                     >
                     <label
                       class="custom-control-label"
-                      for="signUp"
+                      for="signup"
                     >
                       Yes, I'd like to sign up!
                     </label>
@@ -487,6 +382,14 @@
             </li>
           </ul>
         </div>
+      </div>
+      <div class="hidden">
+        <input
+          id="input-hidden--refinance-type"
+          v-model="loanrefinancetype"
+          name="loanrefinancetype"
+          class="custom-control-input"
+        >
       </div>
     </form>
   </div>
@@ -499,8 +402,8 @@ export default {
   },
   data () {
     return {
-      hasSignUp: false,
-      hasPromoCode: false
+      hassignup: false,
+      haspromotioncode: false
     }
   },
   computed: {
@@ -526,31 +429,31 @@ export default {
     formErrors () {
       return this.$store.state.searchform.errors
     },
-    loanPurpose: {
+    loanpurpose: {
       get () {
-        return this.$store.state.application.loanPurpose
+        return this.$store.state.application.loanpurpose
       },
       set (value) {
-        this.$store.commit('application/setLoanPurpose', value)
+        this.$store.commit('application/setloanpurpose', value)
       }
     },
-    loanPurposeOptions () {
-      return this.$store.state.searchform.fields.loanPurpose.options
+    loanpurposeOptions () {
+      return this.$store.state.searchform.fields.loanpurpose.options
     },
-    propertyValue: {
+    propertyvalue: {
       get () {
-        return this.$store.state.application.propertyValue
+        return this.$store.state.application.propertyvalue
       },
       set (value) {
-        this.$store.commit('application/setPropertyValue', value)
+        this.$store.commit('application/setpropertyvalue', value)
       }
     },
-    loanAmount: {
+    loanamount: {
       get () {
-        return this.$store.state.application.loanAmount
+        return this.$store.state.application.loanamount
       },
       set (value) {
-        this.$store.commit('application/setLoanAmount', value)
+        this.$store.commit('application/setloanamount', value)
       }
     },
     ltv: {
@@ -561,127 +464,121 @@ export default {
         this.$store.commit('application/setLTV', value)
       }
     },
-    loanProgram: {
-      get () {
-        return this.$store.state.application.loanProgram
-      },
-      set (value) {
-        this.$store.commit('application/setLoanProgram', value)
-      }
-    },
-    loanProgramOptions () {
-      return this.$store.state.searchform.fields.loanProgram.options
+    // loanprogram: {
+    //   get () {
+    //     return this.$store.state.application.loanprogram
+    //   },
+    //   set (value) {
+    //     this.$store.commit('application/setloanprogram', value)
+    //   }
+    // },
+    loanprogramOptions () {
+      return this.$store.state.searchform.fields.loanprogram.options
     },
     state: {
       get () {
         return this.$store.state.application.state
       },
       set (value) {
-        this.$store.commit('application/setState', value)
+        this.$store.commit('application/setstate', value)
       }
     },
     stateOptions () {
       return this.$store.state.searchform.fields.state.options
     },
-    county: {
+    zipcode: {
       get () {
-        return this.$store.state.application.county
+        return this.$store.state.application.zipcode
       },
       set (value) {
-        this.$store.commit('application/setCounty', value)
+        this.$store.commit('application/setzipcode', value)
       }
     },
-    countyOptions () {
-      return this.$store.state.searchform.fields.county.options
-    },
-    propertyType: {
+    propertytype: {
       get () {
-        return this.$store.state.application.propertyType
+        return this.$store.state.application.propertytype
       },
       set (value) {
-        this.$store.commit('application/setPropertyType', value)
+        this.$store.commit('application/setpropertytype', value)
       }
     },
-    propertyTypeOptions () {
-      return this.$store.state.searchform.fields.propertyType.options
+    propertytypeOptions () {
+      return this.$store.state.searchform.fields.propertytype.options
     },
-    propertyUse: {
+    propertyuse: {
       get () {
-        return this.$store.state.application.propertyUse
+        return this.$store.state.application.propertyuse
       },
       set (value) {
-        this.$store.commit('application/setPropertyUse', value)
+        this.$store.commit('application/setpropertyuse', value)
       }
     },
-    propertyUseOptions () {
-      return this.$store.state.searchform.fields.propertyUse.options
+    propertyuseOptions () {
+      return this.$store.state.searchform.fields.propertyuse.options
     },
-    creditRating: {
+    creditrating: {
       get () {
-        return this.$store.state.application.creditRating
+        return this.$store.state.application.creditrating
       },
       set (value) {
-        this.$store.commit('application/setCreditRating', value)
+        this.$store.commit('application/setcreditrating', value)
       }
     },
-    creditRatingOptions () {
-      return this.$store.state.searchform.fields.creditRating.options
+    creditratingOptions () {
+      return this.$store.state.searchform.fields.creditrating.options
     },
-    interestOnly: {
+    interestonly: {
       get () {
-        return this.$store.state.application.interestOnly
+        return this.$store.state.application.interestonly
       },
       set (value) {
-        this.$store.commit('application/setInterestOnly', value)
+        this.$store.commit('application/setinterestonly', value)
       }
     },
-    interestOnlyOptions () {
-      return this.$store.state.searchform.fields.interestOnly.options
+    interestonlyOptions () {
+      return this.$store.state.searchform.fields.interestonly.options
     },
-    taxesInsurance: {
+    taxesandinsurance: {
       get () {
-        return this.$store.state.application.taxesInsurance
+        return this.$store.state.application.taxesandinsurance
       },
       set (value) {
-        this.$store.commit('application/setTaxesInsurance', value)
+        this.$store.commit('application/settaxesandinsurance', value)
       }
     },
-    taxesInsuranceOptions () {
-      return this.$store.state.searchform.fields.taxesInsurance.options
+    taxesandinsuranceOptions () {
+      return this.$store.state.searchform.fields.taxesandinsurance.options
     },
-    refinanceType: {
+    loanrefinancetype: {
       get () {
-        return this.$store.state.application.refinanceType
+        return this.$store.state.application.loanrefinancetype
       },
       set (value) {
-        this.$store.commit('application/setRefinanceType', value)
+        this.$store.commit('application/setloanrefinancetype', value)
       }
     },
-    refinanceTypeOptions () {
-      return this.$store.state.searchform.fields.refinanceType.options
-    },
-    promoCode: {
+    promotioncode: {
       get () {
-        return this.$store.state.application.promoCode
+        return this.$store.state.application.promotioncode
       },
       set (value) {
-        this.$store.commit('application/setPromoCode', value)
+        this.$store.commit('application/setpromotioncode', value)
       }
     },
-    signUp: {
+    signup: {
       get () {
-        return this.$store.state.application.signUp
+        return this.$store.state.application.signup
       },
       set (value) {
-        this.$store.commit('application/setSignUp', value)
+        this.$store.commit('application/setsignup', value)
       }
     }
   },
   methods: {
     calculateLTV () {
       let ltv = 0
-      if (this.propertyValue && this.loanAmount) {
-        ltv = this.$parseCurrency(this.loanAmount, 'en', 'USD') / this.$parseCurrency(this.propertyValue, 'en', 'USD')
+      if (this.propertyvalue && this.loanamount) {
+        ltv = this.$parseCurrency(this.loanamount, 'en', 'USD') / this.$parseCurrency(this.propertyvalue, 'en', 'USD')
       }
       this.$store.commit('application/setLTV', ltv)
     },

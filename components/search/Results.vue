@@ -5,10 +5,10 @@
       {{ results }}
     </pre>
     <div
-      v-for="(result, termIndex) in results"
-      :key="termIndex"
+      v-for="(result, termindex) in results"
+      :key="termindex"
       class="results-table__results"
-      :data-result-index="termIndex"
+      :data-result-index="termindex"
     >
       <h2>
         {{ result.term }}
@@ -38,7 +38,7 @@
         <div
           class="results-table__result results-table__result--desktop"
         >
-          <div v-if="!rate.oneFeeGuarantee" class="results-table__result__recommended">
+          <div v-if="!rate.onefeeguarantee" class="results-table__result__recommended">
             <img src="~assets/icons/icon-check.png" width="18">
           </div>
           <div class="row">
@@ -51,14 +51,14 @@
                   {{ rate.apr | percent }}
                 </div>
                 <div class="col-4">
-                  {{ rate.monthlyPayment | currency }}
+                  {{ rate.monthlypayment | currency }}
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <p :class="{ recommended: !rate.oneFeeGuarantee }">
-                    {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.oneFeeGuarantee }">{{ rate.oneFeeGuarantee | currency }}</span>
-                    <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
+                  <p :class="{ recommended: !rate.onefeeguarantee }">
+                    {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: !rate.onefeeguarantee }">{{ rate.onefeeguarantee | currency }}</span>
+                    <span v-if="!rate.onefeeguarantee" class="no-cost-loan-text">
                       {{ 'Recommended No-Cost loan' | titlecase }}
                     </span>
                   </p>
@@ -71,9 +71,9 @@
                   <nuxt-link
                     to="/apply"
                     class="btn btn-sm btn-primary results-table__result--desktop__button"
-                    :data-term="termIndex"
+                    :data-term="termindex"
                     :data-rate="rateIndex"
-                    @click.native="apply($event, termIndex, rateIndex, rate.rate, rate.apr, rate.monthlyPayment, rate.oneFeeGuarantee)"
+                    @click.native="apply($event, termindex, rateIndex, rate.rate, rate.apr, rate.monthlypayment, rate.onefeeguarantee)"
                   >
                     {{ 'Apply' | titlecase }}
                   </nuxt-link>
@@ -83,7 +83,7 @@
                     <a
                       href="#"
                       class="link-decorated results-table__result--desktop__link"
-                      @click.prevent="showDetails($event, termIndex, rateIndex)"
+                      @click.prevent="showDetails($event, termindex, rateIndex)"
                     >
                       {{ 'See Details' | titlecase }}
                     </a>
@@ -98,7 +98,7 @@
         <div
           class="results-table__result results-table__result--mobile"
         >
-          <div v-if="!rate.oneFeeGuarantee" class="results-table__result__recommended">
+          <div v-if="!rate.onefeeguarantee" class="results-table__result__recommended">
             <img src="~assets/icons/icon-check.png" width="18">
           </div>
           <div class="results-table__result--mobile__rates">
@@ -134,22 +134,22 @@
               </div>
               <div class="col-auto text-right">
                 <p>
-                  {{ rate.monthlyPayment | currency }}
+                  {{ rate.monthlypayment | currency }}
                 </p>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <p :class="{ recommended: !rate.oneFeeGuarantee }">
+                <p :class="{ recommended: !rate.onefeeguarantee }">
                   {{ 'One Fee Guarantee' | capitalize }}
-                  <span v-if="!rate.oneFeeGuarantee" class="no-cost-loan-text">
+                  <span v-if="!rate.onefeeguarantee" class="no-cost-loan-text">
                     {{ 'Recommended No-Cost loan' | titlecase }}
                   </span>
                 </p>
               </div>
               <div class="col-auto text-right">
                 <p>
-                  {{ rate.oneFeeGuarantee | currency }}
+                  {{ rate.onefeeguarantee | currency }}
                 </p>
               </div>
             </div>
@@ -159,7 +159,7 @@
               <a
                 href="#"
                 class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
-                @click.prevent="showDetails($event, termIndex, rateIndex)"
+                @click.prevent="showDetails($event, termindex, rateIndex)"
               >
                 {{ 'Details' | titlecase }}
               </a>
@@ -168,7 +168,7 @@
               <nuxt-link
                 to="/apply"
                 class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
-                @click.native="apply($event, termIndex, rateIndex, rate.rate, rate.apr, rate.monthlyPayment, rate.oneFeeGuarantee)"
+                @click.native="apply($event, termindex, rateIndex, rate.rate, rate.apr, rate.monthlypayment, rate.onefeeguarantee)"
               >
                 {{ 'Apply' | titlecase }}
               </nuxt-link>
@@ -195,19 +195,19 @@ export default {
     }
   },
   methods: {
-    apply (event, termIndex, rateIndex, rate, apr, monthlyPayment, oneFeeGuarantee) {
-      this.$store.commit('application/setTermIndex', termIndex)
-      this.$store.commit('application/setRateIndex', rateIndex)
-      this.$store.commit('application/setRate', rate)
+    apply (event, termindex, rateIndex, rate, apr, monthlypayment, onefeeguarantee) {
+      this.$store.commit('application/settermindex', termindex)
+      this.$store.commit('application/setrateindex', rateIndex)
+      this.$store.commit('application/setrate', rate)
       this.$store.commit('application/setAPR', apr)
-      this.$store.commit('application/setMonthlyPayment', monthlyPayment)
-      this.$store.commit('application/setOneFeeGuarantee', oneFeeGuarantee)
+      this.$store.commit('application/setmonthlypayment', monthlypayment)
+      this.$store.commit('application/setonefeeguarantee', onefeeguarantee)
       this.$store.commit('searchresults/hideShowDetails')
-      this.$store.commit('application/setCompleted', false)
+      this.$store.commit('application/setcompleted', false)
     },
     showDetails (event, term, rate) {
-      this.$store.commit('application/setTermIndex', term)
-      this.$store.commit('application/setRateIndex', rate)
+      this.$store.commit('application/settermindex', term)
+      this.$store.commit('application/setrateindex', rate)
       this.$store.commit('searchresults/toggleShowDetails')
     }
   }

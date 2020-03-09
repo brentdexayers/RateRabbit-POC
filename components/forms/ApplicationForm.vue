@@ -2,10 +2,10 @@
   <div>
     <form
       id="application-form"
+      @submit.prevent="formValidate"
       action="/apply"
       method="POST"
       class="form form--apply"
-      @submit.prevent="formValidate"
     >
       <h3 class="form--apply__header">
         Start the loan application process
@@ -16,68 +16,68 @@
       <div class="row">
         <div class="form-group col-12 col-lg-6">
           <label
-            for="firstName"
-            :class="{ hasvalue: firstName }"
+            :class="{ hasvalue: firstname }"
+            for="firstname"
           >
             {{ 'First Name' | titlecase }}
           </label>
           <input
-            v-model="firstName"
-            type="text"
-            class="form-control"
-            name="firstName"
+            v-model="firstname"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="firstname"
+            class="form-control"
           >
         </div>
         <div class="form-group col-12 col-lg-6">
           <label
-            for="lastName"
-            :class="{ hasvalue: lastName }"
+            :class="{ hasvalue: lastname }"
+            for="lastname"
           >
             {{ 'Last Name' | titlecase }}
           </label>
           <input
-            v-model="lastName"
-            type="text"
-            class="form-control"
-            name="lastName"
+            v-model="lastname"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="lastname"
+            class="form-control"
           >
         </div>
       </div>
       <div class="row">
         <div class="form-group col-12 col-lg-6">
           <label
-            for="phone"
             :class="{ hasvalue: phone }"
+            for="phone"
           >
             {{ 'Phone Number' | titlecase }}
           </label>
           <input
             v-model="phone"
-            type="text"
-            class="form-control"
-            name="phone"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="phone"
+            class="form-control"
           >
         </div>
         <div class="form-group col-12 col-lg-6">
           <label
-            for="email"
             :class="{ hasvalue: email }"
+            for="email"
           >
             {{ 'Email Address' | titlecase }}
           </label>
           <input
             v-model="email"
-            type="text"
-            class="form-control"
-            name="email"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
+            type="text"
+            name="email"
+            class="form-control"
           >
         </div>
       </div>
@@ -111,20 +111,20 @@ export default {
     }
   },
   computed: {
-    firstName: {
+    firstname: {
       get () {
-        return this.$store.state.application.firstName
+        return this.$store.state.application.firstname
       },
       set (value) {
-        this.$store.commit('application/setFirstName', value)
+        this.$store.commit('application/setfirstname', value)
       }
     },
-    lastName: {
+    lastname: {
       get () {
-        return this.$store.state.application.lastName
+        return this.$store.state.application.lastname
       },
       set (value) {
-        this.$store.commit('application/setLastName', value)
+        this.$store.commit('application/setlastname', value)
       }
     },
     phone: {
@@ -132,7 +132,7 @@ export default {
         return this.$store.state.application.phone
       },
       set (value) {
-        this.$store.commit('application/setPhone', value)
+        this.$store.commit('application/setphone', value)
       }
     },
     email: {
@@ -140,7 +140,7 @@ export default {
         return this.$store.state.application.email
       },
       set (value) {
-        this.$store.commit('application/setEmail', value)
+        this.$store.commit('application/setemail', value)
       }
     }
   },
@@ -155,10 +155,10 @@ export default {
     },
     formValidate () {
       this.formHasErrors = false
-      if (!this.firstName) {
+      if (!this.firstname) {
         this.formHasErrors = true
       }
-      if (!this.lastName) {
+      if (!this.lastname) {
         this.formHasErrors = true
       }
       if (!this.phone) {
@@ -168,7 +168,7 @@ export default {
         this.formHasErrors = true
       }
       if (!this.formHasErrors) {
-        this.$store.commit('application/setCompleted', true)
+        this.$store.commit('application/setcompleted', true)
       } else {
 
       }

@@ -1,5 +1,8 @@
 <template>
-  <div class="site-footer__cta" :class="classes">
+  <div
+    :class="classes"
+    class="site-footer__cta"
+  >
     <hr>
     <nuxt-link to="/connect" class="btn btn-sm btn-outline-primary">
       Request an Appointment

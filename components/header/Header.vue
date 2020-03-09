@@ -6,6 +6,7 @@
     <nav id="mainNav" class="navbar navbar-light navbar-expand-lg site-header__navbar">
       <div class="container">
         <button
+          @click="toggleMainNav"
           class="navbar-toggler site-header__navbar__toggler"
           type="button"
           data-toggle="collapse"
@@ -13,15 +14,18 @@
           aria-controls="mainNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          @click="toggleMainNav"
         >
           <span class="navbar-toggler-icon" />
         </button>
         <nuxt-link to="/" class="navbar-brand site-header__navbar__logo">
           <Logo />
         </nuxt-link>
-        <div class="collapse navbar-collapse site-header__navbar__nav-wrapper" :class="{ show: mainNav.toggle }">
+        <div
+          :class="{ show: mainNav.toggle }"
+          class="collapse navbar-collapse site-header__navbar__nav-wrapper"
+        >
           <button
+            @click="toggleMainNav"
             class="navbar-toggler--close site-header__navbar__toggler--close"
             type="button"
             data-toggle="collapse"
@@ -29,7 +33,6 @@
             aria-controls="mainNav"
             aria-expanded="false"
             aria-label="Toggle navigation"
-            @click="toggleMainNav"
           >
             <span class="navbar-toggler-icon" />
           </button>

@@ -1,8 +1,8 @@
 <template>
   <button
-    class="button--back-to-top"
     :class="classes"
     @click.prevent="scrollToTop"
+    class="button--back-to-top"
   >
     <img src="~assets/icons/icon-chevron-left.png" alt="Back to top" class="icon scroll-to-top__icon">
   </button>

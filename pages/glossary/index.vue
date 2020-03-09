@@ -11,7 +11,10 @@
         :key="termKey.id"
         class="nav-link"
       >
-        <a class="nav-item" :href="termKey.id | nospecialchars | anchor">
+        <a
+          :href="termKey.id | nospecialchars | anchor"
+          class="nav-item"
+        >
           {{ termKey.id }}
         </a>
       </li>

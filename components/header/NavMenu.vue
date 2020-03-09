@@ -2,59 +2,59 @@
   <ul class="navbar-nav site-header__navbar__nav">
     <li class="nav-item">
       <nuxt-link
+        @click.native="navItemClicked"
         to="/search"
         class="nav-link"
-        @click.native="navItemClicked"
       >
         Apply for a Loan
       </nuxt-link>
     </li>
     <li
-      class="nav-item dropdown"
       @mouseover="dropdownShow"
       @mouseout="dropdownHide"
+      class="nav-item dropdown"
     >
       <nuxt-link
         id="navbarDropdownAbout"
+        @click.native="navItemClicked"
         to="/about"
         class="nav-link dropdown-toggle"
-        @click.native="navItemClicked"
       >
         About Us
       </nuxt-link>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
         <nuxt-link
+          @click.native="navItemClicked"
           to="/about/whychoose"
           class="dropdown-item"
-          @click.native="navItemClicked"
         >
           Why Choose RateRabbit
         </nuxt-link>
         <nuxt-link
+          @click.native="navItemClicked"
           to="/about/trackrecord"
           class="dropdown-item"
-          @click.native="navItemClicked"
         >
           Our Track Record
         </nuxt-link>
         <nuxt-link
+          @click.native="navItemClicked"
           to="/about/faq"
           class="dropdown-item"
-          @click.native="navItemClicked"
         >
           Faq's
         </nuxt-link>
         <nuxt-link
+          @click.native="navItemClicked"
           to="/about/help"
           class="dropdown-item"
-          @click.native="navItemClicked"
         >
           Help Guides
         </nuxt-link>
         <nuxt-link
+          @click.native="navItemClicked"
           to="/connect"
           class="dropdown-item"
-          @click.native="navItemClicked"
         >
           Contact Us
         </nuxt-link>
@@ -62,18 +62,18 @@
     </li>
     <li class="nav-item">
       <nuxt-link
+        @click.native="navItemClicked"
         to="/about/help"
         class="nav-link"
-        @click.native="navItemClicked"
       >
         Help Guides
       </nuxt-link>
     </li>
     <li class="nav-item">
       <nuxt-link
+        @click.native="navItemClicked"
         to="/connect"
         class="nav-link"
-        @click.native="navItemClicked"
       >
         Contact
       </nuxt-link>

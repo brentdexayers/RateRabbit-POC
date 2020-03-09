@@ -2,7 +2,7 @@
   <div class="page-content page--apply">
     <div v-if="!applicationCompleted">
       <h3>
-        {{ results[termIndex].term }}
+        {{ results[termindex].term }}
       </h3>
       <table class="table table-striped page--apply__table">
         <tbody>
@@ -11,7 +11,7 @@
               {{ 'One Free Guarantee' | titlecase }}
             </td>
             <td>
-              {{ results[termIndex].rates[rateIndex].oneFeeGuarantee | currency }}
+              {{ results[termindex].rates[rateIndex].onefeeguarantee | currency }}
             </td>
           </tr>
           <tr>
@@ -19,7 +19,7 @@
               {{ 'Loan Amount' | titlecase }}
             </td>
             <td>
-              {{ input.fields.loanAmount.value }}
+              {{ input.fields.loanamount.value }}
             </td>
           </tr>
           <tr>
@@ -27,7 +27,7 @@
               {{ 'Interest Rate' | titlecase }}
             </td>
             <td>
-              {{ results[termIndex].rates[rateIndex].rate | percent }}
+              {{ results[termindex].rates[rateIndex].rate | percent }}
             </td>
           </tr>
           <tr>
@@ -35,7 +35,7 @@
               {{ 'APR' | capitalize }}
             </td>
             <td>
-              {{ results[termIndex].rates[rateIndex].apr | percent }}
+              {{ results[termindex].rates[rateIndex].apr | percent }}
             </td>
           </tr>
           <tr>
@@ -43,7 +43,7 @@
               {{ 'Monthly Payment' | titlecase }}
             </td>
             <td>
-              {{ results[termIndex].rates[rateIndex].monthlyPayment | currency }}
+              {{ results[termindex].rates[rateIndex].monthlypayment | currency }}
             </td>
           </tr>
         </tbody>
@@ -87,8 +87,8 @@ export default {
     results () {
       return this.$store.state.searchresults.results[0]
     },
-    termIndex () {
-      return this.$store.state.application.termIndex
+    termindex () {
+      return this.$store.state.application.termindex
     },
     rateIndex () {
       return this.$store.state.application.rateIndex
@@ -98,7 +98,7 @@ export default {
         return this.$store.state.application.completed
       },
       set (value) {
-        this.$store.commit('application/setCompletedStatus', value)
+        this.$store.commit('application/setcompletedStatus', value)
       }
     }
   },
@@ -110,7 +110,7 @@ export default {
       let route = true
       if (this.input.errors.length > 0 || this.results.length === 0) {
         route = '/search'
-      } else if (this.results.length > 0 && (!this.termIndex || !this.rateIndex)) {
+      } else if (this.results.length > 0 && (!this.termindex || !this.rateIndex)) {
         route = '/search/results'
       }
       return route

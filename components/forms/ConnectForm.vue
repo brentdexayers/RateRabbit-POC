@@ -8,7 +8,7 @@
         <input
           type="text"
           class="form-control form-control-lg"
-          name="firstName"
+          name="firstname"
           placeholder="First Name"
         >
       </div>
@@ -16,7 +16,7 @@
         <input
           type="text"
           class="form-control form-control-lg"
-          name="lastName"
+          name="lastname"
           placeholder="Last Name"
         >
       </div>
@@ -44,7 +44,7 @@
       <div class="form-group col-12">
         <select
           class="form-control form-control-lg custom-select custom-select-lg"
-          name="loanPurpose"
+          name="loanpurpose"
           placeholder="Loan Purpose"
         >
           <option value="" disabled selected>

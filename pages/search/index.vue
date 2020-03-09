@@ -62,10 +62,10 @@ export default {
       margin-bottom: 38px;
     }
     &__col {
-      &--county,
       &--interest,
       &--state,
-      &--taxes {
+      &--taxes,
+      &--zip {
         @extend .col-lg-6 !optional;
       }
       &--submit {
@@ -76,7 +76,7 @@ export default {
       height: $input-height-lg;
       padding-top: $spacer;
       transition: $transition-base;
-      // &#promoCode {
+      // &#promotioncode {
       //   padding-top: $input-padding-y;
       // }
     }

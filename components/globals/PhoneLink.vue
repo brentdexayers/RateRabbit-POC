@@ -1,5 +1,9 @@
 <template>
-  <a :href="phoneNumber | phonelink" class="phone__link" :class="classes">
+  <a
+    :href="phoneNumber | phonelink"
+    :class="classes"
+    class="phone__link"
+  >
     {{ phoneNumber | phone }}
   </a>
 </template>

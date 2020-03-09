@@ -1,21 +1,22 @@
 export const state = () => ({
   errors: [],
   fields: {
-    loanPurpose: {
+    loanpurpose: {
       default: '',
       label: 'Loan Purpose',
       options: [
-        { label: 'Purchase', value: 'purchase' },
-        { label: 'Refinance', value: 'refinance' }
+        { label: 'Purchase', value: 'PURCHASE' },
+        { label: 'Refinance', value: 'REFINANCE' },
+        { label: 'Cash Out', value: 'CASH_OUT' }
       ],
       required: true
     },
-    propertyValue: {
+    propertyvalue: {
       default: '',
       label: 'Property Value',
       required: true
     },
-    loanAmount: {
+    loanamount: {
       default: '',
       label: 'Loan Amount',
       required: true
@@ -25,66 +26,61 @@ export const state = () => ({
       label: 'loan-to-value',
       required: false
     },
-    loanProgram: {
-      default: [],
-      label: 'Loan Programs',
-      options: [
-        {
-          name: 'Fixed Rates',
-          tooltip: 'Fixed Rates are mortgages in which the interest rate does not change during the entire term of the loan.',
-          terms: [
-            {
-              label: '10 Year Fixed',
-              value: 'fixed10yr'
-            },
-            {
-              label: '15 Year Fixed',
-              value: 'fixed15yr'
-            },
-            {
-              label: '20 Year Fixed',
-              value: 'fixed20yr'
-            },
-            {
-              label: '30 Year Fixed',
-              value: 'fixed30yr'
-            },
-            {
-              label: '40 Year Fixed',
-              value: 'fixed40yr'
-            }
-          ]
-        },
-        {
-          name: 'Adjustable Rates',
-          tooltip: 'Adjustable Rates permit the lender to adjust the mortgage interest rate periodically on the basis of changes in a specified index. The interest rates on these loans will be fixed for a specified period of time, then will become adjustable for the remaining years of the loan. Once adjustable, the interest rates may move up or down, as market conditions change.',
-          terms: [
-            {
-              label: '3 Year Arm',
-              value: 'arm3yr'
-            },
-            {
-              label: '5 Year Arm',
-              value: 'arm5yr'
-            },
-            {
-              label: '7 Year Arm',
-              value: 'arm7yr'
-            },
-            {
-              label: '10 Year Arm',
-              value: 'arm10yr'
-            }
-          ]
-        }
-      ],
-      required: true,
-      type: 'checkbox',
-      errorStr: {
-        required: '$1 are required',
-        invalid: '$1 are invalid'
-      }
-    },
+    // loanprogram: {
+    //   default: [],
+    //   label: 'Loan Programs',
+    //   options: [
+    //     {
+    //       name: 'Fixed Rates',
+    //       tooltip: 'Fixed Rates are mortgages in which the interest rate does not change during the entire term of the loan.',
+    //       terms: [
+    //         {
+    //           label: '10 Year Fixed',
+    //           value: 'TEN_YEAR_FIXED'
+    //         },
+    //         {
+    //           label: '15 Year Fixed',
+    //           value: 'FIFTEEN_YEAR_FIXED'
+    //         },
+    //         {
+    //           label: '20 Year Fixed',
+    //           value: 'TWENTY_YEAR_FIXED'
+    //         },
+    //         {
+    //           label: '30 Year Fixed',
+    //           value: 'THIRTY_YEAR_FIXED'
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       name: 'Adjustable Rates',
+    //       tooltip: 'Adjustable Rates permit the lender to adjust the mortgage interest rate periodically on the basis of changes in a specified index. The interest rates on these loans will be fixed for a specified period of time, then will become adjustable for the remaining years of the loan. Once adjustable, the interest rates may move up or down, as market conditions change.',
+    //       terms: [
+    //         {
+    //           label: '3 Year Arm',
+    //           value: 'THREE_YEAR_ARM'
+    //         },
+    //         {
+    //           label: '5 Year Arm',
+    //           value: 'FIVE_YEAR_ARM'
+    //         },
+    //         {
+    //           label: '7 Year Arm',
+    //           value: 'SEVEN_YEAR_ARM'
+    //         },
+    //         {
+    //           label: '10 Year Arm',
+    //           value: 'TEN_YEAR_ARM'
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   required: false,
+    //   type: 'checkbox',
+    //   errorStr: {
+    //     invalid: '$1 are invalid'
+    //   }
+    // },
     state: {
       default: '',
       label: 'State',
@@ -97,162 +93,16 @@ export const state = () => ({
       required: true,
       type: 'select'
     },
-    county: {
+    zipcode: {
       default: '',
-      label: 'County',
-      options: {
-        default: [
-          { label: 'Please select a State', value: '0' }
-        ],
-        az: [
-          { label: 'APACHE', value: '159' },
-          { label: 'COCHISE', value: '160' },
-          { label: 'COCONINO', value: '161' },
-          { label: 'GILA', value: '162' },
-          { label: 'GRAHAM', value: '163' },
-          { label: 'GREENLEE', value: '164' },
-          { label: 'LA PAZ', value: '165' },
-          { label: 'MARICOPA', value: '166' },
-          { label: 'MOHAVE', value: '167' },
-          { label: 'NAVAJO', value: '168' },
-          { label: 'PIMA', value: '169' },
-          { label: 'PINAL', value: '170' },
-          { label: 'PINAL W RT 77', value: '171' },
-          { label: 'SANTA CRUZ', value: '172' },
-          { label: 'YAVAPAI', value: '173' },
-          { label: 'YUMA', value: '174' }
-        ],
-        ca: [
-          { label: 'ALAMEDA', value: '175' },
-          { label: 'ALPINE', value: '176' },
-          { label: 'AMADOR', value: '177' },
-          { label: 'BUTTE', value: '178' },
-          { label: 'CALAVERAS', value: '179' },
-          { label: 'COLUSA', value: '180' },
-          { label: 'CONTRA COSTA', value: '181' },
-          { label: 'DEL NORTE', value: '182' },
-          { label: 'EL DORADO', value: '183' },
-          { label: 'FRESNO', value: '184' },
-          { label: 'GLENN', value: '185' },
-          { label: 'HUMBOLDT', value: '186' },
-          { label: 'IMPERIAL', value: '187' },
-          { label: 'INYO', value: '188' },
-          { label: 'KERN', value: '189' },
-          { label: 'KINGS', value: '190' },
-          { label: 'LAKE', value: '191' },
-          { label: 'LASSEN', value: '192' },
-          { label: 'LOS ANGELES', value: '193' },
-          { label: 'MADERA', value: '194' },
-          { label: 'MARIN', value: '195' },
-          { label: 'MARIPOSA', value: '196' },
-          { label: 'MENDOCINO', value: '197' },
-          { label: 'MERCED', value: '198' },
-          { label: 'MODOC', value: '199' },
-          { label: 'MONO', value: '200' },
-          { label: 'MONTEREY', value: '201' },
-          { label: 'NAPA', value: '202' },
-          { label: 'NEVADA', value: '203' },
-          { label: 'ORANGE', value: '204' },
-          { label: 'PLACER', value: '205' },
-          { label: 'PLUMAS', value: '206' },
-          { label: 'RIVERSIDE', value: '207' },
-          { label: 'SACRAMENTO', value: '208' },
-          { label: 'SAN BENITO', value: '209' },
-          { label: 'SAN BERNARDINO', value: '210' },
-          { label: 'SAN DIEGO', value: '211' },
-          { label: 'SAN FRANCISCO', value: '212' },
-          { label: 'SAN JOAQUIN', value: '213' },
-          { label: 'SAN LUIS OBISPO', value: '214' },
-          { label: 'SAN MATEO', value: '215' },
-          { label: 'SANTA BARBARA', value: '216' },
-          { label: 'SANTA CLARA', value: '217' },
-          { label: 'SANTA CRUZ', value: '218' },
-          { label: 'SHASTA', value: '219' },
-          { label: 'SIERRA', value: '220' },
-          { label: 'SISKIYOU', value: '221' },
-          { label: 'SOLANO', value: '222' },
-          { label: 'SONOMA', value: '223' },
-          { label: 'STANISLAUS', value: '224' },
-          { label: 'SUTTER', value: '225' },
-          { label: 'TEHAMA', value: '226' },
-          { label: 'TRINITY', value: '227' },
-          { label: 'TULARE', value: '228' },
-          { label: 'TUOLUMNE', value: '229' },
-          { label: 'VENTURA', value: '230' },
-          { label: 'YOLO', value: '231' },
-          { label: 'YUBA', value: '232' }
-        ],
-        id: [
-          { label: 'ADA', value: '639' },
-          { label: 'ADAMS', value: '640' },
-          { label: 'BANNOCK', value: '641' },
-          { label: 'BEAR LAKE', value: '642' },
-          { label: 'BENEWAH', value: '643' },
-          { label: 'BINGHAM', value: '644' },
-          { label: 'BLAINE', value: '645' },
-          { label: 'BOISE', value: '646' },
-          { label: 'BONNER', value: '647' },
-          { label: 'BONNEVILLE', value: '648' },
-          { label: 'BOUNDARY', value: '649' },
-          { label: 'BUTTE', value: '650' },
-          { label: 'CAMAS', value: '651' },
-          { label: 'CANYON', value: '652' },
-          { label: 'CARIBOU', value: '653' },
-          { label: 'CASSIA', value: '654' },
-          { label: 'CLARK', value: '655' },
-          { label: 'CLEARWATER', value: '656' },
-          { label: 'CUSTER', value: '657' },
-          { label: 'ELMORE', value: '658' },
-          { label: 'FRANKLIN', value: '659' },
-          { label: 'FREMONT', value: '660' },
-          { label: 'GEM', value: '661' },
-          { label: 'GOODING', value: '662' },
-          { label: 'IDAHO', value: '663' },
-          { label: 'JEFFERSON', value: '664' },
-          { label: 'JEROME', value: '665' },
-          { label: 'KOOTENAI', value: '666' },
-          { label: 'LATAH', value: '667' },
-          { label: 'LEMHI', value: '668' },
-          { label: 'LEWIS', value: '669' },
-          { label: 'LINCOLN', value: '670' },
-          { label: 'MADISON', value: '671' },
-          { label: 'MINIDOKA', value: '672' },
-          { label: 'NEZ PERCE', value: '673' },
-          { label: 'ONEIDA', value: '674' },
-          { label: 'OWYHEE', value: '675' },
-          { label: 'PAYETTE', value: '676' },
-          { label: 'POWER', value: '677' },
-          { label: 'SHOSHONE', value: '678' },
-          { label: 'TETON', value: '679' },
-          { label: 'TWIN FALLS', value: '680' },
-          { label: 'VALLEY', value: '681' },
-          { label: 'WASHINGTON', value: '682' }
-        ],
-        ma: [
-          { label: 'BARNSTABLE', value: '1166' },
-          { label: 'BERKSHIRE', value: '1167' },
-          { label: 'BRISTOL', value: '1168' },
-          { label: 'DUKES', value: '1169' },
-          { label: 'ESSEX', value: '1170' },
-          { label: 'FRANKLIN', value: '1171' },
-          { label: 'HAMPDEN', value: '1172' },
-          { label: 'HAMPSHIRE', value: '1173' },
-          { label: 'MIDDLESEX', value: '1174' },
-          { label: 'NANTUCKET', value: '1175' },
-          { label: 'NORFOLK', value: '1176' },
-          { label: 'PLYMOUTH', value: '1177' },
-          { label: 'SUFFOLK', value: '1178' },
-          { label: 'WORCESTER', value: '1179' }
-        ]
-      },
-      required: true,
-      type: 'select'
+      label: 'Zip Code',
+      required: true
     },
-    propertyType: {
+    propertytype: {
       default: '',
       label: 'Property Type',
       options: [
-        { label: 'Single Family', value: 'Single Family' },
+        { label: 'Single Family', value: 'SINGLE_FAMILY' },
         { label: 'Condo (1-4 Story)', value: 'Condo (1-4 Story)' },
         { label: 'Condo (5-8 Story)', value: 'Condo (5-8 Story)' },
         { label: 'Condo (9+ Story)', value: 'Condo (9+ Story)' },
@@ -264,17 +114,17 @@ export const state = () => ({
       ],
       required: true
     },
-    propertyUse: {
+    propertyuse: {
       default: '',
       label: 'Property use',
       options: [
-        { label: 'Primary Home', value: 'Primary Home' },
-        { label: 'Secondary Home', value: 'Secondary Home' },
-        { label: 'Investment Property', value: 'Investment Property' }
+        { label: 'Primary Home', value: 'PRIMARY_HOME' },
+        { label: 'Secondary Home', value: 'SECONDARY_HOME' },
+        { label: 'Investment Property', value: 'INVESTMENT_PROPERTY' }
       ],
       required: true
     },
-    creditRating: {
+    creditrating: {
       default: '',
       label: 'Credit Rating',
       options: [
@@ -290,16 +140,16 @@ export const state = () => ({
       ],
       required: true
     },
-    interestOnly: {
+    interestonly: {
       default: '',
       label: 'Interest Only',
       options: [
-        { label: 'Yes', value: 'yes' },
-        { label: 'No', value: 'no' }
+        { label: 'Yes', value: 'YES' },
+        { label: 'No', value: 'NO' }
       ],
       required: true
     },
-    taxesInsurance: {
+    taxesandinsurance: {
       default: '',
       label: 'Taxes & Insurance',
       options: [
@@ -308,31 +158,31 @@ export const state = () => ({
       ],
       required: true
     },
-    refinanceType: {
-      default: '',
+    loanrefinancetype: {
+      default: 'CASH_OUT',
       label: 'Refinance Type',
       options: [
-        { label: 'Cash Out', value: 'cash out' },
-        { label: 'No Cash Out', value: 'no cash out' }
+        { label: 'Cash Out', value: 'CASH_OUT' },
+        { label: 'No Cash Out', value: 'NO_CASH_OUT' }
       ],
-      required: true
+      required: false
     },
-    hasPromoCode: {
+    haspromotioncode: {
       default: false,
       label: null,
       required: false
     },
-    promoCode: {
+    promotioncode: {
       default: '',
       label: 'Promo Code',
       required: false
     },
-    hasSignUp: {
+    hassignup: {
       default: false,
       label: null,
       required: false
     },
-    signUp: {
+    signup: {
       default: '',
       label: 'Sign Up',
       required: false

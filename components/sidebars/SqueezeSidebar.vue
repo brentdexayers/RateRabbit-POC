@@ -1,5 +1,8 @@
 <template>
-  <aside class="sidebar sidebar--squeeze" :class="classes">
+  <aside
+    :class="classes"
+    class="sidebar sidebar--squeeze"
+  >
     <div class="sidebar--squeeze__intro">
       <h2 class="sidebar--squeeze__intro__header">
         Real Rates,<br>Real Time.

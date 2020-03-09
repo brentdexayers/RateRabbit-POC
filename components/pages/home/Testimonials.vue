@@ -10,8 +10,8 @@
           :key="index"
         >
           <blockquote
-            class="primary"
             :data-testimonial-index="index"
+            class="primary"
           >
             {{ testimonial.content }}
             <footer>

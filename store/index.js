@@ -1,9 +1,29 @@
+import authenticate from '../services/api/authentication'
+import loanSearch from '../services/api/loansearch'
+
 export const state = () => ({
-  counter: 0
+  auth: {},
+  loanProducts: {}
 })
 
 export const mutations = {
-  increment (state) {
-    state.counter++
+  setAuth (state, auth) {
+    state.auth = auth
+  },
+  setLoanProducts (state, products) {
+    state.loanProducts = products
+  }
+}
+
+export const actions = {
+  async AUTHENTICATE ({ commit, state }) {
+    const data = await authenticate()
+    commit('setAuth', data)
+    console.log('STATE::', state)
+  },
+  async LOAN_SEARCH ({ commit, state }) {
+    const data = await loanSearch(state.auth, state.application)
+    commit('setLoanProducts', data)
+    console.log('STATE::', state)
   }
 }

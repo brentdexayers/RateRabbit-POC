@@ -1,147 +1,152 @@
 export const state = () => ({
   apr: null,
   completed: false,
-  county: null,
-  creditRating: null,
+  // county: null,
+  creditrating: null,
   date: null,
   email: null,
-  firstName: null,
-  interestOnly: null,
-  lastName: null,
-  loanAmount: null,
-  loanProgram: [],
-  loanPurpose: null,
+  firstname: null,
+  interestonly: null,
+  lastname: null,
+  loanamount: null,
+  loanprogram: [],
+  loanpurpose: null,
   ltv: 0,
-  monthlyPayment: null,
-  oneFeeGuarantee: null,
+  monthlypayment: null,
+  onefeeguarantee: null,
   phone: null,
-  propertyValue: null,
-  promoCode: null,
-  propertyType: null,
-  propertyUse: null,
+  propertyvalue: null,
+  promotioncode: null,
+  propertytype: null,
+  propertyuse: null,
   rate: null,
   rateIndex: null,
-  refinanceType: null,
-  signUp: false,
+  loanrefinancetype: null,
+  signup: false,
   state: null,
-  taxesInsurance: null,
+  taxesandinsurance: null,
   term: null,
-  termIndex: null
+  termindex: null,
+  zipcode: null
 })
 
 export const mutations = {
   setAPR (state, payload) {
     state.apr = payload
   },
-  setCompleted (state, payload) {
+  setcompleted (state, payload) {
     state.completed = payload
   },
-  setCounty (state, payload) {
-    state.county = payload
+  setzipcode (state, payload) {
+    state.zipcode = payload
   },
-  setCreditRating (state, payload) {
-    state.creditRating = payload
+  // setcounty (state, payload) {
+  //   state.county = payload
+  // },
+  setcreditrating (state, payload) {
+    state.creditrating = payload
   },
-  setDate (state, payload) {
+  setdate (state, payload) {
     state.date = payload
   },
-  setEmail (state, payload) {
+  setemail (state, payload) {
     state.email = payload
   },
-  setFirstName (state, payload) {
-    state.firstName = payload
+  setfirstname (state, payload) {
+    state.firstname = payload
   },
-  setInterestOnly (state, payload) {
-    state.interestOnly = payload
+  setinterestonly (state, payload) {
+    state.interestonly = payload
   },
-  setLastName (state, payload) {
-    state.lastName = payload
+  setlastname (state, payload) {
+    state.lastname = payload
   },
-  setLoanAmount (state, payload) {
-    state.loanAmount = payload
+  setloanamount (state, payload) {
+    state.loanamount = payload
   },
-  setLoanProgram (state, payload) {
-    state.loanProgram = payload
+  setloanprogram (state, payload) {
+    state.loanprogram = payload
   },
-  setLoanPurpose (state, payload) {
-    state.loanPurpose = payload
+  setloanpurpose (state, payload) {
+    state.loanpurpose = payload
   },
   setLTV (state, payload) {
     state.ltv = payload
   },
-  setMonthlyPayment (state, payload) {
-    state.monthlyPayment = payload
+  setmonthlypayment (state, payload) {
+    state.monthlypayment = payload
   },
-  setOneFeeGuarantee (state, payload) {
-    state.oneFeeGuarantee = payload
+  setonefeeguarantee (state, payload) {
+    state.onefeeguarantee = payload
   },
-  setPhone (state, payload) {
+  setphone (state, payload) {
     state.phone = payload
   },
-  setPropertyValue (state, payload) {
-    state.propertyValue = payload
+  setpropertyvalue (state, payload) {
+    state.propertyvalue = payload
   },
-  setPromoCode (state, payload) {
-    state.promoCode = payload
+  setpromotioncode (state, payload) {
+    state.promotioncode = payload
   },
-  setPropertyType (state, payload) {
-    state.propertyType = payload
+  setpropertytype (state, payload) {
+    state.propertytype = payload
   },
-  setPropertyUse (state, payload) {
-    state.propertyUse = payload
+  setpropertyuse (state, payload) {
+    state.propertyuse = payload
   },
-  setRate (state, payload) {
+  setrate (state, payload) {
     state.rate = payload
   },
-  setRateIndex (state, payload) {
+  setrateindex (state, payload) {
     state.rateIndex = payload
   },
-  setRefinanceType (state, payload) {
-    state.refinanceType = payload
+  setloanrefinancetype (state, payload) {
+    state.loanrefinancetype = payload
   },
-  setSignUp (state, payload) {
-    state.signUp = payload
+  setsignup (state, payload) {
+    state.signup = payload
   },
-  setState (state, payload) {
+  setstate (state, payload) {
     state.state = payload
   },
-  setTaxesInsurance (state, payload) {
-    state.taxesInsurance = payload
+  settaxesandinsurance (state, payload) {
+    state.taxesandinsurance = payload
   },
-  setTerm (state, payload) {
+  setterm (state, payload) {
     state.term = payload
   },
-  setTermIndex (state, payload) {
-    state.termIndex = payload
+  settermindex (state, payload) {
+    state.termindex = payload
   },
   reset (state) {
     state.apr = null
     state.completed = false
-    state.county = null
-    state.creditRating = null
+    state.zipcode = null
+    // state.county = null
+    state.creditrating = null
     state.date = null
     state.email = null
-    state.firstName = null
-    state.interestOnly = null
-    state.lastName = null
-    state.loanAmount = null
-    state.loanProgram = []
-    state.loanPurpose = null
+    state.firstname = null
+    state.interestonly = null
+    state.lastname = null
+    state.loanamount = null
+    state.loanprogram = []
+    state.loanpurpose = null
     state.ltv = 0
-    state.monthlyPayment = null
-    state.oneFeeGuarantee = null
+    state.monthlypayment = null
+    state.onefeeguarantee = null
     state.phone = null
-    state.propertyValue = null
-    state.promoCode = null
-    state.propertyType = null
-    state.propertyUse = null
+    state.propertyvalue = null
+    state.promotioncode = null
+    state.propertytype = null
+    state.propertyuse = null
     state.rate = null
     state.rateIndex = null
-    state.refinanceType = null
-    state.signUp = false
+    state.loanrefinancetype = null
+    state.signup = false
     state.state = null
-    state.taxesInsurance = null
+    state.taxesandinsurance = null
     state.term = null
-    state.termIndex = null
+    state.termindex = null
   }
 }

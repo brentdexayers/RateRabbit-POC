@@ -194,15 +194,15 @@ export default {
     }
   },
   methods: {
-    apply (event, loanProductIndex, priceDetailIndex, rate, apr, monthlyPayment, oneFeeGuarantee) {
+    apply (event, loanProductIndex, priceDetailIndex, rate, apr, monthlypayment, onefeeguarantee) {
       this.$store.commit('application/setloanProductIndex', loanProductIndex)
       this.$store.commit('application/setpriceDetailIndex', priceDetailIndex)
-      this.$store.commit('application/setRate', rate)
+      this.$store.commit('application/setrate', rate)
       this.$store.commit('application/setAPR', apr)
-      this.$store.commit('application/setMonthlyPayment', monthlyPayment)
-      this.$store.commit('application/setOneFeeGuarantee', oneFeeGuarantee)
+      this.$store.commit('application/setmonthlypayment', monthlypayment)
+      this.$store.commit('application/setonefeeguarantee', onefeeguarantee)
       this.$store.commit('searchresults/hideShowDetails')
-      this.$store.commit('application/setCompleted', false)
+      this.$store.commit('application/setcompleted', false)
     },
     showDetails (event, term, rate) {
       this.$store.commit('application/setloanProductIndex', term)

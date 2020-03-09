@@ -1,62 +1,43 @@
 <template>
   <div class="page-content">
-    <Loader v-if="loading" />
+    <!-- <Loader v-if="loading" /> -->
     <div class="search-results">
       <p>
         Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
       </p>
-      <LoanProducts v-if="LoanProducts" />
+      <!-- <LoanProducts v-if="LoanProducts" /> -->
+      <code style="max-width: 600px; white-space: pre;">
+        {{ loanProducts }}
+      </code>
     </div>
-    <Details v-if="showDetails" />
+    <!-- <Details v-if="showDetails" /> -->
   </div>
 </template>
 
 <script>
-import Loader from '~/components/search/Loader.vue'
-import LoanProducts from '~/components/search/LoanProductsLoop.vue'
-import Details from '~/components/search/Details.vue'
-
 export default {
   layout: 'default',
   components: {
-    Loader,
-    LoanProducts,
-    Details
+    // Loader,
+    // LoanProducts,
+    // Details
   },
   data () {
     return {
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
   },
-  watchQuery: ['fetchResults'],
-  middleware ({ store, redirect }) {
-    // if the search form has not been completed appropriately
-    if (
-      store.state.searchform.errors.length > 0 || // we have form errors
-      store.state.searchform.datetimes.length <= 0 // the search form has never been submitted
-    ) {
-      return redirect('/search')
-    }
-  },
   computed: {
-    LoanProducts () {
-      return this.$store.state.searchresults.loanProducts
+    auth () {
+      return this.$store.state.auth
     },
-    loading () {
-      return this.$store.state.searchresults.loading
-    },
-    showDetails () {
-      return this.$store.state.searchresults.showDetails
-    },
-    termIndex () {
-      return this.$store.state.application.termIndex
-    },
-    rateIndex () {
-      return this.$store.state.application.rateIndex
+    loanProducts () {
+      return this.$store.state.loanProducts
     }
   },
   async fetch ({ store, params }) {
-    await store.dispatch('searchresults/GET_LOAN_PRODUCTS')
+    await store.dispatch('AUTHENTICATE')
+    await store.dispatch('LOAN_SEARCH')
   },
   methods: {
     validateRoute () {

@@ -1,8 +1,8 @@
 <template>
   <button
-    class="scroll-to-next-section"
-    :class="classes"
     @click="scrollToNext"
+    :class="classes"
+    class="scroll-to-next-section"
   >
     <img src="~assets/icons/icon-chevron-down-sm.png" alt="Continue..." class="icon scroll-to-next-section__icon">
   </button>

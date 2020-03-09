@@ -9,8 +9,8 @@
       <ul class="nav site-footer__menus__menu">
         <li>
           <nuxt-link
+            @click="$emit('setloanpurpose', 'Purchase')"
             to="/search"
-            @click="$emit('setLoanPurpose', 'Purchase')"
           >
             Apply for a Loan
           </nuxt-link>
@@ -34,8 +34,8 @@
       <ul class="nav site-footer__menus__menu">
         <li>
           <nuxt-link
+            @click="$emit('setloanpurpose', 'Refinance')"
             to="/search"
-            @click="$emit('setLoanPurpose', 'Refinance')"
           >
             Apply for a Loan
           </nuxt-link>

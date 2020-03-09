@@ -1,8 +1,10 @@
+import loanSearch from '../services/api/loansearch'
+
 export const state = () => ({
-  loanProducts: {},
   datetimes: [],
-  showDetails: false,
-  loading: true
+  loading: true,
+  loanProducts: {},
+  showDetails: false
 })
 
 export const mutations = {
@@ -30,13 +32,14 @@ export const mutations = {
 }
 
 export const actions = {
-  async GET_LOAN_PRODUCTS ({ commit }) {
+  async LOAN_SEARCH ({ commit }) {
     commit('reset')
-    const { data } = await this.$axios.get(process.env.baseUrl + '/TestResults.json')
+    const { data } = await loanSearch()
     commit('setLoanProducts', data)
     commit('addDatetime')
     setTimeout(() => {
       commit('setLoading', false)
     }, 1000)
+    console.log('LOAN_SEARCH:', data)
   }
 }

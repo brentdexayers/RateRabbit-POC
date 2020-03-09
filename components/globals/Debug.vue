@@ -7,17 +7,17 @@
       <li class="nav-item">
         <a
           v-if="!searchFormDebugShow && !searchResultsDebugShow"
+          @click.prevent="debugShow"
           href="#"
           class="nav-link debug__link"
-          @click.prevent="debugShow"
         >
           {{ 'Show debug' | titlecase }}
         </a>
         <a
           v-else
+          @click.prevent="debugHide"
           href="#"
           class="nav-link debug__link"
-          @click.prevent="debugHide"
         >
           {{ 'Hide debug' | titlecase }}
         </a>
@@ -38,17 +38,17 @@
                 Search Form Data
               </h4>
               <button
-                class="reset mr-auto"
                 @click.prevent="searchFormReset"
+                class="reset mr-auto"
               >
                 (Reset)
               </button>
               <button
+                @click.prevent="searchFormDebugShow = !searchFormDebugShow"
                 type="button"
                 class="ml-2 mb-1 close"
                 data-dismiss="toast"
                 aria-label="Close"
-                @click.prevent="searchFormDebugShow = !searchFormDebugShow"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -73,17 +73,17 @@
                 Search Results Data
               </h4>
               <button
-                class="reset mr-auto"
                 @click.prevent="searchResultsReset"
+                class="reset mr-auto"
               >
                 (Reset)
               </button>
               <button
+                @click.prevent="searchResultsDebugShow = !searchResultsDebugShow"
                 type="button"
                 class="ml-2 mb-1 close"
                 data-dismiss="toast"
                 aria-label="Close"
-                @click.prevent="searchResultsDebugShow = !searchResultsDebugShow"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -108,17 +108,17 @@
                 Application Data
               </h4>
               <button
-                class="reset mr-auto"
                 @click.prevent="applicationReset"
+                class="reset mr-auto"
               >
                 (Reset)
               </button>
               <button
+                @click.prevent="applicationDebugShow = !applicationDebugShow"
                 type="button"
                 class="ml-2 mb-1 close"
                 data-dismiss="toast"
                 aria-label="Close"
-                @click.prevent="applicationDebugShow = !applicationDebugShow"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -191,7 +191,7 @@ export default {
       this.$store.commit('searchresults/reset')
     },
     applicationReset () {
-      this.$store.commit('application/setCompletedStatus', false)
+      this.$store.commit('application/setcompletedStatus', false)
     }
   }
 }
