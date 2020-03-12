@@ -150,7 +150,7 @@ export default {
       return process.env.mode
     },
     searchResultsData () {
-      return this.$store.state.searchresults.results
+      return this.$store.state.loanProducts
     },
     applicationData () {
       return this.$store.state.application
@@ -169,9 +169,6 @@ export default {
     },
     searchFormReset () {
       this.$store.commit('application/reset')
-    },
-    searchResultsReset () {
-      this.$store.commit('searchresults/reset')
     },
     applicationReset () {
       this.$store.commit('application/setcompletedStatus', false)

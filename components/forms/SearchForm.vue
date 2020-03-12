@@ -489,14 +489,11 @@ export default {
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.searchresults.loading
-    },
     applicationCompleted () {
       return this.$store.state.application.completed
     },
     searchResults () {
-      return this.$store.state.searchresults.loanProducts
+      return this.$store.state.loanProducts
     },
     loanpurpose: {
       get () {

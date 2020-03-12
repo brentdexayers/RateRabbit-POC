@@ -6,11 +6,14 @@
         Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
       </p>
       <!-- <LoanProducts v-if="LoanProducts" /> -->
-      <div style="max-width: 600px; white-space: pre; overflow: hidden;">
-        <code>
-          {{ loanProducts }}
-        </code>
-      </div>
+      <ul>
+        <li
+          v-for="(loanProduct, loanProductIndex) in loanProducts.searchResultDetails"
+          :key="loanProductIndex"
+        >
+          <span v-for="(item, key, index) in loanProduct" :key="index" style="display: block;">{{ key }}: {{ item }}</span>
+        </li>
+      </ul>
     </div>
     <!-- <Details v-if="showDetails" /> -->
   </div>
