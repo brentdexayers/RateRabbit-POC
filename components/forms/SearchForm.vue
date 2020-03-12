@@ -7,20 +7,6 @@
       method="POST"
       class="form form--search-rates"
     >
-      <div v-if="formErrors.length" class="form-errors form-errors--wrapper">
-        <p>
-          Please correct the following error(s):
-        </p>
-        <ul class="list form-errors__list">
-          <li
-            v-for="(error, i) in formErrors"
-            :key="i"
-            class="form-errors__error"
-          >
-            <span v-html="error" />
-          </li>
-        </ul>
-      </div>
       <div class="row">
         <div class="form-group col-12">
           <label
@@ -42,11 +28,19 @@
               hidden
             />
             <option
-              v-for="(option, i) in loanpurposeOptions"
-              :key="i"
-              :value="option.value"
+              value="PURCHASE"
             >
-              {{ option.label }}
+              {{ 'Purchase' | titlecase }}
+            </option>
+            <option
+              value="REFINANCE"
+            >
+              {{ 'Refinance' | titlecase }}
+            </option>
+            <option
+              value="CASH_OUT"
+            >
+              {{ 'Cash Out' | titlecase }}
             </option>
           </select>
         </div>
@@ -122,12 +116,24 @@
               hidden
             />
             <option
-              v-for="option in stateOptions"
-              :key="option.value"
-              :value="option.value"
-              :title="option.label"
+              value="az"
             >
-              {{ option.label }}
+              {{ 'Arizona' | titlecase }}
+            </option>
+            <option
+              value="ca"
+            >
+              {{ 'California' | titlecase }}
+            </option>
+            <option
+              value="id"
+            >
+              {{ 'Idaho' | titlecase }}
+            </option>
+            <option
+              value="ma"
+            >
+              {{ 'Massachusetts' | titlecase }}
             </option>
           </select>
         </div>
@@ -170,11 +176,49 @@
               hidden
             />
             <option
-              v-for="(option, i) in propertytypeOptions"
-              :key="i"
-              :value="option.value"
+              value="SINGLE_FAMILY"
             >
-              {{ option.label }}
+              {{ 'Single Family' | titlecase }}
+            </option>
+            <option
+              value="CONDO_1_4_STORY"
+            >
+              {{ 'Condo (1-4 Story)' | titlecase }}
+            </option>
+            <option
+              value="CONDO_5_8_STORY"
+            >
+              {{ 'Condo (5-8 Story)' | titlecase }}
+            </option>
+            <option
+              value="CONDO_9_STORY"
+            >
+              {{ 'Condo (9+ Story)' | titlecase }}
+            </option>
+            <option
+              value="PUD"
+            >
+              {{ 'PUD' | titlecase }}
+            </option>
+            <option
+              value="TWO_UNIT"
+            >
+              {{ '2-Unit' | titlecase }}
+            </option>
+            <option
+              value="THREE_UNIT"
+            >
+              {{ '3-Unit' | titlecase }}
+            </option>
+            <option
+              value="FOUR_UNIT"
+            >
+              {{ '4-Unit' | titlecase }}
+            </option>
+            <option
+              value="TOWNHOUSE"
+            >
+              {{ 'Townhouse' | titlecase }}
             </option>
           </select>
         </div>
@@ -200,11 +244,19 @@
               hidden
             />
             <option
-              v-for="(option, i) in propertyuseOptions"
-              :key="i"
-              :value="option.value"
+              value="PRIMARY_HOME"
             >
-              {{ option.label }}
+              {{ 'Primary Home' | titlecase }}
+            </option>
+            <option
+              value="SECONDARY_HOME"
+            >
+              {{ 'Secondary Home' | titlecase }}
+            </option>
+            <option
+              value="INVESTMENT_PROPERTY"
+            >
+              {{ 'Investment Property' | titlecase }}
             </option>
           </select>
         </div>
@@ -230,11 +282,49 @@
               hidden
             />
             <option
-              v-for="(option, i) in creditratingOptions"
-              :key="i"
-              :value="option.value"
+              value="740"
             >
-              {{ option.label }}
+              740+ (Excellent)
+            </option>
+            <option
+              value="720"
+            >
+              720 - 739
+            </option>
+            <option
+              value="700"
+            >
+              700 - 719
+            </option>
+            <option
+              value="680"
+            >
+              680 - 699
+            </option>
+            <option
+              value="660"
+            >
+              660 - 679
+            </option>
+            <option
+              value="640"
+            >
+              640 - 659
+            </option>
+            <option
+              value="620"
+            >
+              620 - 639
+            </option>
+            <option
+              value="600"
+            >
+              600 - 619
+            </option>
+            <option
+              value="580"
+            >
+              580 - 599 (Poor)
             </option>
           </select>
         </div>
@@ -261,11 +351,14 @@
               hidden
             />
             <option
-              v-for="(option, i) in interestonlyOptions"
-              :key="i"
-              :value="option.value"
+              value="YES"
             >
-              {{ option.label }}
+              Yes
+            </option>
+            <option
+              value="NO"
+            >
+              No
             </option>
           </select>
         </div>
@@ -294,11 +387,14 @@
               hidden
             />
             <option
-              v-for="(option, i) in taxesandinsuranceOptions"
-              :key="i"
-              :value="option.value"
+              value="YES"
             >
-              {{ option.label }}
+              Yes
+            </option>
+            <option
+              value="NO"
+            >
+              No
             </option>
           </select>
         </div>
@@ -306,21 +402,6 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
-            v-if="Object.entries(searchResults).length === 0 && searchResults.constructor === Object"
-            type="submit"
-            class="btn btn-outline-primary form--search-rates__submit"
-          >
-            {{ 'Update Search' | titlecase }}
-          </button>
-          <button
-            v-else-if="applicationCompleted"
-            type="submit"
-            class="btn btn-primary form--search-rates__submit"
-          >
-            {{ 'Start New Search' | titlecase }}
-          </button>
-          <button
-            v-else
             type="submit"
             class="btn btn-primary form--search-rates__submit"
           >
@@ -389,6 +470,7 @@
           v-model="loanrefinancetype"
           name="loanrefinancetype"
           class="custom-control-input"
+          value="NO_CASH_OUT"
         >
       </div>
     </form>
@@ -413,21 +495,8 @@ export default {
     applicationCompleted () {
       return this.$store.state.application.completed
     },
-    latestSubmit () {
-      const latest = () => {
-        const datetimesArray = this.$store.state.searchform.datetimes
-        return datetimesArray.slice(-1)[0]
-      }
-      return latest()
-    },
     searchResults () {
       return this.$store.state.searchresults.loanProducts
-    },
-    formFields () {
-      return this.$store.state.searchform.fields
-    },
-    formErrors () {
-      return this.$store.state.searchform.errors
     },
     loanpurpose: {
       get () {
@@ -436,9 +505,6 @@ export default {
       set (value) {
         this.$store.commit('application/setloanpurpose', value)
       }
-    },
-    loanpurposeOptions () {
-      return this.$store.state.searchform.fields.loanpurpose.options
     },
     propertyvalue: {
       get () {
@@ -464,17 +530,6 @@ export default {
         this.$store.commit('application/setLTV', value)
       }
     },
-    // loanprogram: {
-    //   get () {
-    //     return this.$store.state.application.loanprogram
-    //   },
-    //   set (value) {
-    //     this.$store.commit('application/setloanprogram', value)
-    //   }
-    // },
-    loanprogramOptions () {
-      return this.$store.state.searchform.fields.loanprogram.options
-    },
     state: {
       get () {
         return this.$store.state.application.state
@@ -482,9 +537,6 @@ export default {
       set (value) {
         this.$store.commit('application/setstate', value)
       }
-    },
-    stateOptions () {
-      return this.$store.state.searchform.fields.state.options
     },
     zipcode: {
       get () {
@@ -502,9 +554,6 @@ export default {
         this.$store.commit('application/setpropertytype', value)
       }
     },
-    propertytypeOptions () {
-      return this.$store.state.searchform.fields.propertytype.options
-    },
     propertyuse: {
       get () {
         return this.$store.state.application.propertyuse
@@ -512,9 +561,6 @@ export default {
       set (value) {
         this.$store.commit('application/setpropertyuse', value)
       }
-    },
-    propertyuseOptions () {
-      return this.$store.state.searchform.fields.propertyuse.options
     },
     creditrating: {
       get () {
@@ -524,9 +570,6 @@ export default {
         this.$store.commit('application/setcreditrating', value)
       }
     },
-    creditratingOptions () {
-      return this.$store.state.searchform.fields.creditrating.options
-    },
     interestonly: {
       get () {
         return this.$store.state.application.interestonly
@@ -535,9 +578,6 @@ export default {
         this.$store.commit('application/setinterestonly', value)
       }
     },
-    interestonlyOptions () {
-      return this.$store.state.searchform.fields.interestonly.options
-    },
     taxesandinsurance: {
       get () {
         return this.$store.state.application.taxesandinsurance
@@ -545,9 +585,6 @@ export default {
       set (value) {
         this.$store.commit('application/settaxesandinsurance', value)
       }
-    },
-    taxesandinsuranceOptions () {
-      return this.$store.state.searchform.fields.taxesandinsurance.options
     },
     loanrefinancetype: {
       get () {
@@ -592,48 +629,12 @@ export default {
     },
     formValidate () {
       const self = this
-      // Reset application data
-      let formIsValid = true
-      self.$store.commit('searchform/clearErrors')
-      // Add Errors to form state
-      Object.keys(self.formFields).forEach(function (key) {
-        if (self.formFields[key].required) {
-          if (
-            !self.$store.state.application[key] ||
-            self.$store.state.application[key].length <= 0
-          ) {
-            formIsValid = false
-            if (
-              self.formFields[key].hasOwnProperty('errorStr') &&
-              self.formFields[key].errorStr.hasOwnProperty('required') &&
-              self.formFields[key].errorStr.required
-            ) {
-              const errStr = self.formFields[key].errorStr.required
-              self.$store.commit('searchform/addError', errStr.replace('$1', '<i>' + self.formFields[key].label + '</i>'))
-            } else {
-              self.$store.commit('searchform/addError', '<i>' + self.formFields[key].label + '</i> is required')
-            }
-          }
-        }
-      })
-      // After error checking...
-      if (
-        formIsValid &&
-        self.formErrors.length <= 0
-      ) {
-        // Form is valid
-        self.$store.commit('searchform/addDatetime')
-        // self.$store.commit('searchresults/setLoading', true)
-        if (self.$router.history.current.name === 'search-results') {
-          window.scrollTo(0, 0)
-        } else {
-          self.$router.push({
-            name: 'search-results'
-          })
-        }
-      } else {
-        // Form is not valid
+      if (self.$router.history.current.name === 'search-results') {
         window.scrollTo(0, 0)
+      } else {
+        self.$router.push({
+          name: 'search-results'
+        })
       }
     }
   }

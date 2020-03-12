@@ -63,7 +63,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    ['vue-currency-input/nuxt', { globalOptions: { currency: 'USD' }}]
   ],
   /*
   ** Axios module configuration

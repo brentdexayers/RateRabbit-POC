@@ -70,6 +70,7 @@ export default {
       }
       &--submit {
         margin-top: 35px;
+        margin-bottom: 30px;
       }
     }
     input, select {

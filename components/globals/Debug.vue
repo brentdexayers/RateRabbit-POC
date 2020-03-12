@@ -53,11 +53,6 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="toast-body">
-              <code>
-                {{ searchFormData }}
-              </code>
-            </div>
           </div>
         </div>
         <div v-if="searchResultsDebugShow" class="col-auto">
@@ -154,17 +149,6 @@ export default {
     mode () {
       return process.env.mode
     },
-    submitted () {
-      return this.$store.state.searchform.submit.datetime
-    },
-    searchFormData () {
-      const form = this.$store.state.searchform
-      const values = []
-      Object.keys(form.fields).forEach(function (key) {
-        values.push({ [key]: form.fields[key].value })
-      })
-      return values
-    },
     searchResultsData () {
       return this.$store.state.searchresults.results
     },
@@ -185,7 +169,6 @@ export default {
     },
     searchFormReset () {
       this.$store.commit('application/reset')
-      this.$store.commit('searchform/clearErrors')
     },
     searchResultsReset () {
       this.$store.commit('searchresults/reset')

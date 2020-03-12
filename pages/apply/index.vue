@@ -19,7 +19,7 @@
               {{ 'Loan Amount' | titlecase }}
             </td>
             <td>
-              {{ input.fields.loanamount.value }}
+              <!-- {{ input.fields.loanamount.value }} -->
             </td>
           </tr>
           <tr>
@@ -71,19 +71,7 @@ export default {
       title: 'Apply For a Loan'
     }
   },
-  beforeRouteEnter (to, from, next) {
-    console.log('beforeRouteEnter')
-    next((vm) => {
-      const i = vm.getInput()
-      if (i.errors.length > 0) {
-        return '/search'
-      }
-    })
-  },
   computed: {
-    input () {
-      return this.$store.state.searchform
-    },
     results () {
       return this.$store.state.searchresults.results[0]
     },
@@ -103,18 +91,6 @@ export default {
     }
   },
   methods: {
-    getInput () {
-      return this.input
-    },
-    validateRoute () {
-      let route = true
-      if (this.input.errors.length > 0 || this.results.length === 0) {
-        route = '/search'
-      } else if (this.results.length > 0 && (!this.termindex || !this.rateIndex)) {
-        route = '/search/results'
-      }
-      return route
-    },
     toggleApplicationStatus () {
       this.applicationCompleted = !this.applicationCompleted
     }
