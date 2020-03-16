@@ -5,26 +5,21 @@
       <p>
         Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
       </p>
-      <!-- <LoanProducts v-if="LoanProducts" /> -->
-      <ul>
-        <li
-          v-for="(loanProduct, loanProductIndex) in loanProducts.searchResultDetails"
-          :key="loanProductIndex"
-        >
-          <span v-for="(item, key, index) in loanProduct" :key="index" style="display: block;">{{ key }}: {{ item }}</span>
-        </li>
-      </ul>
+      <LoanProducts v-if="loanProducts" />
     </div>
-    <!-- <Details v-if="showDetails" /> -->
+    <!-- <Details  /> -->
   </div>
 </template>
 
 <script>
+// import Details from '~/components/search/Details.vue'
+import LoanProducts from '~/components/search/LoanProducts.vue'
+
 export default {
   layout: 'default',
   components: {
     // Loader,
-    // LoanProducts,
+    LoanProducts
     // Details
   },
   data () {

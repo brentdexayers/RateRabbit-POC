@@ -19,11 +19,9 @@ export const actions = {
   async AUTHENTICATE ({ commit, state }) {
     const data = await authenticate()
     commit('setAuth', data)
-    console.log('STATE::', state)
   },
   async LOAN_SEARCH ({ commit, state }) {
     const data = await loanSearch(state.auth, state.application)
     commit('setLoanProducts', data)
-    console.log('STATE::', state)
   }
 }

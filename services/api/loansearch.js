@@ -44,10 +44,16 @@ export default async function loanSearch (auth, search) {
   try {
     axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
     const searchPayload = mutatedSearchPayload(search)
-    console.log('Search Payload:', searchPayload)
+    // console.log('Search Payload:', searchPayload)
     const { data } = await axios.post('/api/loansearch', searchPayload, axiosConfig)
-    console.log('loansearch::data: ', data)
-    return data
+    // console.log('Search Data:', data)
+    const reduced = data.searchResultDetails.reduce(function (r, a) {
+      r[a.amortizationTerm] = r[a.amortizationTerm] || []
+      r[a.amortizationTerm].push(a)
+      return r
+    }, Object.create(null))
+    console.log('Search Data (reduced)', reduced)
+    return reduced
   } catch (err) {
     console.warn('AXIOS ERROR: ', err)
     return false

@@ -4,20 +4,17 @@
       <FooterMenus />
       <Colophon />
     </div>
-    <Debug />
   </section>
 </template>
 
 <script>
 import FooterMenus from '~/components/footer/FooterMenus.vue'
 import Colophon from '~/components/footer/Colophon.vue'
-import Debug from '~/components/globals/Debug.vue'
 
 export default {
   components: {
     FooterMenus,
-    Colophon,
-    Debug
+    Colophon
   }
 }
 </script>

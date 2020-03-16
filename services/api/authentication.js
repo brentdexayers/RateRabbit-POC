@@ -16,7 +16,6 @@ const authPayload = {
 export default async function authenticate () {
   try {
     const { data } = await axios.post('/api/authenticate', authPayload, axiosConfig)
-    console.log('authenticate::data', data)
     return data
   } catch (err) {
     console.warn('AXIOS ERROR: ', err)

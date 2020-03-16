@@ -55,7 +55,7 @@
           </label>
           <input
             v-model="propertyvalue"
-            v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
+            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
@@ -76,7 +76,7 @@
           </label>
           <input
             v-model="loanamount"
-            v-currency="{currency: 'USD', locale: 'en', distractionFree: false}"
+            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
@@ -478,6 +478,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -508,7 +509,7 @@ export default {
         return this.$store.state.application.propertyvalue
       },
       set (value) {
-        this.$store.commit('application/setpropertyvalue', value)
+        this.$store.commit('application/setpropertyvalue', this.$parseCurrency(value))
       }
     },
     loanamount: {
@@ -516,7 +517,7 @@ export default {
         return this.$store.state.application.loanamount
       },
       set (value) {
-        this.$store.commit('application/setloanamount', value)
+        this.$store.commit('application/setloanamount', this.$parseCurrency(value))
       }
     },
     ltv: {
@@ -609,6 +610,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'LOAN_SEARCH',
+      'AUTHENTICATE'
+    ]),
     calculateLTV () {
       let ltv = 0
       if (this.propertyvalue && this.loanamount) {
@@ -624,8 +629,11 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
-    formValidate () {
+    async formValidate ({ store }) {
       const self = this
+      console.log('Application', this.$store.state.application)
+      await this.$store.dispatch('AUTHENTICATE')
+      await this.$store.dispatch('LOAN_SEARCH')
       if (self.$router.history.current.name === 'search-results') {
         window.scrollTo(0, 0)
       } else {
