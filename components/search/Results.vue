@@ -11,7 +11,7 @@
       :data-result-index="termindex"
     >
       <h2>
-        {{ result.term }}
+        {{ result }}
       </h2>
       <div class="results-table__header container-fluid">
         <div class="row">

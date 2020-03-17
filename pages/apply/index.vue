@@ -2,7 +2,7 @@
   <div class="page-content page--apply">
     <div v-if="!applicationCompleted">
       <h3>
-        {{ results[termindex].term }}
+        {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
       </h3>
       <table class="table table-striped page--apply__table">
         <tbody>
@@ -11,7 +11,7 @@
               {{ 'One Free Guarantee' | titlecase }}
             </td>
             <td>
-              {{ results[termindex].rates[rateIndex].onefeeguarantee | currency }}
+              {{ loanProduct.fee | currency }}
             </td>
           </tr>
           <tr>
@@ -19,7 +19,7 @@
               {{ 'Loan Amount' | titlecase }}
             </td>
             <td>
-              <!-- {{ input.fields.loanamount.value }} -->
+              {{ application.loanamount | currency }}
             </td>
           </tr>
           <tr>
@@ -27,7 +27,7 @@
               {{ 'Interest Rate' | titlecase }}
             </td>
             <td>
-              {{ results[termindex].rates[rateIndex].rate | percent }}
+              {{ loanProduct.rate / 100 | percent }}
             </td>
           </tr>
           <tr>
@@ -35,7 +35,7 @@
               {{ 'APR' | capitalize }}
             </td>
             <td>
-              {{ results[termindex].rates[rateIndex].apr | percent }}
+              {{ loanProduct.apr / 100 | percent }}
             </td>
           </tr>
           <tr>
@@ -43,7 +43,7 @@
               {{ 'Monthly Payment' | titlecase }}
             </td>
             <td>
-              {{ results[termindex].rates[rateIndex].monthlypayment | currency }}
+              {{ loanProduct.totalPayment | currency }}
             </td>
           </tr>
         </tbody>
@@ -72,14 +72,11 @@ export default {
     }
   },
   computed: {
-    results () {
-      return this.$store.state.searchresults.results[0]
+    application () {
+      return this.$store.state.application
     },
-    termindex () {
-      return this.$store.state.application.termindex
-    },
-    rateIndex () {
-      return this.$store.state.application.rateIndex
+    loanProduct () {
+      return this.$store.state.application.loanProduct
     },
     applicationCompleted: {
       get () {

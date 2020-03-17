@@ -20,14 +20,13 @@ export const state = () => ({
   propertytype: null,
   propertyuse: null,
   rate: null,
-  rateIndex: null,
   loanrefinancetype: null,
   signup: false,
   state: null,
   taxesandinsurance: null,
   term: null,
-  termindex: null,
-  zipcode: null
+  zipcode: null,
+  loanProduct: null
 })
 
 export const mutations = {
@@ -36,6 +35,9 @@ export const mutations = {
   },
   setcompleted (state, payload) {
     state.completed = payload
+  },
+  setLoanProduct (state, payload) {
+    state.loanProduct = payload
   },
   setzipcode (state, payload) {
     state.zipcode = payload
@@ -97,9 +99,6 @@ export const mutations = {
   setrate (state, payload) {
     state.rate = payload
   },
-  setrateindex (state, payload) {
-    state.rateIndex = payload
-  },
   setloanrefinancetype (state, payload) {
     state.loanrefinancetype = payload
   },
@@ -115,12 +114,10 @@ export const mutations = {
   setterm (state, payload) {
     state.term = payload
   },
-  settermindex (state, payload) {
-    state.termindex = payload
-  },
   reset (state) {
     state.apr = null
     state.completed = false
+    state.loanProduct = null
     state.zipcode = null
     // state.county = null
     state.creditrating = null
@@ -141,12 +138,10 @@ export const mutations = {
     state.propertytype = null
     state.propertyuse = null
     state.rate = null
-    state.rateIndex = null
     state.loanrefinancetype = null
     state.signup = false
     state.state = null
     state.taxesandinsurance = null
     state.term = null
-    state.termindex = null
   }
 }

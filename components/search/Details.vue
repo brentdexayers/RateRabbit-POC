@@ -1,36 +1,37 @@
 <template>
   <div
-    class="search-results-details"
     @click.self="closeDetailsModal"
+    class="search-results-details"
   >
     <div class="search-results-details__wrapper">
       <button
-        class="close"
         @click="closeDetailsModal"
+        class="close"
       />
       <div class="container">
         <div class="row">
           <div class="col">
             <h2 class="search-results-details__term">
-              {{ searchResults[termindex].term }}
+              {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
             </h2>
             <p class="search-results-details__p">
-              <strong>Interest Rate:</strong> {{ rate.rate | percent }}
+              <strong>Interest Rate:</strong> {{ loanProduct.rate / 100 | percent }}
             </p>
             <p class="search-results-details__p">
-              <strong>APR:</strong> {{ rate.apr | percent }}
+              <strong>APR:</strong> {{ loanProduct.apr / 100 | percent }}
             </p>
-            <p class="search-results-details__p" :class="{ recommended: !rate.onefeeguarantee }">
-              <strong>One Fee Guarantee:</strong> {{ rate.onefeeguarantee | currency }}
+            <p
+              :class="{ recommended: loanProduct.recommended }"
+              class="search-results-details__p"
+            >
+              <strong>One Fee Guarantee:</strong> {{ loanProduct.fee | currency }}
             </p>
           </div>
           <div class="col-12 col-md-5">
             <nuxt-link
+              @click.native="apply($event, loanProduct)"
               to="/apply"
               class="btn btn-primary search-results-details__apply-btn"
-              :data-term="termindex"
-              :data-rate="rateIndex"
-              @click.native="apply($event, termindex, rateIndex, rate.rate, rate.apr, rate.monthlypayment, rate.onefeeguarantee)"
             >
               {{ 'Apply' | titlecase }}
             </nuxt-link>
@@ -47,7 +48,7 @@
         <div class="row">
           <div class="col">
             <p class="search-results-details__datetime">
-              {{ searchDate | datetime }}
+              {{ searchDate[searchDate.length - 1] | datetime }}
             </p>
             <table class="table table-striped">
               <tbody>
@@ -56,7 +57,7 @@
                     {{ 'One Fee Guarantee' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ rate.onefeeguarantee | currency }}
+                    {{ loanProduct.fee | currency }}
                   </td>
                 </tr>
                 <tr
@@ -66,7 +67,7 @@
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.propertyvalue }}
+                    {{ application.propertyvalue | currency }}
                   </td>
                 </tr>
                 <tr
@@ -76,7 +77,7 @@
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.loanamount }}
+                    {{ application.loanamount | currency }}
                   </td>
                 </tr>
                 <tr>
@@ -84,7 +85,7 @@
                     {{ 'Monthly Payment' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ rate.monthlypayment | currency }}
+                    {{ loanProduct.totalPayment | currency }}
                   </td>
                 </tr>
               </tbody>
@@ -325,38 +326,22 @@
 <script>
 export default {
   computed: {
+    loanProduct () {
+      return this.$store.state.loanProductDetail
+    },
     application () {
       return this.$store.state.application
     },
-    searchResults () {
-      return this.$store.state.searchresults.results[0]
-    },
     searchDate () {
-      return this.$store.state.searchresults.date
-    },
-    termindex () {
-      return this.$store.state.application.termindex
-    },
-    rateIndex () {
-      return this.$store.state.application.rateIndex
-    },
-    rate () {
-      return this.$store.state.searchresults.results[0][this.termindex].rates[this.rateIndex]
+      return this.$store.state.datetimes
     }
   },
   methods: {
     closeDetailsModal (event) {
-      this.$store.commit('searchresults/hideShowDetails')
+      this.$store.commit('unsetLoanProductDetail')
     },
-    apply (event, termindex, rateIndex, rate, apr, monthlypayment, onefeeguarantee) {
-      this.$store.commit('application/settermindex', termindex)
-      this.$store.commit('application/setrateindex', rateIndex)
-      this.$store.commit('application/setrate', rate)
-      this.$store.commit('application/setAPR', apr)
-      this.$store.commit('application/setmonthlypayment', monthlypayment)
-      this.$store.commit('application/setonefeeguarantee', onefeeguarantee)
-      this.$store.commit('searchresults/hideShowDetails')
-      this.$store.commit('application/setcompleted', false)
+    apply (event, loanProduct) {
+      this.$store.commit('application/setLoanProduct', loanProduct)
     }
   }
 }

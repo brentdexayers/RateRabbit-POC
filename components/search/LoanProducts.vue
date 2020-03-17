@@ -68,6 +68,7 @@
                   <div class="row justify-content-between">
                     <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
                       <nuxt-link
+                        @click.native="apply($event, loanProduct)"
                         to="/apply"
                         class="btn btn-sm btn-primary results-table__result--desktop__button"
                       >
@@ -77,6 +78,7 @@
                     <div class="col-12 col-md-auto col-lg-12 order-md-first order-lg-last">
                       <p class="results-table__result--desktop__link-p">
                         <a
+                          @click.prevent="showDetails($event, loanProduct)"
                           href="#"
                           class="link-decorated results-table__result--desktop__link"
                         >
@@ -159,6 +161,7 @@
                 </div>
                 <div class="col">
                   <nuxt-link
+                    @click.native="apply($event, loanProduct)"
                     to="/apply"
                     class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
                   >
@@ -189,7 +192,13 @@ export default {
     }
   },
   methods: {
-    showDetails (event, term, rate) {
+    apply (event, loanProduct) {
+      console.log('Apply:', loanProduct)
+      this.$store.commit('application/setLoanProduct', loanProduct)
+    },
+    showDetails (event, loanProduct) {
+      console.log('Show Details:', loanProduct)
+      this.$store.commit('setLoanProductDetail', loanProduct)
     }
   }
 }

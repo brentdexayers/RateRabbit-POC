@@ -3,15 +3,31 @@ import loanSearch from '../services/api/loansearch'
 
 export const state = () => ({
   auth: {},
-  loanProducts: {}
+  datetimes: [],
+  loanProductDetail: null,
+  loanProducts: {},
+  loading: false
 })
 
 export const mutations = {
   setAuth (state, auth) {
     state.auth = auth
   },
+  addDatetime (state) {
+    state.datetimes.push(new Date())
+  },
   setLoanProducts (state, products) {
     state.loanProducts = products
+  },
+  setLoanProductDetail (state, product) {
+    state.loanProductDetail = product
+  },
+  unsetLoanProductDetail (state) {
+    state.loanProductDetail = null
+  },
+  setLoading (state, bool) {
+    state.loading = bool
+    console.log('LOADING:', bool)
   }
 }
 

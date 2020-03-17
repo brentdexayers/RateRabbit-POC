@@ -8,20 +8,28 @@
       </h1>
       <Form cta="Search Live Rates" />
     </div>
+    <Loader v-if="loading" />
   </div>
 </template>
 
 <script>
 import Form from '~/components/forms/SearchForm.vue'
+import Loader from '~/components/search/Loader.vue'
 
 export default {
   layout: 'squeeze',
   components: {
-    Form
+    Form,
+    Loader
   },
   data () {
     return {
       title: 'Search Rates'
+    }
+  },
+  computed: {
+    loading () {
+      return this.$store.state.loading
     }
   },
   head () {

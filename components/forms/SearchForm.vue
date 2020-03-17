@@ -402,6 +402,21 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
+            v-if="this.$router.history.current.name === 'search-results'"
+            type="submit"
+            class="btn btn-primary form--search-rates__submit"
+          >
+            {{ 'Update Search' | titlecase }}
+          </button>
+          <button
+            v-else-if="this.$router.history.current.name === 'apply'"
+            type="submit"
+            class="btn btn-primary form--search-rates__submit"
+          >
+            {{ 'Update Search' | titlecase }}
+          </button>
+          <button
+            v-else
             type="submit"
             class="btn btn-primary form--search-rates__submit"
           >
@@ -607,6 +622,9 @@ export default {
       set (value) {
         this.$store.commit('application/setsignup', value)
       }
+    },
+    loading () {
+      return this.$store.state.loading
     }
   },
   methods: {
@@ -630,17 +648,23 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     async formValidate ({ store }) {
+      this.$store.commit('setLoading', true)
+      this.$store.commit('unsetLoanProductDetail')
+      this.$store.commit('addDatetime')
       const self = this
+      if (self.$router.history.current.name === 'search-results') {
+        await window.scrollTo(0, 0)
+        console.log('Rerouting...', false)
+      } else {
+        await self.$router.push({
+          name: 'search-results'
+        })
+        console.log('Rerouting...', true)
+      }
       console.log('Application', this.$store.state.application)
       await this.$store.dispatch('AUTHENTICATE')
       await this.$store.dispatch('LOAN_SEARCH')
-      if (self.$router.history.current.name === 'search-results') {
-        window.scrollTo(0, 0)
-      } else {
-        self.$router.push({
-          name: 'search-results'
-        })
-      }
+      await this.$store.commit('setLoading', false)
     }
   }
 }
