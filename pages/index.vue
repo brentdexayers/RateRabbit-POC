@@ -20,6 +20,9 @@ export default {
     OurPromise,
     Testimonials,
     ContactMeCTA
+  },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
   }
 }
 </script>

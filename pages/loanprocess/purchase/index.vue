@@ -29,6 +29,9 @@ export default {
       title: 'Loan Process for New Purchases'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

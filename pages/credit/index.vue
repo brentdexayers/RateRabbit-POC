@@ -52,6 +52,9 @@ export default {
       title: 'How Can I Improve My Credit?'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

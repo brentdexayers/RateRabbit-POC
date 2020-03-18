@@ -73,6 +73,9 @@ export default {
       title: 'Security and Privacy'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

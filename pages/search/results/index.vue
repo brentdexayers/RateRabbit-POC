@@ -42,10 +42,9 @@ export default {
       return this.$store.state.loading
     }
   },
-  // async fetch ({ store, params }) {
-  //   await store.dispatch('AUTHENTICATE')
-  //   await store.dispatch('LOAN_SEARCH')
-  // },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   methods: {
     validateRoute () {
       let route = true

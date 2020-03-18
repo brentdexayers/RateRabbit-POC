@@ -24,6 +24,9 @@ export default {
       title: 'Testimonials'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

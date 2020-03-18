@@ -95,6 +95,9 @@ export default {
       title: 'Home-Buying Basics: Things to Consider When Choosing an Online Lender'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

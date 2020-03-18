@@ -32,6 +32,9 @@ export default {
       return this.$store.state.loading
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     return {
       title: this.title,

@@ -40,7 +40,9 @@ function mutatedSearchPayload (search) {
   return payload
 }
 
-export default async function loanSearch (auth, search) {
+export default async function loanSearch (state) {
+  const auth = state?.auth
+  const search = state?.application
   try {
     axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
     const searchPayload = mutatedSearchPayload(search)

@@ -64,7 +64,15 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/proxy',
-    ['vue-currency-input/nuxt', { globalOptions: { currency: 'USD' }}]
+    ['vue-currency-input/nuxt', {
+      globalOptions: {
+        currency: 'USD',
+        locale: 'en-US',
+        precision: 0,
+        distractionFree: true,
+        allowNegative: false
+      }
+    }]
   ],
   /*
   ** Axios module configuration
@@ -77,7 +85,7 @@ export default {
     '/api/': {
       changeOrigin: true,
       pathRewrite: {'^/api/': ''},
-      target: process.env.NUXT_ENV_AUTH_URL || 'http://development.raterabbit.com:8080/RateRabbit/webapi/'
+      target: process.env.NUXT_ENV_API_ENDPOINT || 'http://development.raterabbit.com:8080/RateRabbit/webapi/'
     }
   },
   /*

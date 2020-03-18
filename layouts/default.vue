@@ -42,6 +42,9 @@ export default {
       title: 'RateRabbit'
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   head () {
     const self = this
     if (process.browser) {

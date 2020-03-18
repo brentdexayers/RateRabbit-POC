@@ -87,6 +87,9 @@ export default {
       }
     }
   },
+  async fetch ({ store, params }) {
+    await store.dispatch('AUTHENTICATE')
+  },
   methods: {
     toggleApplicationStatus () {
       this.applicationCompleted = !this.applicationCompleted

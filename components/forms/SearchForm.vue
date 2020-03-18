@@ -28,19 +28,11 @@
               hidden
             />
             <option
-              value="PURCHASE"
+              v-for="(option, index) in loanPurposeOptions"
+              :key="index"
+              :value="option.valueJson"
             >
-              {{ 'Purchase' | titlecase }}
-            </option>
-            <option
-              value="REFINANCE"
-            >
-              {{ 'Refinance' | titlecase }}
-            </option>
-            <option
-              value="CASH_OUT"
-            >
-              {{ 'Cash Out' | titlecase }}
+              {{ option.name | titlecase }}
             </option>
           </select>
         </div>
@@ -55,7 +47,7 @@
           </label>
           <input
             v-model="propertyvalue"
-            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
+            v-currency="{distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
@@ -176,49 +168,11 @@
               hidden
             />
             <option
-              value="SINGLE_FAMILY"
+              v-for="(option, index) in propertyTypeOptions"
+              :key="index"
+              :value="option.valueJson"
             >
-              {{ 'Single Family' | titlecase }}
-            </option>
-            <option
-              value="CONDO_1_4_STORY"
-            >
-              {{ 'Condo (1-4 Story)' | titlecase }}
-            </option>
-            <option
-              value="CONDO_5_8_STORY"
-            >
-              {{ 'Condo (5-8 Story)' | titlecase }}
-            </option>
-            <option
-              value="CONDO_9_STORY"
-            >
-              {{ 'Condo (9+ Story)' | titlecase }}
-            </option>
-            <option
-              value="PUD"
-            >
-              {{ 'PUD' | titlecase }}
-            </option>
-            <option
-              value="TWO_UNIT"
-            >
-              {{ '2-Unit' | titlecase }}
-            </option>
-            <option
-              value="THREE_UNIT"
-            >
-              {{ '3-Unit' | titlecase }}
-            </option>
-            <option
-              value="FOUR_UNIT"
-            >
-              {{ '4-Unit' | titlecase }}
-            </option>
-            <option
-              value="TOWNHOUSE"
-            >
-              {{ 'Townhouse' | titlecase }}
+              {{ option.name | titlecase }}
             </option>
           </select>
         </div>
@@ -244,19 +198,11 @@
               hidden
             />
             <option
-              value="PRIMARY_HOME"
+              v-for="(option, index) in propertyUseOptions"
+              :key="index"
+              :value="option.valueJson"
             >
-              {{ 'Primary Home' | titlecase }}
-            </option>
-            <option
-              value="SECONDARY_HOME"
-            >
-              {{ 'Secondary Home' | titlecase }}
-            </option>
-            <option
-              value="INVESTMENT_PROPERTY"
-            >
-              {{ 'Investment Property' | titlecase }}
+              {{ option.name | titlecase }}
             </option>
           </select>
         </div>
@@ -282,49 +228,11 @@
               hidden
             />
             <option
-              value="740"
+              v-for="(option, index) in creditRatingOptions"
+              :key="index"
+              :value="option.valueJson"
             >
-              740+ (Excellent)
-            </option>
-            <option
-              value="720"
-            >
-              720 - 739
-            </option>
-            <option
-              value="700"
-            >
-              700 - 719
-            </option>
-            <option
-              value="680"
-            >
-              680 - 699
-            </option>
-            <option
-              value="660"
-            >
-              660 - 679
-            </option>
-            <option
-              value="640"
-            >
-              640 - 659
-            </option>
-            <option
-              value="620"
-            >
-              620 - 639
-            </option>
-            <option
-              value="600"
-            >
-              600 - 619
-            </option>
-            <option
-              value="580"
-            >
-              580 - 599 (Poor)
+              {{ option.name }}
             </option>
           </select>
         </div>
@@ -493,8 +401,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   components: {
   },
@@ -510,6 +416,21 @@ export default {
     },
     searchResults () {
       return this.$store.state.loanProducts
+    },
+    loanPurposeOptions () {
+      return this.$store.state.loanPurposes
+    },
+    loanProgramOptions () {
+      return this.$store.state.loanPrograms
+    },
+    propertyTypeOptions () {
+      return this.$store.state.propertyTypes
+    },
+    propertyUseOptions () {
+      return this.$store.state.propertyUses
+    },
+    creditRatingOptions () {
+      return this.$store.state.creditRatings
     },
     loanpurpose: {
       get () {
@@ -627,11 +548,14 @@ export default {
       return this.$store.state.loading
     }
   },
+  async mounted () {
+    await this.$store.dispatch('LOAN_PURPOSES')
+    await this.$store.dispatch('LOAN_PROGRAMS')
+    await this.$store.dispatch('PROPERTY_TYPES')
+    await this.$store.dispatch('PROPERTY_USES')
+    await this.$store.dispatch('CREDIT_RATINGS')
+  },
   methods: {
-    ...mapActions([
-      'LOAN_SEARCH',
-      'AUTHENTICATE'
-    ]),
     calculateLTV () {
       let ltv = 0
       if (this.propertyvalue && this.loanamount) {
