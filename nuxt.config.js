@@ -84,7 +84,7 @@ export default {
   proxy: {
     '/api/': {
       changeOrigin: true,
-      pathRewrite: {'^/api/': ''},
+      pathRewrite: {'^/api/': '/'},
       target: process.env.NUXT_ENV_API_ENDPOINT || 'http://development.raterabbit.com:8080/RateRabbit/webapi/'
     }
   },
