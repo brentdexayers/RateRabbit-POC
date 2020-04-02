@@ -6,7 +6,7 @@
         to="/search"
         class="nav-link"
       >
-        Apply for a Loan
+        Apply
       </nuxt-link>
     </li>
     <li
@@ -66,7 +66,7 @@
         to="/about/help"
         class="nav-link"
       >
-        Help Guides
+        Help Center
       </nuxt-link>
     </li>
     <li class="nav-item">

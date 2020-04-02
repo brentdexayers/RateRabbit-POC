@@ -1,24 +1,26 @@
 <template>
   <section class="hero">
     <div class="container">
-      <h3 class="subtitle hero__subtitle">
-        Home Loans &amp; Direct Lender.
-        <br class="d-block d-md-none">
-        Billions Funded.
-        <br class="d-block">
-        A Mortgage Company You Can Trust.
+      <h3 class="subtitle hero__eyebrow">
+        Fast, Easy Mortgage Rates in 10 Seconds or Less
       </h3>
       <h1 class="title hero__title">
-        Fast Easy Mortgage Rates in 10 Seconds or Less
+        A Mortgage Company You Can Trust
       </h1>
+      <h2 class="title hero__subtitle">
+        Search Rates Now & Choose Your 1 Fee Guarantee
+      </h2>
       <div class="hero__cta">
         <nuxt-link to="/search" class="hero__cta__button">
           <span class="hero__cta__button__text">
             Search Live Rates
           </span>
+          <span class="hero__cta__button__subtext">
+            No Personal Info Needed
+          </span>
         </nuxt-link>
         <p class="hero__cta__disclaimer">
-          No Personal Information Required
+          Rate Rabbit is committed to providing the lowest mortgage rates and a choice of either a NO cost loan or 1 fixed closing fee.
         </p>
       </div>
     </div>
@@ -59,9 +61,9 @@ export default {
   &__title {
     color: $white;
     font-size: #{$font-size-base * 3.047619047619048}; // ~64px
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 0.82px;
-    margin-bottom: 60px;
+    margin-bottom: .1em;
     @include media-breakpoint-down('sm') {
       // font-size: #{$font-size-base * 2.09523}; // ~44px
       font-size: #{$font-size-base * 2}; // ~42px
@@ -70,10 +72,24 @@ export default {
   }
   &__subtitle {
     color: $white;
-    font-size: #{$font-size-sm * 0.7777777777777778}; // ~14px
-    font-weight: bold;
+    font-size: #{$font-size-base * 1.5}; // ~64px
+    font-weight: normal;
+    letter-spacing: 0.82px;
+    margin-bottom: 2.5em;
+    @include media-breakpoint-down('sm') {
+      // font-size: #{$font-size-base * 2.09523}; // ~44px
+      font-size: #{$font-size-base}; // ~42px
+      line-height: 1.2;
+    }
+  }
+  &__eyebrow {
+    color: $white;
+    // font-size: #{$font-size-sm * 0.7777777777777778}; // ~14px
+    font-size: #{$font-size-base}; // ~21px
+    font-weight: 300;
     letter-spacing: 0.82px;
     text-transform: uppercase;
+    margin-bottom: 2.5em;
   }
   &__cta {
     display: inline-flex;
@@ -86,41 +102,45 @@ export default {
       align-items: center;
       justify-content: center;
       background: rgba(27,102,39,0.65);
-      border-radius: 45.5px;
+      border-radius: 50px;
       color: #ffffff;
       display: inline-flex;
       flex: 0 1 auto;
-      font-family: $font-family-condensed;
+      flex-direction: column;
+      font-family: $font-family-base;
       font-size: #{$font-size-base * 2.09523}; // ~44px
-      height: 80px;
+      margin: auto;
+      margin-bottom: 1em;
+      padding-bottom: 10px;
       padding-left: 73px;
       padding-right: 73px;
-      white-space: nowrap;
+      padding-top: 10px;
+      // white-space: nowrap;
       @include media-breakpoint-down('sm') {
         font-size: #{$font-size-base * 1.523809523809524}; // ~34px
+        padding-left: 1em;
+        padding-right: 1em;
       }
       &:hover {
         text-decoration: none;
         color: #ffffff;
       }
       &__text {
-        &::after {
-          background: url("~assets/icons/icon-arrow-forward.png");
-          content: "";
-          display: inline-block;
-          height: 24px;
-          margin-left: 10px;
-          max-width: 100%;
-          width: 23px;
-        }
+        line-height: 1;
+      }
+      &__subtext {
+        font-size: .4em;
+        letter-spacing: .175em;
+        text-transform: uppercase;
       }
     }
     &__disclaimer {
       font-style: italic;
       font-size: #{$font-size-base * 0.8571428571428571}; // ~18px
       line-height: 22px;
-      opacity: 0.90;
       margin-top: 14px;
+      max-width: 34rem;
+      opacity: 0.90;
       @include media-breakpoint-down('sm') {
         font-size: #{$font-size-base * 0.6666666666666667}; // ~14px
       }
