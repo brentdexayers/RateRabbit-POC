@@ -1,5 +1,5 @@
 <template>
-  <img src="~static/logo.png" alt="RateRabbit - Home Loans, Direct Lender" class="logo">
+  <img src="~static/logo2.png" alt="RateRabbit - Home Loans, Direct Lender" class="logo">
 </template>
 
 <style>

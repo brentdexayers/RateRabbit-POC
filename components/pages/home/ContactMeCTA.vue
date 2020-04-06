@@ -7,7 +7,7 @@
             Have a Loan Officer Contact Me
           </h2>
           <p class="section--contact-cta__body">
-            Rate Rabbit is committed to providing its customers with the best mortgage rates and the lowest closing fee, combining all applicable closing & lender costs into one low, guaranteed fee.
+            Rate Rabbit is committed to providing its customers with the lowest mortgage rates and the lowest closing fee, combining all applicable closing & lender costs into ONE low, guaranteed fee. Or choose our NO cost loan option.
           </p>
         </div>
         <div class="vertical-col-spacer" />

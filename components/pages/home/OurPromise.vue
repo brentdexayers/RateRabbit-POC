@@ -10,7 +10,11 @@
       <div class="row justify-content-center section--our-promise__text">
         <div class="col-12 col-lg-11">
           <p>
-            Your total cost includes all lender and third party fees. (Refinance only) Guaranteed. We are a Direct Lender and not a lead site. We omit fees and get you the best rates. <a href="/" class="link-underscored">Learn About Our Guarantee</a>.
+            Your total cost includes all lender and third party fees (Refinance only).<br>
+            On new purchases, we <a class="link-underscored">guarantee</a> all your lender fees.
+          </p>
+          <p>
+            We are a Direct Lender and <i>not</i> a lead site.
           </p>
         </div>
       </div>
@@ -39,8 +43,8 @@
         <div class="col-6 col-lg">
           <img src="~assets/icons/line-art-one-fee.png" alt="One Closing Fee">
           <p>
-            One Closing<br>
-            Fee
+            No Cost Loan or<br>
+            1 Closing Fee Option
           </p>
         </div>
         <div class="col-6 col-lg">

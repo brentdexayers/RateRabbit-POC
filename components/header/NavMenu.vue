@@ -22,7 +22,7 @@
       >
         About Us
       </nuxt-link>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
+      <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownAbout">
         <nuxt-link
           @click.native="navItemClicked"
           to="/about/whychoose"
@@ -58,7 +58,7 @@
         >
           Contact Us
         </nuxt-link>
-      </div>
+      </div> -->
     </li>
     <li class="nav-item">
       <nuxt-link

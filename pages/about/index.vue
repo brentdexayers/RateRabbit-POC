@@ -1,13 +1,13 @@
 <template>
   <div class="page-content page--about">
     <p>
-      Rate Rabbit Home Loans was founded in 2004 specifically to provide our customers with an online experience that allows them to save money, save time, and get the best rate available.
+      Founded in 2011, Rate Rabbit Home Loans simplified the online experience to save you time and money.
     </p>
     <p>
-      We have funded over 5 billion in loans since our inception and have saved our customers millions on their mortgage.
+      Based in San Diego, we have introduced a new, Internet-based method to obtain a home loan. Rate Rabbit uses advanced technology to provide live rates, transparent pricing, and easy online applications.
     </p>
     <h2>
-      Our Success
+      We make it easy. Over 80% of our clients are repeat customers or are referred by our previous customers.
     </h2>
     <h3>
       Our Customers

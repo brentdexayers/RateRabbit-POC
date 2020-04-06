@@ -1,7 +1,10 @@
 <template>
   <div class="page-content page--help">
     <p>
-      The loan process can sometimes be overwhelming and confusing. We believe the best way to ensure you're getting the best loan or refinance program for you, is to get educated and stay informed. Below you will find useful links to the loan process and to some helpful articles.
+      The loan process can sometimes be overwhelming and confusing. Below are useful tips for the loan process.
+    </p>
+    <p>
+      Rate Rabbit takes you through the process step by step. If you have questions, call one of our non-commissioned loan consultants at 1(888) 395-0395.
     </p>
     <h2>
       Loan Process
@@ -53,7 +56,7 @@ export default {
   },
   data () {
     return {
-      title: 'Help Guides'
+      title: 'Help Center'
     }
   },
   head () {
