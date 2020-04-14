@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import authenticate from '~/services/api'
+
 export default {
   data () {
     return {
@@ -143,6 +145,9 @@ export default {
         this.$store.commit('application/setemail', value)
       }
     }
+  },
+  asyncData ({ params }) {
+    console.log(authenticate())
   },
   methods: {
     focusClassAdd (event) {

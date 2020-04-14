@@ -19,6 +19,7 @@ Vue.filter('uppercase', function (value) {
 })
 
 Vue.filter('titlecase', function (value) {
+  if (typeof value === 'undefined') { return false }
   return value
     .toLowerCase()
     .split(' ')

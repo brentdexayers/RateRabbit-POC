@@ -2,15 +2,14 @@
   <div>
     <form
       id="search-rates-form"
-      @submit.prevent="formValidate"
-      action="/search/results"
+      @submit.prevent="handleFormSubmit"
       method="POST"
       class="form form--search-rates"
     >
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: loanpurpose }"
+            :class="{ hasvalue: (loanpurpose >= 0) }"
             for="loanpurpose"
           >
             {{ 'Loan Purpose' | titlecase }}
@@ -30,7 +29,7 @@
             <option
               v-for="(option, index) in loanPurposeOptions"
               :key="index"
-              :value="option.valueJson"
+              :value="index"
             >
               {{ option.name | titlecase }}
             </option>
@@ -90,7 +89,7 @@
       <div class="row">
         <div class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
-            :class="{ hasvalue: state }"
+            :class="{ hasvalue: (state >= 0) }"
             for="state"
           >
             {{ 'State' | titlecase }}
@@ -108,24 +107,11 @@
               hidden
             />
             <option
-              value="az"
+              v-for="(option, index) in stateOptions"
+              :key="index"
+              :value="index"
             >
-              {{ 'Arizona' | titlecase }}
-            </option>
-            <option
-              value="ca"
-            >
-              {{ 'California' | titlecase }}
-            </option>
-            <option
-              value="id"
-            >
-              {{ 'Idaho' | titlecase }}
-            </option>
-            <option
-              value="ma"
-            >
-              {{ 'Massachusetts' | titlecase }}
+              {{ option.name }}
             </option>
           </select>
         </div>
@@ -150,7 +136,7 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: propertytype }"
+            :class="{ hasvalue: (propertytype >= 0) }"
             for="propertytype"
           >
             {{ 'Property Type' | titlecase }}
@@ -170,7 +156,7 @@
             <option
               v-for="(option, index) in propertyTypeOptions"
               :key="index"
-              :value="option.valueJson"
+              :value="index"
             >
               {{ option.name | titlecase }}
             </option>
@@ -180,7 +166,7 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: propertyuse }"
+            :class="{ hasvalue: (propertyuse >= 0) }"
             for="propertyuse"
           >
             {{ 'Property Use' | titlecase }}
@@ -200,7 +186,7 @@
             <option
               v-for="(option, index) in propertyUseOptions"
               :key="index"
-              :value="option.valueJson"
+              :value="index"
             >
               {{ option.name | titlecase }}
             </option>
@@ -210,7 +196,7 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: creditrating }"
+            :class="{ hasvalue: (creditrating >= 0) }"
             for="creditrating"
           >
             {{ 'Credit Rating' | titlecase }}
@@ -230,7 +216,7 @@
             <option
               v-for="(option, index) in creditRatingOptions"
               :key="index"
-              :value="option.valueJson"
+              :value="index"
             >
               {{ option.name }}
             </option>
@@ -401,13 +387,47 @@
 </template>
 
 <script>
+import {
+  authenticate,
+  getCreditRating,
+  // getLoanprogram,
+  getLoanPurpose,
+  getPropertyType,
+  getPropertyUse,
+  getState
+} from '~/services/api'
+
 export default {
   components: {
   },
   data () {
     return {
       hassignup: false,
-      haspromotioncode: false
+      haspromotioncode: false,
+      // Field Options
+      loanPurposeOptions: {},
+      propertyTypeOptions: {},
+      propertyUseOptions: {},
+      creditRatingOptions: {},
+      stateOptions: {},
+      // Field Values
+      loanpurpose: null,
+      propertyvalue: null,
+      loanamount: null,
+      ltv: 0,
+      state: null,
+      zipcode: null,
+      propertytype: null,
+      propertyuse: null,
+      creditrating: null,
+      interestonly: null,
+      taxesandinsurance: null,
+      loanrefinancetype: null,
+      promotioncode: null,
+      signup: false,
+      // Form state
+      showForm: true,
+      showResults: false
     }
   },
   computed: {
@@ -416,152 +436,20 @@ export default {
     },
     searchResults () {
       return this.$store.state.loanProducts
-    },
-    loanPurposeOptions () {
-      return this.$store.state.loanPurposes
-    },
-    loanProgramOptions () {
-      return this.$store.state.loanPrograms
-    },
-    propertyTypeOptions () {
-      return this.$store.state.propertyTypes
-    },
-    propertyUseOptions () {
-      return this.$store.state.propertyUses
-    },
-    creditRatingOptions () {
-      return this.$store.state.creditRatings
-    },
-    loanpurpose: {
-      get () {
-        return this.$store.state.application.loanpurpose
-      },
-      set (value) {
-        this.$store.commit('application/setloanpurpose', value)
-      }
-    },
-    propertyvalue: {
-      get () {
-        return this.$store.state.application.propertyvalue
-      },
-      set (value) {
-        this.$store.commit('application/setpropertyvalue', this.$parseCurrency(value))
-      }
-    },
-    loanamount: {
-      get () {
-        return this.$store.state.application.loanamount
-      },
-      set (value) {
-        this.$store.commit('application/setloanamount', this.$parseCurrency(value))
-      }
-    },
-    ltv: {
-      get () {
-        return this.$store.state.application.ltv
-      },
-      set (value) {
-        this.$store.commit('application/setLTV', value)
-      }
-    },
-    state: {
-      get () {
-        return this.$store.state.application.state
-      },
-      set (value) {
-        this.$store.commit('application/setstate', value)
-      }
-    },
-    zipcode: {
-      get () {
-        return this.$store.state.application.zipcode
-      },
-      set (value) {
-        this.$store.commit('application/setzipcode', value)
-      }
-    },
-    propertytype: {
-      get () {
-        return this.$store.state.application.propertytype
-      },
-      set (value) {
-        this.$store.commit('application/setpropertytype', value)
-      }
-    },
-    propertyuse: {
-      get () {
-        return this.$store.state.application.propertyuse
-      },
-      set (value) {
-        this.$store.commit('application/setpropertyuse', value)
-      }
-    },
-    creditrating: {
-      get () {
-        return this.$store.state.application.creditrating
-      },
-      set (value) {
-        this.$store.commit('application/setcreditrating', value)
-      }
-    },
-    interestonly: {
-      get () {
-        return this.$store.state.application.interestonly
-      },
-      set (value) {
-        this.$store.commit('application/setinterestonly', value)
-      }
-    },
-    taxesandinsurance: {
-      get () {
-        return this.$store.state.application.taxesandinsurance
-      },
-      set (value) {
-        this.$store.commit('application/settaxesandinsurance', value)
-      }
-    },
-    loanrefinancetype: {
-      get () {
-        return this.$store.state.application.loanrefinancetype
-      },
-      set (value) {
-        this.$store.commit('application/setloanrefinancetype', value)
-      }
-    },
-    promotioncode: {
-      get () {
-        return this.$store.state.application.promotioncode
-      },
-      set (value) {
-        this.$store.commit('application/setpromotioncode', value)
-      }
-    },
-    signup: {
-      get () {
-        return this.$store.state.application.signup
-      },
-      set (value) {
-        this.$store.commit('application/setsignup', value)
-      }
-    },
-    loading () {
-      return this.$store.state.loading
     }
   },
-  async mounted () {
-    await this.$store.dispatch('LOAN_PURPOSES')
-    await this.$store.dispatch('LOAN_PROGRAMS')
-    await this.$store.dispatch('PROPERTY_TYPES')
-    await this.$store.dispatch('PROPERTY_USES')
-    await this.$store.dispatch('CREDIT_RATINGS')
+  async fetch () {
+    this.loanPurposeOptions = await authenticate().then(res => getLoanPurpose(res))
+    this.stateOptions = await authenticate().then(res => getState(res))
+    this.propertyTypeOptions = await authenticate().then(res => getPropertyType(res))
+    this.propertyUseOptions = await authenticate().then(res => getPropertyUse(res))
+    this.creditRatingOptions = await authenticate().then(res => getCreditRating(res))
   },
   methods: {
     calculateLTV () {
-      let ltv = 0
       if (this.propertyvalue && this.loanamount) {
-        ltv = this.$parseCurrency(this.loanamount, 'en', 'USD') / this.$parseCurrency(this.propertyvalue, 'en', 'USD')
+        this.ltv = this.$parseCurrency(this.loanamount) / this.$parseCurrency(this.propertyvalue)
       }
-      this.$store.commit('application/setLTV', ltv)
     },
     focusClassAdd (event) {
       const self = event.target
@@ -571,24 +459,9 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
-    async formValidate ({ store }) {
-      this.$store.commit('setLoading', true)
-      this.$store.commit('unsetLoanProductDetail')
-      this.$store.commit('addDatetime')
-      const self = this
-      if (self.$router.history.current.name === 'search-results') {
-        await window.scrollTo(0, 0)
-        console.log('Rerouting...', false)
-      } else {
-        await self.$router.push({
-          name: 'search-results'
-        })
-        console.log('Rerouting...', true)
-      }
-      console.log('Application', this.$store.state.application)
-      await this.$store.dispatch('AUTHENTICATE')
-      await this.$store.dispatch('LOAN_SEARCH')
-      await this.$store.commit('setLoading', false)
+    handleFormSubmit () {
+      // const self = this
+      console.log('Form Submitted')
     }
   }
 }

@@ -26,7 +26,11 @@ export default {
   */
   env: {
     baseUrl: process.env.DEPLOY_ENV === 'DEVELOPMENT' ? process.env.BASE_URL || 'http://localhost:3000' : (process.env.DEPLOY_ENV === 'GH_PAGES' ? process.env.BASE_URL || 'https://brentdexayers.github.io/RateRabbit-POC' : ''),
-    mode: process.env.NODE_ENV
+    mode: process.env.NODE_ENV,
+    // from .env
+    apiEndpont: process.env.NUXT_ENV_API_ENDPOINT,
+    apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME,
+    apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD
   },
   /*
   ** Customize the progress-bar color
