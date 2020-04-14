@@ -17,6 +17,7 @@ const authPayload = {
 }
 
 export const authenticate = async () => {
+  console.log('apiUrl', apiUrl)
   const { data } = await axios.post(`${apiUrl}/authenticate`, authPayload, axiosConfig)
     .then((res) => {
       return res
