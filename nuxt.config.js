@@ -28,7 +28,7 @@ export default {
     baseUrl: process.env.DEPLOY_ENV === 'DEVELOPMENT' ? process.env.BASE_URL || 'http://localhost:3000' : (process.env.DEPLOY_ENV === 'GH_PAGES' ? process.env.BASE_URL || 'https://brentdexayers.github.io/RateRabbit-POC' : ''),
     mode: process.env.NODE_ENV,
     // from .env
-    apiEndpont: process.env.DEPLOY_ENV === 'GH_PAGES' ? 'http://development.raterabbit.com:8080/RateRabbit/webapi' : process.env.NUXT_ENV_API_ENDPOINT || '/api',
+    apiEndpont: process.env.DEPLOY_ENV === 'GH_PAGES' ? 'https://development.raterabbit.com:8181/RateRabbit/webapi' : process.env.NUXT_ENV_API_ENDPOINT || '/api',
     apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME || 'ninthlink',
     apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD || 'Y<CJfOD&B;xo5BphMm+D'
   },
@@ -89,7 +89,7 @@ export default {
     '/api/': {
       changeOrigin: true,
       pathRewrite: { '^/api/': '/' },
-      target: process.env.NUXT_ENV_API_ENDPOINT || 'http://development.raterabbit.com:8080/RateRabbit/webapi/'
+      target: process.env.NUXT_ENV_API_ENDPOINT || 'https://development.raterabbit.com:8181/RateRabbit/webapi/'
     }
   },
   /*
