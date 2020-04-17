@@ -1,5 +1,4 @@
 import authenticate from '../services/api/authentication'
-import fieldOptions from '../services/api/fieldoptions'
 import loanSearch from '../services/api/loansearch'
 
 export const state = () => ({
@@ -57,26 +56,6 @@ export const actions = {
   async AUTHENTICATE ({ commit, state }) {
     const data = await authenticate(state)
     commit('setAuth', data)
-  },
-  async LOAN_PURPOSES ({ commit, state }) {
-    const data = await fieldOptions(state.auth, 'loanpurpose')
-    commit('setLoanPurposes', data)
-  },
-  async LOAN_PROGRAMS ({ commit, state }) {
-    const data = await fieldOptions(state.auth, 'loanprogram')
-    commit('setLoanPrograms', data)
-  },
-  async PROPERTY_TYPES ({ commit, state }) {
-    const data = await fieldOptions(state.auth, 'propertytype')
-    commit('setPropertyTypes', data)
-  },
-  async PROPERTY_USES ({ commit, state }) {
-    const data = await fieldOptions(state.auth, 'propertyuse')
-    commit('setPropertyUses', data)
-  },
-  async CREDIT_RATINGS ({ commit, state }) {
-    const data = await fieldOptions(state.auth, 'creditrating')
-    commit('setCreditRatings', data)
   },
   async LOAN_SEARCH ({ commit, state }) {
     const data = await loanSearch(state)

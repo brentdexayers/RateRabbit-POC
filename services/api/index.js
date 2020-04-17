@@ -146,4 +146,22 @@ export const getState = async (auth) => {
   })
 }
 
+export const loanSearch = async (auth, searchData) => {
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  try {
+    const { data } = await axios.post('/api/loansearch', searchData, axiosConfig)
+    // console.log('Search Data:', data)
+    const reduced = data.searchResultDetails.reduce(function (r, a) {
+      r[a.amortizationTerm] = r[a.amortizationTerm] || []
+      r[a.amortizationTerm].push(a)
+      return r
+    }, Object.create(null))
+    console.log('Search Data (reduced)', reduced)
+    return reduced
+  } catch (err) {
+    console.warn('AXIOS ERROR: ', err)
+    return false
+  }
+}
+
 export default authenticate

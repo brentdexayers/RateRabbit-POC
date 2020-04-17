@@ -9,20 +9,20 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: (loanpurpose >= 0) }"
+            :class="{ hasvalue: fields.loanpurpose !== null }"
             for="loanpurpose"
           >
             {{ 'Loan Purpose' | titlecase }}
           </label>
           <select
-            v-model="loanpurpose"
+            v-model="fields.loanpurpose"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="loanpurpose"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -39,13 +39,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: propertyvalue }"
+            :class="{ hasvalue: fields.propertyvalue }"
             for="propertyvalue"
           >
             {{ 'Property value' | titlecase }}
           </label>
           <input
-            v-model="propertyvalue"
+            v-model="fields.propertyvalue"
             v-currency="{distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
@@ -60,13 +60,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: loanamount }"
+            :class="{ hasvalue: fields.loanamount }"
             for="loanamount"
           >
             {{ 'Loan Amount' | titlecase }}
           </label>
           <input
-            v-model="loanamount"
+            v-model="fields.loanamount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
@@ -81,7 +81,7 @@
       <div class="row justify-content-center">
         <div class="col-auto">
           <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
-            {{ ltv | percent(0) }} loan-to-value
+            {{ fields.ltv | percent(0) }} loan-to-value
           </div>
         </div>
       </div>
@@ -89,20 +89,20 @@
       <div class="row">
         <div class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
-            :class="{ hasvalue: (state >= 0) }"
+            :class="{ hasvalue: fields.state !== null }"
             for="state"
           >
             {{ 'State' | titlecase }}
           </label>
           <select
-            v-model="state"
+            v-model="fields.state"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="state"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -117,13 +117,13 @@
         </div>
         <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            :class="{ hasvalue: zipcode }"
+            :class="{ hasvalue: fields.zipcode }"
             for="zipcode"
           >
             {{ 'Zip Code' | titlecase }}
           </label>
           <input
-            v-model="zipcode"
+            v-model="fields.zipcode"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
@@ -136,20 +136,20 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: (propertytype >= 0) }"
+            :class="{ hasvalue: fields.propertytype !== null }"
             for="propertytype"
           >
             {{ 'Property Type' | titlecase }}
           </label>
           <select
-            v-model="propertytype"
+            v-model="fields.propertytype"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="propertytype"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -166,20 +166,20 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: (propertyuse >= 0) }"
+            :class="{ hasvalue: fields.propertyuse !== null }"
             for="propertyuse"
           >
             {{ 'Property Use' | titlecase }}
           </label>
           <select
-            v-model="propertyuse"
+            v-model="fields.propertyuse"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="propertyuse"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -196,20 +196,20 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: (creditrating >= 0) }"
+            :class="{ hasvalue: fields.creditrating !== null }"
             for="creditrating"
           >
             {{ 'Credit Rating' | titlecase }}
           </label>
           <select
-            v-model="creditrating"
+            v-model="fields.creditrating"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="creditrating"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -227,20 +227,20 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--interest">
           <label
-            :class="{ hasvalue: interestonly }"
+            :class="{ hasvalue: fields.interestonly }"
             for="interestonly"
           >
             {{ 'Interest Only' | titlecase }}
           </label>
           <select
-            v-model="interestonly"
+            v-model="fields.interestonly"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="interestonly"
             class="custom-select"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -258,7 +258,7 @@
         </div>
         <div class="form-group col-12 form--search-rates__col--taxes">
           <label
-            :class="{ hasvalue: taxesandinsurance }"
+            :class="{ hasvalue: fields.taxesandinsurance }"
             for="taxesandinsurance"
           >
             {{ 'Taxes & Insurance' | titlecase }}
@@ -269,14 +269,14 @@
           </label>
           <select
             id="input-select--taxes"
-            v-model="taxesandinsurance"
+            v-model="fields.taxesandinsurance"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="taxesandinsurance"
             class="custom-select has-info"
           >
             <option
-              value=""
+              value="null"
               disabled
               hidden
             />
@@ -296,25 +296,10 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
-            v-if="this.$router.history.current.name === 'search-results'"
             type="submit"
             class="btn btn-primary form--search-rates__submit"
           >
-            {{ 'Update Search' | titlecase }}
-          </button>
-          <button
-            v-else-if="this.$router.history.current.name === 'apply'"
-            type="submit"
-            class="btn btn-primary form--search-rates__submit"
-          >
-            {{ 'Update Search' | titlecase }}
-          </button>
-          <button
-            v-else
-            type="submit"
-            class="btn btn-primary form--search-rates__submit"
-          >
-            {{ 'Search Live Rates' | titlecase }}
+            {{ submitButton | titlecase }}
           </button>
         </div>
       </div>
@@ -330,13 +315,13 @@
                 </div>
                 <div class="form-group col-12 mb-3">
                   <label
-                    :class="{ hasvalue: promotioncode }"
+                    :class="{ hasvalue: fields.promotioncode }"
                     for="promotioncode"
                   >
                     {{ 'Promo Code' | titlecase }}
                   </label>
                   <input
-                    v-model="promotioncode"
+                    v-model="fields.promotioncode"
                     @focus="focusClassAdd($event)"
                     @blur="focusClassRemove($event)"
                     type="text"
@@ -356,7 +341,7 @@
                   <div class="custom-control custom-checkbox">
                     <input
                       id="signup"
-                      v-model="signup"
+                      v-model="fields.signup"
                       type="checkbox"
                       class="custom-control-input"
                     >
@@ -376,7 +361,7 @@
       <div class="hidden">
         <input
           id="input-hidden--refinance-type"
-          v-model="loanrefinancetype"
+          v-model="fields.loanrefinancetype"
           name="loanrefinancetype"
           class="custom-control-input"
           value="NO_CASH_OUT"
@@ -402,30 +387,33 @@ export default {
   },
   data () {
     return {
-      hassignup: false,
-      haspromotioncode: false,
-      // Field Options
-      loanPurposeOptions: {},
-      propertyTypeOptions: {},
-      propertyUseOptions: {},
-      creditRatingOptions: {},
-      stateOptions: {},
-      // Field Values
-      loanpurpose: null,
-      propertyvalue: null,
-      loanamount: null,
-      ltv: 0,
-      state: null,
-      zipcode: null,
-      propertytype: null,
-      propertyuse: null,
-      creditrating: null,
-      interestonly: null,
-      taxesandinsurance: null,
-      loanrefinancetype: null,
-      promotioncode: null,
-      signup: false,
+      fields: {
+        hassignup: false,
+        haspromotioncode: false,
+        // Field Options
+        loanPurposeOptions: {},
+        propertyTypeOptions: {},
+        propertyUseOptions: {},
+        creditRatingOptions: {},
+        stateOptions: {},
+        // Field Values
+        loanpurpose: null,
+        propertyvalue: null,
+        loanamount: null,
+        ltv: 0,
+        state: null,
+        zipcode: null,
+        propertytype: null,
+        propertyuse: null,
+        creditrating: null,
+        interestonly: null,
+        taxesandinsurance: null,
+        loanrefinancetype: null,
+        promotioncode: null,
+        signup: false
+      },
       // Form state
+      submitButton: 'Search Live Rates',
       showForm: true,
       showResults: false
     }
@@ -448,7 +436,7 @@ export default {
   methods: {
     calculateLTV () {
       if (this.propertyvalue && this.loanamount) {
-        this.ltv = this.$parseCurrency(this.loanamount) / this.$parseCurrency(this.propertyvalue)
+        this.fields.ltv = this.$parseCurrency(this.fields.loanamount) / this.$parseCurrency(this.fields.propertyvalue)
       }
     },
     focusClassAdd (event) {
