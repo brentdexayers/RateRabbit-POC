@@ -149,8 +149,8 @@ export const getState = async (auth) => {
 export const loanSearch = async (auth, searchData) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
   try {
-    const { data } = await axios.post('/api/loansearch', searchData, axiosConfig)
-    // console.log('Search Data:', data)
+    const { data } = await axios.post(`${apiUrl}/loansearch`, searchData, axiosConfig)
+    console.log('Search Data:', data)
     const reduced = data.searchResultDetails.reduce(function (r, a) {
       r[a.amortizationTerm] = r[a.amortizationTerm] || []
       r[a.amortizationTerm].push(a)
@@ -159,7 +159,7 @@ export const loanSearch = async (auth, searchData) => {
     console.log('Search Data (reduced)', reduced)
     return reduced
   } catch (err) {
-    console.warn('AXIOS ERROR: ', err)
+    console.warn(err)
     return false
   }
 }

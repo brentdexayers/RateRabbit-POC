@@ -1,35 +1,95 @@
 <template>
   <div class="page-content page--search">
-    <div>
+    <div v-if="show.search">
       <h1 class="title">
         <strong>Search Live Rates</strong>
         <br class="d-block d-md-none">
         and Lock Your Rate In
       </h1>
-      <Form cta="Search Live Rates" />
+      {{ fieldData.creditRating }}
+      <Form
+        :fieldData="fieldData"
+      />
     </div>
-    <Loader v-if="loading" />
+    <div
+      v-if="show.results"
+      class="search-results"
+    >
+      <p>
+        Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
+      </p>
+      <LoanProducts v-if="search.results" />
+      <Details v-if="show.details" />
+    </div>
   </div>
 </template>
 
 <script>
+import Details from '~/components/search/Details.vue'
 import Form from '~/components/forms/SearchForm.vue'
-import Loader from '~/components/search/Loader.vue'
+import LoanProducts from '~/components/search/LoanProducts.vue'
+
+import {
+  authenticate,
+  loanSearch
+} from '~/services/api'
 
 export default {
   layout: 'squeeze',
   components: {
+    Details,
     Form,
-    Loader
+    LoanProducts
   },
   data () {
     return {
-      title: 'Search Rates'
+      title: 'Search Rates',
+      fieldData: {
+        creditRating: null,
+        interestOnly: null,
+        loanAmount: null,
+        loanRefinanceType: null,
+        loanPurpose: null,
+        promotionCode: null,
+        propertyType: null,
+        propertyUse: null,
+        propertyValue: null,
+        signUp: false,
+        state: null,
+        taxesAndInsurance: null,
+        zipCode: null
+      },
+      search: {
+        results: {}
+      },
+      show: {
+        search: true,
+        results: false,
+        details: false
+      }
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.loading
+  },
+  methods: {
+    async searchLoans () {
+      const searchData = {
+        'creditrating': this.fieldData.creditRating,
+        'interestonly': this.fieldData.interestOnly,
+        'loanamount': this.fieldData.loanAmount,
+        'loanpurpose': this.fieldData.loanPurpose,
+        'loanrefinancetype': this.fieldData.loanRefinanceType,
+        'promotioncode': this.fieldData.promotionCode,
+        'propertytype': this.fieldData.propertyType,
+        'propertyuse': this.fieldData.propertyUse,
+        'propertyvalue': this.fieldData.propertyValue,
+        'taxesandinsurance': this.fieldData.taxesAndInsurance,
+        'zipcode': this.fieldData.zipCode
+      }
+      const data = await authenticate().then((res) => {
+        return loanSearch(res, searchData)
+      })
+      return data
     }
   },
   head () {
