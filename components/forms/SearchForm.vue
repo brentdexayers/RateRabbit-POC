@@ -78,6 +78,26 @@
           >
         </div>
       </div>
+      <div v-if="fieldData.loanPurpose && fieldData.loanPurpose.name === 'Refinance Cash Out'" class="row">
+        <div class="form-group col-12">
+          <label
+            :class="{ hasvalue: fieldData.cashAmount }"
+            for="cashAmount"
+          >
+            {{ 'Cash Amount' | titlecase }}
+          </label>
+          <input
+            v-model="fieldData.cashAmount"
+            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
+            type="text"
+            name="cashAmount"
+            class="form-control"
+            placeholder=""
+          >
+        </div>
+      </div>
       <div class="row justify-content-center">
         <div class="col-auto">
           <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
@@ -245,12 +265,12 @@
               hidden
             />
             <option
-              value="1"
+              value="true"
             >
               Yes
             </option>
             <option
-              value="0"
+              value="false"
             >
               No
             </option>
@@ -281,12 +301,12 @@
               hidden
             />
             <option
-              value="1"
+              value="true"
             >
               Yes
             </option>
             <option
-              value="0"
+              value="false"
             >
               No
             </option>
@@ -358,16 +378,11 @@
           </ul>
         </div>
       </div>
-      <div class="hidden">
-        <input
-          id="input-hidden--refinance-type"
-          v-model="fieldData.loanRefinanceType"
-          name="loanRefinanceType"
-          class="custom-control-input"
-          value="NO_CASH_OUT"
-        >
-      </div>
     </form>
+    <div v-if="search.results">
+      <p>Search Results (for debugging):</p>
+      <code>{{ JSON.stringify(search.results) }}</code>
+    </div>
   </div>
 </template>
 
@@ -378,31 +393,45 @@ import {
   getLoanPurpose,
   getPropertyType,
   getPropertyUse,
-  getState
+  getState,
+  loanSearch
 } from '~/services/api'
 
 export default {
   components: {
   },
-  props: {
-    fieldData: {
-      type: Object,
-      required: true
-    }
-  },
   data () {
     return {
+      auth: {},
       // Field Options
       loanPurposeOptions: {},
       propertyTypeOptions: {},
       propertyUseOptions: {},
       creditRatingOptions: {},
       stateOptions: {},
+      // Field Data
+      fieldData: {
+        cashAmount: null,
+        creditRating: null,
+        interestOnly: null,
+        loanAmount: null,
+        loanRefinanceType: null,
+        loanPurpose: null,
+        promotionCode: null,
+        propertyType: null,
+        propertyUse: null,
+        propertyValue: null,
+        signUp: false,
+        state: null,
+        taxesAndInsurance: null,
+        zipCode: null
+      },
       // Form state
       ltv: 0,
       submitButton: 'Search Live Rates',
-      showForm: true,
-      showResults: false
+      search: {
+        results: {}
+      }
     }
   },
   computed: {
@@ -414,11 +443,12 @@ export default {
     }
   },
   async fetch () {
-    this.loanPurposeOptions = await authenticate().then(res => getLoanPurpose(res))
-    this.stateOptions = await authenticate().then(res => getState(res))
-    this.propertyTypeOptions = await authenticate().then(res => getPropertyType(res))
-    this.propertyUseOptions = await authenticate().then(res => getPropertyUse(res))
-    this.creditRatingOptions = await authenticate().then(res => getCreditRating(res))
+    this.auth = await authenticate()
+    this.loanPurposeOptions = await getLoanPurpose(this.auth)
+    this.stateOptions = await getState(this.auth)
+    this.propertyTypeOptions = await getPropertyType(this.auth)
+    this.propertyUseOptions = await getPropertyUse(this.auth)
+    this.creditRatingOptions = await getCreditRating(this.auth)
   },
   methods: {
     calculateLTV () {
@@ -434,11 +464,46 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
-    handleFormSubmit () {
-      // const self = this
-      console.log('Form Submitted')
-      this.$emit('submitted')
+    async handleFormSubmit () {
+      this.$emit('submitStart')
+      console.log('TODO: Set loading state HERE...')
+      const searchData = {
+        'creditRating': this.fieldData.creditRating.name,
+        'interestOnly': this.fieldData.interestOnly === 'true',
+        'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
+        'loanPurpose': this.fieldData.loanPurpose.name,
+        'loanRefinanceType': this.fieldData.loanRefinanceType,
+        'promotionCode': this.fieldData.promotionCode,
+        'propertyType': this.fieldData.propertyType.name,
+        'propertyUse': this.fieldData.propertyUse.name,
+        'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
+        'taxesAndInsurance': this.fieldData.taxesAndInsurance === 'true',
+        'zipCode': this.fieldData.zipCode
+      }
+      const data = await authenticate()
+        .then((auth) => {
+          return loanSearch(auth, searchData)
+            .then((res) => {
+              return res
+            })
+            .catch((err) => {
+              throw err // <--- 500 Error
+            })
+        })
+        .catch((err) => {
+          throw err
+        })
+      if (typeof data === 'object' && data?.searchResultDetails) {
+        const reduced = data.searchResultDetails.reduce(function (r, a) {
+          r[a.amortizationTerm] = r[a.amortizationTerm] || []
+          r[a.amortizationTerm].push(a)
+          return r
+        }, Object.create(null))
+        this.search.results = reduced
+      }
+      console.log('TODO: Set UN-loading state HERE...')
     }
+
   }
 }
 </script>

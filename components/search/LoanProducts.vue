@@ -182,14 +182,17 @@
 export default {
   components: {
   },
+  props: {
+    loanProducts: {
+      type: Object,
+      value: null
+    }
+  },
   data () {
     return {
     }
   },
   computed: {
-    loanProducts () {
-      return this.$store.state.loanProducts
-    }
   },
   methods: {
     apply (event, loanProduct) {

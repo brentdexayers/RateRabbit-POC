@@ -7,8 +7,7 @@
         and Lock Your Rate In
       </h1>
       <Form
-        :fieldData="fieldData"
-        @submitted="searchLoans"
+        @submitted="submitted"
       />
     </div>
     <div
@@ -18,7 +17,10 @@
       <p>
         Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
       </p>
-      <LoanProducts v-if="search.results" />
+      <LoanProducts
+        v-if="search.results && show.results"
+        :loanProducts="search.results"
+      />
       <Details v-if="show.details" />
     </div>
   </div>
@@ -29,10 +31,10 @@ import Details from '~/components/search/Details.vue'
 import Form from '~/components/forms/SearchForm.vue'
 import LoanProducts from '~/components/search/LoanProducts.vue'
 
-import {
-  authenticate,
-  loanSearch
-} from '~/services/api'
+// import {
+//   authenticate,
+//   loanSearch
+// } from '~/services/api'
 
 export default {
   layout: 'squeeze',
@@ -44,24 +46,24 @@ export default {
   data () {
     return {
       title: 'Search Rates',
-      fieldData: {
-        creditRating: null,
-        interestOnly: null,
-        loanAmount: null,
-        loanRefinanceType: null,
-        loanPurpose: null,
-        promotionCode: null,
-        propertyType: null,
-        propertyUse: null,
-        propertyValue: null,
-        signUp: false,
-        state: null,
-        taxesAndInsurance: null,
-        zipCode: null
-      },
-      search: {
-        results: {}
-      },
+      // fieldData: {
+      //   creditRating: null,
+      //   interestOnly: null,
+      //   loanAmount: null,
+      //   loanRefinanceType: null,
+      //   loanPurpose: null,
+      //   promotionCode: null,
+      //   propertyType: null,
+      //   propertyUse: null,
+      //   propertyValue: null,
+      //   signUp: false,
+      //   state: null,
+      //   taxesAndInsurance: null,
+      //   zipCode: null
+      // },
+      // search: {
+      //   results: {}
+      // },
       show: {
         search: true,
         results: false,
@@ -72,48 +74,48 @@ export default {
   computed: {
   },
   methods: {
-    async searchLoans () {
-      console.log('1) Search Loans...')
-      const searchData = {
-        'creditRating': this.fieldData.creditRating.name,
-        'interestOnly': this.fieldData.interestOnly,
-        'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
-        'loanPurpose': this.fieldData.loanPurpose.name,
-        'loanRefinanceType': this.fieldData.loanRefinanceType,
-        'promotionCode': this.fieldData.promotionCode,
-        'propertyType': this.fieldData.propertyType.name,
-        'propertyUse': this.fieldData.propertyUse.name,
-        'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
-        'taxesAndInsurance': this.fieldData.taxesAndInsurance,
-        'zipCode': this.fieldData.zipCode
-      }
-      console.log('2) Search Data:', searchData)
-      const data = await authenticate()
-        .then((auth) => {
-          console.log('3) Auth Result:', auth)
-          return loanSearch(auth, searchData)
-            .then((res) => {
-              console.log('4) Return Results:', res)
-              return res
-            })
-            .catch((err) => {
-              console.log('4) ERROR loanSearch', err)
-              throw err
-            })
-        })
-        .catch((err) => {
-          console.log('5) ERROR authenticate', err)
-          throw err
-        })
-      console.log('SearchResult:', data)
-      // const reduced = data.searchResultDetails.reduce(function (r, a) {
-      //   r[a.amortizationTerm] = r[a.amortizationTerm] || []
-      //   r[a.amortizationTerm].push(a)
-      //   return r
-      // }, Object.create(null))
-      // console.log('Search Data (reduced)', reduced)
-      // return reduced
+    submitted (e) {
+      console.log(e)
     }
+    // async searchLoans () {
+    //   // TODO: (1) Set loading state HERE...
+    //   const searchData = {
+    //     'creditRating': this.fieldData.creditRating.name,
+    //     'interestOnly': this.fieldData.interestOnly === 'true',
+    //     'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
+    //     'loanPurpose': this.fieldData.loanPurpose.name,
+    //     'loanRefinanceType': this.fieldData.loanRefinanceType,
+    //     'promotionCode': this.fieldData.promotionCode,
+    //     'propertyType': this.fieldData.propertyType.name,
+    //     'propertyUse': this.fieldData.propertyUse.name,
+    //     'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
+    //     'taxesAndInsurance': this.fieldData.taxesAndInsurance === 'true',
+    //     'zipCode': this.fieldData.zipCode
+    //   }
+    //   const data = await authenticate()
+    //     .then((auth) => {
+    //       return loanSearch(auth, searchData)
+    //         .then((res) => {
+    //           return res
+    //         })
+    //         .catch((err) => {
+    //           throw err // <--- 500 Error
+    //         })
+    //     })
+    //     .catch((err) => {
+    //       throw err
+    //     })
+    //   if (typeof data === 'object' && data?.searchResultDetails) {
+    //     const reduced = data.searchResultDetails.reduce(function (r, a) {
+    //       r[a.amortizationTerm] = r[a.amortizationTerm] || []
+    //       r[a.amortizationTerm].push(a)
+    //       return r
+    //     }, Object.create(null))
+    //     this.search.results = reduced
+    //     // console.log(reduced)
+    //     this.show.results = true
+    //   }
+    // }
   },
   head () {
     return {

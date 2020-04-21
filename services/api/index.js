@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const apiUrl = process.env.apiEndpont
 
+// const instance = axios.create({
+//   baseURL: apiUrl
+// })
+
 const axiosConfig = {
   headers: {
     'Content-Type': 'application/json',
@@ -16,13 +20,33 @@ const authPayload = {
   'grantType': 'PASSWORD'
 }
 
+const handleError = (error) => {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log(error.response.data)
+    console.log(error.response.status)
+    console.log(error.response.headers)
+  } else if (error.request) {
+    // The request was made but no response was received
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // http.ClientRequest in node.js
+    console.log(error.request)
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log('Error', error.message)
+  }
+  console.log(error.config)
+  return error
+}
+
 export const authenticate = async () => {
   const { data } = await axios.post(`${apiUrl}/authenticate`, authPayload, axiosConfig)
     .then((res) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: authenticate\n', error)
+      handleError(error)
       throw error
     })
   return data
@@ -35,10 +59,9 @@ export const getCreditRating = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getCreditRating\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Credit Rating Options', data)
   return data
 }
 
@@ -49,10 +72,9 @@ export const getLoanDocType = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getLoanDocType\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Loan Doc Type Options', data)
   return data
 }
 
@@ -63,10 +85,9 @@ export const getLoanProgram = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getLoanProgram\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Loan Program Options', data)
   return data
 }
 
@@ -77,10 +98,9 @@ export const getLoanPurpose = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getLoanPurpose\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Loan Purpose Options', data)
   return data
 }
 
@@ -91,10 +111,9 @@ export const getLoanRefinanceType = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getLoanRefinanceType\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Loan Refinance Type Options', data)
   return data
 }
 
@@ -105,10 +124,9 @@ export const getMaritalStatus = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getMaritalStatus\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Marital Status Options', data)
   return data
 }
 
@@ -119,10 +137,9 @@ export const getPropertyType = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getPropertyType\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Property Type Options', data)
   return data
 }
 
@@ -133,10 +150,9 @@ export const getPropertyUse = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getPropertyUse\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('Property Use Options', data)
   return data
 }
 
@@ -147,26 +163,25 @@ export const getState = async (auth) => {
       return res
     })
     .catch((error) => {
-      console.error('Error :: getState\n', error)
+      handleError(error)
       throw error
     })
-  // console.log('State Options', data)
   return data.filter((state) => {
     return state.active
   })
 }
 
 export const loanSearch = async (auth, searchData) => {
-  axios.setHeader('Content-Type', 'application/json')
-  axios.setHeader('Access-Control-Allow-Origin', '*')
-  axios.setToken(auth.JWT, 'Bearer')
-  await axios.post(`${apiUrl}/loansearch`, searchData)
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  const { data } = await axios.post(`${apiUrl}/loansearch`, searchData, axiosConfig)
     .then((res) => {
       return res
     })
     .catch((error) => {
+      handleError(error)
       throw error
     })
+  return data
 }
 
 export default authenticate
