@@ -6,9 +6,9 @@
         <br class="d-block d-md-none">
         and Lock Your Rate In
       </h1>
-      {{ fieldData.creditRating }}
       <Form
         :fieldData="fieldData"
+        @submitted="searchLoans"
       />
     </div>
     <div
@@ -73,23 +73,46 @@ export default {
   },
   methods: {
     async searchLoans () {
+      console.log('1) Search Loans...')
       const searchData = {
-        'creditrating': this.fieldData.creditRating,
-        'interestonly': this.fieldData.interestOnly,
-        'loanamount': this.fieldData.loanAmount,
-        'loanpurpose': this.fieldData.loanPurpose,
-        'loanrefinancetype': this.fieldData.loanRefinanceType,
-        'promotioncode': this.fieldData.promotionCode,
-        'propertytype': this.fieldData.propertyType,
-        'propertyuse': this.fieldData.propertyUse,
-        'propertyvalue': this.fieldData.propertyValue,
-        'taxesandinsurance': this.fieldData.taxesAndInsurance,
-        'zipcode': this.fieldData.zipCode
+        'creditRating': this.fieldData.creditRating.name,
+        'interestOnly': this.fieldData.interestOnly,
+        'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
+        'loanPurpose': this.fieldData.loanPurpose.name,
+        'loanRefinanceType': this.fieldData.loanRefinanceType,
+        'promotionCode': this.fieldData.promotionCode,
+        'propertyType': this.fieldData.propertyType.name,
+        'propertyUse': this.fieldData.propertyUse.name,
+        'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
+        'taxesAndInsurance': this.fieldData.taxesAndInsurance,
+        'zipCode': this.fieldData.zipCode
       }
-      const data = await authenticate().then((res) => {
-        return loanSearch(res, searchData)
-      })
-      return data
+      console.log('2) Search Data:', searchData)
+      const data = await authenticate()
+        .then((auth) => {
+          console.log('3) Auth Result:', auth)
+          return loanSearch(auth, searchData)
+            .then((res) => {
+              console.log('4) Return Results:', res)
+              return res
+            })
+            .catch((err) => {
+              console.log('4) ERROR loanSearch', err)
+              throw err
+            })
+        })
+        .catch((err) => {
+          console.log('5) ERROR authenticate', err)
+          throw err
+        })
+      console.log('SearchResult:', data)
+      // const reduced = data.searchResultDetails.reduce(function (r, a) {
+      //   r[a.amortizationTerm] = r[a.amortizationTerm] || []
+      //   r[a.amortizationTerm].push(a)
+      //   return r
+      // }, Object.create(null))
+      // console.log('Search Data (reduced)', reduced)
+      // return reduced
     }
   },
   head () {

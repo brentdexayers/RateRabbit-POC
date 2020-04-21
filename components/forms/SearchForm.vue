@@ -245,12 +245,12 @@
               hidden
             />
             <option
-              value="YES"
+              value="1"
             >
               Yes
             </option>
             <option
-              value="NO"
+              value="0"
             >
               No
             </option>
@@ -281,12 +281,12 @@
               hidden
             />
             <option
-              value="YES"
+              value="1"
             >
               Yes
             </option>
             <option
-              value="NO"
+              value="0"
             >
               No
             </option>
@@ -437,6 +437,7 @@ export default {
     handleFormSubmit () {
       // const self = this
       console.log('Form Submitted')
+      this.$emit('submitted')
     }
   }
 }

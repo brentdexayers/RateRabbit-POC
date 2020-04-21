@@ -23,6 +23,7 @@ export const authenticate = async () => {
     })
     .catch((error) => {
       console.error('Error :: authenticate\n', error)
+      throw error
     })
   return data
 }
@@ -35,6 +36,7 @@ export const getCreditRating = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getCreditRating\n', error)
+      throw error
     })
   // console.log('Credit Rating Options', data)
   return data
@@ -48,6 +50,7 @@ export const getLoanDocType = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getLoanDocType\n', error)
+      throw error
     })
   // console.log('Loan Doc Type Options', data)
   return data
@@ -61,6 +64,7 @@ export const getLoanProgram = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getLoanProgram\n', error)
+      throw error
     })
   // console.log('Loan Program Options', data)
   return data
@@ -74,6 +78,7 @@ export const getLoanPurpose = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getLoanPurpose\n', error)
+      throw error
     })
   // console.log('Loan Purpose Options', data)
   return data
@@ -87,6 +92,7 @@ export const getLoanRefinanceType = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getLoanRefinanceType\n', error)
+      throw error
     })
   // console.log('Loan Refinance Type Options', data)
   return data
@@ -100,6 +106,7 @@ export const getMaritalStatus = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getMaritalStatus\n', error)
+      throw error
     })
   // console.log('Marital Status Options', data)
   return data
@@ -113,6 +120,7 @@ export const getPropertyType = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getPropertyType\n', error)
+      throw error
     })
   // console.log('Property Type Options', data)
   return data
@@ -126,6 +134,7 @@ export const getPropertyUse = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getPropertyUse\n', error)
+      throw error
     })
   // console.log('Property Use Options', data)
   return data
@@ -139,6 +148,7 @@ export const getState = async (auth) => {
     })
     .catch((error) => {
       console.error('Error :: getState\n', error)
+      throw error
     })
   // console.log('State Options', data)
   return data.filter((state) => {
@@ -147,21 +157,16 @@ export const getState = async (auth) => {
 }
 
 export const loanSearch = async (auth, searchData) => {
-  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
-  try {
-    const { data } = await axios.post(`${apiUrl}/loansearch`, searchData, axiosConfig)
-    console.log('Search Data:', data)
-    const reduced = data.searchResultDetails.reduce(function (r, a) {
-      r[a.amortizationTerm] = r[a.amortizationTerm] || []
-      r[a.amortizationTerm].push(a)
-      return r
-    }, Object.create(null))
-    console.log('Search Data (reduced)', reduced)
-    return reduced
-  } catch (err) {
-    console.warn(err)
-    return false
-  }
+  axios.setHeader('Content-Type', 'application/json')
+  axios.setHeader('Access-Control-Allow-Origin', '*')
+  axios.setToken(auth.JWT, 'Bearer')
+  await axios.post(`${apiUrl}/loansearch`, searchData)
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      throw error
+    })
 }
 
 export default authenticate
