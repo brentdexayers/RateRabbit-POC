@@ -379,10 +379,6 @@
         </div>
       </div>
     </form>
-    <div v-if="search.results">
-      <p>Search Results (for debugging):</p>
-      <code>{{ JSON.stringify(search.results) }}</code>
-    </div>
   </div>
 </template>
 
@@ -487,7 +483,7 @@ export default {
               return res
             })
             .catch((err) => {
-              throw err // <--- 500 Error
+              throw err
             })
         })
         .catch((err) => {
@@ -500,8 +496,10 @@ export default {
           return r
         }, Object.create(null))
         this.search.results = reduced
+        this.$emit('searchResults', reduced)
       }
       console.log('TODO: Set UN-loading state HERE...')
+      this.$emit('submitEnd')
     }
 
   }

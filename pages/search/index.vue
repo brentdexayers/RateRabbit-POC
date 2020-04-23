@@ -7,7 +7,7 @@
         and Lock Your Rate In
       </h1>
       <Form
-        @submitted="submitted"
+        @searchResults="updateResults"
       />
     </div>
     <div
@@ -23,6 +23,9 @@
       />
       <Details v-if="show.details" />
     </div>
+    <div v-for="(result, index) in searchResults" :key="index">
+      <code>{{ result }}</code>
+    </div>
   </div>
 </template>
 
@@ -30,11 +33,6 @@
 import Details from '~/components/search/Details.vue'
 import Form from '~/components/forms/SearchForm.vue'
 import LoanProducts from '~/components/search/LoanProducts.vue'
-
-// import {
-//   authenticate,
-//   loanSearch
-// } from '~/services/api'
 
 export default {
   layout: 'squeeze',
@@ -46,24 +44,6 @@ export default {
   data () {
     return {
       title: 'Search Rates',
-      // fieldData: {
-      //   creditRating: null,
-      //   interestOnly: null,
-      //   loanAmount: null,
-      //   loanRefinanceType: null,
-      //   loanPurpose: null,
-      //   promotionCode: null,
-      //   propertyType: null,
-      //   propertyUse: null,
-      //   propertyValue: null,
-      //   signUp: false,
-      //   state: null,
-      //   taxesAndInsurance: null,
-      //   zipCode: null
-      // },
-      // search: {
-      //   results: {}
-      // },
       show: {
         search: true,
         results: false,
@@ -72,50 +52,15 @@ export default {
     }
   },
   computed: {
+    searchResults () {
+      return this.$store.state.search.results
+    }
   },
   methods: {
-    submitted (e) {
-      console.log(e)
+    updateResults (result) {
+      this.$store.commit('setSearchResults', result)
+      console.log('Emitted Search Results\n', result)
     }
-    // async searchLoans () {
-    //   // TODO: (1) Set loading state HERE...
-    //   const searchData = {
-    //     'creditRating': this.fieldData.creditRating.name,
-    //     'interestOnly': this.fieldData.interestOnly === 'true',
-    //     'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
-    //     'loanPurpose': this.fieldData.loanPurpose.name,
-    //     'loanRefinanceType': this.fieldData.loanRefinanceType,
-    //     'promotionCode': this.fieldData.promotionCode,
-    //     'propertyType': this.fieldData.propertyType.name,
-    //     'propertyUse': this.fieldData.propertyUse.name,
-    //     'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
-    //     'taxesAndInsurance': this.fieldData.taxesAndInsurance === 'true',
-    //     'zipCode': this.fieldData.zipCode
-    //   }
-    //   const data = await authenticate()
-    //     .then((auth) => {
-    //       return loanSearch(auth, searchData)
-    //         .then((res) => {
-    //           return res
-    //         })
-    //         .catch((err) => {
-    //           throw err // <--- 500 Error
-    //         })
-    //     })
-    //     .catch((err) => {
-    //       throw err
-    //     })
-    //   if (typeof data === 'object' && data?.searchResultDetails) {
-    //     const reduced = data.searchResultDetails.reduce(function (r, a) {
-    //       r[a.amortizationTerm] = r[a.amortizationTerm] || []
-    //       r[a.amortizationTerm].push(a)
-    //       return r
-    //     }, Object.create(null))
-    //     this.search.results = reduced
-    //     // console.log(reduced)
-    //     this.show.results = true
-    //   }
-    // }
   },
   head () {
     return {
