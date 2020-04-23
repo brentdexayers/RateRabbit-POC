@@ -1,11 +1,11 @@
 <template>
   <div
-    @click.self="closeDetailsModal"
+    @click.self="hideDetails"
     class="search-results-details"
   >
     <div class="search-results-details__wrapper">
       <button
-        @click="closeDetailsModal"
+        @click="hideDetails"
         class="close"
       />
       <div class="container">
@@ -47,9 +47,9 @@
         </div>
         <div class="row">
           <div class="col">
-            <p class="search-results-details__datetime">
+            <!-- <p class="search-results-details__datetime">
               {{ searchDate[searchDate.length - 1] | datetime }}
-            </p>
+            </p> -->
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -61,23 +61,23 @@
                   </td>
                 </tr>
                 <tr
-                  v-if="application.propertyvalue"
+                  v-if="searchData.propertyValue"
                 >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.propertyvalue | currency }}
+                    {{ searchData.propertyValue | currency }}
                   </td>
                 </tr>
                 <tr
-                  v-if="application.loanamount"
+                  v-if="searchData.loanAmount"
                 >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.loanamount | currency }}
+                    {{ searchData.loanAmount | currency }}
                   </td>
                 </tr>
                 <tr>
@@ -324,24 +324,28 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  computed: {
-    loanProduct () {
-      return this.$store.state.loanProductDetail
-    },
-    application () {
-      return this.$store.state.application
-    },
-    searchDate () {
-      return this.$store.state.datetimes
+  props: {
+    loanProduct: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
+  computed: {
+    ...mapState({
+      searchData: state => state.search.data
+    })
+  },
   methods: {
-    closeDetailsModal (event) {
-      this.$store.commit('unsetLoanProductDetail')
+    hideDetails () {
+      this.$emit('hideDetails')
     },
-    apply (event, loanProduct) {
-      this.$store.commit('application/setLoanProduct', loanProduct)
+    apply (loanProduct) {
+      this.$emit('apply', loanProduct)
     }
   }
 }

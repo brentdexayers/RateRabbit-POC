@@ -460,6 +460,12 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
+    updateSearchData (payload) {
+      this.$store.commit('setSearchData', payload)
+    },
+    updateSearchResults (payload) {
+      this.$store.commit('setSearchResults', payload)
+    },
     async handleFormSubmit () {
       this.$emit('submitStart')
       console.log('TODO: Set loading state HERE...')
@@ -476,6 +482,7 @@ export default {
         'taxesAndInsurance': this.fieldData.taxesAndInsurance === 'true',
         'zipCode': this.fieldData.zipCode
       }
+      this.updateSearchData(searchData)
       const data = await authenticate()
         .then((auth) => {
           return loanSearch(auth, searchData)
@@ -495,8 +502,10 @@ export default {
           r[a.amortizationTerm].push(a)
           return r
         }, Object.create(null))
-        this.search.results = reduced
-        this.$emit('searchResults', reduced)
+        this.updateSearchResults(reduced)
+        this.$emit('searchResults', true)
+      } else {
+        this.$emit('searchResults', false)
       }
       console.log('TODO: Set UN-loading state HERE...')
       this.$emit('submitEnd')

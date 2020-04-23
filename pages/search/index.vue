@@ -7,21 +7,11 @@
         and Lock Your Rate In
       </h1>
       <Form
-        @searchResults="updateResults"
+        @submitEnd="handleSubmit"
       />
     </div>
-    <div
-      v-if="show.results"
-      class="search-results"
-    >
-      <p>
-        Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
-      </p>
-      <LoanProducts
-        v-if="search.results && show.results"
-        :loanProducts="search.results"
-      />
-      <Details v-if="show.details" />
+    <div v-if="auth">
+      <code>{{ auth }}</code>
     </div>
     <div v-for="(result, index) in searchResults" :key="index">
       <code>{{ result }}</code>
@@ -30,16 +20,13 @@
 </template>
 
 <script>
-import Details from '~/components/search/Details.vue'
+import { mapState } from 'vuex'
 import Form from '~/components/forms/SearchForm.vue'
-import LoanProducts from '~/components/search/LoanProducts.vue'
 
 export default {
   layout: 'squeeze',
   components: {
-    Details,
-    Form,
-    LoanProducts
+    Form
   },
   data () {
     return {
@@ -52,14 +39,16 @@ export default {
     }
   },
   computed: {
-    searchResults () {
-      return this.$store.state.search.results
-    }
+    ...mapState({
+      auth: state => state.auth,
+      searchResults: state => state.search.results
+    })
   },
   methods: {
-    updateResults (result) {
-      this.$store.commit('setSearchResults', result)
-      console.log('Emitted Search Results\n', result)
+    handleSubmit () {
+      this.$router.push({
+        path: '/search/results/'
+      })
     }
   },
   head () {
