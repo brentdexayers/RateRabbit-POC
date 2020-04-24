@@ -67,7 +67,7 @@
           </label>
           <input
             v-model="loanAmount"
-            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
+            v-currency="{distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
@@ -81,18 +81,18 @@
       <div v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'" class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: cashAmount }"
-            for="cashAmount"
+            :class="{ hasvalue: loanCashOutAmount }"
+            for="loanCashOutAmount"
           >
             {{ 'Cash Amount' | titlecase }}
           </label>
           <input
-            v-model="cashAmount"
+            v-model="loanCashOutAmount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="cashAmount"
+            name="loanCashOutAmount"
             class="form-control"
             placeholder=""
           >
@@ -137,17 +137,17 @@
         </div>
         <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            :class="{ hasvalue: zipCode }"
-            for="zipCode"
+            :class="{ hasvalue: currentZip }"
+            for="currentZip"
           >
             {{ 'Zip Code' | titlecase }}
           </label>
           <input
-            v-model="zipCode"
+            v-model="currentZip"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="zipCode"
+            name="currentZip"
             class="form-control"
             placeholder=""
           >
@@ -247,16 +247,16 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--interest">
           <label
-            :class="{ hasvalue: interestOnly }"
-            for="interestOnly"
+            :class="{ hasvalue: loanInterestOnly }"
+            for="loanInterestOnly"
           >
             {{ 'Interest Only' | titlecase }}
           </label>
           <select
-            v-model="interestOnly"
+            v-model="loanInterestOnly"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
-            name="interestOnly"
+            name="loanInterestOnly"
             class="custom-select"
           >
             <option
@@ -265,12 +265,12 @@
               hidden
             />
             <option
-              value="true"
+              value="1"
             >
               Yes
             </option>
             <option
-              value="false"
+              value="0"
             >
               No
             </option>
@@ -301,12 +301,12 @@
               hidden
             />
             <option
-              value="true"
+              value="1"
             >
               Yes
             </option>
             <option
-              value="false"
+              value="0"
             >
               No
             </option>
@@ -400,51 +400,47 @@ export default {
   },
   data () {
     return {
-      // Field Options
-      loanPurposeOptions: {},
-      propertyTypeOptions: {},
-      propertyUseOptions: {},
-      creditRatingOptions: {},
-      stateOptions: {},
       // Form state
       ltv: 0,
-      submitButton: 'Search Live Rates',
-      search: {
-        results: {}
-      }
+      submitButton: 'Search Live Rates'
     }
   },
   computed: {
     ...mapState({
-      auth: state => state.auth
+      auth: state => state.auth,
+      loanPurposeOptions: state => state.form.options.loanPurposeOptions,
+      propertyTypeOptions: state => state.form.options.propertyTypeOptions,
+      propertyUseOptions: state => state.form.options.propertyUseOptions,
+      creditRatingOptions: state => state.form.options.creditRatingOptions,
+      stateOptions: state => state.form.options.stateOptions
     }),
-    cashAmount: {
+    loanCashOutAmount: {
       get () {
-        return this.$store.state.form.data.cashAmount
+        return this.$store.state.application.data.loanCashOutAmount
       },
       set (value) {
-        this.$store.commit('updateCashAmount', value)
+        this.$store.commit('updateLoanCashOutAmount', value)
       }
     },
     creditRating: {
       get () {
-        return this.$store.state.form.data.creditRating
+        return this.$store.state.application.data.creditRating
       },
       set (value) {
         this.$store.commit('updateCreditRating', value)
       }
     },
-    interestOnly: {
+    loanInterestOnly: {
       get () {
-        return this.$store.state.form.data.interestOnly
+        return this.$store.state.application.data.loanInterestOnly
       },
       set (value) {
-        this.$store.commit('updateInterestOnly', value)
+        this.$store.commit('updateLoanInterestOnly', value)
       }
     },
     loanAmount: {
       get () {
-        return this.$store.state.form.data.loanAmount
+        return this.$store.state.application.data.loanAmount
       },
       set (value) {
         this.$store.commit('updateLoanAmount', value)
@@ -452,7 +448,7 @@ export default {
     },
     loanRefinanceType: {
       get () {
-        return this.$store.state.form.data.loanRefinanceType
+        return this.$store.state.application.data.loanRefinanceType
       },
       set (value) {
         this.$store.commit('updateLoanRefinanceType', value)
@@ -460,7 +456,7 @@ export default {
     },
     loanPurpose: {
       get () {
-        return this.$store.state.form.data.loanPurpose
+        return this.$store.state.application.data.loanPurpose
       },
       set (value) {
         this.$store.commit('updateLoanPurpose', value)
@@ -468,7 +464,7 @@ export default {
     },
     promotionCode: {
       get () {
-        return this.$store.state.form.data.promotionCode
+        return this.$store.state.application.data.promotionCode
       },
       set (value) {
         this.$store.commit('updatePromotionCode', value)
@@ -476,7 +472,7 @@ export default {
     },
     propertyType: {
       get () {
-        return this.$store.state.form.data.propertyType
+        return this.$store.state.application.data.propertyType
       },
       set (value) {
         this.$store.commit('updatePropertyType', value)
@@ -484,7 +480,7 @@ export default {
     },
     propertyUse: {
       get () {
-        return this.$store.state.form.data.propertyUse
+        return this.$store.state.application.data.propertyUse
       },
       set (value) {
         this.$store.commit('updatePropertyUse', value)
@@ -492,7 +488,7 @@ export default {
     },
     propertyValue: {
       get () {
-        return this.$store.state.form.data.propertyValue
+        return this.$store.state.application.data.propertyValue
       },
       set (value) {
         this.$store.commit('updatePropertyValue', value)
@@ -508,7 +504,7 @@ export default {
     },
     state: {
       get () {
-        return this.$store.state.form.data.state
+        return this.$store.state.application.data.state
       },
       set (value) {
         this.$store.commit('updateState', value)
@@ -522,22 +518,22 @@ export default {
         this.$store.commit('updateTaxesAndInsurance', value)
       }
     },
-    zipCode: {
+    currentZip: {
       get () {
-        return this.$store.state.form.data.zipCode
+        return this.$store.state.application.data.currentZip
       },
       set (value) {
-        this.$store.commit('updateZipCode', value)
+        this.$store.commit('updateCurrentZip', value)
       }
     }
   },
   async fetch () {
     this.$store.commit('setAuth', await authenticate())
-    this.loanPurposeOptions = await getLoanPurpose(this.auth)
-    this.stateOptions = await getState(this.auth)
-    this.propertyTypeOptions = await getPropertyType(this.auth)
-    this.propertyUseOptions = await getPropertyUse(this.auth)
-    this.creditRatingOptions = await getCreditRating(this.auth)
+    this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
+    this.$store.commit('updateStateOptions', await getState(this.auth))
+    this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
+    this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
+    this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
   },
   methods: {
     calculateLTV () {
@@ -554,18 +550,20 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     // Submit Methods
-    updateSearchData (payload) {
-      this.$store.commit('setSearchData', payload)
-    },
     updateSearchResults (payload) {
       this.$store.commit('setSearchResults', payload)
+    },
+    updateRoute () {
+      this.$router.push({
+        path: '/search/results/'
+      })
     },
     async handleFormSubmit () {
       this.$emit('submitStart')
       console.log('TODO: Set loading state HERE...')
-      const searchData = {
+      const searchPayload = {
         'creditRating': this.creditRating.name,
-        'interestOnly': this.interestOnly === 'true',
+        'interestOnly': this.loanInterestOnly === 'true',
         'loanAmount': this.$parseCurrency(this.loanAmount),
         'loanPurpose': this.loanPurpose.name,
         'loanRefinanceType': this.loanRefinanceType,
@@ -574,12 +572,11 @@ export default {
         'propertyUse': this.propertyUse.name,
         'propertyValue': this.$parseCurrency(this.propertyValue),
         'taxesAndInsurance': this.taxesAndInsurance === 'true',
-        'zipCode': this.zipCode
+        'zipCode': this.currentZip
       }
-      this.updateSearchData(searchData)
       const data = await authenticate()
         .then((auth) => {
-          return loanSearch(auth, searchData)
+          return loanSearch(auth, searchPayload)
             .then((res) => {
               return res
             })
@@ -601,6 +598,7 @@ export default {
       } else {
         this.$emit('searchResults', false)
       }
+      this.updateRoute()
       console.log('TODO: Set UN-loading state HERE...')
       this.$emit('submitEnd')
     }

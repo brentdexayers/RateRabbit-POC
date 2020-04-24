@@ -40,9 +40,9 @@ export default {
   },
   methods: {
     handleSubmit () {
-      this.$router.push({
-        path: '/search/results/'
-      })
+      // this.$router.push({
+      //   path: '/search/results/'
+      // })
     }
   },
   head () {

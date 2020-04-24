@@ -29,7 +29,7 @@
           </div>
           <div class="col-12 col-md-5">
             <nuxt-link
-              @click.native="apply($event, loanProduct)"
+              @click.native="apply(loanProduct)"
               to="/apply"
               class="btn btn-primary search-results-details__apply-btn"
             >
@@ -43,6 +43,7 @@
                 {{ 'Talk to a Loan Consultant' }}
               </nuxt-link>
             </p>
+            {{ loanProduct.productId }}
           </div>
         </div>
         <div class="row">
@@ -61,23 +62,23 @@
                   </td>
                 </tr>
                 <tr
-                  v-if="searchData.propertyValue"
+                  v-if="applicationData.propertyValue"
                 >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchData.propertyValue | currency }}
+                    {{ applicationData.propertyValue }}
                   </td>
                 </tr>
                 <tr
-                  v-if="searchData.loanAmount"
+                  v-if="applicationData.loanAmount"
                 >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ searchData.loanAmount | currency }}
+                    {{ applicationData.loanAmount }}
                   </td>
                 </tr>
                 <tr>
@@ -337,7 +338,7 @@ export default {
   },
   computed: {
     ...mapState({
-      searchData: state => state.search.data
+      applicationData: state => state.application.data
     })
   },
   methods: {
@@ -345,6 +346,7 @@ export default {
       this.$emit('hideDetails')
     },
     apply (loanProduct) {
+      this.$store.commit('setApplicationLoanProduct', loanProduct)
       this.$emit('apply', loanProduct)
     }
   }

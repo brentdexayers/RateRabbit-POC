@@ -171,9 +171,22 @@ export const getState = async (auth) => {
   })
 }
 
-export const loanSearch = async (auth, searchData) => {
+export const loanSearch = async (auth, payload) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
-  const { data } = await axios.post(`${apiUrl}/loansearch`, searchData, axiosConfig)
+  const { data } = await axios.post(`${apiUrl}/loansearch`, payload, axiosConfig)
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      handleError(error)
+      throw error
+    })
+  return data
+}
+
+export const applicationCreate = async (auth, payload) => {
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  const { data } = await axios.post(`${apiUrl}/application/create`, payload, axiosConfig)
     .then((res) => {
       return res
     })

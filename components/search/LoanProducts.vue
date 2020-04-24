@@ -69,6 +69,7 @@
                     <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
                       <nuxt-link
                         @click.native="apply(loanProduct)"
+                        :data-loan-product-id="loanProduct.productId"
                         to="/apply"
                         class="btn btn-sm btn-primary results-table__result--desktop__button"
                       >
@@ -162,6 +163,7 @@
                 <div class="col">
                   <nuxt-link
                     @click.native="apply(loanProduct)"
+                    :data-loan-product-id="loanProduct.productId"
                     to="/apply"
                     class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
                   >
@@ -197,6 +199,7 @@ export default {
   },
   methods: {
     apply (loanProduct) {
+      this.$store.commit('setApplicationLoanProduct', loanProduct)
       this.$emit('apply:', loanProduct)
     },
     showDetails (event, loanProduct) {
@@ -224,6 +227,9 @@ export default {
       line-height: 28px;
       padding-left: #{$spacer * 1.25};
       padding-right: #{$spacer * 1.25};
+      position: sticky;
+      top: 110px;
+      z-index: 1000;
       @include media-breakpoint-down('sm') {
         display: none;
       }

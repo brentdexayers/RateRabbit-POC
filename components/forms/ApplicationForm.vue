@@ -2,7 +2,7 @@
   <div>
     <form
       id="application-form"
-      @submit.prevent="formValidate"
+      @submit.prevent="handleSubmit"
       action="/apply"
       method="POST"
       class="form form--apply"
@@ -10,39 +10,46 @@
       <h3 class="form--apply__header">
         Start the loan application process
       </h3>
-      <p v-if="formHasErrors" class="text-danger">
-        Please complete the application form.
-      </p>
+      <div v-if="formErrors.length">
+        <p class="text-danger">
+          Please fix the following errors:
+        </p>
+        <ul class="text-danger">
+          <li v-for="(error, index) in formErrors" :key="index">
+            {{ error.error }}
+          </li>
+        </ul>
+      </div>
       <div class="row">
         <div class="form-group col-12 col-lg-6">
           <label
-            :class="{ hasvalue: firstname }"
-            for="firstname"
+            :class="{ hasvalue: firstName }"
+            for="firstName"
           >
             {{ 'First Name' | titlecase }}
           </label>
           <input
-            v-model="firstname"
+            v-model="firstName"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="firstname"
+            name="firstName"
             class="form-control"
           >
         </div>
         <div class="form-group col-12 col-lg-6">
           <label
-            :class="{ hasvalue: lastname }"
-            for="lastname"
+            :class="{ hasvalue: lastName }"
+            for="lastName"
           >
             {{ 'Last Name' | titlecase }}
           </label>
           <input
-            v-model="lastname"
+            v-model="lastName"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="lastname"
+            name="lastName"
             class="form-control"
           >
         </div>
@@ -50,17 +57,17 @@
       <div class="row">
         <div class="form-group col-12 col-lg-6">
           <label
-            :class="{ hasvalue: phone }"
-            for="phone"
+            :class="{ hasvalue: homePhone }"
+            for="homePhone"
           >
             {{ 'Phone Number' | titlecase }}
           </label>
           <input
-            v-model="phone"
+            v-model="homePhone"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="phone"
+            name="homePhone"
             class="form-control"
           >
         </div>
@@ -104,50 +111,57 @@
 </template>
 
 <script>
-import authenticate from '~/services/api'
+import { mapState } from 'vuex'
+
+import {
+  authenticate,
+  applicationCreate
+} from '~/services/api'
 
 export default {
   data () {
     return {
-      formHasErrors: false
+      formErrors: []
     }
   },
   computed: {
-    firstname: {
+    ...mapState({
+      auth: state => state.auth,
+      applicationData: state => state.application.data,
+      loanProduct: state => state.application.loanProduct
+    }),
+    firstName: {
       get () {
-        return this.$store.state.application.firstname
+        return this.$store.state.application.data.firstName
       },
       set (value) {
-        this.$store.commit('application/setfirstname', value)
+        this.$store.commit('updateFirstName', value)
       }
     },
-    lastname: {
+    lastName: {
       get () {
-        return this.$store.state.application.lastname
+        return this.$store.state.application.data.lastName
       },
       set (value) {
-        this.$store.commit('application/setlastname', value)
+        this.$store.commit('updateLastName', value)
       }
     },
-    phone: {
+    homePhone: {
       get () {
-        return this.$store.state.application.phone
+        return this.$store.state.application.data.homePhone
       },
       set (value) {
-        this.$store.commit('application/setphone', value)
+        this.$store.commit('updateHomePhone', value)
       }
     },
     email: {
       get () {
-        return this.$store.state.application.email
+        return this.$store.state.application.data.email
       },
       set (value) {
-        this.$store.commit('application/setemail', value)
+        this.$store.commit('updateEmail', value)
       }
     }
-  },
-  asyncData ({ params }) {
-    console.log(authenticate())
   },
   methods: {
     focusClassAdd (event) {
@@ -159,25 +173,136 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     formValidate () {
-      this.formHasErrors = false
-      if (!this.firstname) {
-        this.formHasErrors = true
+      this.$emit('applicationValidateStart')
+      this.formErrors = []
+      if (!this.$store.state.application.data.firstName) {
+        this.formErrors.push({ field: 'firstName', error: 'First Name is required' })
       }
-      if (!this.lastname) {
-        this.formHasErrors = true
+      if (!this.$store.state.application.data.lastName) {
+        this.formErrors.push({ field: 'lastName', error: 'Last Name is required' })
       }
-      if (!this.phone) {
-        this.formHasErrors = true
+      if (!this.$store.state.application.data.homePhone) {
+        this.formErrors.push({ field: 'homePhone', error: 'Phone is required' })
       }
-      if (!this.email) {
-        this.formHasErrors = true
+      if (!this.$store.state.application.data.email) {
+        this.formErrors.push({ field: 'email', error: 'Email is required' })
       }
-      if (!this.formHasErrors) {
-        this.$store.commit('application/setcompleted', true)
-      } else {
-
+      if (this.formErrors.length) {
+        this.$emit('applicationHasErrors', this.formErrors)
+        return false
       }
-      window.scrollTo(0, 0)
+      this.$emit('applicationValid')
+      return true
+    },
+    async handleSubmit () {
+      this.$emit('applicationSubmitStart')
+      const valid = this.formValidate()
+      if (valid) {
+        const applicationPayload = {
+          // businessPhone: '',
+          // cellPhone: '',
+          coBorrower: 0,
+          // county: '',
+          creditRating: this.applicationData.creditRating.name,
+          // donationAmount: '',
+          email: this.applicationData.email,
+          // fax: '',
+          firstName: this.applicationData.firstName,
+          // grossIncome: '',
+          homePhone: this.applicationData.homePhone,
+          // jobTitle: '',
+          lastName: this.applicationData.lastName,
+          loanAmount: this.$parseCurrency(this.applicationData.loanAmount),
+          loanCashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
+          // loanDocType: '',
+          loanImpounds: 0,
+          loanInterestOnly: this.applicationData.loanInterestOnly,
+          loanPurpose: this.applicationData.loanPurpose.name,
+          // loanRefinanceType: '',
+          // maritalStatus: '',
+          productId: this.loanProduct.productId,
+          promotionCode: this.applicationData.promotionCode,
+          // propertyAddress: '',
+          // propertyCity: '',
+          propertyPurchasePrice: '',
+          propertyType: this.applicationData.propertyType.name,
+          propertyUse: this.applicationData.propertyUse.name,
+          propertyValue: this.$parseCurrency(this.applicationData.propertyValue),
+          // propertyYearAcquired: '',
+          // propertyZip: '',
+          result: '',
+          selfEmployed: 0,
+          // ssn: '',
+          state: this.applicationData.state.name
+          // timeAtCurrentAddress: ''
+        }
+        if (applicationPayload.coBorrower) { // if COBORROWER
+          applicationPayload.coBorrowerAddress = ''
+          applicationPayload.coBorrowerBusinessPhone = ''
+          applicationPayload.coBorrowerCellPhone = ''
+          applicationPayload.coBorrowerCity = ''
+          applicationPayload.coBorrowerCurrentHazardInsurance = ''
+          applicationPayload.coBorrowerCurrentHoaFees = ''
+          applicationPayload.coBorrowerCurrentMortgagePayment = ''
+          applicationPayload.coBorrowerCurrentPropertyTaxes = ''
+          applicationPayload.coBorrowerEmail = ''
+          applicationPayload.coBorrowerEmployedHowLong = ''
+          applicationPayload.coBorrowerEmployerAddress = ''
+          applicationPayload.coBorrowerEmployerCity = ''
+          applicationPayload.coBorrowerEmployerName = ''
+          applicationPayload.coBorrowerEmployerState = ''
+          applicationPayload.coBorrowerEmployerZip = ''
+          applicationPayload.coBorrowerFax = ''
+          applicationPayload.coBorrowerFirstName = ''
+          applicationPayload.coBorrowerGrossIncome = ''
+          applicationPayload.coBorrowerHomePhone = ''
+          applicationPayload.coBorrowerJobTitle = ''
+          applicationPayload.coBorrowerLastName = ''
+          applicationPayload.coBorrowerMaritalStatus = ''
+          applicationPayload.coBorrowerSelfEmployed = ''
+          applicationPayload.coBorrowerSsn = ''
+          applicationPayload.coBorrowerState = ''
+          applicationPayload.coBorrowerTimeAtCurrentAddress = ''
+          applicationPayload.coBorrowerZip = ''
+        }
+        const employer = false
+        if (employer) { // if EMPLOYER
+          applicationPayload.employedHowLong = ''
+          applicationPayload.employerAddress = ''
+          applicationPayload.employerCity = ''
+          applicationPayload.employerName = ''
+          applicationPayload.employerState = ''
+          applicationPayload.employerZip = ''
+        }
+        const currentaddress = false
+        if (currentaddress) { // if CURRENTADDRESS
+          applicationPayload.currentAddress = ''
+          applicationPayload.currentCity = ''
+          applicationPayload.currentHazardInsurance = ''
+          applicationPayload.currentHoaFees = ''
+          applicationPayload.currentMortgagePayment = ''
+          applicationPayload.currentPropertyTaxes = ''
+          applicationPayload.currentState = this.applicationData.state.name
+          applicationPayload.currentZip = this.applicationData.currentZip
+        }
+        console.log('applicationPayload', applicationPayload)
+        const data = await authenticate()
+          .then((auth) => {
+            return applicationCreate(auth, applicationPayload)
+              .then((res) => {
+                console.log('Application Result', res)
+                return res
+              })
+              .catch((err) => {
+                throw err
+              })
+          })
+          .catch((err) => {
+            throw err
+          })
+        console.log('data', data)
+      }
+      this.$emit('applicationSubmitEnd')
     }
   }
 }

@@ -49,8 +49,7 @@ export default {
     hideDetails () {
       this.detailedLoanProduct = null
     },
-    apply (payload) {
-      this.$store.commit('setApplicationLoanProduct', payload)
+    apply () {
       this.$router.push({
         path: '/apply/'
       })

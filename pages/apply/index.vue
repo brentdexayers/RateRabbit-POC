@@ -1,6 +1,6 @@
 <template>
   <div class="page-content page--apply">
-    <div v-if="!applicationCompleted">
+    <div>
       <h3>
         {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
       </h3>
@@ -19,7 +19,15 @@
               {{ 'Loan Amount' | titlecase }}
             </td>
             <td>
-              {{ application.loanamount | currency }}
+              {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
+            </td>
+          </tr>
+          <tr v-if="applicationData.cashAmount">
+            <td>
+              {{ 'Cash Amount' | titlecase }}
+            </td>
+            <td>
+              {{ applicationData.cashAmount }}
             </td>
           </tr>
           <tr>
@@ -50,15 +58,12 @@
       </table>
       <Form />
     </div>
-    <div v-else>
-      <h3>
-        Congrats on completing your application!
-      </h3>
-    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Form from '~/components/forms/ApplicationForm.vue'
 
 export default {
@@ -72,28 +77,12 @@ export default {
     }
   },
   computed: {
-    application () {
-      return this.$store.state.application
-    },
-    loanProduct () {
-      return this.$store.state.application.loanProduct
-    },
-    applicationCompleted: {
-      get () {
-        return this.$store.state.application.completed
-      },
-      set (value) {
-        this.$store.commit('application/setcompletedStatus', value)
-      }
-    }
-  },
-  async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
+    ...mapState({
+      loanProduct: state => state.application.loanProduct,
+      applicationData: state => state.application.data
+    })
   },
   methods: {
-    toggleApplicationStatus () {
-      this.applicationCompleted = !this.applicationCompleted
-    }
   },
   head () {
     return {
