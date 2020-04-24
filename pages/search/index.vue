@@ -10,12 +10,6 @@
         @submitEnd="handleSubmit"
       />
     </div>
-    <div v-if="auth">
-      <code>{{ auth }}</code>
-    </div>
-    <div v-for="(result, index) in searchResults" :key="index">
-      <code>{{ result }}</code>
-    </div>
   </div>
 </template>
 

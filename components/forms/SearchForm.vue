@@ -9,13 +9,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.loanPurpose !== null }"
+            :class="{ hasvalue: loanPurpose !== null }"
             for="loanPurpose"
           >
             {{ 'Loan Purpose' | titlecase }}
           </label>
           <select
-            v-model="fieldData.loanPurpose"
+            v-model="loanPurpose"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="loanPurpose"
@@ -39,13 +39,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.propertyValue }"
+            :class="{ hasvalue: propertyValue }"
             for="propertyValue"
           >
             {{ 'Property value' | titlecase }}
           </label>
           <input
-            v-model="fieldData.propertyValue"
+            v-model="propertyValue"
             v-currency="{distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
@@ -60,13 +60,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.loanAmount }"
+            :class="{ hasvalue: loanAmount }"
             for="loanAmount"
           >
             {{ 'Loan Amount' | titlecase }}
           </label>
           <input
-            v-model="fieldData.loanAmount"
+            v-model="loanAmount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @change="calculateLTV"
             @focus="focusClassAdd($event)"
@@ -78,16 +78,16 @@
           >
         </div>
       </div>
-      <div v-if="fieldData.loanPurpose && fieldData.loanPurpose.name === 'Refinance Cash Out'" class="row">
+      <div v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'" class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.cashAmount }"
+            :class="{ hasvalue: cashAmount }"
             for="cashAmount"
           >
             {{ 'Cash Amount' | titlecase }}
           </label>
           <input
-            v-model="fieldData.cashAmount"
+            v-model="cashAmount"
             v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
@@ -109,13 +109,13 @@
       <div class="row">
         <div class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
-            :class="{ hasvalue: fieldData.state !== null }"
+            :class="{ hasvalue: state !== null }"
             for="state"
           >
             {{ 'State' | titlecase }}
           </label>
           <select
-            v-model="fieldData.state"
+            v-model="state"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="state"
@@ -137,13 +137,13 @@
         </div>
         <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            :class="{ hasvalue: fieldData.zipCode }"
+            :class="{ hasvalue: zipCode }"
             for="zipCode"
           >
             {{ 'Zip Code' | titlecase }}
           </label>
           <input
-            v-model="fieldData.zipCode"
+            v-model="zipCode"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
@@ -156,13 +156,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.propertyType !== null }"
+            :class="{ hasvalue: propertyType !== null }"
             for="propertyType"
           >
             {{ 'Property Type' | titlecase }}
           </label>
           <select
-            v-model="fieldData.propertyType"
+            v-model="propertyType"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="propertyType"
@@ -186,13 +186,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.propertyUse !== null }"
+            :class="{ hasvalue: propertyUse !== null }"
             for="propertyUse"
           >
             {{ 'Property Use' | titlecase }}
           </label>
           <select
-            v-model="fieldData.propertyUse"
+            v-model="propertyUse"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="propertyUse"
@@ -216,13 +216,13 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: fieldData.creditRating !== null }"
+            :class="{ hasvalue: creditRating !== null }"
             for="creditRating"
           >
             {{ 'Credit Rating' | titlecase }}
           </label>
           <select
-            v-model="fieldData.creditRating"
+            v-model="creditRating"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="creditRating"
@@ -247,13 +247,13 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--interest">
           <label
-            :class="{ hasvalue: fieldData.interestOnly }"
+            :class="{ hasvalue: interestOnly }"
             for="interestOnly"
           >
             {{ 'Interest Only' | titlecase }}
           </label>
           <select
-            v-model="fieldData.interestOnly"
+            v-model="interestOnly"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="interestOnly"
@@ -278,7 +278,7 @@
         </div>
         <div class="form-group col-12 form--search-rates__col--taxes">
           <label
-            :class="{ hasvalue: fieldData.taxesAndInsurance }"
+            :class="{ hasvalue: taxesAndInsurance }"
             for="taxesAndInsurance"
           >
             {{ 'Taxes & Insurance' | titlecase }}
@@ -289,7 +289,7 @@
           </label>
           <select
             id="input-select--taxes"
-            v-model="fieldData.taxesAndInsurance"
+            v-model="taxesAndInsurance"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             name="taxesAndInsurance"
@@ -335,13 +335,13 @@
                 </div>
                 <div class="form-group col-12 mb-3">
                   <label
-                    :class="{ hasvalue: fieldData.promotionCode }"
+                    :class="{ hasvalue: promotionCode }"
                     for="promotionCode"
                   >
                     {{ 'Promo Code' | titlecase }}
                   </label>
                   <input
-                    v-model="fieldData.promotionCode"
+                    v-model="promotionCode"
                     @focus="focusClassAdd($event)"
                     @blur="focusClassRemove($event)"
                     type="text"
@@ -361,7 +361,7 @@
                   <div class="custom-control custom-checkbox">
                     <input
                       id="signUp"
-                      v-model="fieldData.signUp"
+                      v-model="signUp"
                       type="checkbox"
                       class="custom-control-input"
                     >
@@ -383,6 +383,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import {
   authenticate,
   getCreditRating,
@@ -398,30 +400,12 @@ export default {
   },
   data () {
     return {
-      auth: {},
       // Field Options
       loanPurposeOptions: {},
       propertyTypeOptions: {},
       propertyUseOptions: {},
       creditRatingOptions: {},
       stateOptions: {},
-      // Field Data
-      fieldData: {
-        cashAmount: null,
-        creditRating: null,
-        interestOnly: null,
-        loanAmount: null,
-        loanRefinanceType: null,
-        loanPurpose: null,
-        promotionCode: null,
-        propertyType: null,
-        propertyUse: null,
-        propertyValue: null,
-        signUp: false,
-        state: null,
-        taxesAndInsurance: null,
-        zipCode: null
-      },
       // Form state
       ltv: 0,
       submitButton: 'Search Live Rates',
@@ -431,15 +415,124 @@ export default {
     }
   },
   computed: {
-    applicationCompleted () {
-      return this.$store.state.application.completed
+    ...mapState({
+      auth: state => state.auth
+    }),
+    cashAmount: {
+      get () {
+        return this.$store.state.form.data.cashAmount
+      },
+      set (value) {
+        this.$store.commit('updateCashAmount', value)
+      }
     },
-    searchResults () {
-      return this.$store.state.loanProducts
+    creditRating: {
+      get () {
+        return this.$store.state.form.data.creditRating
+      },
+      set (value) {
+        this.$store.commit('updateCreditRating', value)
+      }
+    },
+    interestOnly: {
+      get () {
+        return this.$store.state.form.data.interestOnly
+      },
+      set (value) {
+        this.$store.commit('updateInterestOnly', value)
+      }
+    },
+    loanAmount: {
+      get () {
+        return this.$store.state.form.data.loanAmount
+      },
+      set (value) {
+        this.$store.commit('updateLoanAmount', value)
+      }
+    },
+    loanRefinanceType: {
+      get () {
+        return this.$store.state.form.data.loanRefinanceType
+      },
+      set (value) {
+        this.$store.commit('updateLoanRefinanceType', value)
+      }
+    },
+    loanPurpose: {
+      get () {
+        return this.$store.state.form.data.loanPurpose
+      },
+      set (value) {
+        this.$store.commit('updateLoanPurpose', value)
+      }
+    },
+    promotionCode: {
+      get () {
+        return this.$store.state.form.data.promotionCode
+      },
+      set (value) {
+        this.$store.commit('updatePromotionCode', value)
+      }
+    },
+    propertyType: {
+      get () {
+        return this.$store.state.form.data.propertyType
+      },
+      set (value) {
+        this.$store.commit('updatePropertyType', value)
+      }
+    },
+    propertyUse: {
+      get () {
+        return this.$store.state.form.data.propertyUse
+      },
+      set (value) {
+        this.$store.commit('updatePropertyUse', value)
+      }
+    },
+    propertyValue: {
+      get () {
+        return this.$store.state.form.data.propertyValue
+      },
+      set (value) {
+        this.$store.commit('updatePropertyValue', value)
+      }
+    },
+    signUp: {
+      get () {
+        return this.$store.state.form.data.signUp
+      },
+      set (value) {
+        this.$store.commit('updateSignUp', value)
+      }
+    },
+    state: {
+      get () {
+        return this.$store.state.form.data.state
+      },
+      set (value) {
+        this.$store.commit('updateState', value)
+      }
+    },
+    taxesAndInsurance: {
+      get () {
+        return this.$store.state.form.data.taxesAndInsurance
+      },
+      set (value) {
+        this.$store.commit('updateTaxesAndInsurance', value)
+      }
+    },
+    zipCode: {
+      get () {
+        return this.$store.state.form.data.zipCode
+      },
+      set (value) {
+        this.$store.commit('updateZipCode', value)
+      }
     }
   },
   async fetch () {
-    this.auth = await authenticate()
+    this.$store.commit('setAuth', await authenticate())
     this.loanPurposeOptions = await getLoanPurpose(this.auth)
     this.stateOptions = await getState(this.auth)
     this.propertyTypeOptions = await getPropertyType(this.auth)
@@ -449,7 +542,7 @@ export default {
   methods: {
     calculateLTV () {
       if (this.propertyValue && this.loanAmount) {
-        this.ltv = this.$parseCurrency(this.fieldData.loanAmount) / this.$parseCurrency(this.fieldData.propertyValue)
+        this.ltv = this.$parseCurrency(this.loanAmount) / this.$parseCurrency(this.propertyValue)
       }
     },
     focusClassAdd (event) {
@@ -460,6 +553,7 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
+    // Submit Methods
     updateSearchData (payload) {
       this.$store.commit('setSearchData', payload)
     },
@@ -470,17 +564,17 @@ export default {
       this.$emit('submitStart')
       console.log('TODO: Set loading state HERE...')
       const searchData = {
-        'creditRating': this.fieldData.creditRating.name,
-        'interestOnly': this.fieldData.interestOnly === 'true',
-        'loanAmount': this.$parseCurrency(this.fieldData.loanAmount),
-        'loanPurpose': this.fieldData.loanPurpose.name,
-        'loanRefinanceType': this.fieldData.loanRefinanceType,
-        'promotionCode': this.fieldData.promotionCode,
-        'propertyType': this.fieldData.propertyType.name,
-        'propertyUse': this.fieldData.propertyUse.name,
-        'propertyValue': this.$parseCurrency(this.fieldData.propertyValue),
-        'taxesAndInsurance': this.fieldData.taxesAndInsurance === 'true',
-        'zipCode': this.fieldData.zipCode
+        'creditRating': this.creditRating.name,
+        'interestOnly': this.interestOnly === 'true',
+        'loanAmount': this.$parseCurrency(this.loanAmount),
+        'loanPurpose': this.loanPurpose.name,
+        'loanRefinanceType': this.loanRefinanceType,
+        'promotionCode': this.promotionCode,
+        'propertyType': this.propertyType.name,
+        'propertyUse': this.propertyUse.name,
+        'propertyValue': this.$parseCurrency(this.propertyValue),
+        'taxesAndInsurance': this.taxesAndInsurance === 'true',
+        'zipCode': this.zipCode
       }
       this.updateSearchData(searchData)
       const data = await authenticate()
