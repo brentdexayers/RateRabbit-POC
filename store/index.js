@@ -86,7 +86,8 @@ export const state = () => ({
       state: null,
       timeAtCurrentAddress: null
     },
-    loanProduct: {}
+    loanProduct: {},
+    results: {}
   },
   form: {
     options: {
@@ -107,12 +108,17 @@ export const state = () => ({
   }
 })
 
+// const defaultState = this.state // eslint-disable-line no-unused-vars
+
 export const mutations = {
   setAuth (state, payload) {
     state.auth = payload
   },
   setApplicationLoanProduct (state, payload) {
     state.application.loanProduct = payload
+  },
+  setApplicationResults (state, payload) {
+    state.application.results = payload
   },
   setSearchResults (state, payload) {
     state.search.results = payload

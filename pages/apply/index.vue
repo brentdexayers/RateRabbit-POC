@@ -1,6 +1,6 @@
 <template>
   <div class="page-content page--apply">
-    <div>
+    <div v-if="!applicationSubmitted">
       <h3>
         {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
       </h3>
@@ -56,7 +56,15 @@
           </tr>
         </tbody>
       </table>
-      <Form />
+      <Form
+        @applicationSubmitStart="handleSubmitStart"
+        @applicationSubmitSuccess="handleSubmitSuccess"
+        @applicationSubmitEnd="handleSubmitEnd"
+      />
+    </div>
+    <div v-if="applicationSubmitted">
+      <h3>Thank you</h3>
+      <p>We have received your application and will be in touch shortly.</p>
     </div>
   </div>
 </template>
@@ -73,7 +81,9 @@ export default {
   },
   data () {
     return {
-      title: 'Apply For a Loan'
+      title: 'Apply For a Loan',
+      applicationSubmitted: false,
+      applicationError: false
     }
   },
   computed: {
@@ -83,6 +93,23 @@ export default {
     })
   },
   methods: {
+    handleSubmitStart () {
+      console.log('TODO: Application Submit Start')
+    },
+    handleSubmitEnd () {
+      console.log('TODO: Application Submit End')
+    },
+    handleSubmitSuccess (result) {
+      console.log('Application Submit Success\n', result)
+      this.applicationSubmitted = true
+      this.applicationError = false
+      window.scrollTo(0, 0)
+      document.body.focus()
+    },
+    handleSubmitError () {
+      this.applicationSubmitted = true
+      this.applicationError = true
+    }
   },
   head () {
     return {

@@ -229,12 +229,12 @@ export default {
           propertyUse: this.applicationData.propertyUse.name,
           propertyValue: this.$parseCurrency(this.applicationData.propertyValue),
           // propertyYearAcquired: '',
-          // propertyZip: '',
+          propertyZip: this.applicationData.propertyZip,
           result: '',
-          selfEmployed: 0,
+          selfEmployed: 0, // eslint-disable-line comma-dangle
           // ssn: '',
-          state: this.applicationData.state.name
-          // timeAtCurrentAddress: ''
+          // state: this.applicationData.state.name,
+          // timeAtCurrentAddress: '',
         }
         if (applicationPayload.coBorrower) { // if COBORROWER
           applicationPayload.coBorrowerAddress = ''
@@ -285,22 +285,23 @@ export default {
           applicationPayload.currentState = this.applicationData.state.name
           applicationPayload.currentZip = this.applicationData.currentZip
         }
-        console.log('applicationPayload', applicationPayload)
-        const data = await authenticate()
+        const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
             return applicationCreate(auth, applicationPayload)
               .then((res) => {
-                console.log('Application Result', res)
+                this.$emit('applicationSubmitSuccess', res)
                 return res
               })
               .catch((err) => {
+                this.$emit('applicationSubmitError')
                 throw err
               })
           })
           .catch((err) => {
+            this.$emit('applicationSubmitError')
             throw err
           })
-        console.log('data', data)
+        this.$store.commit('setApplicationResults', data)
       }
       this.$emit('applicationSubmitEnd')
     }

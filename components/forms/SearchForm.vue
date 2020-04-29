@@ -137,17 +137,17 @@
         </div>
         <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            :class="{ hasvalue: currentZip }"
-            for="currentZip"
+            :class="{ hasvalue: propertyZip }"
+            for="propertyZip"
           >
             {{ 'Zip Code' | titlecase }}
           </label>
           <input
-            v-model="currentZip"
+            v-model="propertyZip"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
-            name="currentZip"
+            name="propertyZip"
             class="form-control"
             placeholder=""
           >
@@ -518,12 +518,12 @@ export default {
         this.$store.commit('updateTaxesAndInsurance', value)
       }
     },
-    currentZip: {
+    propertyZip: {
       get () {
-        return this.$store.state.application.data.currentZip
+        return this.$store.state.application.data.propertyZip
       },
       set (value) {
-        this.$store.commit('updateCurrentZip', value)
+        this.$store.commit('updatePropertyZip', value)
       }
     }
   },
@@ -572,7 +572,7 @@ export default {
         'propertyUse': this.propertyUse.name,
         'propertyValue': this.$parseCurrency(this.propertyValue),
         'taxesAndInsurance': this.taxesAndInsurance === 'true',
-        'zipCode': this.currentZip
+        'zipCode': this.propertyZip
       }
       const data = await authenticate()
         .then((auth) => {
