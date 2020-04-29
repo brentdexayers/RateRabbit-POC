@@ -63,7 +63,7 @@
     <li class="nav-item">
       <nuxt-link
         @click.native="navItemClicked"
-        to="/about/help"
+        to="/help"
         class="nav-link"
       >
         Help Center

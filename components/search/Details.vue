@@ -1,11 +1,11 @@
 <template>
   <div
-    @click.self="closeDetailsModal"
+    @click.self="hideDetails"
     class="search-results-details"
   >
     <div class="search-results-details__wrapper">
       <button
-        @click="closeDetailsModal"
+        @click="hideDetails"
         class="close"
       />
       <div class="container">
@@ -29,7 +29,7 @@
           </div>
           <div class="col-12 col-md-5">
             <nuxt-link
-              @click.native="apply($event, loanProduct)"
+              @click.native="apply(loanProduct)"
               to="/apply"
               class="btn btn-primary search-results-details__apply-btn"
             >
@@ -43,13 +43,14 @@
                 {{ 'Talk to a Loan Consultant' }}
               </nuxt-link>
             </p>
+            {{ loanProduct.productId }}
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p class="search-results-details__datetime">
+            <!-- <p class="search-results-details__datetime">
               {{ searchDate[searchDate.length - 1] | datetime }}
-            </p>
+            </p> -->
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -61,23 +62,23 @@
                   </td>
                 </tr>
                 <tr
-                  v-if="application.propertyvalue"
+                  v-if="applicationData.propertyValue"
                 >
                   <td scope="col">
                     {{ 'Home Value' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.propertyvalue | currency }}
+                    {{ applicationData.propertyValue }}
                   </td>
                 </tr>
                 <tr
-                  v-if="application.loanamount"
+                  v-if="applicationData.loanAmount"
                 >
                   <td scope="col">
                     {{ 'Loan Amount' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ application.loanamount | currency }}
+                    {{ applicationData.loanAmount }}
                   </td>
                 </tr>
                 <tr>
@@ -324,24 +325,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  computed: {
-    loanProduct () {
-      return this.$store.state.loanProductDetail
-    },
-    application () {
-      return this.$store.state.application
-    },
-    searchDate () {
-      return this.$store.state.datetimes
+  props: {
+    loanProduct: {
+      type: Object,
+      default () {
+        return {}
+      }
     }
   },
+  computed: {
+    ...mapState({
+      applicationData: state => state.application.data
+    })
+  },
   methods: {
-    closeDetailsModal (event) {
-      this.$store.commit('unsetLoanProductDetail')
+    hideDetails () {
+      this.$emit('hideDetails')
     },
-    apply (event, loanProduct) {
-      this.$store.commit('application/setLoanProduct', loanProduct)
+    apply (loanProduct) {
+      this.$store.commit('setApplicationLoanProduct', loanProduct)
+      this.$emit('apply', loanProduct)
     }
   }
 }

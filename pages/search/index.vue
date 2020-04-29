@@ -1,39 +1,49 @@
 <template>
   <div class="page-content page--search">
-    <div>
+    <div v-if="show.search">
       <h1 class="title">
         <strong>Search Live Rates</strong>
         <br class="d-block d-md-none">
         and Lock Your Rate In
       </h1>
-      <Form cta="Search Live Rates" />
+      <Form
+        @submitEnd="handleSubmit"
+      />
     </div>
-    <Loader v-if="loading" />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Form from '~/components/forms/SearchForm.vue'
-import Loader from '~/components/search/Loader.vue'
 
 export default {
   layout: 'squeeze',
   components: {
-    Form,
-    Loader
+    Form
   },
   data () {
     return {
-      title: 'Search Rates'
+      title: 'Search Rates',
+      show: {
+        search: true,
+        results: false,
+        details: false
+      }
     }
   },
   computed: {
-    loading () {
-      return this.$store.state.loading
-    }
+    ...mapState({
+      auth: state => state.auth,
+      searchResults: state => state.search.results
+    })
   },
-  async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
+  methods: {
+    handleSubmit () {
+      // this.$router.push({
+      //   path: '/search/results/'
+      // })
+    }
   },
   head () {
     return {

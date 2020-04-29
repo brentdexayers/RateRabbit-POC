@@ -30,7 +30,6 @@ export default {
     }
   },
   async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
   },
   head () {
     return {

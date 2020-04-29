@@ -1,57 +1,58 @@
 <template>
   <div class="page-content">
-    <Loader v-if="loading" />
     <div class="search-results">
       <p>
         Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
       </p>
-      <LoanProducts v-if="loanProducts" />
+      <LoanProducts
+        v-if="searchResults"
+        @showDetails="showDetails"
+        @apply="apply"
+      />
     </div>
-    <Details v-if="loanProductDetail" />
+    <Details
+      v-if="detailedLoanProduct"
+      :loanProduct="detailedLoanProduct"
+      @hideDetails="hideDetails"
+      @apply="apply"
+    />
   </div>
 </template>
 
 <script>
-import Loader from '~/components/search/Loader.vue'
+import { mapState } from 'vuex'
 import Details from '~/components/search/Details.vue'
 import LoanProducts from '~/components/search/LoanProducts.vue'
 
 export default {
   layout: 'default',
   components: {
-    Loader,
     LoanProducts,
     Details
   },
   data () {
     return {
+      detailedLoanProduct: null,
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
   },
   computed: {
-    auth () {
-      return this.$store.state.auth
-    },
-    loanProducts () {
-      return this.$store.state.loanProducts
-    },
-    loanProductDetail () {
-      return this.$store.state.loanProductDetail
-    },
-    loading () {
-      return this.$store.state.loading
-    }
-  },
-  async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
+    ...mapState({
+      auth: state => state.auth,
+      searchResults: state => state.search.results
+    })
   },
   methods: {
-    validateRoute () {
-      let route = true
-      if (this.results.length > 0) {
-        route = '/search'
-      }
-      return route
+    showDetails (payload) {
+      this.detailedLoanProduct = payload
+    },
+    hideDetails () {
+      this.detailedLoanProduct = null
+    },
+    apply () {
+      this.$router.push({
+        path: '/apply/'
+      })
     }
   },
   head () {

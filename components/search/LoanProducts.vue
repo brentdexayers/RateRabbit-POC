@@ -4,12 +4,12 @@
       v-if="loanProducts"
     >
       <div
-        v-for="(loanProductTerm, loanProductTermIndex) in loanProducts"
-        :key="loanProductTermIndex"
+        v-for="(loanProductsByTerm, loanProductsByTermIndex) in loanProducts"
+        :key="loanProductsByTermIndex"
         class="results-table__results"
       >
         <h2>
-          {{ loanProductTermIndex }}-Year {{ loanProductTerm[0].amortizationType }}
+          {{ loanProductsByTermIndex }}-Year {{ loanProductsByTerm[0].amortizationType }}
         </h2>
         <div class="results-table__header container-fluid">
           <div class="row">
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div
-          v-for="(loanProduct, loanProductIndex) in loanProductTerm"
+          v-for="(loanProduct, loanProductIndex) in loanProductsByTerm"
           :key="loanProductIndex"
           :data-rate-index="loanProductIndex"
         >
@@ -68,7 +68,8 @@
                   <div class="row justify-content-between">
                     <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
                       <nuxt-link
-                        @click.native="apply($event, loanProduct)"
+                        @click.native="apply(loanProduct)"
+                        :data-loan-product-id="loanProduct.productId"
                         to="/apply"
                         class="btn btn-sm btn-primary results-table__result--desktop__button"
                       >
@@ -161,7 +162,8 @@
                 </div>
                 <div class="col">
                   <nuxt-link
-                    @click.native="apply($event, loanProduct)"
+                    @click.native="apply(loanProduct)"
+                    :data-loan-product-id="loanProduct.productId"
                     to="/apply"
                     class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
                   >
@@ -178,27 +180,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   components: {
+  },
+  props: {
   },
   data () {
     return {
     }
   },
   computed: {
-    loanProducts () {
-      return this.$store.state.loanProducts
-    }
+    ...mapState({
+      auth: state => state.auth,
+      loanProducts: state => state.search.results
+    })
   },
   methods: {
-    apply (event, loanProduct) {
-      console.log('Apply:', loanProduct)
-      this.$store.commit('application/setLoanProduct', loanProduct)
+    apply (loanProduct) {
+      this.$store.commit('setApplicationLoanProduct', loanProduct)
+      this.$emit('apply:', loanProduct)
     },
     showDetails (event, loanProduct) {
-      console.log('Show Details:', loanProduct)
-      this.$store.commit('setLoanProductDetail', loanProduct)
+      this.$emit('showDetails', loanProduct)
     }
   }
 }
@@ -222,6 +227,9 @@ export default {
       line-height: 28px;
       padding-left: #{$spacer * 1.25};
       padding-right: #{$spacer * 1.25};
+      position: sticky;
+      top: 110px;
+      z-index: 1000;
       @include media-breakpoint-down('sm') {
         display: none;
       }

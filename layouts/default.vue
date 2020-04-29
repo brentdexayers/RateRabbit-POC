@@ -43,7 +43,6 @@ export default {
     }
   },
   async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
   },
   head () {
     const self = this

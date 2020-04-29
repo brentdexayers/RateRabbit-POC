@@ -1,6 +1,6 @@
 <template>
   <div class="page-content page--apply">
-    <div v-if="!applicationCompleted">
+    <div v-if="!applicationSubmitted">
       <h3>
         {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
       </h3>
@@ -19,7 +19,15 @@
               {{ 'Loan Amount' | titlecase }}
             </td>
             <td>
-              {{ application.loanamount | currency }}
+              {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
+            </td>
+          </tr>
+          <tr v-if="applicationData.cashAmount">
+            <td>
+              {{ 'Cash Amount' | titlecase }}
+            </td>
+            <td>
+              {{ applicationData.cashAmount }}
             </td>
           </tr>
           <tr>
@@ -48,17 +56,22 @@
           </tr>
         </tbody>
       </table>
-      <Form />
+      <Form
+        @applicationSubmitStart="handleSubmitStart"
+        @applicationSubmitSuccess="handleSubmitSuccess"
+        @applicationSubmitEnd="handleSubmitEnd"
+      />
     </div>
-    <div v-else>
-      <h3>
-        Congrats on completing your application!
-      </h3>
+    <div v-if="applicationSubmitted">
+      <h3>Thank you</h3>
+      <p>We have received your application and will be in touch shortly.</p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Form from '~/components/forms/ApplicationForm.vue'
 
 export default {
@@ -68,31 +81,34 @@ export default {
   },
   data () {
     return {
-      title: 'Apply For a Loan'
+      title: 'Apply For a Loan',
+      applicationSubmitted: false,
+      applicationError: false
     }
   },
   computed: {
-    application () {
-      return this.$store.state.application
-    },
-    loanProduct () {
-      return this.$store.state.application.loanProduct
-    },
-    applicationCompleted: {
-      get () {
-        return this.$store.state.application.completed
-      },
-      set (value) {
-        this.$store.commit('application/setcompletedStatus', value)
-      }
-    }
-  },
-  async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
+    ...mapState({
+      loanProduct: state => state.application.loanProduct,
+      applicationData: state => state.application.data
+    })
   },
   methods: {
-    toggleApplicationStatus () {
-      this.applicationCompleted = !this.applicationCompleted
+    handleSubmitStart () {
+      console.log('TODO: Application Submit Start')
+    },
+    handleSubmitEnd () {
+      console.log('TODO: Application Submit End')
+    },
+    handleSubmitSuccess (result) {
+      console.log('Application Submit Success\n', result)
+      this.applicationSubmitted = true
+      this.applicationError = false
+      window.scrollTo(0, 0)
+      document.body.focus()
+    },
+    handleSubmitError () {
+      this.applicationSubmitted = true
+      this.applicationError = true
     }
   },
   head () {

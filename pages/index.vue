@@ -22,7 +22,6 @@ export default {
     ContactMeCTA
   },
   async fetch ({ store, params }) {
-    await store.dispatch('AUTHENTICATE')
   }
 }
 </script>
