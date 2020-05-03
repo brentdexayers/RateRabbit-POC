@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="hasErrors" class="form-errors">
+      <p class="text-danger">
+        <b>Please correct the following errors:</b>
+      </p>
+    </div>
     <form
       id="search-rates-form"
       @submit.prevent="handleFormSubmit"
@@ -7,9 +12,9 @@
       class="form form--search-rates"
     >
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
           <label
-            :class="{ hasvalue: loanPurpose !== null }"
+            :class="{ hasvalue: loanPurpose !== null, hasError: errors.loanPurpose }"
             for="loanPurpose"
           >
             {{ 'Loan Purpose' | titlecase }}
@@ -37,42 +42,25 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.propertyValue }" class="form-group col-12">
           <label
-            :class="{ hasvalue: propertyValue }"
+            :class="{ hasvalue: propertyValue, hasError: errors.propertyValue }"
             for="propertyValue"
           >
-            {{ 'Property value' | titlecase }}
+            <span v-if="loanPurpose.name === 'Purchase'">
+              {{ 'Property price' | titlecase }}
+            </span>
+            <span v-else>
+              {{ 'Property value' | titlecase }}
+            </span>
           </label>
           <input
             v-model="propertyValue"
             v-currency="{distractionFree: true}"
-            @change="calculateLTV"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
             name="propertyValue"
-            class="form-control"
-            placeholder=""
-          >
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-12">
-          <label
-            :class="{ hasvalue: loanAmount }"
-            for="loanAmount"
-          >
-            {{ 'Loan Amount' | titlecase }}
-          </label>
-          <input
-            v-model="loanAmount"
-            v-currency="{distractionFree: true}"
-            @change="calculateLTV"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
-            type="text"
-            name="loanAmount"
             class="form-control"
             placeholder=""
           >
@@ -98,18 +86,43 @@
           >
         </div>
       </div>
+      <div class="row">
+        <div :class="{ error: errors.loanAmount }" class="form-group col-12">
+          <label
+            :class="{ hasvalue: loanAmount, hasError: errors.loanAmount }"
+            for="loanAmount"
+          >
+            <span v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'">
+              {{ 'Total Loan Amount (including Cash)' | titlecase }}
+            </span>
+            <span v-else>
+              {{ 'Loan Amount' | titlecase }}
+            </span>
+          </label>
+          <input
+            v-model="loanAmount"
+            v-currency="{distractionFree: true}"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
+            type="text"
+            name="loanAmount"
+            class="form-control"
+            placeholder=""
+          >
+        </div>
+      </div>
       <div class="row justify-content-center">
         <div class="col-auto">
-          <div class="ltv wrapper wrapper--ltv form--search-rates__ltv">
-            {{ ltv | percent(0) }} loan-to-value
+          <div v-if="loanAmount && propertyValue" class="ltv wrapper wrapper--ltv form--search-rates__ltv">
+            {{ this.$parseCurrency(loanAmount) / this.$parseCurrency(propertyValue) | percent(0) }} loan-to-value
           </div>
         </div>
       </div>
       <div class="form--search-rates__spacer form-group w-100" />
       <div class="row">
-        <div class="form-group col-12 col-lg-6 form--search-rates__col--state">
+        <div :class="{ error: errors.state }" class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
-            :class="{ hasvalue: state !== null }"
+            :class="{ hasvalue: state !== null, hasError: errors.state }"
             for="state"
           >
             {{ 'State' | titlecase }}
@@ -135,9 +148,9 @@
             </option>
           </select>
         </div>
-        <div class="form-group col-12 col-lg-6 form--search-rates__col--zip">
+        <div :class="{ error: errors.propertyZip }" class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
-            :class="{ hasvalue: propertyZip }"
+            :class="{ hasvalue: propertyZip, hasError: errors.propertyZip }"
             for="propertyZip"
           >
             {{ 'Zip Code' | titlecase }}
@@ -154,9 +167,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.propertyType }" class="form-group col-12">
           <label
-            :class="{ hasvalue: propertyType !== null }"
+            :class="{ hasvalue: propertyType !== null, hasError: errors.propertyType }"
             for="propertyType"
           >
             {{ 'Property Type' | titlecase }}
@@ -184,9 +197,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.propertyUse }" class="form-group col-12">
           <label
-            :class="{ hasvalue: propertyUse !== null }"
+            :class="{ hasvalue: propertyUse !== null, hasError: errors.propertyUse }"
             for="propertyUse"
           >
             {{ 'Property Use' | titlecase }}
@@ -214,9 +227,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.creditRating }" class="form-group col-12">
           <label
-            :class="{ hasvalue: creditRating !== null }"
+            :class="{ hasvalue: creditRating !== null, hasError: errors.creditRating }"
             for="creditRating"
           >
             {{ 'Credit Rating' | titlecase }}
@@ -243,49 +256,18 @@
           </select>
         </div>
       </div>
-      <div class="form--search-rates__spacer form-group w-100" />
+      <!-- <div class="form--search-rates__spacer form-group w-100" /> -->
       <div class="row">
-        <div class="form-group col-12 form--search-rates__col--interest">
-          <label
-            :class="{ hasvalue: loanInterestOnly }"
-            for="loanInterestOnly"
-          >
-            {{ 'Interest Only' | titlecase }}
-          </label>
-          <select
-            v-model="loanInterestOnly"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
-            name="loanInterestOnly"
-            class="custom-select"
-          >
-            <option
-              value="null"
-              disabled
-              hidden
-            />
-            <option
-              value="1"
-            >
-              Yes
-            </option>
-            <option
-              value="0"
-            >
-              No
-            </option>
-          </select>
-        </div>
-        <div class="form-group col-12 form--search-rates__col--taxes">
+        <div class="form-group col-12">
           <label
             :class="{ hasvalue: taxesAndInsurance }"
             for="taxesAndInsurance"
           >
             {{ 'Taxes & Insurance' | titlecase }}
-            <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-            <b-tooltip target="taxes-tooltip" triggers="hover">
+            <!-- <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information"> -->
+            <!-- <b-tooltip target="taxes-tooltip" triggers="hover">
               Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
-            </b-tooltip>
+            </b-tooltip> -->
           </label>
           <select
             id="input-select--taxes"
@@ -401,6 +383,17 @@ export default {
   data () {
     return {
       // Form state
+      errors: {
+        loanPurpose: false,
+        propertyValue: false,
+        loanAmount: false,
+        state: false,
+        propertyZip: false,
+        proprtyType: false,
+        propertyUse: false,
+        creditRating: false
+      },
+      hasErrors: false,
       ltv: 0,
       submitButton: 'Search Live Rates'
     }
@@ -428,14 +421,6 @@ export default {
       },
       set (value) {
         this.$store.commit('updateCreditRating', value)
-      }
-    },
-    loanInterestOnly: {
-      get () {
-        return this.$store.state.application.data.loanInterestOnly
-      },
-      set (value) {
-        this.$store.commit('updateLoanInterestOnly', value)
       }
     },
     loanAmount: {
@@ -536,11 +521,6 @@ export default {
     this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
   },
   methods: {
-    calculateLTV () {
-      if (this.propertyValue && this.loanAmount) {
-        this.ltv = this.$parseCurrency(this.loanAmount) / this.$parseCurrency(this.propertyValue)
-      }
-    },
     focusClassAdd (event) {
       const self = event.target
       self.previousElementSibling.classList.add('focused')
@@ -548,6 +528,10 @@ export default {
     focusClassRemove (event) {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
+    },
+    scrollToTop (event) {
+      window.scrollTo(0, 0)
+      document.body.focus()
     },
     // Submit Methods
     updateSearchResults (payload) {
@@ -558,47 +542,78 @@ export default {
         path: '/search/results/'
       })
     },
-    async handleFormSubmit () {
+    formValidate () {
+      this.$emit('searchValidateStart')
+      if (!this.loanPurpose) { this.errors.loanPurpose = true } else { this.errors.loanPurpose = false }
+      if (!this.propertyValue) { this.errors.propertyValue = true } else { this.errors.propertyValue = false }
+      if (!this.loanAmount) { this.errors.loanAmount = true } else { this.errors.loanAmount = false }
+      if (!this.state) { this.errors.state = true } else { this.errors.state = false }
+      if (!this.propertyZip) { this.errors.propertyZip = true } else { this.errors.propertyZip = false }
+      if (!this.propertyType) { this.errors.propertyType = true } else { this.errors.propertyType = false }
+      if (!this.propertyUse) { this.errors.propertyUse = true } else { this.errors.propertyUse = false }
+      if (!this.creditRating) { this.errors.creditRating = true } else { this.errors.creditRating = false }
+      const hasErrors = Object.keys(this.errors).some(k => this.errors[k])
+      this.hasErrors = hasErrors
+      return hasErrors
+    },
+    async handleFormSubmit (e) {
+      e.preventDefault()
       this.$emit('submitStart')
       console.log('TODO: Set loading state HERE...')
-      const searchPayload = {
-        'creditRating': this.creditRating.name,
-        'interestOnly': this.loanInterestOnly === 'true',
-        'loanAmount': this.$parseCurrency(this.loanAmount),
-        'loanPurpose': this.loanPurpose.name,
-        'loanRefinanceType': this.loanRefinanceType,
-        'promotionCode': this.promotionCode,
-        'propertyType': this.propertyType.name,
-        'propertyUse': this.propertyUse.name,
-        'propertyValue': this.$parseCurrency(this.propertyValue),
-        'taxesAndInsurance': this.taxesAndInsurance === 'true',
-        'zipCode': this.propertyZip
-      }
-      const data = await authenticate()
-        .then((auth) => {
-          return loanSearch(auth, searchPayload)
-            .then((res) => {
-              return res
-            })
-            .catch((err) => {
-              throw err
-            })
-        })
-        .catch((err) => {
-          throw err
-        })
-      if (typeof data === 'object' && data?.searchResultDetails) {
-        const reduced = data.searchResultDetails.reduce(function (r, a) {
-          r[a.amortizationTerm] = r[a.amortizationTerm] || []
-          r[a.amortizationTerm].push(a)
-          return r
-        }, Object.create(null))
-        this.updateSearchResults(reduced)
-        this.$emit('searchResults', true)
+      const hasErrors = this.formValidate()
+      if (!hasErrors) {
+        const searchPayload = {
+          'creditRating': this.creditRating.name,
+          'loanAmount': this.$parseCurrency(this.loanAmount),
+          'loanPurpose': this.loanPurpose.name,
+          'loanRefinanceType': this.loanRefinanceType,
+          'promotionCode': this.promotionCode,
+          'propertyType': this.propertyType.name,
+          'propertyUse': this.propertyUse.name,
+          'propertyValue': this.$parseCurrency(this.propertyValue),
+          'taxesAndInsurance': this.taxesAndInsurance === 'true',
+          'zipCode': this.propertyZip
+        }
+        const data = await authenticate()
+          .then((auth) => {
+            return loanSearch(auth, searchPayload)
+              .then((res) => {
+                return res
+              })
+              .catch((err) => {
+                throw err
+              })
+          })
+          .catch((err) => {
+            throw err
+          })
+        if (typeof data === 'object' && data?.searchResultDetails) {
+          const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1)
+          const reduced = {}
+          r.forEach((item, index) => {
+            if (!reduced[item.amortizationType]) {
+              reduced[item.amortizationType] = {}
+            }
+            if (!reduced[item.amortizationType][item.amortizationTerm + '-Year']) {
+              reduced[item.amortizationType][item.amortizationTerm + '-Year'] = []
+            }
+            reduced[item.amortizationType][item.amortizationTerm + '-Year'].push(item)
+          })
+          // const reduced = data.searchResultDetails.reduce((r, a) => {
+          //   r[a.amortizationType] = r[a.amortizationType] || []
+          //   r[a.amortizationType].push(a)
+          //   return r
+          // }, Object.create(null))
+          console.log('reduced', reduced)
+          this.updateSearchResults(reduced)
+          this.$emit('searchResults', true)
+        } else {
+          this.$emit('searchResults', false)
+        }
+        this.updateRoute()
       } else {
-        this.$emit('searchResults', false)
+        this.scrollToTop(e)
       }
-      this.updateRoute()
       console.log('TODO: Set UN-loading state HERE...')
       this.$emit('submitEnd')
     }
@@ -634,6 +649,16 @@ export default {
       }
     }
   }
+  & .form-group {
+    &.error {
+      & label {
+        color: $danger !important;
+      }
+      & input, & select {
+        border: 1px solid $danger;
+      }
+    }
+  }
   &__submit {
     @include media-breakpoint-down('sm') {
       font-size: $font-size-lg;
@@ -664,18 +689,11 @@ export default {
   }
 }
 .form-errors {
-  &--wrapper {
-    color: $danger;
-    p {
-      font-weight: $font-weight-bold;
-      margin-bottom: .2em;
-    }
-  }
-  &__list {
+  color: $danger;
+  p {
     font-size: $font-size-sm;
-  }
-  &__error {
-    margin-bottom: 0;
+    font-weight: $font-weight-bold;
+    margin-bottom: 1em;
   }
 }
 </style>
