@@ -56,7 +56,7 @@
           </label>
           <input
             v-model="propertyValue"
-            v-currency="{distractionFree: true}"
+            v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
@@ -76,7 +76,7 @@
           </label>
           <input
             v-model="loanCashOutAmount"
-            v-currency="{currency: 'USD', locale: 'en', distractionFree: true}"
+            v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
@@ -101,7 +101,7 @@
           </label>
           <input
             v-model="loanAmount"
-            v-currency="{distractionFree: true}"
+            v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
             type="text"
@@ -591,13 +591,10 @@ export default {
           const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1)
           const reduced = {}
           r.forEach((item, index) => {
-            if (!reduced[item.amortizationType]) {
-              reduced[item.amortizationType] = {}
+            if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
+              reduced[item.amortizationTerm + ' Year ' + item.amortizationType] = []
             }
-            if (!reduced[item.amortizationType][item.amortizationTerm + '-Year']) {
-              reduced[item.amortizationType][item.amortizationTerm + '-Year'] = []
-            }
-            reduced[item.amortizationType][item.amortizationTerm + '-Year'].push(item)
+            reduced[item.amortizationTerm + ' Year ' + item.amortizationType].push(item)
           })
           // const reduced = data.searchResultDetails.reduce((r, a) => {
           //   r[a.amortizationType] = r[a.amortizationType] || []

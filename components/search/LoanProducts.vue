@@ -4,190 +4,184 @@
       v-if="loanProducts"
     >
       <div
-        v-for="(loanProductsByType, loanProductsByTypeIndex) in loanProducts"
-        :key="loanProductsByTypeIndex"
+        v-for="(loanProductsByTerm, loanProductsByTermIndex) in loanProducts"
+        :key="loanProductsByTermIndex"
+        class="results-table__results"
       >
-        <div
-          v-for="(loanProductsByTerm, loanProductsByTermIndex) in loanProductsByType"
-          :key="loanProductsByTermIndex"
-          class="results-table__results"
-        >
-          <h2>
-            {{ loanProductsByTermIndex }} {{ loanProductsByTypeIndex }}
-          </h2>
-          <div class="results-table__header container-fluid">
-            <div class="row">
-              <div class="col">
-                {{ 'Rate' | uppercase }}
-              </div>
-              <div class="col">
-                {{ 'APR' | uppercase }}
-              </div>
-              <div class="col">
-                {{ 'Monthly Payment' | uppercase }}
-              </div>
-              <div class="col d-md-none d-lg-flex">
-                &nbsp;
-              </div>
+        <h2>
+          {{ loanProductsByTermIndex }}
+        </h2>
+        <div class="results-table__header container-fluid">
+          <div class="row">
+            <div class="col">
+              {{ 'Rate' | uppercase }}
+            </div>
+            <div class="col">
+              {{ 'APR' | uppercase }}
+            </div>
+            <div class="col">
+              {{ 'Monthly Payment' | uppercase }}
+            </div>
+            <div class="col d-md-none d-lg-flex">
+              &nbsp;
             </div>
           </div>
-          <div>
-            {{ showMore[loanProductsByTermIndex] }}
-            <div
-              v-for="(loanProduct, loanProductIndex) in loanProductsByTerm.slice(0, 2)"
-              :key="loanProductIndex"
-              :data-rate-index="loanProductIndex"
-            >
-              <div>
-                <!-- Desktop view -->
-                <div class="results-table__result results-table__result--desktop">
-                  <!-- One Fee Guarantee -->
-                  <div v-if="loanProduct.recommended" class="results-table__result__recommended">
-                    <img src="~assets/icons/icon-check.png" width="18">
-                  </div>
-                  <!-- END: One Fee Guarantee -->
-                  <div class="row">
-                    <div class="col">
-                      <div class="row results-table__result--desktop__rates">
-                        <div class="col-4">
-                          {{ loanProduct.rate / 100 | percent }}
-                        </div>
-                        <div class="col-4">
-                          {{ loanProduct.apr / 100 || 0 | percent }}
-                        </div>
-                        <div class="col-4">
-                          {{ loanProduct.totalPayment | currency }}
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <p :class="{ recommended: loanProduct.recommended }">
-                            {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: loanProduct.recommended }">{{ loanProduct.fee | currency }}</span>
-                            <span v-if="loanProduct.recommended" class="no-cost-loan-text">
-                              {{ 'Recommended No-Cost loan' | titlecase }}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-lg-3">
-                      <div class="row justify-content-between">
-                        <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
-                          <nuxt-link
-                            @click.native="apply(loanProduct)"
-                            :data-loan-product-id="loanProduct.productId"
-                            to="/apply"
-                            class="btn btn-sm btn-primary results-table__result--desktop__button"
-                          >
-                            {{ 'Apply' | titlecase }}
-                          </nuxt-link>
-                        </div>
-                        <div class="col-12 col-md-auto col-lg-12 order-md-first order-lg-last">
-                          <p class="results-table__result--desktop__link-p">
-                            <a
-                              @click.prevent="showDetails($event, loanProduct)"
-                              href="#"
-                              class="link-decorated results-table__result--desktop__link"
-                            >
-                              {{ 'See Details' | titlecase }}
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+        </div>
+        <div>
+          <div
+            v-for="(loanProduct, loanProductIndex) in limit(loanProductsByTerm)"
+            :key="loanProductIndex"
+            :data-rate-index="loanProductIndex"
+          >
+            <div>
+              <!-- Desktop view -->
+              <div class="results-table__result results-table__result--desktop">
+                <!-- One Fee Guarantee -->
+                <div v-if="loanProduct.recommended" class="results-table__result__recommended">
+                  <img src="~assets/icons/icon-check.png" width="18">
                 </div>
-                <!-- Mobile view -->
-                <div class="results-table__result results-table__result--mobile">
-                  <!-- One Fee Guarantee -->
-                  <div v-if="loanProduct.recommended" class="results-table__result__recommended">
-                    <img src="~assets/icons/icon-check.png" width="18">
-                  </div>
-                  <!-- END: One Fee Guarantee -->
-                  <div class="results-table__result--mobile__rates">
-                    <div class="row">
-                      <div class="col">
-                        <p>
-                          {{ 'Rate' | capitalize }}
-                        </p>
+                <!-- END: One Fee Guarantee -->
+                <div class="row">
+                  <div class="col">
+                    <div class="row results-table__result--desktop__rates">
+                      <div class="col-4">
+                        {{ loanProduct.rate / 100 | percent }}
                       </div>
-                      <div class="col-auto text-right">
-                        <p>
-                          {{ loanProduct.rate / 100 | percent }}
-                        </p>
+                      <div class="col-4">
+                        {{ loanProduct.apr / 100 || 0 | percent }}
+                      </div>
+                      <div class="col-4">
+                        {{ loanProduct.totalPayment | currency }}
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
-                        <p>
-                          {{ 'APR' | capitalize }}
-                        </p>
-                      </div>
-                      <div class="col-auto text-right">
-                        <p>
-                          {{ loanProduct.apr / 100 || 0 | percent }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <p>
-                          {{ 'Monthly Payment' | capitalize }}
-                        </p>
-                      </div>
-                      <div class="col-auto text-right">
-                        <p>
-                          {{ loanProduct.totalPayment | currency }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <p :class="{ recommended: loanProduct.recommended }">
-                          {{ 'One Fee Guarantee' | capitalize }}
+                        <p :class="{ recommended: loanProduct.recommended }" class="ofg-text">
+                          {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: loanProduct.recommended }">{{ loanProduct.fee | currency }}</span>
                           <span v-if="loanProduct.recommended" class="no-cost-loan-text">
                             {{ 'Recommended No-Cost loan' | titlecase }}
                           </span>
                         </p>
                       </div>
-                      <div class="col-auto text-right">
-                        <p>
-                          {{ loanProduct.fee | currency }}
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-3">
+                    <div class="row justify-content-between">
+                      <div class="col-12 col-md-4 col-lg-12 order-md-last order-lg-first">
+                        <nuxt-link
+                          @click.native="apply(loanProduct)"
+                          :data-loan-product-id="loanProduct.productId"
+                          to="/apply"
+                          class="btn btn-sm btn-primary results-table__result--desktop__button"
+                        >
+                          {{ 'Apply' | titlecase }}
+                        </nuxt-link>
+                      </div>
+                      <div class="col-12 col-md-auto col-lg-12 order-md-first order-lg-last">
+                        <p class="results-table__result--desktop__link-p">
+                          <a
+                            @click.prevent="showDetails($event, loanProduct)"
+                            href="#"
+                            class="link-decorated results-table__result--desktop__link"
+                          >
+                            {{ 'See Details' | titlecase }}
+                          </a>
                         </p>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <!-- Mobile view -->
+              <div class="results-table__result results-table__result--mobile">
+                <!-- One Fee Guarantee -->
+                <div v-if="loanProduct.recommended" class="results-table__result__recommended">
+                  <img src="~assets/icons/icon-check.png" width="18">
+                </div>
+                <!-- END: One Fee Guarantee -->
+                <div class="results-table__result--mobile__rates">
                   <div class="row">
                     <div class="col">
-                      <a
-                        href="#"
-                        class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
-                      >
-                        {{ 'Details' | titlecase }}
-                      </a>
+                      <p>
+                        {{ 'Rate' | capitalize }}
+                      </p>
                     </div>
+                    <div class="col-auto text-right">
+                      <p>
+                        {{ loanProduct.rate / 100 | percent }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="col">
-                      <nuxt-link
-                        @click.native="apply(loanProduct)"
-                        :data-loan-product-id="loanProduct.productId"
-                        to="/apply"
-                        class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
-                      >
-                        {{ 'Apply' | titlecase }}
-                      </nuxt-link>
+                      <p>
+                        {{ 'APR' | capitalize }}
+                      </p>
                     </div>
+                    <div class="col-auto text-right">
+                      <p>
+                        {{ loanProduct.apr / 100 || 0 | percent }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p>
+                        {{ 'Monthly Payment' | capitalize }}
+                      </p>
+                    </div>
+                    <div class="col-auto text-right">
+                      <p>
+                        {{ loanProduct.totalPayment | currency }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p :class="{ recommended: loanProduct.recommended }">
+                        {{ 'One Fee Guarantee' | capitalize }}
+                        <span v-if="loanProduct.recommended" class="no-cost-loan-text">
+                          {{ 'Recommended No-Cost loan' | titlecase }}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="col-auto text-right">
+                      <p>
+                        {{ loanProduct.fee | currency }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <a
+                      href="#"
+                      class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
+                    >
+                      {{ 'Details' | titlecase }}
+                    </a>
+                  </div>
+                  <div class="col">
+                    <nuxt-link
+                      @click.native="apply(loanProduct)"
+                      :data-loan-product-id="loanProduct.productId"
+                      to="/apply"
+                      class="btn btn-sm btn-primary results-table__result--mobile__button results-table__result--mobile__button--apply"
+                    >
+                      {{ 'Apply' | titlecase }}
+                    </nuxt-link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <button
-            v-if="!showMore[loanProductsByTermIndex]"
-            @click="toggleShowMoreByIndex(loanProductsByTermIndex)"
-          >
-            Show More
-          </button>
         </div>
+        <button
+          v-if="!showMore[loanProductsByTermIndex]"
+          @click="toggleShowMoreByIndex(loanProductsByTermIndex)"
+        >
+          Show More
+        </button>
       </div>
     </div>
   </div>
@@ -229,10 +223,17 @@ export default {
       Object.keys(this.loanProducts).forEach((k, i) => {
         this.showMore[k] = false
       })
+      console.log('showMore', this.showMore)
     },
     toggleShowMoreByIndex (i) {
       this.showMore[i] = !this.showMore[i]
       console.log(this.showMore)
+    },
+    log (i) {
+      console.log(i)
+    },
+    limit (a) {
+      return a.slice(0, 2)
     }
   }
 }
@@ -350,6 +351,9 @@ export default {
           position: absolute;
           top: 4px;
         }
+      }
+      .ofg-text {
+        font-size: $font-size-sm;
       }
       .recommended {
         padding-left: 1em;
