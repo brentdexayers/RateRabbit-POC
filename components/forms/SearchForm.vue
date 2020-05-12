@@ -48,7 +48,7 @@
             for="propertyValue"
           >
             <span v-if="loanPurpose.name === 'Purchase'">
-              {{ 'Property price' | titlecase }}
+              {{ 'Purchase price' | titlecase }}
             </span>
             <span v-else>
               {{ 'Property value' | titlecase }}
@@ -72,7 +72,7 @@
             :class="{ hasvalue: loanCashOutAmount }"
             for="loanCashOutAmount"
           >
-            {{ 'Cash Amount' | titlecase }}
+            {{ 'Cash Out Amount' | titlecase }}
           </label>
           <input
             v-model="loanCashOutAmount"
@@ -93,7 +93,7 @@
             for="loanAmount"
           >
             <span v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'">
-              {{ 'Total Loan Amount (including Cash)' | titlecase }}
+              {{ 'Total Loan Amount (Current loan amount plus cash out request)' }}
             </span>
             <span v-else>
               {{ 'Loan Amount' | titlecase }}
