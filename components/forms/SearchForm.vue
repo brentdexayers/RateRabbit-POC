@@ -571,13 +571,15 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': this.taxesAndInsurance === 'true',
+          'taxesAndInsurance': this.taxesAndInsurance,
           'zipCode': this.propertyZip
         }
+        console.log('searchPayload', searchPayload)
         const data = await authenticate()
           .then((auth) => {
             return loanSearch(auth, searchPayload)
               .then((res) => {
+                console.log('loanSearch', res)
                 return res
               })
               .catch((err) => {
