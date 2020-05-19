@@ -11,7 +11,7 @@ export const state = () => ({
       address: null,
       businessPhone: null,
       cellPhone: null,
-      coBorrower: false,
+      coBorrower: null,
       coBorrowerAddress: null,
       coBorrowerBusinessPhone: null,
       coBorrowerCellPhone: null,
@@ -184,7 +184,7 @@ export const mutations = {
     state.form.data.signUp = payload
   },
   updateTaxesAndInsurance (state, payload) {
-    state.form.data.signUp = payload
+    state.form.data.taxesAndInsurance = payload
   },
   updateAddress (state, payload) {
     state.application.data.address = payload
@@ -451,6 +451,9 @@ export const mutations = {
     state.application.data.zip = payload
   },
   // Real Estate
+  updateRealEstate_0_address (state, payload) {
+    state.application.data.realEstate[0].address = payload
+  },
   updateRealEstate_0_grossRentalIncome (state, payload) {
     state.application.data.realEstate[0].grossRentalIncome = payload
   },
@@ -462,6 +465,12 @@ export const mutations = {
   },
   updateRealEstate_0_totalLiens (state, payload) {
     state.application.data.realEstate[0].totalLiens = payload
+  },
+  updateRealEstate_0_zip (state, payload) {
+    state.application.data.realEstate[0].zip = payload
+  },
+  updateRealEstate_1_address (state, payload) {
+    state.application.data.realEstate[1].address = payload
   },
   updateRealEstate_1_grossRentalIncome (state, payload) {
     state.application.data.realEstate[1].grossRentalIncome = payload
@@ -475,6 +484,12 @@ export const mutations = {
   updateRealEstate_1_totalLiens (state, payload) {
     state.application.data.realEstate[1].totalLiens = payload
   },
+  updateRealEstate_1_zip (state, payload) {
+    state.application.data.realEstate[1].zip = payload
+  },
+  updateRealEstate_2_address (state, payload) {
+    state.application.data.realEstate[2].address = payload
+  },
   updateRealEstate_2_grossRentalIncome (state, payload) {
     state.application.data.realEstate[2].grossRentalIncome = payload
   },
@@ -486,5 +501,8 @@ export const mutations = {
   },
   updateRealEstate_2_totalLiens (state, payload) {
     state.application.data.realEstate[2].totalLiens = payload
+  },
+  updateRealEstate_2_zip (state, payload) {
+    state.application.data.realEstate[2].zip = payload
   }
 }
