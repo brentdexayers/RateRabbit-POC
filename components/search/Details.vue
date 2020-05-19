@@ -43,7 +43,6 @@
                 {{ 'Talk to a Loan Consultant' }}
               </nuxt-link>
             </p>
-            {{ loanProduct.productId }}
           </div>
         </div>
         <div class="row">

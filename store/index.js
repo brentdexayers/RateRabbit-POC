@@ -8,9 +8,10 @@ export const state = () => ({
      * Some fields store Object data which must be pre-processed before submit.
      */
     data: {
+      address: null,
       businessPhone: null,
       cellPhone: null,
-      coBorrower: false,
+      coBorrower: null,
       coBorrowerAddress: null,
       coBorrowerBusinessPhone: null,
       coBorrowerCellPhone: null,
@@ -19,6 +20,7 @@ export const state = () => ({
       coBorrowerCurrentHoaFees: null,
       coBorrowerCurrentMortgagePayment: null,
       coBorrowerCurrentPropertyTaxes: null,
+      coBorrowerDob: null,
       coBorrowerEmail: null,
       coBorrowerEmployedHowLong: null,
       coBorrowerEmployerAddress: null,
@@ -37,6 +39,8 @@ export const state = () => ({
       coBorrowerSsn: null,
       coBorrowerState: null,
       coBorrowerTimeAtCurrentAddress: null,
+      coBorrowerYearsLineOfWork: null,
+      coBorrowerYearsOfSchool: null,
       coBorrowerZip: null,
       county: null,
       creditRating: null,
@@ -48,6 +52,7 @@ export const state = () => ({
       currentPropertyTaxes: null,
       currentState: null,
       currentZip: null,
+      dob: null,
       donationAmount: null,
       email: null,
       employedHowLong: null,
@@ -69,22 +74,54 @@ export const state = () => ({
       loanInterestOnly: null,
       loanPurpose: null,
       loanRefinanceType: null,
+      mailingAddress: null,
+      mailingZip: null,
       maritalStatus: null,
       productId: null,
       promotionCode: null,
       propertyAddress: null,
       propertyCity: null,
+      propertyNumberOfUnits: null,
       propertyPurchasePrice: null,
       propertyType: null,
       propertyUse: null,
       propertyValue: null,
       propertyYearAcquired: null,
       propertyZip: null,
+      realEstate: [
+        {
+          address: null,
+          grossRentalIncome: null,
+          presentMarketValue: null,
+          propertyType: null,
+          totalLiens: null,
+          zip: null
+        },
+        {
+          address: null,
+          grossRentalIncome: null,
+          presentMarketValue: null,
+          propertyType: null,
+          totalLiens: null,
+          zip: null
+        },
+        {
+          address: null,
+          grossRentalIncome: null,
+          presentMarketValue: null,
+          propertyType: null,
+          totalLiens: null,
+          zip: null
+        }
+      ],
       result: null,
       selfEmployed: false,
       ssn: null,
       state: null,
-      timeAtCurrentAddress: null
+      timeAtCurrentAddress: null,
+      yearsLineOfWork: null,
+      yearsOfSchool: null,
+      zip: null
     },
     loanProduct: {},
     results: {}
@@ -149,7 +186,9 @@ export const mutations = {
   updateTaxesAndInsurance (state, payload) {
     state.form.data.taxesAndInsurance = payload
   },
-  // Application Foem handlers
+  updateAddress (state, payload) {
+    state.application.data.address = payload
+  },
   updateBusinessPhone (state, payload) {
     state.application.data.businessPhone = payload
   },
@@ -182,6 +221,9 @@ export const mutations = {
   },
   updateCoBorrowerCurrentPropertyTaxes (state, payload) {
     state.application.data.coBorrowerCurrentPropertyTaxes = payload
+  },
+  updateCoBorrowerDob (state, payload) {
+    state.application.data.coBorrowerDob = payload
   },
   updateCoBorrowerEmail (state, payload) {
     state.application.data.coBorrowerEmail = payload
@@ -237,6 +279,12 @@ export const mutations = {
   updateCoBorrowerTimeAtCurrentAddress (state, payload) {
     state.application.data.coBorrowerTimeAtCurrentAddress = payload
   },
+  updateCoBorrowerYearsLineOfWork (state, payload) {
+    state.application.data.coBorrowerYearsLineOfWork = payload
+  },
+  updateCoBorrowerYearsOfSchool (state, payload) {
+    state.application.data.coBorrowerYearsOfSchool = payload
+  },
   updateCoBorrowerZip (state, payload) {
     state.application.data.coBorrowerZip = payload
   },
@@ -269,6 +317,9 @@ export const mutations = {
   },
   updateCurrentZip (state, payload) {
     state.application.data.currentZip = payload
+  },
+  updateDob (state, payload) {
+    state.application.data.dob = payload
   },
   updateDonationAmount (state, payload) {
     state.application.data.donationAmount = payload
@@ -333,6 +384,12 @@ export const mutations = {
   updateLoanRefinanceType (state, payload) {
     state.application.data.loanRefinanceType = payload
   },
+  updateMailingAddress (state, payload) {
+    state.application.data.mailingAddress = payload
+  },
+  updateMailingZip (state, payload) {
+    state.application.data.mailingZip = payload
+  },
   updateMaritalStatus (state, payload) {
     state.application.data.maritalStatus = payload
   },
@@ -347,6 +404,9 @@ export const mutations = {
   },
   updatePropertyCity (state, payload) {
     state.application.data.propertyCity = payload
+  },
+  updatePropertyNumberOfUnits (state, payload) {
+    state.application.data.propertyNumberOfUnits = payload
   },
   updatePropertyPurchasePrice (state, payload) {
     state.application.data.propertyPurchasePrice = payload
@@ -380,5 +440,69 @@ export const mutations = {
   },
   updateTimeAtCurrentAddress (state, payload) {
     state.application.data.timeAtCurrentAddress = payload
+  },
+  updateYearsLineOfWork (state, payload) {
+    state.application.data.yearsLineOfWork = payload
+  },
+  updateYearsOfSchool (state, payload) {
+    state.application.data.yearsOfSchool = payload
+  },
+  updateZip (state, payload) {
+    state.application.data.zip = payload
+  },
+  // Real Estate
+  updateRealEstate_0_address (state, payload) {
+    state.application.data.realEstate[0].address = payload
+  },
+  updateRealEstate_0_grossRentalIncome (state, payload) {
+    state.application.data.realEstate[0].grossRentalIncome = payload
+  },
+  updateRealEstate_0_presentMarketValue (state, payload) {
+    state.application.data.realEstate[0].presentMarketValue = payload
+  },
+  updateRealEstate_0_propertyType (state, payload) {
+    state.application.data.realEstate[0].propertyType = payload
+  },
+  updateRealEstate_0_totalLiens (state, payload) {
+    state.application.data.realEstate[0].totalLiens = payload
+  },
+  updateRealEstate_0_zip (state, payload) {
+    state.application.data.realEstate[0].zip = payload
+  },
+  updateRealEstate_1_address (state, payload) {
+    state.application.data.realEstate[1].address = payload
+  },
+  updateRealEstate_1_grossRentalIncome (state, payload) {
+    state.application.data.realEstate[1].grossRentalIncome = payload
+  },
+  updateRealEstate_1_presentMarketValue (state, payload) {
+    state.application.data.realEstate[1].presentMarketValue = payload
+  },
+  updateRealEstate_1_propertyType (state, payload) {
+    state.application.data.realEstate[1].propertyType = payload
+  },
+  updateRealEstate_1_totalLiens (state, payload) {
+    state.application.data.realEstate[1].totalLiens = payload
+  },
+  updateRealEstate_1_zip (state, payload) {
+    state.application.data.realEstate[1].zip = payload
+  },
+  updateRealEstate_2_address (state, payload) {
+    state.application.data.realEstate[2].address = payload
+  },
+  updateRealEstate_2_grossRentalIncome (state, payload) {
+    state.application.data.realEstate[2].grossRentalIncome = payload
+  },
+  updateRealEstate_2_presentMarketValue (state, payload) {
+    state.application.data.realEstate[2].presentMarketValue = payload
+  },
+  updateRealEstate_2_propertyType (state, payload) {
+    state.application.data.realEstate[2].propertyType = payload
+  },
+  updateRealEstate_2_totalLiens (state, payload) {
+    state.application.data.realEstate[2].totalLiens = payload
+  },
+  updateRealEstate_2_zip (state, payload) {
+    state.application.data.realEstate[2].zip = payload
   }
 }
