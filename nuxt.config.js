@@ -48,6 +48,7 @@ export default {
   plugins: [
     { src: '~/plugins/LocalStorage', ssr: false },
     '~/plugins/vue-glide',
+    '~/plugins/vue-mask',
     '~/plugins/vue-currency-input',
     '~/plugins/filters'
   ],

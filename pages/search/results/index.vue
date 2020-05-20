@@ -1,14 +1,20 @@
 <template>
   <div class="page-content">
     <div class="search-results">
-      <p>
-        Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
-      </p>
-      <LoanProducts
-        v-if="searchResults"
-        @showDetails="showDetails"
-        @apply="apply"
-      />
+      <div v-if="Object.keys(searchResults).length">
+        <p class="small">
+          Your One Fee Guarantee includes all of the following fees: origination, appraisal, lender fees, credit report, processing fee, underwriting fee
+        </p>
+        <LoanProducts
+          @showDetails="showDetails"
+          @apply="apply"
+        />
+      </div>
+      <div v-else>
+        <p>
+          Your search has not returned any results. Please update your search and try again.
+        </p>
+      </div>
     </div>
     <Details
       v-if="detailedLoanProduct"

@@ -283,12 +283,12 @@
               hidden
             />
             <option
-              value="1"
+              value="yes"
             >
               Yes
             </option>
             <option
-              value="0"
+              value="no"
             >
               No
             </option>
@@ -571,7 +571,7 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': this.taxesAndInsurance,
+          'taxesAndInsurance': !!(this.taxesAndInsurance === 'yes'),
           'zipCode': this.propertyZip
         }
         console.log('searchPayload', searchPayload)

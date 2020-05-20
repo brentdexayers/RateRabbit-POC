@@ -28,17 +28,17 @@
         <div class="row">
           <div class="form-group col-12 col-lg-9">
             <label
-              :class="{ hasvalue: propetyAddress }"
-              for="propetyAddress"
+              :class="{ hasvalue: propertyAddress }"
+              for="propertyAddress"
             >
-              {{ 'Property Address' | titlecase }}
+              {{ 'Property Address (street, city, state)' }}
             </label>
             <input
-              v-model="propetyAddress"
+              v-model="propertyAddress"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
-              name="propetyAddress"
+              name="propertyAddress"
               class="form-control"
             >
           </div>
@@ -51,6 +51,7 @@
             </label>
             <input
               v-model="propertyZip"
+              v-mask="'#####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -59,8 +60,8 @@
             >
           </div>
         </div>
-        <div class="row">
-          <div class="form-group col-12 col-lg-6">
+        <div v-if="loanPurpose && (loanPurpose.name === 'Refinance' || loanPurpose.name === 'Refinance Cash Out')" class="row">
+          <!-- <div class="form-group col-12 col-lg-6">
             <label
               :class="{ hasvalue: propertyNumberOfUnits }"
               for="propertyNumberOfUnits"
@@ -75,7 +76,7 @@
               name="propertyNumberOfUnits"
               class="form-control"
             >
-          </div>
+          </div> -->
           <div class="form-group col-12 col-lg-6">
             <label
               :class="{ hasvalue: propertyYearAcquired }"
@@ -85,10 +86,28 @@
             </label>
             <input
               v-model="propertyYearAcquired"
+              v-mask="'####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
               name="propertyYearAcquired"
+              class="form-control"
+            >
+          </div>
+          <div class="form-group col-12 col-lg-6">
+            <label
+              :class="{ hasvalue: propertyPurchasePrice }"
+              for="propertyPurchasePrice"
+            >
+              {{ 'Original Cost' | titlecase }}
+            </label>
+            <input
+              v-model="propertyPurchasePrice"
+              v-currency="{distractionFree: false}"
+              @focus="focusClassAdd($event)"
+              @blur="focusClassRemove($event)"
+              type="text"
+              name="propertyPurchasePrice"
               class="form-control"
             >
           </div>
@@ -137,7 +156,7 @@
               :class="{ hasvalue: email }"
               for="email"
             >
-              {{ 'Social Security Number' | titlecase }}
+              {{ 'Email Address' | titlecase }}
             </label>
             <input
               v-model="email"
@@ -157,6 +176,7 @@
             </label>
             <input
               v-model="homePhone"
+              v-mask="'(###) ###-####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -173,6 +193,7 @@
             </label>
             <input
               v-model="ssn"
+              v-mask="'###-##-####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -189,6 +210,7 @@
             </label>
             <input
               v-model="dob"
+              v-mask="'##/##/####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -205,6 +227,7 @@
             </label>
             <input
               v-model="yearsOfSchool"
+              v-mask="'##'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -219,14 +242,35 @@
             >
               {{ 'Marital Status' }}
             </label>
-            <input
+            <select
+              id="input-select--taxes"
               v-model="maritalStatus"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
-              type="text"
               name="maritalStatus"
-              class="form-control"
+              class="custom-select has-info"
             >
+              <option
+                value="null"
+                disabled
+                hidden
+              />
+              <option
+                value="Married"
+              >
+                Married
+              </option>
+              <option
+                value="Unmarried"
+              >
+                Unmarried
+              </option>
+              <option
+                value="Separated"
+              >
+                Separated
+              </option>
+            </select>
           </div>
           <div class="form-group col-12 col-lg-9">
             <label
@@ -253,6 +297,7 @@
             </label>
             <input
               v-model="zip"
+              v-mask="'#####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -269,9 +314,10 @@
             </label>
             <input
               v-model="timeAtCurrentAddress"
+              v-mask="'##'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
-              type="number"
+              type="text"
               name="timeAtCurrentAddress"
               class="form-control"
             >
@@ -301,6 +347,7 @@
             </label>
             <input
               v-model="mailingZip"
+              v-mask="'#####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -353,6 +400,7 @@
             </label>
             <input
               v-model="employerZip"
+              v-mask="'#####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -401,6 +449,7 @@
             </label>
             <input
               v-model="employedHowLong"
+              v-mask="'##'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -417,6 +466,7 @@
             </label>
             <input
               v-model="yearsLineOfWork"
+              v-mask="'##'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -449,6 +499,7 @@
             </label>
             <input
               v-model="businessPhone"
+              v-mask="'(###) ###-####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
@@ -521,7 +572,7 @@
                 :class="{ hasvalue: coBorrowerEmail }"
                 for="coBorrowerEmail"
               >
-                {{ 'Social Security Number' | titlecase }}
+                {{ 'Email Address' | titlecase }}
               </label>
               <input
                 v-model="coBorrowerEmail"
@@ -541,6 +592,7 @@
               </label>
               <input
                 v-model="coBorrowerHomePhone"
+                v-mask="'(###) ###-####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -557,6 +609,7 @@
               </label>
               <input
                 v-model="coBorrowerSsn"
+                v-mask="'###-##-####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -573,6 +626,7 @@
               </label>
               <input
                 v-model="coBorrowerDob"
+                v-mask="'##/##/####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -589,6 +643,7 @@
               </label>
               <input
                 v-model="coBorrowerYearsOfSchool"
+                v-mask="'##'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -603,14 +658,35 @@
               >
                 {{ 'Marital Status' }}
               </label>
-              <input
+              <select
+                id="input-select--taxes"
                 v-model="coBorrowerMaritalStatus"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
-                type="text"
                 name="coBorrowerMaritalStatus"
-                class="form-control"
+                class="custom-select has-info"
               >
+                <option
+                  value="null"
+                  disabled
+                  hidden
+                />
+                <option
+                  value="Married"
+                >
+                  Married
+                </option>
+                <option
+                  value="Unmarried"
+                >
+                  Unmarried
+                </option>
+                <option
+                  value="Separated"
+                >
+                  Separated
+                </option>
+              </select>
             </div>
             <div class="form-group col-12 col-lg-8">
               <label
@@ -637,6 +713,7 @@
               </label>
               <input
                 v-model="coBorrowerZip"
+                v-mask="'#####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -689,6 +766,7 @@
               </label>
               <input
                 v-model="coBorrowerEmployerZip"
+                v-mask="'#####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -737,6 +815,7 @@
               </label>
               <input
                 v-model="coBorrowerEmployedHowLong"
+                v-mask="'##'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -753,6 +832,7 @@
               </label>
               <input
                 v-model="coBorrowerYearsLineOfWork"
+                v-mask="'##'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -785,6 +865,7 @@
               </label>
               <input
                 v-model="coBorrowerBusinessPhone"
+                v-mask="'(###) ###-####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -800,42 +881,90 @@
         <h2 class="form--section_header">
           Monthly Income and Housing Expenses
         </h2>
+        <h3 v-if="coBorrower">
+          Borrower
+        </h3>
         <div class="row">
           <div class="form-group col-12 col-lg-6">
             <label
-              :class="{ hasvalue: borrowerEmployerIncome }"
-              for="borrowerEmployerIncome"
+              :class="{ hasvalue: grossIncome }"
+              for="grossIncome"
             >
               {{ 'Base Income *' | titlecase }}
             </label>
             <input
-              v-model="borrowerEmployerIncome"
+              v-model="grossIncome"
+              v-currency="{distractionFree: false}"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
-              name="borrowerEmployerIncome"
+              name="grossIncome"
               class="form-control"
             >
           </div>
           <div class="form-group col-12 col-lg-6">
             <label
-              :class="{ hasvalue: borrowerHoaDues }"
-              for="borrowerHoaDues"
+              :class="{ hasvalue: hoaDues }"
+              for="hoaDues"
             >
               {{ 'Homeowner Association Dues' | titlecase }}
             </label>
             <input
-              v-model="borrowerHoaDues"
+              v-model="hoaDues"
+              v-currency="{distractionFree: false}"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
-              name="borrowerHoaDues"
+              name="hoaDues"
               class="form-control"
             >
           </div>
+        </div>
+        <div v-if="coBorrower">
+          <h3>
+            Co-Borrower
+          </h3>
+          <div class="row">
+            <div class="form-group col-12 col-lg-6">
+              <label
+                :class="{ hasvalue: coBorrowerGrossIncome }"
+                for="coBorrowerGrossIncome"
+              >
+                {{ 'Base Income *' | titlecase }}
+              </label>
+              <input
+                v-model="coBorrowerGrossIncome"
+                v-currency="{distractionFree: false}"
+                @focus="focusClassAdd($event)"
+                @blur="focusClassRemove($event)"
+                type="text"
+                name="coBorrowerGrossIncome"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group col-12 col-lg-6">
+              <label
+                :class="{ hasvalue: coBorrowerHoaDues }"
+                for="coBorrowerHoaDues"
+              >
+                {{ 'Homeowner Association Dues' | titlecase }}
+              </label>
+              <input
+                v-model="coBorrowerHoaDues"
+                v-currency="{distractionFree: false}"
+                @focus="focusClassAdd($event)"
+                @blur="focusClassRemove($event)"
+                type="text"
+                name="coBorrowerHoaDues"
+                class="form-control"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="form-group col-12 col-lg-12">
             <p class="small">
-              * Self employed Borrowers may  be required to provide additional documentation such as tax returns and financial statements.
+              * Self employed Borrowers <span v-if="coBorrower">and Co-Borrowers </span>may  be required to provide additional documentation such as tax returns and financial statements.
             </p>
           </div>
         </div>
@@ -894,6 +1023,7 @@
               </label>
               <input
                 v-model="realEstate_0_zip"
+                v-mask="'#####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -1010,6 +1140,7 @@
               </label>
               <input
                 v-model="realEstate_1_zip"
+                v-mask="'#####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -1126,6 +1257,7 @@
               </label>
               <input
                 v-model="realEstate_2_zip"
+                v-mask="'#####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
@@ -1446,6 +1578,14 @@ export default {
         this.$store.commit('updateCoBorrowerGrossIncome', value)
       }
     },
+    coBorrowerHoaDues: {
+      get () {
+        return this.$store.state.application.data.coBorrowerHoaDues
+      },
+      set (value) {
+        this.$store.commit('updateCoBorrowerHoaDues', value)
+      }
+    },
     coBorrowerHomePhone: {
       get () {
         return this.$store.state.application.data.coBorrowerHomePhone
@@ -1708,6 +1848,14 @@ export default {
       },
       set (value) {
         this.$store.commit('updateGrossIncome', value)
+      }
+    },
+    hoaDues: {
+      get () {
+        return this.$store.state.application.data.hoaDues
+      },
+      set (value) {
+        this.$store.commit('updateHoaDues', value)
       }
     },
     homePhone: {
@@ -2168,14 +2316,10 @@ export default {
               expense: [
                 {
                   expenseType: 'Present',
-                  firstMortgage: 1800,
-                  hazardInsurance: 700,
-                  hoaDues: 250,
-                  realEstateTaxes: 3500
-                },
-                {
-                  expenseType: 'Proposed',
-                  hoaDues: 350
+                  firstMortgage: 0,
+                  hazardInsurance: 0,
+                  hoaDues: this.applicationData.hoaDues,
+                  realEstateTaxes: 0
                 }
               ],
               fax: this.applicationData.fax,
@@ -2275,14 +2419,7 @@ export default {
             expense: [
               {
                 expenseType: 'Present',
-                firstMortgage: 1800,
-                hazardInsurance: 700,
-                hoaDues: 250,
-                realEstateTaxes: 3500
-              },
-              {
-                expenseType: 'Proposed',
-                hoaDues: 350
+                hoaDues: this.applicationData.coBorrowerHoaDues
               }
             ],
             fax: this.applicationData.coBorrowerFax,
