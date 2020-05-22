@@ -1,7 +1,5 @@
 export const state = () => ({
-  auth: {
-    foo: 'bar'
-  },
+  auth: {},
   application: {
     /**
      * This is not a 1-1 relationship with the submitted Application Payload.
@@ -132,6 +130,7 @@ export const state = () => ({
     options: {
       creditRatingOptions: {},
       loanPurposeOptions: {},
+      maritalStatusOptions: {},
       propertyTypeOptions: {},
       propertyUseOptions: {},
       stateOptions: {}
@@ -171,6 +170,9 @@ export const mutations = {
   },
   updateLoanPurposeOptions (state, payload) {
     state.form.options.loanPurposeOptions = payload
+  },
+  updateMaritalStatusOptions (state, payload) {
+    state.form.options.maritalStatusOptions = payload
   },
   updatePropertyTypeOptions (state, payload) {
     state.form.options.propertyTypeOptions = payload

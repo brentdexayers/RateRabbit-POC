@@ -24,6 +24,7 @@ const handleError = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
+    console.log('Error response')
     console.log(error.response.data)
     console.log(error.response.status)
     console.log(error.response.headers)
@@ -31,12 +32,13 @@ const handleError = (error) => {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser
     // and an instance of http.ClientRequest in node.js
+    console.log('Error request')
     console.log(error.request)
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log('Error', error.message)
+    console.log('Error message', error.message)
   }
-  console.log(error.config)
+  console.log('Error config', error.config)
   return error
 }
 
@@ -119,7 +121,7 @@ export const getLoanRefinanceType = async (auth) => {
 
 export const getMaritalStatus = async (auth) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
-  const { data } = await axios.get(`${apiUrl}/status/statustypename/Marital%20Status`, axiosConfig)
+  const { data } = await axios.get(`${apiUrl}/maritalstatus`, axiosConfig)
     .then((res) => {
       return res
     })

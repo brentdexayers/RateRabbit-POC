@@ -47,7 +47,7 @@
             :class="{ hasvalue: propertyValue, hasError: errors.propertyValue }"
             for="propertyValue"
           >
-            <span v-if="loanPurpose.name === 'Purchase'">
+            <span v-if="loanPurpose && loanPurpose.name === 'Purchase'">
               {{ 'Purchase price' | titlecase }}
             </span>
             <span v-else>
@@ -371,6 +371,7 @@ import {
   authenticate,
   getCreditRating,
   getLoanPurpose,
+  getMaritalStatus,
   getPropertyType,
   getPropertyUse,
   getState,
@@ -402,19 +403,12 @@ export default {
     ...mapState({
       auth: state => state.auth,
       loanPurposeOptions: state => state.form.options.loanPurposeOptions,
+      maritalStatusOptions: state => state.form.options.maritalStatusOptions,
       propertyTypeOptions: state => state.form.options.propertyTypeOptions,
       propertyUseOptions: state => state.form.options.propertyUseOptions,
       creditRatingOptions: state => state.form.options.creditRatingOptions,
       stateOptions: state => state.form.options.stateOptions
     }),
-    loanCashOutAmount: {
-      get () {
-        return this.$store.state.application.data.loanCashOutAmount
-      },
-      set (value) {
-        this.$store.commit('updateLoanCashOutAmount', value)
-      }
-    },
     creditRating: {
       get () {
         return this.$store.state.application.data.creditRating
@@ -431,12 +425,12 @@ export default {
         this.$store.commit('updateLoanAmount', value)
       }
     },
-    loanRefinanceType: {
+    loanCashOutAmount: {
       get () {
-        return this.$store.state.application.data.loanRefinanceType
+        return this.$store.state.application.data.loanCashOutAmount
       },
       set (value) {
-        this.$store.commit('updateLoanRefinanceType', value)
+        this.$store.commit('updateLoanCashOutAmount', value)
       }
     },
     loanPurpose: {
@@ -445,6 +439,14 @@ export default {
       },
       set (value) {
         this.$store.commit('updateLoanPurpose', value)
+      }
+    },
+    loanRefinanceType: {
+      get () {
+        return this.$store.state.application.data.loanRefinanceType
+      },
+      set (value) {
+        this.$store.commit('updateLoanRefinanceType', value)
       }
     },
     promotionCode: {
@@ -479,6 +481,14 @@ export default {
         this.$store.commit('updatePropertyValue', value)
       }
     },
+    propertyZip: {
+      get () {
+        return this.$store.state.application.data.propertyZip
+      },
+      set (value) {
+        this.$store.commit('updatePropertyZip', value)
+      }
+    },
     signUp: {
       get () {
         return this.$store.state.form.data.signUp
@@ -502,23 +512,30 @@ export default {
       set (value) {
         this.$store.commit('updateTaxesAndInsurance', value)
       }
-    },
-    propertyZip: {
-      get () {
-        return this.$store.state.application.data.propertyZip
-      },
-      set (value) {
-        this.$store.commit('updatePropertyZip', value)
-      }
     }
   },
   async fetch () {
-    this.$store.commit('setAuth', await authenticate())
-    this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
-    this.$store.commit('updateStateOptions', await getState(this.auth))
-    this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
-    this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
-    this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
+    if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
+      this.$store.commit('setAuth', await authenticate())
+    }
+    if (!this.loanPurposeOptions.length) {
+      this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
+    }
+    if (!this.stateOptions.length) {
+      this.$store.commit('updateStateOptions', await getState(this.auth))
+    }
+    if (!this.propertyTypeOptions.length) {
+      this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
+    }
+    if (!this.propertyUseOptions.length) {
+      this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
+    }
+    if (!this.creditRatingOptions.length) {
+      this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
+    }
+    if (!this.maritalStatusOptions.length) {
+      this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
+    }
   },
   methods: {
     focusClassAdd (event) {
