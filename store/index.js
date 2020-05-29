@@ -66,6 +66,7 @@ export const state = () => ({
       hoaDues: null,
       homePhone: null,
       jobTitle: null,
+      keepingLoc: null,
       lastName: null,
       loanAmount: null,
       loanCashOutAmount: null,
@@ -74,6 +75,9 @@ export const state = () => ({
       loanInterestOnly: null,
       loanPurpose: null,
       loanRefinanceType: null,
+      loc: null,
+      locAfterFirst: null,
+      locAmount: null,
       mailingAddress: null,
       mailingZip: null,
       maritalStatus: null,
@@ -370,6 +374,9 @@ export const mutations = {
   updateJobTitle (state, payload) {
     state.application.data.jobTitle = payload
   },
+  updateKeepingLoc (state, payload) {
+    state.application.data.keepingLoc = payload
+  },
   updateLastName (state, payload) {
     state.application.data.lastName = payload
   },
@@ -393,6 +400,15 @@ export const mutations = {
   },
   updateLoanRefinanceType (state, payload) {
     state.application.data.loanRefinanceType = payload
+  },
+  updateLoc (state, payload) {
+    state.application.data.loc = payload
+  },
+  updateLocAfterFirst (state, payload) {
+    state.application.data.locAfterFirst = payload
+  },
+  updateLocAmount (state, payload) {
+    state.application.data.locAmount = payload
   },
   updateMailingAddress (state, payload) {
     state.application.data.mailingAddress = payload

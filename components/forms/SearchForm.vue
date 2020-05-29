@@ -119,6 +119,83 @@
         </div>
       </div>
       <div class="form--search-rates__spacer form-group w-100" />
+      <div v-if="loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
+        <div :class="{ error: errors.loc }" class="form-group col-12">
+          <div class="custom-control custom-checkbox">
+            <input
+              id="loc"
+              v-model="loc"
+              type="checkbox"
+              class="custom-control-input"
+            >
+            <label
+              class="custom-control-label"
+              for="loc"
+            >
+              Do you have a home equity line of credit (LOC)?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div v-if="loc" class="row">
+        <div :class="{ error: errors.locAmount }" class="form-group col-12">
+          <label
+            :class="{ hasvalue: locAmount, hasError: errors.locAmount }"
+            for="locAmount"
+          >
+            <span>
+              {{ 'LOC Balance' }}
+            </span>
+          </label>
+          <input
+            v-model="locAmount"
+            v-currency="{distractionFree: false}"
+            @focus="focusClassAdd($event)"
+            @blur="focusClassRemove($event)"
+            type="text"
+            name="locAmount"
+            class="form-control"
+            placeholder=""
+          >
+        </div>
+      </div>
+      <div v-if="loc" class="row">
+        <div class="form-group col-12">
+          <div class="custom-control custom-checkbox">
+            <input
+              id="locAfterFirst"
+              v-model="locAfterFirst"
+              type="checkbox"
+              class="custom-control-input"
+            >
+            <label
+              class="custom-control-label"
+              for="locAfterFirst"
+            >
+              Was the LOC added after the initial purchase of your current home?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div v-if="loc" class="row">
+        <div class="form-group col-12">
+          <div class="custom-control custom-checkbox">
+            <input
+              id="keepingLoc"
+              v-model="keepingLoc"
+              type="checkbox"
+              class="custom-control-input"
+            >
+            <label
+              class="custom-control-label"
+              for="keepingLoc"
+            >
+              Are you going to want to keep the LOC in place?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form--search-rates__spacer form-group w-100" />
       <div class="row">
         <div :class="{ error: errors.state }" class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <label
@@ -283,12 +360,12 @@
               hidden
             />
             <option
-              value="yes"
+              value="1"
             >
               Yes
             </option>
             <option
-              value="no"
+              value="0"
             >
               No
             </option>
@@ -385,14 +462,15 @@ export default {
     return {
       // Form state
       errors: {
-        loanPurpose: false,
-        propertyValue: false,
+        creditRating: false,
         loanAmount: false,
-        state: false,
-        propertyZip: false,
-        proprtyType: false,
+        loanPurpose: false,
+        locAmount: false,
+        propertyType: false,
         propertyUse: false,
-        creditRating: false
+        propertyValue: false,
+        propertyZip: false,
+        state: false
       },
       hasErrors: false,
       ltv: 0,
@@ -447,6 +525,30 @@ export default {
       },
       set (value) {
         this.$store.commit('updateLoanRefinanceType', value)
+      }
+    },
+    loc: {
+      get () {
+        return this.$store.state.application.data.loc
+      },
+      set (value) {
+        this.$store.commit('updateLoc', value)
+      }
+    },
+    locAfterFirst: {
+      get () {
+        return this.$store.state.application.data.locAfterFirst
+      },
+      set (value) {
+        this.$store.commit('updatelocAfterFirst', value)
+      }
+    },
+    locAmount: {
+      get () {
+        return this.$store.state.application.data.locAmount
+      },
+      set (value) {
+        this.$store.commit('updateLocAmount', value)
       }
     },
     promotionCode: {
@@ -588,7 +690,7 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': !!(this.taxesAndInsurance === 'yes'),
+          'taxesAndInsurance': !!this.taxesAndInsurance,
           'zipCode': this.propertyZip
         }
         console.log('searchPayload', searchPayload)
@@ -672,6 +774,12 @@ export default {
       }
       & input, & select {
         border: 1px solid $danger;
+      }
+    }
+    .custom-checkbox {
+      label {
+        color: $primary;
+        font-size: $font-size-sm;
       }
     }
   }
