@@ -360,12 +360,12 @@
               hidden
             />
             <option
-              value="1"
+              value="true"
             >
               Yes
             </option>
             <option
-              value="0"
+              value="false"
             >
               No
             </option>
@@ -698,7 +698,7 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': this.taxesAndInsurance,
+          'taxesAndInsurance': !!this.taxesAndInsurance,
           'zipCode': this.propertyZip
         }
         console.log('searchPayload', searchPayload)
@@ -717,7 +717,7 @@ export default {
             throw err
           })
         if (typeof data === 'object' && data?.searchResultDetails) {
-          const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1)
+          const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
           const reduced = {}
           r.forEach((item, index) => {
             if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
@@ -725,13 +725,16 @@ export default {
             }
             reduced[item.amortizationTerm + ' Year ' + item.amortizationType].push(item)
           })
-          // const reduced = data.searchResultDetails.reduce((r, a) => {
-          //   r[a.amortizationType] = r[a.amortizationType] || []
-          //   r[a.amortizationType].push(a)
-          //   return r
-          // }, Object.create(null))
           console.log('reduced', reduced)
-          this.updateSearchResults(reduced)
+          const reducedMore = []
+          for (const [key, value] of Object.entries(reduced)) {
+            reducedMore.push({
+              amortization: key,
+              results: value
+            })
+          }
+          console.log('reducedMore', reducedMore)
+          this.updateSearchResults(reducedMore)
           this.$emit('searchResults', true)
         } else {
           this.$emit('searchResults', false)

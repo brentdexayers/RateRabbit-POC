@@ -4,12 +4,12 @@
       v-if="loanProducts"
     >
       <div
-        v-for="(loanProductsByTerm, loanProductsByTermIndex) in loanProducts"
-        :key="loanProductsByTermIndex"
+        v-for="(loanProductGroup, loanProductGroupIndex) in loanProducts"
+        :key="loanProductGroupIndex"
         class="results-table__results"
       >
         <h2>
-          {{ loanProductsByTermIndex }}
+          {{ loanProductGroup.amortization }}
         </h2>
         <div class="results-table__header container-fluid">
           <div class="row">
@@ -29,9 +29,11 @@
         </div>
         <div>
           <div
-            v-for="(loanProduct, loanProductIndex) in limit(loanProductsByTerm)"
+            v-for="(loanProduct, loanProductIndex) in loanProductGroup.results"
             :key="loanProductIndex"
             :data-rate-index="loanProductIndex"
+            :class="showMore.indexOf(loanProductGroupIndex) > -1 || loanProductIndex < 2 ? 'show' : 'hide'"
+            class="results-table__result-wrapper"
           >
             <div>
               <!-- Desktop view -->
@@ -177,10 +179,16 @@
           </div>
         </div>
         <button
-          v-if="!showMore[loanProductsByTermIndex]"
-          @click="toggleShowMoreByIndex(loanProductsByTermIndex)"
+          @click="toggleShowMoreByIndex(loanProductGroupIndex)"
         >
-          Show More
+          <span>
+            {{ showMore.indexOf(loanProductGroupIndex) > -1 ? 'Show Less' : 'Show More' }}
+          </span>
+          <img
+            :alt="showMore.indexOf(loanProductGroupIndex) > -1 ? 'Show Less' : 'Show More'"
+            :class="showMore.indexOf(loanProductGroupIndex) > -1 ? 'icon--show-less' : 'icon--show-more'"
+            src="~assets/icons/icon-chevron-down-sm.png"
+          >
         </button>
       </div>
     </div>
@@ -206,11 +214,6 @@ export default {
       loanProducts: state => state.search.results
     })
   },
-  watch: {
-    loanProducts () {
-      this.setDefaultShowMore()
-    }
-  },
   methods: {
     apply (loanProduct) {
       this.$store.commit('setApplicationLoanProduct', loanProduct)
@@ -219,21 +222,23 @@ export default {
     showDetails (event, loanProduct) {
       this.$emit('showDetails', loanProduct)
     },
-    setDefaultShowMore () {
-      Object.keys(this.loanProducts).forEach((k, i) => {
-        this.showMore[k] = false
-      })
-      console.log('showMore', this.showMore)
-    },
     toggleShowMoreByIndex (i) {
-      this.showMore[i] = !this.showMore[i]
-      console.log(this.showMore)
+      const index = this.showMore.indexOf(i)
+      if (index > -1) {
+        this.showMore.splice(index, 1)
+      } else {
+        this.showMore.push(i)
+      }
+      console.log('shwMore', this.showMore)
     },
     log (i) {
       console.log(i)
     },
-    limit (a) {
-      return a.slice(0, 2)
+    limit (arr, more = false, limit = 2) {
+      if (more) {
+        return arr
+      }
+      return arr.slice(0, limit)
     }
   }
 }
@@ -247,6 +252,21 @@ export default {
   .results-table {
     &__results {
       margin-bottom: #{$spacer * 4.125};
+      button {
+        align-items: center;
+        background: transparent;
+        border: 0;
+        color: $primary;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        img {
+          &.icon--show-less {
+            transform: scaleY(-1);
+          }
+        }
+      }
     }
     &__header {
       background-color: $white;
@@ -271,6 +291,20 @@ export default {
       }
     }
     &__result {
+      &-wrapper {
+        height: auto;
+        overflow: hidden;
+        transition: height .33s ease;
+        &.show {
+          height: 130px;
+          @include media-breakpoint-down('sm') {
+            height: 220px;
+          }
+        }
+        &.hide {
+          height: 0;
+        }
+      }
       &--desktop {
         @include media-breakpoint-down('sm') {
           display: none;
