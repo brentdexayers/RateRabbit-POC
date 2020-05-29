@@ -1867,6 +1867,14 @@ export default {
         this.$store.commit('updateJobTitle', value)
       }
     },
+    keepingLoc: {
+      get () {
+        return this.$store.state.application.data.keepingLoc
+      },
+      set (value) {
+        this.$store.commit('updateKeepingLoc', value)
+      }
+    },
     lastName: {
       get () {
         return this.$store.state.application.data.lastName
@@ -1929,6 +1937,30 @@ export default {
       },
       set (value) {
         this.$store.commit('updateLoanRefinanceType', value)
+      }
+    },
+    loc: {
+      get () {
+        return this.$store.state.application.data.loc
+      },
+      set (value) {
+        this.$store.commit('updateLoc', value)
+      }
+    },
+    locAfterFirst: {
+      get () {
+        return this.$store.state.application.data.locAfterFirst
+      },
+      set (value) {
+        this.$store.commit('updatelocAfterFirst', value)
+      }
+    },
+    locAmount: {
+      get () {
+        return this.$store.state.application.data.locAmount
+      },
+      set (value) {
+        this.$store.commit('updateLocAmount', value)
       }
     },
     mailingAddress: {
@@ -2308,6 +2340,16 @@ export default {
       this.$emit('applicationValid')
       return true
     },
+    getLoanRefinanceType () {
+      let type = 'No Cash Out'
+      if (this.loanPurpose.name === 'Refinance Cash Out') {
+        type = 'Cash Out'
+        if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
+          type = 'No Cash Out'
+        }
+      }
+      return type
+    },
     async handleSubmit () {
       this.$emit('applicationSubmitStart')
       const valid = this.formValidate()
@@ -2318,11 +2360,15 @@ export default {
           loan: {
             amount: this.$parseCurrency(this.applicationData.loanAmount),
             cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
-            loanDocType: 'Full Doc',
-            loanImpounds: 1,
+            keepingLoc: this.applicationData.keepingLoc,
+            // loanDocType: 'Full Doc',
+            // loanImpounds: 1,
             loanInterestOnly: !!this.applicationData.loanInterestOnly,
             loanPurpose: this.applicationData.loanPurpose.name,
-            loanRefinanceType: this.loanPurpose.name === 'Refinance Cash Out' ? 'Cash Out' : 'No Cash Out'
+            loanRefinanceType: this.getLoanRefinanceType(),
+            loc: this.applicationData.loc,
+            locAfterFirst: this.applicationData.locAfterFirst,
+            locAmount: this.applicationData.locAmount
           },
           productId: this.loanProduct.productId,
           promotionCode: this.applicationData.promotionCode,

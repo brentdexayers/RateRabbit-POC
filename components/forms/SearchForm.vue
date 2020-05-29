@@ -137,7 +137,7 @@
           </div>
         </div>
       </div>
-      <div v-if="loc" class="row">
+      <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div :class="{ error: errors.locAmount }" class="form-group col-12">
           <label
             :class="{ hasvalue: locAmount, hasError: errors.locAmount }"
@@ -159,7 +159,7 @@
           >
         </div>
       </div>
-      <div v-if="loc" class="row">
+      <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
           <div class="custom-control custom-checkbox">
             <input
@@ -177,7 +177,7 @@
           </div>
         </div>
       </div>
-      <div v-if="loc" class="row">
+      <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
           <div class="custom-control custom-checkbox">
             <input
@@ -495,6 +495,14 @@ export default {
         this.$store.commit('updateCreditRating', value)
       }
     },
+    keepingLoc: {
+      get () {
+        return this.$store.state.application.data.keepingLoc
+      },
+      set (value) {
+        this.$store.commit('updateKeepingLoc', value)
+      }
+    },
     loanAmount: {
       get () {
         return this.$store.state.application.data.loanAmount
@@ -690,7 +698,7 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': !!this.taxesAndInsurance,
+          'taxesAndInsurance': this.taxesAndInsurance,
           'zipCode': this.propertyZip
         }
         console.log('searchPayload', searchPayload)
