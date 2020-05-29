@@ -510,14 +510,14 @@
           <div class="form-group col-12 col-lg-12">
             <div class="custom-control custom-checkbox">
               <input
-                id="coBorrower"
-                v-model="coBorrower"
+                id="hasCoBorrower"
+                v-model="hasCoBorrower"
                 type="checkbox"
                 class="custom-control-input"
               >
               <label
                 class="custom-control-label"
-                for="coBorrower"
+                for="hasCoBorrower"
               >
                 Include Co-Borrower?
               </label>
@@ -525,7 +525,7 @@
           </div>
         </div>
 
-        <div v-if="coBorrower">
+        <div v-if="hasCoBorrower">
           <div class="row">
             <div class="form-group col-12 col-lg-6">
               <label
@@ -865,7 +865,7 @@
         <h2 class="form--section_header">
           Monthly Income and Housing Expenses
         </h2>
-        <h3 v-if="coBorrower">
+        <h3 v-if="hasCoBorrower">
           Borrower
         </h3>
         <div class="row">
@@ -904,7 +904,7 @@
             >
           </div>
         </div>
-        <div v-if="coBorrower">
+        <div v-if="hasCoBorrower">
           <h3>
             Co-Borrower
           </h3>
@@ -1373,6 +1373,7 @@ export default {
     return {
       assetsAndLiabilities: false,
       formErrors: [],
+      hasCoBorrower: false,
       step: 0
     }
   },
@@ -2313,16 +2314,15 @@ export default {
       if (valid) {
         const applicationPayload = {
           borrowers: [],
-          coBorrower: this.applicationData.coBorrower,
           donationAmount: 0.00,
           loan: {
             amount: this.$parseCurrency(this.applicationData.loanAmount),
             cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
             loanDocType: 'Full Doc',
             loanImpounds: 1,
-            loanInterestOnly: this.applicationData.loanInterestOnly,
+            loanInterestOnly: !!this.applicationData.loanInterestOnly,
             loanPurpose: this.applicationData.loanPurpose.name,
-            loanRefinanceType: 'No Cash Out'
+            loanRefinanceType: this.loanPurpose.name === 'Refinance Cash Out' ? 'Cash Out' : 'No Cash Out'
           },
           productId: this.loanProduct.productId,
           promotionCode: this.applicationData.promotionCode,
@@ -2337,7 +2337,7 @@ export default {
             zip: this.applicationData.propertyZip
           },
           realEstate: [],
-          result: this.searchResults
+          result: JSON.stringify(this.searchResults)
         }
         const primaryBorrower = {
           address: this.applicationData.address,
@@ -2355,7 +2355,10 @@ export default {
             yearsAtJob: this.applicationData.employedHowLong,
             zip: this.applicationData.employerZip
           },
-          // expense: [],
+          expenses: [{
+            expenseType: 'Present',
+            hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
+          }],
           fax: this.applicationData.fax,
           firstName: this.applicationData.firstName,
           grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
@@ -2371,17 +2374,11 @@ export default {
           yearsOfSchool: this.applicationData.yearsOfSchool,
           zip: this.applicationData.zip
         }
-        if (this.applicationData.hoaDues) {
-          primaryBorrower.expense = [{
-            expenseType: 'Present',
-            hoaDues: this.applicationData.hoaDues
-          }]
-        }
         applicationPayload.borrowers.push(primaryBorrower)
-        if (applicationPayload.coBorrower) { // if COBORROWER
+        if (this.hasCoBorrower) { // if COBORROWER
           const coBorrower = {
             address: this.applicationData.coBorrowerAddress,
-            borrowerType: 'Coborrower',
+            borrowerType: 'Co Borrower',
             businessPhone: this.applicationData.coBorrowerBusinessPhone,
             cellPhone: this.applicationData.coBorrowerCellPhone,
             email: this.applicationData.coBorrowerEmail,
@@ -2393,7 +2390,10 @@ export default {
               yearsAtJob: this.applicationData.coBorrowerEmployedHowLong,
               zip: this.applicationData.coBorrowerEmployerZip
             },
-            // expense: [],
+            expenses: [{
+              expenseType: 'Present',
+              hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
+            }],
             fax: this.applicationData.coBorrowerFax,
             firstName: this.applicationData.coBorrowerFirstName,
             grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
@@ -2406,12 +2406,6 @@ export default {
             yearsLineOfWork: this.applicationData.coBorrowerYearsLineOfWork,
             yearsOfSchool: this.applicationData.coBorrowerYearsOfSchool,
             zip: this.applicationData.coBorrowerZip
-          }
-          if (this.applicationData.coBorrowerHoaDues) {
-            coBorrower.expense = [{
-              expenseType: 'Present',
-              hoaDues: this.applicationData.coBorrowerHoaDues
-            }]
           }
           applicationPayload.borrowers.push(coBorrower)
         }
@@ -2457,6 +2451,7 @@ export default {
             zip: null
           })
         }
+        console.log('Create Application Payload:\n', applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
             return applicationCreate(auth, applicationPayload)
