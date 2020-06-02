@@ -3,10 +3,10 @@
     <li class="nav-item">
       <nuxt-link
         @click.native="navItemClicked"
-        to="/apply"
+        to="/search"
         class="nav-link"
       >
-        Apply
+        Search
       </nuxt-link>
     </li>
     <li

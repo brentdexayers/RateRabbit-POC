@@ -1351,6 +1351,12 @@
         </div>
       </div>
     </form>
+
+    <div class="debug">
+      <code>
+        {{ applicationPayload }}
+      </code>
+    </div>
   </div>
 </template>
 
@@ -2283,6 +2289,165 @@ export default {
       set (value) {
         this.$store.commit('updateRealEstate_2_zip', value)
       }
+    },
+    // Application Payload
+    applicationPayload () {
+      // The Application Payload object
+      const payload = {
+        borrowers: [],
+        donationAmount: 0.00,
+        loan: {
+          amount: this.$parseCurrency(this.applicationData.loanAmount),
+          cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
+          keepingLoc: this.applicationData.keepingLoc ? 1 : 0,
+          // loanDocType: 'Full Doc',
+          // loanImpounds: 1,
+          loanInterestOnly: this.applicationData.loanInterestOnly ? 1 : 0,
+          loanPurpose: this.applicationData.loanPurpose.name,
+          loanRefinanceType: this.getLoanRefinanceType(),
+          loc: this.applicationData.loc ? 1 : 0,
+          locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
+          locAmount: this.$parseCurrency(this.applicationData.locAmount)
+        },
+        productId: this.loanProduct.productId,
+        promotionCode: this.applicationData.promotionCode,
+        property: {
+          numberUnits: Number(this.applicationData.propertyNumberOfUnits),
+          address: this.applicationData.propertyAddress,
+          purchasePrice: this.$parseCurrency(this.applicationData.propertyValue),
+          propertyType: this.applicationData.propertyType.name,
+          propertyUse: this.applicationData.propertyUse.name,
+          value: this.$parseCurrency(this.applicationData.propertyValue),
+          yearAcquired: Number(this.applicationData.propertyYearAcquired),
+          zip: this.applicationData.propertyZip
+        },
+        // realEstate: [], // Moved this to conditional below
+        result: JSON.stringify(this.searchResults)
+      }
+      // Primary Borrower information
+      const primaryBorrower = {
+        address: this.applicationData.address, // Required if `zip`
+        borrowerType: 'Primary', // Required
+        businessPhone: this.applicationData.businessPhone,
+        cellPhone: this.applicationData.cellPhone,
+        creditRating: this.applicationData.creditRating.name,
+        dob: this.$moment(this.applicationData.dob).format('YYYY-MM-DD'),
+        email: this.applicationData.email, // Required
+        employer: {
+          address: this.applicationData.employerAddress, // Required if `employer: {}`
+          employerName: this.applicationData.employerName, // Required if `employer: {}`
+          jobTitle: this.applicationData.jobTitle,
+          selfEmployed: Number(this.applicationData.selfEmployed),
+          yearsAtJob: Number(this.applicationData.employedHowLong),
+          zip: this.applicationData.employerZip // Required if `employer: {}`
+        },
+        fax: this.applicationData.fax,
+        firstName: this.applicationData.firstName, // Required
+        grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
+        homePhone: this.applicationData.homePhone, // Required
+        lastName: this.applicationData.lastName, // Required
+        mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
+        mailingZip: this.applicationData.mailingZip,
+        maritalStatus: this.applicationData.maritalStatus.value,
+        ssn: this.applicationData.ssn,
+        // status: 'Own',
+        yearsAtAddress: Number(this.applicationData.timeAtCurrentAddress),
+        yearsLineOfWork: Number(this.applicationData.yearsLineOfWork),
+        yearsOfSchool: Number(this.applicationData.yearsOfSchool),
+        zip: this.applicationData.zip
+      }
+      if (this.applicationData.hoaDues) {
+        primaryBorrower.expenses = [{
+          expenseType: 'Present', // Required if `expenses: {}`
+          hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
+        }]
+      }
+      payload.borrowers.push(primaryBorrower)
+      // Co-Borrower information
+      if (this.hasCoBorrower) { // if COBORROWER
+        const coBorrower = {
+          address: this.applicationData.coBorrowerAddress,
+          borrowerType: 'Co Borrower',
+          businessPhone: this.applicationData.coBorrowerBusinessPhone,
+          cellPhone: this.applicationData.coBorrowerCellPhone,
+          email: this.applicationData.coBorrowerEmail,
+          employer: {
+            address: this.applicationData.coBorrowerEmployerAddress,
+            employerName: this.applicationData.coBorrowerEmployerName,
+            jobTitle: this.applicationData.coBorrowerJobTitle,
+            selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
+            yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
+            zip: this.applicationData.coBorrowerEmployerZip
+          },
+          fax: this.applicationData.coBorrowerFax,
+          firstName: this.applicationData.coBorrowerFirstName,
+          grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
+          homePhone: this.applicationData.coBorrowerHomePhone,
+          lastName: this.applicationData.coBorrowerLastName,
+          maritalStatus: this.applicationData.coBorrowerMaritalStatus.value,
+          ssn: this.applicationData.coBorrowerSsn,
+          // status: 'Own',
+          yearsAtAddress: Number(this.applicationData.coBorrowerTimeAtCurrentAddress),
+          yearsLineOfWork: Number(this.applicationData.coBorrowerYearsLineOfWork),
+          yearsOfSchool: Number(this.applicationData.coBorrowerYearsOfSchool),
+          zip: this.applicationData.coBorrowerZip
+        }
+        if (this.applicationData.coBorrowerHoaDues) {
+          coBorrower.expenses = [{
+            expenseType: 'Present',
+            hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
+          }]
+        }
+        payload.borrowers.push(coBorrower)
+      }
+      // Assets and Liabilities
+      if (this.assetsAndLiabilities) {
+        payload.realEstate = []
+        if (this.applicationData.realEstate_0_propertyType) {
+          payload.realEstate.push({
+            address: this.applicationData.realEstate_0_address,
+            propertyStatus: null, // 'Sold',
+            propertyType: this.applicationData.realEstate_0_propertyType,
+            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
+            totalLeans: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
+            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
+            mortgagePayments: null,
+            taxesAndInsurance: null,
+            netRentalIncome: null,
+            zip: this.applicationData.realEstate_0_zip
+          })
+        }
+        if (this.applicationData.realEstate_1_propertyType) {
+          payload.realEstate.push({
+            address: this.applicationData.realEstate_1_address,
+            propertyStatus: null, // 'Sold',
+            propertyType: this.applicationData.realEstate_1_propertyType,
+            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
+            totalLeans: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
+            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
+            mortgagePayments: null,
+            taxesAndInsurance: null,
+            netRentalIncome: null,
+            zip: this.applicationData.realEstate_1_zip
+          })
+        }
+        if (this.applicationData.realEstate_2_propertyType) {
+          payload.realEstate.push({
+            address: this.applicationData.realEstate_2_address,
+            propertyStatus: null, // 'Sold',
+            propertyType: this.applicationData.realEstate_2_propertyType,
+            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
+            totalLeans: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
+            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
+            mortgagePayments: null,
+            taxesAndInsurance: null,
+            netRentalIncome: null,
+            zip: this.applicationData.realEstate_2_zip
+          })
+        }
+      }
+      // RETURN
+      return payload
     }
   },
   async fetch () {
@@ -2305,10 +2470,7 @@ export default {
       this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
     }
     if (!this.maritalStatusOptions.length) {
-      console.log('========== ms ==========', this.maritalStatusOptions)
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
-    } else {
-      console.log('========== ms ==========', this.maritalStatusOptions)
     }
   },
 
@@ -2364,29 +2526,29 @@ export default {
           loan: {
             amount: this.$parseCurrency(this.applicationData.loanAmount),
             cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
-            keepingLoc: this.applicationData.keepingLoc,
+            keepingLoc: this.applicationData.keepingLoc ? 1 : 0,
             // loanDocType: 'Full Doc',
             // loanImpounds: 1,
-            loanInterestOnly: !!this.applicationData.loanInterestOnly,
+            loanInterestOnly: this.applicationData.loanInterestOnly ? 1 : 0,
             loanPurpose: this.applicationData.loanPurpose.name,
             loanRefinanceType: this.getLoanRefinanceType(),
-            loc: this.applicationData.loc,
-            locAfterFirst: this.applicationData.locAfterFirst,
+            loc: this.applicationData.loc ? 1 : 0,
+            locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
             locAmount: this.$parseCurrency(this.applicationData.locAmount)
           },
           productId: this.loanProduct.productId,
           promotionCode: this.applicationData.promotionCode,
           property: {
-            numberUnits: this.applicationData.propertyNumberOfUnits,
+            numberUnits: Number(this.applicationData.propertyNumberOfUnits),
             address: this.applicationData.propertyAddress,
             purchasePrice: this.$parseCurrency(this.applicationData.propertyValue),
             propertyType: this.applicationData.propertyType.name,
             propertyUse: this.applicationData.propertyUse.name,
             value: this.$parseCurrency(this.applicationData.propertyValue),
-            yearAcquired: 2017,
+            yearAcquired: Number(this.applicationData.propertyYearAcquired),
             zip: this.applicationData.propertyZip
           },
-          realEstate: [],
+          // realEstate: [], // Moved this to conditional below
           result: JSON.stringify(this.searchResults)
         }
         // Primary Borrower information
@@ -2402,8 +2564,8 @@ export default {
             address: this.applicationData.employerAddress, // Required if `employer: {}`
             employerName: this.applicationData.employerName, // Required if `employer: {}`
             jobTitle: this.applicationData.jobTitle,
-            selfEmployed: !!this.applicationData.selfEmployed,
-            yearsAtJob: this.applicationData.employedHowLong,
+            selfEmployed: Number(this.applicationData.selfEmployed),
+            yearsAtJob: Number(this.applicationData.employedHowLong),
             zip: this.applicationData.employerZip // Required if `employer: {}`
           },
           fax: this.applicationData.fax,
@@ -2415,10 +2577,10 @@ export default {
           mailingZip: this.applicationData.mailingZip,
           maritalStatus: this.applicationData.maritalStatus.value,
           ssn: this.applicationData.ssn,
-          status: 'Own',
-          yearsAtAddress: this.applicationData.timeAtCurrentAddress,
-          yearsLineOfWork: this.applicationData.yearsLineOfWork,
-          yearsOfSchool: this.applicationData.yearsOfSchool,
+          // status: 'Own',
+          yearsAtAddress: Number(this.applicationData.timeAtCurrentAddress),
+          yearsLineOfWork: Number(this.applicationData.yearsLineOfWork),
+          yearsOfSchool: Number(this.applicationData.yearsOfSchool),
           zip: this.applicationData.zip
         }
         if (this.applicationData.hoaDues) {
@@ -2440,8 +2602,8 @@ export default {
               address: this.applicationData.coBorrowerEmployerAddress,
               employerName: this.applicationData.coBorrowerEmployerName,
               jobTitle: this.applicationData.coBorrowerJobTitle,
-              selfEmployed: !!this.applicationData.coBorrowerSelfEmployed,
-              yearsAtJob: this.applicationData.coBorrowerEmployedHowLong,
+              selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
+              yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
               zip: this.applicationData.coBorrowerEmployerZip
             },
             fax: this.applicationData.coBorrowerFax,
@@ -2451,10 +2613,10 @@ export default {
             lastName: this.applicationData.coBorrowerLastName,
             maritalStatus: this.applicationData.coBorrowerMaritalStatus.value,
             ssn: this.applicationData.coBorrowerSsn,
-            status: 'Own',
-            yearsAtAddress: this.applicationData.coBorrowerTimeAtCurrentAddress,
-            yearsLineOfWork: this.applicationData.coBorrowerYearsLineOfWork,
-            yearsOfSchool: this.applicationData.coBorrowerYearsOfSchool,
+            // status: 'Own',
+            yearsAtAddress: Number(this.applicationData.coBorrowerTimeAtCurrentAddress),
+            yearsLineOfWork: Number(this.applicationData.coBorrowerYearsLineOfWork),
+            yearsOfSchool: Number(this.applicationData.coBorrowerYearsOfSchool),
             zip: this.applicationData.coBorrowerZip
           }
           if (this.applicationData.coBorrowerHoaDues) {
@@ -2467,6 +2629,7 @@ export default {
         }
         // Assets and Liabilities
         if (this.assetsAndLiabilities) {
+          applicationPayload.realEstate = []
           if (this.applicationData.realEstate_0_propertyType) {
             applicationPayload.realEstate.push({
               address: this.applicationData.realEstate_0_address,
