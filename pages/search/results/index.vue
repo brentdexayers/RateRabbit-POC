@@ -14,6 +14,12 @@
         <p>
           Your search has not returned any results. Please update your search and try again.
         </p>
+        <button
+          @click="startNewSearch"
+          class="btn btn-primary"
+        >
+          {{ 'Try a New Search' | titlecase }}
+        </button>
       </div>
     </div>
     <Details
@@ -45,20 +51,39 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
-      searchResults: state => state.search.results
+      searchResults: state => state.searchResultsReduced
     })
   },
   methods: {
-    showDetails (payload) {
-      this.detailedLoanProduct = payload
-    },
-    hideDetails () {
-      this.detailedLoanProduct = null
-    },
     apply () {
       this.$router.push({
         path: '/apply/'
       })
+    },
+    hideDetails () {
+      this.detailedLoanProduct = null
+    },
+    scrollToTop () {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      document.body.focus()
+    },
+    showDetails (payload) {
+      this.detailedLoanProduct = payload
+    },
+    startNewSearch () {
+      this.$emit('startNewSearch')
+      this.updateSidebar('default')
+      this.$router.push({
+        path: '/search'
+      })
+      this.scrollToTop()
+    },
+    updateSidebar (payload) {
+      this.$store.commit('setLayoutSidebar', payload)
     }
   },
   head () {

@@ -1351,12 +1351,7 @@
         </div>
       </div>
     </form>
-
-    <div class="debug">
-      <code>
-        {{ applicationPayload }}
-      </code>
-    </div>
+    <code>{{ applicationPayload }}</code>
   </div>
 </template>
 
@@ -1391,7 +1386,8 @@ export default {
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
       propertyTypeOptions: state => state.form.options.propertyTypeOptions,
       propertyUseOptions: state => state.form.options.propertyUseOptions,
-      searchResults: state => state.search.results
+      searchResults: state => state.searchResultsReduced,
+      searchResultDetails: state => state.searchResultDetails
     }),
     address: {
       get () {
@@ -2081,6 +2077,150 @@ export default {
         this.$store.commit('updatePropertyZip', value)
       }
     },
+    realEstate_0_address: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_address
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_address', value)
+      }
+    },
+    realEstate_0_grossRentalIncome: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_grossRentalIncome
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_grossRentalIncome', value)
+      }
+    },
+    realEstate_0_presentMarketValue: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_presentMarketValue
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_presentMarketValue', value)
+      }
+    },
+    realEstate_0_propertyType: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_propertyType
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_propertyType', value)
+      }
+    },
+    realEstate_0_totalLiens: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_totalLiens
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_totalLiens', value)
+      }
+    },
+    realEstate_0_zip: {
+      get () {
+        return this.$store.state.application.data.realEstate_0_zip
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_0_zip', value)
+      }
+    },
+    realEstate_1_address: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_address
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_address', value)
+      }
+    },
+    realEstate_1_grossRentalIncome: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_grossRentalIncome
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_grossRentalIncome', value)
+      }
+    },
+    realEstate_1_presentMarketValue: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_presentMarketValue
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_presentMarketValue', value)
+      }
+    },
+    realEstate_1_propertyType: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_propertyType
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_propertyType', value)
+      }
+    },
+    realEstate_1_totalLiens: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_totalLiens
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_totalLiens', value)
+      }
+    },
+    realEstate_1_zip: {
+      get () {
+        return this.$store.state.application.data.realEstate_1_zip
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_1_zip', value)
+      }
+    },
+    realEstate_2_address: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_address
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_address', value)
+      }
+    },
+    realEstate_2_grossRentalIncome: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_grossRentalIncome
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_grossRentalIncome', value)
+      }
+    },
+    realEstate_2_presentMarketValue: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_presentMarketValue
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_presentMarketValue', value)
+      }
+    },
+    realEstate_2_propertyType: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_propertyType
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_propertyType', value)
+      }
+    },
+    realEstate_2_totalLiens: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_totalLiens
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_totalLiens', value)
+      }
+    },
+    realEstate_2_zip: {
+      get () {
+        return this.$store.state.application.data.realEstate_2_zip
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate_2_zip', value)
+      }
+    },
     result: {
       get () {
         return this.$store.state.application.data.result
@@ -2145,151 +2285,6 @@ export default {
         this.$store.commit('updateZip', value)
       }
     },
-    // Real Estate properties - would be nice to move this to a dynamic array, but for now...
-    realEstate_0_address: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_address', value)
-      }
-    },
-    realEstate_0_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_grossRentalIncome', value)
-      }
-    },
-    realEstate_0_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_presentMarketValue', value)
-      }
-    },
-    realEstate_0_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_propertyType', value)
-      }
-    },
-    realEstate_0_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_totalLiens', value)
-      }
-    },
-    realEstate_0_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate[0].zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_zip', value)
-      }
-    },
-    realEstate_1_address: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_address', value)
-      }
-    },
-    realEstate_1_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_grossRentalIncome', value)
-      }
-    },
-    realEstate_1_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_presentMarketValue', value)
-      }
-    },
-    realEstate_1_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_propertyType', value)
-      }
-    },
-    realEstate_1_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_totalLiens', value)
-      }
-    },
-    realEstate_1_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate[1].zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_zip', value)
-      }
-    },
-    realEstate_2_address: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_address', value)
-      }
-    },
-    realEstate_2_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_grossRentalIncome', value)
-      }
-    },
-    realEstate_2_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_presentMarketValue', value)
-      }
-    },
-    realEstate_2_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_propertyType', value)
-      }
-    },
-    realEstate_2_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_totalLiens', value)
-      }
-    },
-    realEstate_2_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate[2].zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_zip', value)
-      }
-    },
     // Application Payload
     applicationPayload () {
       // The Application Payload object
@@ -2304,7 +2299,7 @@ export default {
           // loanImpounds: 1,
           loanInterestOnly: this.applicationData.loanInterestOnly ? 1 : 0,
           loanPurpose: this.applicationData.loanPurpose.name,
-          loanRefinanceType: this.getLoanRefinanceType(),
+          loanRefinanceType: this.applicationData.loanRefinanceType, // this.getLoanRefinanceType(),
           loc: this.applicationData.loc ? 1 : 0,
           locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
           locAmount: this.$parseCurrency(this.applicationData.locAmount)
@@ -2322,7 +2317,9 @@ export default {
           zip: this.applicationData.propertyZip
         },
         // realEstate: [], // Moved this to conditional below
-        result: JSON.stringify(this.searchResults)
+        result: JSON.stringify({
+          searchResultDetails: this.searchResultDetails
+        })
       }
       // Primary Borrower information
       const primaryBorrower = {
@@ -2348,7 +2345,7 @@ export default {
         lastName: this.applicationData.lastName, // Required
         mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
         mailingZip: this.applicationData.mailingZip,
-        maritalStatus: this.applicationData.maritalStatus.value,
+        maritalStatus: this.applicationData.maritalStatus.name,
         ssn: this.applicationData.ssn,
         // status: 'Own',
         yearsAtAddress: Number(this.applicationData.timeAtCurrentAddress),
@@ -2384,7 +2381,7 @@ export default {
           grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
           homePhone: this.applicationData.coBorrowerHomePhone,
           lastName: this.applicationData.coBorrowerLastName,
-          maritalStatus: this.applicationData.coBorrowerMaritalStatus.value,
+          maritalStatus: this.applicationData.coBorrowerMaritalStatus.name,
           ssn: this.applicationData.coBorrowerSsn,
           // status: 'Own',
           yearsAtAddress: Number(this.applicationData.coBorrowerTimeAtCurrentAddress),
@@ -2407,9 +2404,9 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_0_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_0_propertyType,
+            propertyType: this.applicationData.realEstate_0_propertyType.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
+            totalLeins: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
             mortgagePayments: null,
             taxesAndInsurance: null,
@@ -2421,9 +2418,9 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_1_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_1_propertyType,
+            propertyType: this.applicationData.realEstate_1_propertyType.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
+            totalLeins: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
             mortgagePayments: null,
             taxesAndInsurance: null,
@@ -2435,9 +2432,9 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_2_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_2_propertyType,
+            propertyType: this.applicationData.realEstate_2_propertyType.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
+            totalLeins: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
             mortgagePayments: null,
             taxesAndInsurance: null,
@@ -2505,178 +2502,24 @@ export default {
       this.$emit('applicationValid')
       return true
     },
-    getLoanRefinanceType () {
-      let type = 'No Cash Out'
-      if (this.loanPurpose.name === 'Refinance Cash Out') {
-        type = 'Cash Out'
-        if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
-          type = 'No Cash Out'
-        }
-      }
-      return type
-    },
+    // getLoanRefinanceType () {
+    //   let type = 'No Cash Out'
+    //   if (this.loanPurpose.name === 'Refinance Cash Out') {
+    //     type = 'Cash Out'
+    //     if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
+    //       type = 'No Cash Out'
+    //     }
+    //   }
+    //   return type
+    // },
     async handleSubmit () {
       this.$emit('applicationSubmitStart')
       const valid = this.formValidate()
       if (valid) {
-        // The Application Payload object
-        const applicationPayload = {
-          borrowers: [],
-          donationAmount: 0.00,
-          loan: {
-            amount: this.$parseCurrency(this.applicationData.loanAmount),
-            cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
-            keepingLoc: this.applicationData.keepingLoc ? 1 : 0,
-            // loanDocType: 'Full Doc',
-            // loanImpounds: 1,
-            loanInterestOnly: this.applicationData.loanInterestOnly ? 1 : 0,
-            loanPurpose: this.applicationData.loanPurpose.name,
-            loanRefinanceType: this.getLoanRefinanceType(),
-            loc: this.applicationData.loc ? 1 : 0,
-            locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
-            locAmount: this.$parseCurrency(this.applicationData.locAmount)
-          },
-          productId: this.loanProduct.productId,
-          promotionCode: this.applicationData.promotionCode,
-          property: {
-            numberUnits: Number(this.applicationData.propertyNumberOfUnits),
-            address: this.applicationData.propertyAddress,
-            purchasePrice: this.$parseCurrency(this.applicationData.propertyValue),
-            propertyType: this.applicationData.propertyType.name,
-            propertyUse: this.applicationData.propertyUse.name,
-            value: this.$parseCurrency(this.applicationData.propertyValue),
-            yearAcquired: Number(this.applicationData.propertyYearAcquired),
-            zip: this.applicationData.propertyZip
-          },
-          // realEstate: [], // Moved this to conditional below
-          result: JSON.stringify(this.searchResults)
-        }
-        // Primary Borrower information
-        const primaryBorrower = {
-          address: this.applicationData.address, // Required if `zip`
-          borrowerType: 'Primary', // Required
-          businessPhone: this.applicationData.businessPhone,
-          cellPhone: this.applicationData.cellPhone,
-          creditRating: this.applicationData.creditRating.name,
-          dob: this.$moment(this.applicationData.dob).format('YYYY-MM-DD'),
-          email: this.applicationData.email, // Required
-          employer: {
-            address: this.applicationData.employerAddress, // Required if `employer: {}`
-            employerName: this.applicationData.employerName, // Required if `employer: {}`
-            jobTitle: this.applicationData.jobTitle,
-            selfEmployed: Number(this.applicationData.selfEmployed),
-            yearsAtJob: Number(this.applicationData.employedHowLong),
-            zip: this.applicationData.employerZip // Required if `employer: {}`
-          },
-          fax: this.applicationData.fax,
-          firstName: this.applicationData.firstName, // Required
-          grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
-          homePhone: this.applicationData.homePhone, // Required
-          lastName: this.applicationData.lastName, // Required
-          mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
-          mailingZip: this.applicationData.mailingZip,
-          maritalStatus: this.applicationData.maritalStatus.value,
-          ssn: this.applicationData.ssn,
-          // status: 'Own',
-          yearsAtAddress: Number(this.applicationData.timeAtCurrentAddress),
-          yearsLineOfWork: Number(this.applicationData.yearsLineOfWork),
-          yearsOfSchool: Number(this.applicationData.yearsOfSchool),
-          zip: this.applicationData.zip
-        }
-        if (this.applicationData.hoaDues) {
-          primaryBorrower.expenses = [{
-            expenseType: 'Present', // Required if `expenses: {}`
-            hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
-          }]
-        }
-        applicationPayload.borrowers.push(primaryBorrower)
-        // Co-Borrower information
-        if (this.hasCoBorrower) { // if COBORROWER
-          const coBorrower = {
-            address: this.applicationData.coBorrowerAddress,
-            borrowerType: 'Co Borrower',
-            businessPhone: this.applicationData.coBorrowerBusinessPhone,
-            cellPhone: this.applicationData.coBorrowerCellPhone,
-            email: this.applicationData.coBorrowerEmail,
-            employer: {
-              address: this.applicationData.coBorrowerEmployerAddress,
-              employerName: this.applicationData.coBorrowerEmployerName,
-              jobTitle: this.applicationData.coBorrowerJobTitle,
-              selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
-              yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
-              zip: this.applicationData.coBorrowerEmployerZip
-            },
-            fax: this.applicationData.coBorrowerFax,
-            firstName: this.applicationData.coBorrowerFirstName,
-            grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
-            homePhone: this.applicationData.coBorrowerHomePhone,
-            lastName: this.applicationData.coBorrowerLastName,
-            maritalStatus: this.applicationData.coBorrowerMaritalStatus.value,
-            ssn: this.applicationData.coBorrowerSsn,
-            // status: 'Own',
-            yearsAtAddress: Number(this.applicationData.coBorrowerTimeAtCurrentAddress),
-            yearsLineOfWork: Number(this.applicationData.coBorrowerYearsLineOfWork),
-            yearsOfSchool: Number(this.applicationData.coBorrowerYearsOfSchool),
-            zip: this.applicationData.coBorrowerZip
-          }
-          if (this.applicationData.coBorrowerHoaDues) {
-            coBorrower.expenses = [{
-              expenseType: 'Present',
-              hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
-            }]
-          }
-          applicationPayload.borrowers.push(coBorrower)
-        }
-        // Assets and Liabilities
-        if (this.assetsAndLiabilities) {
-          applicationPayload.realEstate = []
-          if (this.applicationData.realEstate_0_propertyType) {
-            applicationPayload.realEstate.push({
-              address: this.applicationData.realEstate_0_address,
-              propertyStatus: null, // 'Sold',
-              propertyType: this.applicationData.realEstate_0_propertyType,
-              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
-              totalLeans: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
-              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
-              mortgagePayments: null,
-              taxesAndInsurance: null,
-              netRentalIncome: null,
-              zip: this.applicationData.realEstate_0_zip
-            })
-          }
-          if (this.applicationData.realEstate_1_propertyType) {
-            applicationPayload.realEstate.push({
-              address: this.applicationData.realEstate_1_address,
-              propertyStatus: null, // 'Sold',
-              propertyType: this.applicationData.realEstate_1_propertyType,
-              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
-              totalLeans: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
-              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
-              mortgagePayments: null,
-              taxesAndInsurance: null,
-              netRentalIncome: null,
-              zip: this.applicationData.realEstate_1_zip
-            })
-          }
-          if (this.applicationData.realEstate_2_propertyType) {
-            applicationPayload.realEstate.push({
-              address: this.applicationData.realEstate_2_address,
-              propertyStatus: null, // 'Sold',
-              propertyType: this.applicationData.realEstate_2_propertyType,
-              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
-              totalLeans: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
-              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
-              mortgagePayments: null,
-              taxesAndInsurance: null,
-              netRentalIncome: null,
-              zip: this.applicationData.realEstate_2_zip
-            })
-          }
-        }
-        console.log('Application Payload:\n', applicationPayload)
+        console.log('Application Payload:\n', this.applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
-            return applicationCreate(auth, applicationPayload)
+            return applicationCreate(auth, this.applicationPayload)
               .then((res) => {
                 this.$emit('applicationSubmitSuccess', res)
                 return res

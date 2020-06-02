@@ -270,6 +270,18 @@ p a {
 }
 
 /*
+** Code
+*/
+code {
+  display: block;
+  font-size: $font-size-sm;
+  max-width: 600px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/*
 ** Forms
 */
 .custom-select {

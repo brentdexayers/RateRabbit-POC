@@ -156,12 +156,12 @@
       <div class="row">
         <div class="col-12">
           <div class="form-group">
-            <a
-              href="/search"
+            <button
+              @click="startNewSearch"
               class="btn btn-outline-primary"
             >
               {{ 'Try a New Search' | titlecase }}
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -196,12 +196,31 @@ export default {
       propertyUse: state => state.application.data.propertyUse,
       propertyValue: state => state.application.data.propertyValue,
       propertyZip: state => state.application.data.propertyZip,
-      signUp: state => state.form.data.signUp,
+      signUp: state => state.application.data.signUp,
       state: state => state.application.data.state,
       taxesAndInsurance: state => state.application.data.taxes
     })
   },
   methods: {
+    scrollToTop () {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      document.body.focus()
+    },
+    startNewSearch () {
+      this.$emit('startNewSearch')
+      this.$router.push({
+        path: '/search'
+      })
+      this.updateSidebar('default')
+      this.scrollToTop()
+    },
+    updateSidebar (payload) {
+      this.$store.commit('setLayoutSidebar', payload)
+    }
   }
 }
 </script>

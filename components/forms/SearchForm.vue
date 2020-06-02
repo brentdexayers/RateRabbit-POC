@@ -443,6 +443,7 @@
         </div>
       </div>
     </form>
+    <code class="debug">{{ searchPayload }}</code>
   </div>
 </template>
 
@@ -533,13 +534,24 @@ export default {
         this.$store.commit('updateLoanPurpose', value)
       }
     },
-    loanRefinanceType: {
-      get () {
-        return this.$store.state.application.data.loanRefinanceType
-      },
-      set (value) {
-        this.$store.commit('updateLoanRefinanceType', value)
+    // loanRefinanceType: {
+    //   get () {
+    //     return this.$store.state.application.data.loanRefinanceType
+    //   },
+    //   set (value) {
+    //     this.$store.commit('updateLoanRefinanceType', value)
+    //   }
+    // },
+    loanRefinanceType () {
+      let type = 'No Cash Out'
+      if (this.loanPurpose.name === 'Refinance Cash Out') {
+        type = 'Cash Out'
+        if (!this.locAfterFirst || (this.locAfterFirst && this.keepingLoc)) {
+          type = 'No Cash Out'
+        }
       }
+      this.$store.commit('updateLoanRefinanceType', type)
+      return type
     },
     loc: {
       get () {
@@ -554,7 +566,7 @@ export default {
         return this.$store.state.application.data.locAfterFirst
       },
       set (value) {
-        this.$store.commit('updatelocAfterFirst', value)
+        this.$store.commit('updateLocAfterFirst', value)
       }
     },
     locAmount: {
@@ -607,7 +619,7 @@ export default {
     },
     signUp: {
       get () {
-        return this.$store.state.form.data.signUp
+        return this.$store.state.application.data.signUp
       },
       set (value) {
         this.$store.commit('updateSignUp', value)
@@ -628,6 +640,22 @@ export default {
       set (value) {
         this.$store.commit('updateTaxes', value)
       }
+    },
+    // Search Payload
+    searchPayload () {
+      const payload = {
+        'creditRating': this.creditRating.name,
+        'loanAmount': this.$parseCurrency(this.loanAmount),
+        'loanPurpose': this.loanPurpose.name,
+        'loanRefinanceType': this.loanRefinanceType,
+        'promotionCode': this.promotionCode,
+        'propertyType': this.propertyType.name,
+        'propertyUse': this.propertyUse.name,
+        'propertyValue': this.$parseCurrency(this.propertyValue),
+        'taxesAndInsurance': this.taxes === 'Yes',
+        'zipCode': this.propertyZip
+      }
+      return payload
     }
   },
   async fetch () {
@@ -662,6 +690,16 @@ export default {
       const self = event.target
       self.previousElementSibling.classList.remove('focused')
     },
+    getLoanRefinanceType () {
+      let type = 'No Cash Out'
+      if (this.loanPurpose.name === 'Refinance Cash Out') {
+        type = 'Cash Out'
+        if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
+          type = 'No Cash Out'
+        }
+      }
+      return type
+    },
     scrollToTop (event) {
       const c = document.documentElement.scrollTop || document.body.scrollTop
       if (c > 0) {
@@ -672,12 +710,39 @@ export default {
       document.body.focus()
     },
     // Submit Methods
-    updateSearchResults (payload) {
-      this.$store.commit('setSearchResults', payload)
+    reduceResults (results) {
+      const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
+      const reduced = {}
+      r.forEach((item, index) => {
+        if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
+          reduced[item.amortizationTerm + ' Year ' + item.amortizationType] = []
+        }
+        reduced[item.amortizationTerm + ' Year ' + item.amortizationType].push(item)
+      })
+      const reducedMore = []
+      for (const [key, value] of Object.entries(reduced)) {
+        reducedMore.push({
+          amortization: key,
+          results: value
+        })
+      }
+      return reducedMore
+    },
+    updateSearchResults (results) {
+      console.log('results', results)
+      this.$store.commit('setSearchResultDetails', results)
+      const reduced = this.reduceResults(results)
+      if (reduced) {
+        console.log('reduced', reduced)
+        this.$store.commit('setSearchResults', reduced)
+      }
+    },
+    updateSidebar (payload) {
+      this.$store.commit('setLayoutSidebar', payload)
     },
     updateRoute () {
       this.$router.push({
-        path: '/search/results/'
+        path: '/search/results'
       })
     },
     formValidate () {
@@ -699,24 +764,14 @@ export default {
       e.preventDefault()
       this.$emit('submitStart')
       console.log('TODO: Set loading state HERE...')
+      // Check for errors
       const hasErrors = this.formValidate()
+      // If no errors
       if (!hasErrors) {
-        const searchPayload = {
-          'creditRating': this.creditRating.name,
-          'loanAmount': this.$parseCurrency(this.loanAmount),
-          'loanPurpose': this.loanPurpose.name,
-          'loanRefinanceType': this.loanRefinanceType,
-          'promotionCode': this.promotionCode,
-          'propertyType': this.propertyType.name,
-          'propertyUse': this.propertyUse.name,
-          'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': this.taxes === 'Yes',
-          'zipCode': this.propertyZip
-        }
-        console.log('searchPayload', searchPayload)
+        // Get search data (API)
         const data = await authenticate()
           .then((auth) => {
-            return loanSearch(auth, searchPayload)
+            return loanSearch(auth, this.searchPayload)
               .then((res) => {
                 return res
               })
@@ -727,29 +782,13 @@ export default {
           .catch((err) => {
             throw err
           })
-        if (typeof data === 'object' && data?.searchResultDetails?.length) {
-          console.log('data', data)
-          const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
-          const reduced = {}
-          r.forEach((item, index) => {
-            if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
-              reduced[item.amortizationTerm + ' Year ' + item.amortizationType] = []
-            }
-            reduced[item.amortizationTerm + ' Year ' + item.amortizationType].push(item)
-          })
-          console.log('reduced', reduced)
-          const reducedMore = []
-          for (const [key, value] of Object.entries(reduced)) {
-            reducedMore.push({
-              amortization: key,
-              results: value
-            })
-          }
-          console.log('reducedMore', reducedMore)
-          this.updateSearchResults(reducedMore)
+        // Check search results are valid
+        if (typeof data === 'object' && data?.searchResultDetails?.length) { // Search has results
+          this.updateSearchResults(data)
+          this.updateSidebar('results')
           this.$emit('searchResults', true)
           this.updateRoute()
-        } else {
+        } else { // Search does not have results
           this.errors.noResults = true
           this.scrollToTop(e)
           this.$emit('searchResults', false)

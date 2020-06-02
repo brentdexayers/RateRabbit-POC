@@ -6,7 +6,8 @@
       <div class="container layout--default__container">
         <div class="row">
           <div class="col-auto layout--default__aside">
-            <Sidebar />
+            <SidebarResults v-if="sidebar === 'results'" />
+            <SidebarSearch v-else />
           </div>
           <div class="col layout--default__content">
             <div class="layout--default__content__title">
@@ -25,22 +26,31 @@
 </template>
 
 <script>
-import Header from '~/components/header/Header.vue'
-import Sidebar from '~/components/sidebars/SearchSidebar.vue'
-import Footer from '~/components/footer/Footer.vue'
+import { mapState } from 'vuex'
+
 import BackToTop from '~/components/globals/BackToTop.vue'
+import Footer from '~/components/footer/Footer.vue'
+import Header from '~/components/header/Header.vue'
+import SidebarResults from '~/components/sidebars/ResultsSidebar.vue'
+import SidebarSearch from '~/components/sidebars/SearchSidebar.vue'
 
 export default {
   components: {
-    Header,
-    Sidebar,
+    BackToTop,
     Footer,
-    BackToTop
+    Header,
+    SidebarResults,
+    SidebarSearch
   },
   data () {
     return {
       title: 'RateRabbit'
     }
+  },
+  computed: {
+    ...mapState({
+      sidebar: state => state.layout.sidebar
+    })
   },
   async fetch ({ store, params }) {
   },

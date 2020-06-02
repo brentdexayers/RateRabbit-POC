@@ -216,7 +216,7 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
-      loanProducts: state => state.search.results
+      loanProducts: state => state.searchResultsReduced
     })
   },
   methods: {

@@ -35,7 +35,7 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
-      searchResults: state => state.search.results
+      searchResults: state => state.searchResultsReduced
     })
   },
   methods: {

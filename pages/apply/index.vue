@@ -75,7 +75,7 @@ import { mapState } from 'vuex'
 import Form from '~/components/forms/ApplicationForm.vue'
 
 export default {
-  layout: 'application',
+  layout: 'default',
   components: {
     Form
   },
