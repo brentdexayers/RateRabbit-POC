@@ -122,6 +122,7 @@ export const state = () => ({
       selfEmployed: false,
       ssn: null,
       state: null,
+      taxes: null,
       timeAtCurrentAddress: null,
       yearsLineOfWork: null,
       yearsOfSchool: null,
@@ -463,6 +464,9 @@ export const mutations = {
   },
   updateState (state, payload) {
     state.application.data.state = payload
+  },
+  updateTaxes (state, payload) {
+    state.application.data.taxes = payload
   },
   updateTimeAtCurrentAddress (state, payload) {
     state.application.data.timeAtCurrentAddress = payload

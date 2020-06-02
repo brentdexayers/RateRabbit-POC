@@ -2305,7 +2305,10 @@ export default {
       this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
     }
     if (!this.maritalStatusOptions.length) {
+      console.log('========== ms ==========', this.maritalStatusOptions)
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
+    } else {
+      console.log('========== ms ==========', this.maritalStatusOptions)
     }
   },
 
@@ -2354,6 +2357,7 @@ export default {
       this.$emit('applicationSubmitStart')
       const valid = this.formValidate()
       if (valid) {
+        // The Application Payload object
         const applicationPayload = {
           borrowers: [],
           donationAmount: 0.00,
@@ -2368,7 +2372,7 @@ export default {
             loanRefinanceType: this.getLoanRefinanceType(),
             loc: this.applicationData.loc,
             locAfterFirst: this.applicationData.locAfterFirst,
-            locAmount: this.applicationData.locAmount
+            locAmount: this.$parseCurrency(this.applicationData.locAmount)
           },
           productId: this.loanProduct.productId,
           promotionCode: this.applicationData.promotionCode,
@@ -2385,32 +2389,29 @@ export default {
           realEstate: [],
           result: JSON.stringify(this.searchResults)
         }
+        // Primary Borrower information
         const primaryBorrower = {
-          address: this.applicationData.address,
-          borrowerType: 'Primary',
+          address: this.applicationData.address, // Required if `zip`
+          borrowerType: 'Primary', // Required
           businessPhone: this.applicationData.businessPhone,
           cellPhone: this.applicationData.cellPhone,
           creditRating: this.applicationData.creditRating.name,
           dob: this.$moment(this.applicationData.dob).format('YYYY-MM-DD'),
-          email: this.applicationData.email,
+          email: this.applicationData.email, // Required
           employer: {
-            address: this.applicationData.employerAddress,
-            employerName: this.applicationData.employerName,
+            address: this.applicationData.employerAddress, // Required if `employer: {}`
+            employerName: this.applicationData.employerName, // Required if `employer: {}`
             jobTitle: this.applicationData.jobTitle,
             selfEmployed: !!this.applicationData.selfEmployed,
             yearsAtJob: this.applicationData.employedHowLong,
-            zip: this.applicationData.employerZip
+            zip: this.applicationData.employerZip // Required if `employer: {}`
           },
-          expenses: [{
-            expenseType: 'Present',
-            hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
-          }],
           fax: this.applicationData.fax,
-          firstName: this.applicationData.firstName,
+          firstName: this.applicationData.firstName, // Required
           grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
-          homePhone: this.applicationData.homePhone,
-          lastName: this.applicationData.lastName,
-          mailingAddress: this.applicationData.mailingAddress,
+          homePhone: this.applicationData.homePhone, // Required
+          lastName: this.applicationData.lastName, // Required
+          mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
           mailingZip: this.applicationData.mailingZip,
           maritalStatus: this.applicationData.maritalStatus.value,
           ssn: this.applicationData.ssn,
@@ -2420,7 +2421,14 @@ export default {
           yearsOfSchool: this.applicationData.yearsOfSchool,
           zip: this.applicationData.zip
         }
+        if (this.applicationData.hoaDues) {
+          primaryBorrower.expenses = [{
+            expenseType: 'Present', // Required if `expenses: {}`
+            hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
+          }]
+        }
         applicationPayload.borrowers.push(primaryBorrower)
+        // Co-Borrower information
         if (this.hasCoBorrower) { // if COBORROWER
           const coBorrower = {
             address: this.applicationData.coBorrowerAddress,
@@ -2436,10 +2444,6 @@ export default {
               yearsAtJob: this.applicationData.coBorrowerEmployedHowLong,
               zip: this.applicationData.coBorrowerEmployerZip
             },
-            expenses: [{
-              expenseType: 'Present',
-              hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
-            }],
             fax: this.applicationData.coBorrowerFax,
             firstName: this.applicationData.coBorrowerFirstName,
             grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
@@ -2453,51 +2457,60 @@ export default {
             yearsOfSchool: this.applicationData.coBorrowerYearsOfSchool,
             zip: this.applicationData.coBorrowerZip
           }
+          if (this.applicationData.coBorrowerHoaDues) {
+            coBorrower.expenses = [{
+              expenseType: 'Present',
+              hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
+            }]
+          }
           applicationPayload.borrowers.push(coBorrower)
         }
-        if (this.applicationData.realEstate_0_propertyType) {
-          applicationPayload.realEstate.push({
-            address: null,
-            propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_0_propertyType,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
-            mortgagePayments: null,
-            taxesAndInsurance: null,
-            netRentalIncome: null,
-            zip: null
-          })
+        // Assets and Liabilities
+        if (this.assetsAndLiabilities) {
+          if (this.applicationData.realEstate_0_propertyType) {
+            applicationPayload.realEstate.push({
+              address: this.applicationData.realEstate_0_address,
+              propertyStatus: null, // 'Sold',
+              propertyType: this.applicationData.realEstate_0_propertyType,
+              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
+              totalLeans: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
+              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
+              mortgagePayments: null,
+              taxesAndInsurance: null,
+              netRentalIncome: null,
+              zip: this.applicationData.realEstate_0_zip
+            })
+          }
+          if (this.applicationData.realEstate_1_propertyType) {
+            applicationPayload.realEstate.push({
+              address: this.applicationData.realEstate_1_address,
+              propertyStatus: null, // 'Sold',
+              propertyType: this.applicationData.realEstate_1_propertyType,
+              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
+              totalLeans: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
+              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
+              mortgagePayments: null,
+              taxesAndInsurance: null,
+              netRentalIncome: null,
+              zip: this.applicationData.realEstate_1_zip
+            })
+          }
+          if (this.applicationData.realEstate_2_propertyType) {
+            applicationPayload.realEstate.push({
+              address: this.applicationData.realEstate_2_address,
+              propertyStatus: null, // 'Sold',
+              propertyType: this.applicationData.realEstate_2_propertyType,
+              presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
+              totalLeans: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
+              grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
+              mortgagePayments: null,
+              taxesAndInsurance: null,
+              netRentalIncome: null,
+              zip: this.applicationData.realEstate_2_zip
+            })
+          }
         }
-        if (this.applicationData.realEstate_1_propertyType) {
-          applicationPayload.realEstate.push({
-            address: null,
-            propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_1_propertyType,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
-            mortgagePayments: null,
-            taxesAndInsurance: null,
-            netRentalIncome: null,
-            zip: null
-          })
-        }
-        if (this.applicationData.realEstate_2_propertyType) {
-          applicationPayload.realEstate.push({
-            address: null,
-            propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_2_propertyType,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
-            totalLeans: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
-            mortgagePayments: null,
-            taxesAndInsurance: null,
-            netRentalIncome: null,
-            zip: null
-          })
-        }
-        console.log('Create Application Payload:\n', applicationPayload)
+        console.log('Application Payload:\n', applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
             return applicationCreate(auth, applicationPayload)
@@ -2507,6 +2520,7 @@ export default {
               })
               .catch((err) => {
                 this.$emit('applicationSubmitError')
+                console.log('There was an error POSTing the ApplicationPayload data\n', err)
                 throw err
               })
           })

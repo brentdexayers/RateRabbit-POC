@@ -5,6 +5,11 @@
         <b>Please correct the following errors:</b>
       </p>
     </div>
+    <div v-if="errors.noResults" class="form-errors">
+      <p class="text-danger">
+        Your search has not returned any results. Please update your search and try again.
+      </p>
+    </div>
     <form
       id="search-rates-form"
       @submit.prevent="handleFormSubmit"
@@ -337,8 +342,8 @@
       <div class="row">
         <div class="form-group col-12">
           <label
-            :class="{ hasvalue: taxesAndInsurance }"
-            for="taxesAndInsurance"
+            :class="{ hasvalue: taxes }"
+            for="taxes"
           >
             {{ 'Taxes & Insurance' | titlecase }}
             <!-- <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information"> -->
@@ -348,10 +353,10 @@
           </label>
           <select
             id="input-select--taxes"
-            v-model="taxesAndInsurance"
+            v-model="taxes"
             @focus="focusClassAdd($event)"
             @blur="focusClassRemove($event)"
-            name="taxesAndInsurance"
+            name="taxes"
             class="custom-select has-info"
           >
             <option
@@ -360,12 +365,12 @@
               hidden
             />
             <option
-              value="true"
+              value="Yes"
             >
               Yes
             </option>
             <option
-              value="false"
+              value="No"
             >
               No
             </option>
@@ -466,6 +471,7 @@ export default {
         loanAmount: false,
         loanPurpose: false,
         locAmount: false,
+        noResults: false,
         propertyType: false,
         propertyUse: false,
         propertyValue: false,
@@ -615,12 +621,12 @@ export default {
         this.$store.commit('updateState', value)
       }
     },
-    taxesAndInsurance: {
+    taxes: {
       get () {
-        return this.$store.state.form.data.taxesAndInsurance
+        return this.$store.state.application.data.taxes
       },
       set (value) {
-        this.$store.commit('updateTaxesAndInsurance', value)
+        this.$store.commit('updateTaxes', value)
       }
     }
   },
@@ -657,7 +663,12 @@ export default {
       self.previousElementSibling.classList.remove('focused')
     },
     scrollToTop (event) {
-      window.scrollTo(0, 0)
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      // window.scrollTo(0, 0)
       document.body.focus()
     },
     // Submit Methods
@@ -671,6 +682,7 @@ export default {
     },
     formValidate () {
       this.$emit('searchValidateStart')
+      if (this.errors.noResults) { this.errors.noResults = !this.errors.noResults }
       if (!this.loanPurpose) { this.errors.loanPurpose = true } else { this.errors.loanPurpose = false }
       if (!this.propertyValue) { this.errors.propertyValue = true } else { this.errors.propertyValue = false }
       if (!this.loanAmount) { this.errors.loanAmount = true } else { this.errors.loanAmount = false }
@@ -698,7 +710,7 @@ export default {
           'propertyType': this.propertyType.name,
           'propertyUse': this.propertyUse.name,
           'propertyValue': this.$parseCurrency(this.propertyValue),
-          'taxesAndInsurance': !!this.taxesAndInsurance,
+          'taxesAndInsurance': this.taxes === 'Yes',
           'zipCode': this.propertyZip
         }
         console.log('searchPayload', searchPayload)
@@ -706,7 +718,6 @@ export default {
           .then((auth) => {
             return loanSearch(auth, searchPayload)
               .then((res) => {
-                console.log('loanSearch', res)
                 return res
               })
               .catch((err) => {
@@ -716,7 +727,8 @@ export default {
           .catch((err) => {
             throw err
           })
-        if (typeof data === 'object' && data?.searchResultDetails) {
+        if (typeof data === 'object' && data?.searchResultDetails?.length) {
+          console.log('data', data)
           const r = data.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
           const reduced = {}
           r.forEach((item, index) => {
@@ -736,10 +748,12 @@ export default {
           console.log('reducedMore', reducedMore)
           this.updateSearchResults(reducedMore)
           this.$emit('searchResults', true)
+          this.updateRoute()
         } else {
+          this.errors.noResults = true
+          this.scrollToTop(e)
           this.$emit('searchResults', false)
         }
-        this.updateRoute()
       } else {
         this.scrollToTop(e)
       }

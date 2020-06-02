@@ -26,7 +26,7 @@
 
 <script>
 import Header from '~/components/header/Header.vue'
-import Sidebar from '~/components/sidebars/SearchSidebar.vue'
+import Sidebar from '~/components/sidebars/ResultsSidebar.vue'
 import Footer from '~/components/footer/Footer.vue'
 import BackToTop from '~/components/globals/BackToTop.vue'
 

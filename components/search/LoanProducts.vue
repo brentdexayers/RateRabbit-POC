@@ -179,10 +179,15 @@
           </div>
         </div>
         <button
+          v-if="loanProductGroup.results.length > 2"
           @click="toggleShowMoreByIndex(loanProductGroupIndex)"
+          class="btn-show-more"
         >
-          <span>
-            {{ showMore.indexOf(loanProductGroupIndex) > -1 ? 'Show Less' : 'Show More' }}
+          <span v-if="showMore.indexOf(loanProductGroupIndex) > -1">
+            Show Less
+          </span>
+          <span v-else>
+            Show {{ loanProductGroup.results.length - 2 }} More
           </span>
           <img
             :alt="showMore.indexOf(loanProductGroupIndex) > -1 ? 'Show Less' : 'Show More'"
@@ -229,7 +234,6 @@ export default {
       } else {
         this.showMore.push(i)
       }
-      console.log('shwMore', this.showMore)
     },
     log (i) {
       console.log(i)
@@ -414,6 +418,11 @@ export default {
           display: block;
         }
       }
+    }
+  }
+  .btn-show-more {
+    &:focus {
+      outline: none;
     }
   }
 }

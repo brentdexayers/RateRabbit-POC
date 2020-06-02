@@ -24,7 +24,12 @@ export default {
   },
   methods: {
     scrollToTop (event) {
-      window.scrollTo(0, 0)
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      // window.scrollTo(0, 0)
       document.body.focus()
     },
     scrollButtonShow () {
