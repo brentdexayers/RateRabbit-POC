@@ -1351,7 +1351,6 @@
         </div>
       </div>
     </form>
-    <code>{{ applicationPayload }}</code>
   </div>
 </template>
 
@@ -2298,7 +2297,7 @@ export default {
           // loanDocType: 'Full Doc',
           // loanImpounds: 1,
           loanInterestOnly: this.applicationData.loanInterestOnly ? 1 : 0,
-          loanPurpose: this.applicationData.loanPurpose.name,
+          loanPurpose: this.applicationData.loanPurpose?.name,
           loanRefinanceType: this.applicationData.loanRefinanceType, // this.getLoanRefinanceType(),
           loc: this.applicationData.loc ? 1 : 0,
           locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
@@ -2310,8 +2309,8 @@ export default {
           numberUnits: Number(this.applicationData.propertyNumberOfUnits),
           address: this.applicationData.propertyAddress,
           purchasePrice: this.$parseCurrency(this.applicationData.propertyValue),
-          propertyType: this.applicationData.propertyType.name,
-          propertyUse: this.applicationData.propertyUse.name,
+          propertyType: this.applicationData.propertyType?.name,
+          propertyUse: this.applicationData.propertyUse?.name,
           value: this.$parseCurrency(this.applicationData.propertyValue),
           yearAcquired: Number(this.applicationData.propertyYearAcquired),
           zip: this.applicationData.propertyZip
@@ -2327,7 +2326,7 @@ export default {
         borrowerType: 'Primary', // Required
         businessPhone: this.applicationData.businessPhone,
         cellPhone: this.applicationData.cellPhone,
-        creditRating: this.applicationData.creditRating.name,
+        creditRating: this.applicationData.creditRating?.name,
         dob: this.$moment(this.applicationData.dob).format('YYYY-MM-DD'),
         email: this.applicationData.email, // Required
         employer: {
@@ -2345,7 +2344,7 @@ export default {
         lastName: this.applicationData.lastName, // Required
         mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
         mailingZip: this.applicationData.mailingZip,
-        maritalStatus: this.applicationData.maritalStatus.name,
+        maritalStatus: this.applicationData?.maritalStatus?.name,
         ssn: this.applicationData.ssn,
         // status: 'Own',
         yearsAtAddress: Number(this.applicationData.timeAtCurrentAddress),
@@ -2381,7 +2380,7 @@ export default {
           grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
           homePhone: this.applicationData.coBorrowerHomePhone,
           lastName: this.applicationData.coBorrowerLastName,
-          maritalStatus: this.applicationData.coBorrowerMaritalStatus.name,
+          maritalStatus: this.applicationData?.coBorrowerMaritalStatus?.name,
           ssn: this.applicationData.coBorrowerSsn,
           // status: 'Own',
           yearsAtAddress: Number(this.applicationData.coBorrowerTimeAtCurrentAddress),
@@ -2404,7 +2403,7 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_0_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_0_propertyType.name,
+            propertyType: this.applicationData.realEstate_0_propertyType?.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
             totalLeins: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
@@ -2418,7 +2417,7 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_1_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_1_propertyType.name,
+            propertyType: this.applicationData.realEstate_1_propertyType?.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
             totalLeins: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
@@ -2432,7 +2431,7 @@ export default {
           payload.realEstate.push({
             address: this.applicationData.realEstate_2_address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_2_propertyType.name,
+            propertyType: this.applicationData.realEstate_2_propertyType?.name,
             presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
             totalLeins: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
             grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),

@@ -443,7 +443,6 @@
         </div>
       </div>
     </form>
-    <code class="debug">{{ searchPayload }}</code>
   </div>
 </template>
 
