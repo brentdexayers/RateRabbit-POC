@@ -1,13 +1,8 @@
 <template>
-  <div>
+  <div class="form-wrapper">
     <div v-if="hasErrors" class="form-errors">
       <p class="text-danger">
         <b>Please correct the following errors:</b>
-      </p>
-    </div>
-    <div v-if="errors.noResults" class="form-errors">
-      <p class="text-danger">
-        Your search has not returned any results. Please update your search and try again.
       </p>
     </div>
     <form
@@ -380,14 +375,18 @@
       <div class="row">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
+            :class="invertedSubmit ? 'btn-outline-primary' : 'btn-primary'"
             type="submit"
-            class="btn btn-primary form--search-rates__submit"
+            class="btn form--search-rates__submit"
           >
             {{ submitButtonText | titlecase }}
           </button>
         </div>
       </div>
-      <div class="row">
+      <div
+        v-if="!hideExtraFields"
+        class="row"
+      >
         <div class="form-group col-12">
           <ul class="list-unstyled form--search-rates__supplemental-links">
             <li class="form--search-rates__supplemental-link">
@@ -462,11 +461,17 @@ import {
 
 export default {
   props: {
+    hideExtraFields: {
+      type: Boolean,
+      default: false
+    },
+    invertedSubmit: {
+      type: Boolean,
+      default: false
+    },
     submitButtonText: {
       type: String,
-      default () {
-        return 'Search Live Rates'
-      }
+      default: 'Search Live Rates'
     }
   },
   data () {
@@ -477,7 +482,6 @@ export default {
         loanAmount: false,
         loanPurpose: false,
         locAmount: false,
-        noResults: false,
         propertyType: false,
         propertyUse: false,
         propertyValue: false,
@@ -755,13 +759,13 @@ export default {
       this.$store.commit('setLayoutSidebar', payload)
     },
     updateRoute () {
+      this.updateSidebar('default')
       this.$router.push({
         path: '/search/results'
       })
     },
     formValidate () {
       this.$emit('searchValidateStart')
-      if (this.errors.noResults) { this.errors.noResults = !this.errors.noResults }
       if (!this.loanPurpose) { this.errors.loanPurpose = true } else { this.errors.loanPurpose = false }
       if (!this.propertyValue) { this.errors.propertyValue = true } else { this.errors.propertyValue = false }
       if (!this.loanAmount) { this.errors.loanAmount = true } else { this.errors.loanAmount = false }
@@ -797,19 +801,10 @@ export default {
             throw err
           })
         // Check search results are valid
-        if (typeof data === 'object' && data?.searchResultDetails?.length) { // Search has results
-          this.updateSearchResults(data)
-          // this.updateSidebar('results')
-          this.$emit('searchResults', true)
-          this.updateRoute()
-        } else { // Search does not have results
-          this.errors.noResults = true
-          this.scrollToTop(e)
-          this.$emit('searchResults', false)
-        }
-      } else {
-        this.scrollToTop(e)
+        this.updateSearchResults(data)
+        this.updateRoute()
       }
+      this.scrollToTop(e)
       console.log('TODO: Set UN-loading state HERE...')
       this.submitEnd()
     }

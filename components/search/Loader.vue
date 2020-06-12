@@ -5,6 +5,7 @@
     <div class="search-loader__box">
       <video width="100%" autoplay preload="auto">
         <source src="~assets/RateRabbit_RunAnim_v1.webm" type="video/webm">
+        <source src="~assets/RateRabbit_RunAnim_v1.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -34,10 +35,16 @@ export default {
   right: 0;
   top: 0;
   z-index: 99999;
-  &__box {
+  &__aspect-ratio {
     background-color: $black;
+    height: 0;
+    max-width: 600px;
+    padding-top: 56.25%;
+    position: relative;
+    width: 100%;
+  }
+  &__box {
     height: auto;
-    margin: auto;
     max-width: 600px;
     width: 100%;
   }

@@ -5,10 +5,8 @@
     <div class="wrapper wrapper--content layout--default__wrapper">
       <div class="container layout--default__container">
         <div class="row">
-          <div class="col-auto layout--default__aside">
-            <SidebarResults v-if="sidebar === 'results'" />
-            <SidebarSearch v-else />
-          </div>
+          <SidebarResults v-if="sidebar === 'results'" />
+          <SidebarSearch v-else />
           <div class="col layout--default__content">
             <div class="layout--default__content__title">
               <h1 class="page-title">
@@ -22,7 +20,9 @@
     </div>
     <Footer />
     <BackToTop />
-    <Loader v-if="loader" />
+    <transition name="fade">
+      <Loader v-if="loader" />
+    </transition>
   </div>
 </template>
 

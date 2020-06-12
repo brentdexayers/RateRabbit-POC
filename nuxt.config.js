@@ -19,7 +19,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'preload', type: 'video/webm', href: '~assets/RateRabbit_RunAnim_v1.webm', as: 'video'  }
+      { rel: 'preload', type: 'video/webm', href: '~assets/RateRabbit_RunAnim_v1.webm', as: 'video'  },
+      { rel: 'preload', type: 'video/mp4', href: '~assets/RateRabbit_RunAnim_v1.mp4', as: 'video'  }
     ]
   },
   /*

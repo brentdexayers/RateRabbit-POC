@@ -1,7 +1,6 @@
 <template>
   <aside
-    :class="classes"
-    class="sidebar sidebar--squeeze"
+    class="sidebar col-0 col-md-5 col-lg-4 sidebar--squeeze"
   >
     <div class="sidebar--squeeze__intro">
       <h2 class="sidebar--squeeze__intro__header">
@@ -38,12 +37,6 @@
 
 <script>
 export default {
-  props: {
-    classes: {
-      type: String,
-      default: ''
-    }
-  }
 }
 </script>
 

@@ -243,7 +243,6 @@
               {{ 'Marital Status' }}
             </label>
             <select
-              id="input-select--taxes"
               v-model="maritalStatus"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
@@ -651,7 +650,6 @@
                 {{ 'Marital Status' }}
               </label>
               <select
-                id="input-select--taxes"
                 v-model="coBorrowerMaritalStatus"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"

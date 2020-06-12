@@ -4,7 +4,7 @@
     <div class="wrapper wrapper--squeeze layout--squeeze__wrapper">
       <div class="container-fluid layout--squeeze__container">
         <div class="row">
-          <Sidebar class="col-0 col-md-6 col-lg-5" />
+          <Sidebar />
           <div class="col">
             <nuxt />
           </div>

@@ -1,6 +1,12 @@
 <template>
-  <aside class="sidebar sidebar--search-form">
-    <Form :submitButtonText="submitButtonText" />
+  <aside
+    class="sidebar col-0 col-md-5 col-lg-4 sidebar--search-form"
+  >
+    <Form
+      :submitButtonText="submitButtonText"
+      :hideExtraFields="true"
+      :invertedSubmit="true"
+    />
   </aside>
 </template>
 
