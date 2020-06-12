@@ -742,7 +742,7 @@ export default {
     },
     submitEnd () {
       this.$emit('submitEnd')
-      setTimeout(() => this.toggleLoader(), 500)
+      setTimeout(() => this.toggleLoader(), 250)
     },
     updateSearchResults (results) {
       this.$store.commit('setSearchResultDetails', results)
