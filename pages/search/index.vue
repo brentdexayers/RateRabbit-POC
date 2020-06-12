@@ -6,9 +6,7 @@
         <br class="d-block d-md-none">
         and Lock Your Rate In
       </h1>
-      <Form
-        @submitEnd="handleSubmit"
-      />
+      <Form />
     </div>
   </div>
 </template>
@@ -37,13 +35,6 @@ export default {
       auth: state => state.auth,
       searchResults: state => state.searchResultsReduced
     })
-  },
-  methods: {
-    handleSubmit () {
-      // this.$router.push({
-      //   path: '/search/results/'
-      // })
-    }
   },
   head () {
     return {

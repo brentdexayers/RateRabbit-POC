@@ -137,6 +137,7 @@ export const state = () => ({
   layout: {
     sidebar: 'default'
   },
+  loader: false,
   searchResultDetails: [],
   searchResultsReduced: {}
 })
@@ -144,6 +145,9 @@ export const state = () => ({
 // const defaultState = this.state // eslint-disable-line no-unused-vars
 
 export const mutations = {
+  toggleLoader (state) {
+    state.loader = !state.loader
+  },
   // Layout
   setLayoutSidebar (state, payload) {
     state.layout.sidebar = payload

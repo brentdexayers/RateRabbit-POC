@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar sidebar--search-form">
-    <Form />
+    <Form :submitButtonText="submitButtonText" />
   </aside>
 </template>
 
@@ -10,6 +10,11 @@ import Form from '~/components/forms/SearchForm.vue'
 export default {
   components: {
     Form
+  },
+  data () {
+    return {
+      submitButtonText: 'Update Search'
+    }
   }
 }
 </script>

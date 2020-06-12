@@ -22,6 +22,7 @@
     </div>
     <Footer />
     <BackToTop />
+    <Loader v-if="loader" />
   </div>
 </template>
 
@@ -31,7 +32,8 @@ import { mapState } from 'vuex'
 import BackToTop from '~/components/globals/BackToTop.vue'
 import Footer from '~/components/footer/Footer.vue'
 import Header from '~/components/header/Header.vue'
-import SidebarResults from '~/components/sidebars/ResultsSidebar.vue'
+import Loader from '~/components/search/Loader.vue'
+import SidebarResults from '~/components/sidebars/StaticSidebar.vue'
 import SidebarSearch from '~/components/sidebars/SearchSidebar.vue'
 
 export default {
@@ -39,6 +41,7 @@ export default {
     BackToTop,
     Footer,
     Header,
+    Loader,
     SidebarResults,
     SidebarSearch
   },
@@ -49,10 +52,9 @@ export default {
   },
   computed: {
     ...mapState({
+      loader: state => state.loader,
       sidebar: state => state.layout.sidebar
     })
-  },
-  async fetch ({ store, params }) {
   },
   head () {
     const self = this

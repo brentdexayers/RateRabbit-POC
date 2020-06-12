@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     apply () {
+      this.$store.commit('setLayoutSidebar', 'results')
       this.$router.push({
         path: '/apply/'
       })

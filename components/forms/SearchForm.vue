@@ -383,7 +383,7 @@
             type="submit"
             class="btn btn-primary form--search-rates__submit"
           >
-            {{ submitButton | titlecase }}
+            {{ submitButtonText | titlecase }}
           </button>
         </div>
       </div>
@@ -461,7 +461,13 @@ import {
 } from '~/services/api'
 
 export default {
-  components: {
+  props: {
+    submitButtonText: {
+      type: String,
+      default () {
+        return 'Search Live Rates'
+      }
+    }
   },
   data () {
     return {
@@ -479,8 +485,8 @@ export default {
         state: false
       },
       hasErrors: false,
-      ltv: 0,
-      submitButton: 'Search Live Rates'
+      ltv: 0
+      // submitButton: 'Search Live Rates'
     }
   },
   computed: {
@@ -708,6 +714,9 @@ export default {
       // window.scrollTo(0, 0)
       document.body.focus()
     },
+    toggleLoader () {
+      this.$store.commit('toggleLoader')
+    },
     // Submit Methods
     reduceResults (results) {
       const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
@@ -727,12 +736,18 @@ export default {
       }
       return reducedMore
     },
+    submitStart () {
+      this.$emit('submitStart')
+      this.toggleLoader()
+    },
+    submitEnd () {
+      this.$emit('submitEnd')
+      setTimeout(() => this.toggleLoader(), 500)
+    },
     updateSearchResults (results) {
-      console.log('results', results)
       this.$store.commit('setSearchResultDetails', results)
       const reduced = this.reduceResults(results)
       if (reduced) {
-        console.log('reduced', reduced)
         this.$store.commit('setSearchResults', reduced)
       }
     },
@@ -761,7 +776,7 @@ export default {
     },
     async handleFormSubmit (e) {
       e.preventDefault()
-      this.$emit('submitStart')
+      this.submitStart()
       console.log('TODO: Set loading state HERE...')
       // Check for errors
       const hasErrors = this.formValidate()
@@ -784,7 +799,7 @@ export default {
         // Check search results are valid
         if (typeof data === 'object' && data?.searchResultDetails?.length) { // Search has results
           this.updateSearchResults(data)
-          this.updateSidebar('results')
+          // this.updateSidebar('results')
           this.$emit('searchResults', true)
           this.updateRoute()
         } else { // Search does not have results
@@ -796,7 +811,7 @@ export default {
         this.scrollToTop(e)
       }
       console.log('TODO: Set UN-loading state HERE...')
-      this.$emit('submitEnd')
+      this.submitEnd()
     }
 
   }

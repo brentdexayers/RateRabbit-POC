@@ -12,19 +12,30 @@
       </div>
     </div>
     <Footer />
+    <Loader v-if="loader" />
   </div>
 </template>
 
 <script>
-import Header from '~/components/header/Header.vue'
-import Sidebar from '~/components/sidebars/SqueezeSidebar.vue'
+import { mapState } from 'vuex'
+
 import Footer from '~/components/footer/Footer.vue'
+import Header from '~/components/header/Header.vue'
+import Loader from '~/components/search/Loader.vue'
+import Sidebar from '~/components/sidebars/SqueezeSidebar.vue'
 
 export default {
   components: {
+    Footer,
     Header,
-    Sidebar,
-    Footer
+    Loader,
+    Sidebar
+  },
+  computed: {
+    ...mapState({
+      loader: state => state.loader,
+      sidebar: state => state.layout.sidebar
+    })
   }
 }
 </script>

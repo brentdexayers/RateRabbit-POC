@@ -58,7 +58,7 @@ export default {
   right: 0;
   bottom: 0;
   background-color: $light;
-  z-index: 1;
+  z-index: 99999;
   &__content {
     padding-left: 2rem;
     padding-right: 2rem;

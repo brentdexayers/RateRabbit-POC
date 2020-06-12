@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = process.env.apiEndpont
+const apiUrl = process.env.apiEndpont || 'https://development.raterabbit.com:8181/RateRabbit/webapi'
 
 // const instance = axios.create({
 //   baseURL: apiUrl
@@ -20,10 +20,13 @@ const authPayload = {
   'grantType': 'PASSWORD'
 }
 
-const handleError = (error) => {
+const handleError = (error, payload = null) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
+    if (payload) {
+      console.log('Payload\n', payload)
+    }
     console.log('Error response')
     console.log(error.response.status)
     console.log(error.response.data)
@@ -48,7 +51,7 @@ export const authenticate = async () => {
       return res
     })
     .catch((error) => {
-      handleError(error)
+      handleError(error, authPayload)
       throw error
     })
   return data
