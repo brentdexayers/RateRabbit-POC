@@ -2513,7 +2513,7 @@ export default {
       this.$emit('applicationSubmitStart')
       const valid = this.formValidate()
       if (valid) {
-        console.log('Application Payload:\n', this.applicationPayload)
+        // console.log('Application Payload:\n', this.applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
             return applicationCreate(auth, this.applicationPayload)
@@ -2523,7 +2523,7 @@ export default {
               })
               .catch((err) => {
                 this.$emit('applicationSubmitError')
-                console.log('There was an error POSTing the ApplicationPayload data\n', err)
+                // console.log('There was an error POSTing the ApplicationPayload data\n', err)
                 throw err
               })
           })

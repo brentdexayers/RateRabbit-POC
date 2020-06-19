@@ -156,6 +156,7 @@
               <div class="row">
                 <div class="col">
                   <a
+                    @click.prevent="showDetails($event, loanProduct)"
                     href="#"
                     class="btn btn-sm btn-outline-primary results-table__result--mobile__button results-table__button--mobile--details"
                   >
@@ -194,6 +195,14 @@
           >
         </button>
       </div>
+      <div class="results-terms">
+        <p class="small">
+          <strong>Your One Fee Guarantee includes all lender fees guaranteed.</strong> Rates are based on a {{ creditRating.name }} credit score rating supplied by you. Quotes are based on a 30-day lock and assume the information provided to Rate Rabbit about your credit score and appraised value are accurate and true. All rates and fees are guaranteed subject to full loan approval. Transfer tax, mortgage tax, intangible tax and owner's policy are not included on purchases. Mortgage tax and intangible tax are not included on refinances.
+        </p>
+        <p class="small">
+          Interest rates and fees shown are subject to change if information supplied to Rate Rabbit is inaccurate or changes. Rate Rabbit is not responsible for any rates that may change prior to lock confirmation.
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -214,6 +223,7 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
+      creditRating: state => state.application.data.creditRating,
       loanProducts: state => state.searchResultsReduced
     })
   },

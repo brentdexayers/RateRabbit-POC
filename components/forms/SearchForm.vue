@@ -781,7 +781,6 @@ export default {
     async handleFormSubmit (e) {
       e.preventDefault()
       this.submitStart()
-      console.log('TODO: Set loading state HERE...')
       // Check for errors
       const hasErrors = this.formValidate()
       // If no errors
@@ -805,7 +804,6 @@ export default {
         this.updateRoute()
       }
       this.scrollToTop(e)
-      console.log('TODO: Set UN-loading state HERE...')
       this.submitEnd()
     }
 

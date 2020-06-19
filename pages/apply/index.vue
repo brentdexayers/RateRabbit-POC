@@ -94,13 +94,13 @@ export default {
   },
   methods: {
     handleSubmitStart () {
-      console.log('TODO: Application Submit Start')
+      // console.log('TODO: Application Submit Start')
     },
     handleSubmitEnd () {
-      console.log('TODO: Application Submit End')
+      // console.log('TODO: Application Submit End')
     },
     handleSubmitSuccess (result) {
-      console.log('Application Submit Success\n', result)
+      // console.log('Application Submit Success\n', result)
       this.applicationSubmitted = true
       this.applicationError = false
       window.scrollTo(0, 0)
