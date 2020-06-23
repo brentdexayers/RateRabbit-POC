@@ -3,7 +3,7 @@
     class="search-loader"
   >
     <div class="search-loader__box">
-      <video width="100%" autoplay preload="auto">
+      <video autoplay muted playsinline preload="auto" width="100%">
         <source src="~assets/RateRabbit_RunAnim_v1.webm" type="video/webm">
         <source src="~assets/RateRabbit_RunAnim_v1.mp4" type="video/mp4">
         Your browser does not support the video tag.

@@ -7,26 +7,20 @@
       method="POST"
       class="form form--apply"
     >
-      <!-- <h3 class="form--apply__header">
-        Start the loan application process
-      </h3> -->
-      <div v-if="formErrors.length">
+      <div v-if="hasFormErrors" class="form-errors">
         <p class="text-danger">
           Please fix the following errors:
         </p>
-        <ul class="text-danger">
-          <li v-for="(error, index) in formErrors" :key="index">
-            {{ error.error }}
-          </li>
-        </ul>
       </div>
-
       <div id="property_information" class="section">
         <h2 class="form--section_header">
           Property Information
         </h2>
         <div class="row">
-          <div class="form-group col-12 col-lg-9">
+          <div
+            :class="{ error: formErrors.propertyAddress }"
+            class="form-group col-12 col-lg-9"
+          >
             <label
               :class="{ hasvalue: propertyAddress }"
               for="propertyAddress"
@@ -42,7 +36,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-3">
+          <div
+            :class="{ error: formErrors.propertyZip }"
+            class="form-group col-12 col-lg-3"
+          >
             <label
               :class="{ hasvalue: propertyZip }"
               for="propertyZip"
@@ -119,7 +116,10 @@
           Borrower Information
         </h2>
         <div class="row">
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: formErrors.firstName }"
+            class="form-group col-12 col-lg-6"
+          >
             <label
               :class="{ hasvalue: firstName }"
               for="firstName"
@@ -135,7 +135,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: formErrors.lastName }"
+            class="form-group col-12 col-lg-6"
+          >
             <label
               :class="{ hasvalue: lastName }"
               for="lastName"
@@ -151,7 +154,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: formErrors.email }"
+            class="form-group col-12 col-lg-6"
+          >
             <label
               :class="{ hasvalue: email }"
               for="email"
@@ -167,7 +173,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: formErrors.homePhone }"
+            class="form-group col-12 col-lg-6"
+          >
             <label
               :class="{ hasvalue: homePhone }"
               for="homePhone"
@@ -263,7 +272,10 @@
               </option>
             </select>
           </div>
-          <div class="form-group col-12 col-lg-9">
+          <div
+            :class="{ error: formErrors.address }"
+            class="form-group col-12 col-lg-9"
+          >
             <label
               :class="{ hasvalue: address }"
               for="address"
@@ -313,7 +325,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-9">
+          <div
+            :class="{ error: formErrors.mailingAddress }"
+            class="form-group col-12 col-lg-9"
+          >
             <label
               :class="{ hasvalue: mailingAddress }"
               for="mailingAddress"
@@ -350,7 +365,10 @@
 
         <h3>Employer</h3>
         <div class="row">
-          <div class="form-group col-12 col-lg-12">
+          <div
+            :class="{ error: formErrors.employerName }"
+            class="form-group col-12 col-lg-12"
+          >
             <label
               :class="{ hasvalue: employerName }"
               for="employerName"
@@ -366,7 +384,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-8">
+          <div
+            :class="{ error: formErrors.employerAddress }"
+            class="form-group col-12 col-lg-8"
+          >
             <label
               :class="{ hasvalue: employerAddress }"
               for="employerAddress"
@@ -382,7 +403,10 @@
               class="form-control"
             >
           </div>
-          <div class="form-group col-12 col-lg-4">
+          <div
+            :class="{ error: formErrors.employerZip }"
+            class="form-group col-12 col-lg-4"
+          >
             <label
               :class="{ hasvalue: employerZip }"
               for="employerZip"
@@ -526,7 +550,10 @@
 
         <div v-if="hasCoBorrower">
           <div class="row">
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: formErrors.coBorrowerFirstName }"
+              class="form-group col-12 col-lg-6"
+            >
               <label
                 :class="{ hasvalue: coBorrowerFirstName }"
                 for="coBorrowerFirstName"
@@ -542,7 +569,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: formErrors.coBorrowerLastName }"
+              class="form-group col-12 col-lg-6"
+            >
               <label
                 :class="{ hasvalue: coBorrowerLastName }"
                 for="coBorrowerLastName"
@@ -558,7 +588,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: formErrors.coBorrowerEmail }"
+              class="form-group col-12 col-lg-6"
+            >
               <label
                 :class="{ hasvalue: coBorrowerEmail }"
                 for="coBorrowerEmail"
@@ -574,7 +607,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: formErrors.coBorrowerHomePhone }"
+              class="form-group col-12 col-lg-6"
+            >
               <label
                 :class="{ hasvalue: coBorrowerHomePhone }"
                 for="coBorrowerHomePhone"
@@ -670,7 +706,10 @@
                 </option>
               </select>
             </div>
-            <div class="form-group col-12 col-lg-8">
+            <div
+              :class="{ error: formErrors.coBorrowerAddress }"
+              class="form-group col-12 col-lg-8"
+            >
               <label
                 :class="{ hasvalue: coBorrowerAddress }"
                 for="coBorrowerAddress"
@@ -707,7 +746,10 @@
 
           <h3>Employer</h3>
           <div class="row">
-            <div class="form-group col-12 col-lg-12">
+            <div
+              :class="{ error: formErrors.coBorrowerEmployerName }"
+              class="form-group col-12 col-lg-12"
+            >
               <label
                 :class="{ hasvalue: coBorrowerEmployerName }"
                 for="coBorrowerEmployerName"
@@ -723,7 +765,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-8">
+            <div
+              :class="{ error: formErrors.coBorrowerEmployerAddress }"
+              class="form-group col-12 col-lg-8"
+            >
               <label
                 :class="{ hasvalue: coBorrowerEmployerAddress }"
                 for="coBorrowerEmployerAddress"
@@ -739,7 +784,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: formErrors.coBorrowerEmployerZip }"
+              class="form-group col-12 col-lg-4"
+            >
               <label
                 :class="{ hasvalue: coBorrowerEmployerZip }"
                 for="coBorrowerEmployerZip"
@@ -980,7 +1028,10 @@
             Property 1
           </h3>
           <div class="row">
-            <div class="form-group col-12 col-lg-8">
+            <div
+              :class="{ error: formErrors.realEstate_0_address }"
+              class="form-group col-12 col-lg-8"
+            >
               <label
                 :class="{ hasvalue: realEstate_0_address }"
                 for="realEstate_0_address"
@@ -996,7 +1047,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: formErrors.realEstate_0_zip }"
+              class="form-group col-12 col-lg-4"
+            >
               <label
                 :class="{ hasvalue: realEstate_0_zip }"
                 for="realEstate_0_zip"
@@ -1097,7 +1151,10 @@
             Property 2
           </h3>
           <div class="row">
-            <div class="form-group col-12 col-lg-8">
+            <div
+              :class="{ error: formErrors.realEstate_1_address }"
+              class="form-group col-12 col-lg-8"
+            >
               <label
                 :class="{ hasvalue: realEstate_1_address }"
                 for="realEstate_1_address"
@@ -1113,7 +1170,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: formErrors.realEstate_1_zip }"
+              class="form-group col-12 col-lg-4"
+            >
               <label
                 :class="{ hasvalue: realEstate_1_zip }"
                 for="realEstate_1_zip"
@@ -1214,7 +1274,10 @@
             Property 3
           </h3>
           <div class="row">
-            <div class="form-group col-12 col-lg-8">
+            <div
+              :class="{ error: formErrors.realEstate_2_address }"
+              class="form-group col-12 col-lg-8"
+            >
               <label
                 :class="{ hasvalue: realEstate_2_address }"
                 for="realEstate_2_address"
@@ -1230,7 +1293,10 @@
                 class="form-control"
               >
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: formErrors.realEstate_2_zip }"
+              class="form-group col-12 col-lg-4"
+            >
               <label
                 :class="{ hasvalue: realEstate_2_zip }"
                 for="realEstate_2_zip"
@@ -1370,7 +1436,41 @@ export default {
   data () {
     return {
       assetsAndLiabilities: false,
-      formErrors: [],
+      formErrors: {
+        address: false,
+        // borrowerType: false,
+        email: false,
+        employerAddress: false,
+        employerName: false,
+        employerZip: false,
+        // expenseType: false,
+        firstName: false,
+        homePhone: false,
+        lastName: false,
+        mailingAddress: false,
+        coBorrowerAddress: false,
+        coBorrowerEmail: false,
+        coBorrowerEmployerAddress: false,
+        coBorrowerEmployerName: false,
+        coBorrowerEmployerZip: false,
+        // coBorrowerExpenseType: false,
+        coBorrowerFirstName: false,
+        coBorrowerHomePhone: false,
+        coBorrowerLastName: false,
+        coBorrowerMailingAddress: false,
+        loanAmount: false,
+        productId: false,
+        propertyAddress: false,
+        propertyZip: false,
+        realEstate_0_address: false,
+        realEstate_0_zip: false,
+        realEstate_1_address: false,
+        realEstate_1_zip: false,
+        realEstate_2_address: false,
+        realEstate_2_zip: false,
+        result: false
+      },
+      hasFormErrors: false,
       hasCoBorrower: false,
       step: 0
     }
@@ -2327,14 +2427,7 @@ export default {
         creditRating: this.applicationData.creditRating?.name,
         dob: this.$moment(this.applicationData.dob).format('YYYY-MM-DD'),
         email: this.applicationData.email, // Required
-        employer: {
-          address: this.applicationData.employerAddress, // Required if `employer: {}`
-          employerName: this.applicationData.employerName, // Required if `employer: {}`
-          jobTitle: this.applicationData.jobTitle,
-          selfEmployed: Number(this.applicationData.selfEmployed),
-          yearsAtJob: Number(this.applicationData.employedHowLong),
-          zip: this.applicationData.employerZip // Required if `employer: {}`
-        },
+
         fax: this.applicationData.fax,
         firstName: this.applicationData.firstName, // Required
         grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
@@ -2349,6 +2442,16 @@ export default {
         yearsLineOfWork: Number(this.applicationData.yearsLineOfWork),
         yearsOfSchool: Number(this.applicationData.yearsOfSchool),
         zip: this.applicationData.zip
+      }
+      if (this.applicationData.employerAddress || this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong || this.applicationData.employerZip) {
+        primaryBorrower.employer = {
+          address: this.applicationData.employerAddress, // Required if `employer: {}`
+          employerName: this.applicationData.employerName, // Required if `employer: {}`
+          jobTitle: this.applicationData.jobTitle,
+          selfEmployed: Number(this.applicationData.selfEmployed),
+          yearsAtJob: Number(this.applicationData.employedHowLong),
+          zip: this.applicationData.employerZip // Required if `employer: {}`
+        }
       }
       if (this.applicationData.hoaDues) {
         primaryBorrower.expenses = [{
@@ -2365,14 +2468,7 @@ export default {
           businessPhone: this.applicationData.coBorrowerBusinessPhone,
           cellPhone: this.applicationData.coBorrowerCellPhone,
           email: this.applicationData.coBorrowerEmail,
-          employer: {
-            address: this.applicationData.coBorrowerEmployerAddress,
-            employerName: this.applicationData.coBorrowerEmployerName,
-            jobTitle: this.applicationData.coBorrowerJobTitle,
-            selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
-            yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
-            zip: this.applicationData.coBorrowerEmployerZip
-          },
+
           fax: this.applicationData.coBorrowerFax,
           firstName: this.applicationData.coBorrowerFirstName,
           grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
@@ -2385,6 +2481,16 @@ export default {
           yearsLineOfWork: Number(this.applicationData.coBorrowerYearsLineOfWork),
           yearsOfSchool: Number(this.applicationData.coBorrowerYearsOfSchool),
           zip: this.applicationData.coBorrowerZip
+        }
+        if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
+          coBorrower.employer = {
+            address: this.applicationData.coBorrowerEmployerAddress,
+            employerName: this.applicationData.coBorrowerEmployerName,
+            jobTitle: this.applicationData.coBorrowerJobTitle,
+            selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
+            yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
+            zip: this.applicationData.coBorrowerEmployerZip
+          }
         }
         if (this.applicationData.coBorrowerHoaDues) {
           coBorrower.expenses = [{
@@ -2479,40 +2585,58 @@ export default {
     },
     formValidate () {
       this.$emit('applicationValidateStart')
-      this.formErrors = []
-      if (!this.$store.state.application.data.firstName) {
-        this.formErrors.push({ field: 'firstName', error: 'First Name is required' })
+      if (!this.applicationData.firstName) { this.formErrors.loanPurpose = true } else { this.formErrors.loanPurpose = false }
+      if (this.applicationData.zip && !this.applicationData.address) { this.formErrors.address = true } else { this.formErrors.address = false }
+      if (!this.applicationData.email) { this.formErrors.email = true } else { this.formErrors.email = false }
+      if (this.applicationData.employerAddress || this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong || this.applicationData.employerZip) {
+        if (!this.applicationData.employerAddress) { this.formErrors.employerAddress = true } else { this.formErrors.employerAddress = false }
+        if (!this.applicationData.employerName) { this.formErrors.employerName = true } else { this.formErrors.employerName = false }
+        if (!this.applicationData.employerZip) { this.formErrors.employerZip = true } else { this.formErrors.employerZip = false }
       }
-      if (!this.$store.state.application.data.lastName) {
-        this.formErrors.push({ field: 'lastName', error: 'Last Name is required' })
+      if (!this.applicationData.firstName) { this.formErrors.firstName = true } else { this.formErrors.firstName = false }
+      if (!this.applicationData.homePhone) { this.formErrors.homePhone = true } else { this.formErrors.homePhone = false }
+      if (!this.applicationData.lastName) { this.formErrors.lastName = true } else { this.formErrors.lastName = false }
+      if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.formErrors.mailingAddress = true } else { this.formErrors.mailingAddress = false }
+      if (this.hasCoBorrower) {
+        if (this.applicationData.coBorrowerZip && !this.applicationData.coBorrowerAddress) { this.formErrors.coBorrowerAddress = true } else { this.formErrors.coBorrowerAddress = false }
+        if (!this.applicationData.coBorrowerEmail) { this.formErrors.coBorrowerEmail = true } else { this.formErrors.coBorrowerEmail = false }
+        if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
+          if (!this.applicationData.coBorrowerEmployerAddress) { this.formErrors.coBorrowerEmployerAddress = true } else { this.formErrors.coBorrowerEmployerAddress = false }
+          if (!this.applicationData.coBorrowerEmployerName) { this.formErrors.coBorrowerEmployerName = true } else { this.formErrors.coBorrowerEmployerName = false }
+          if (!this.applicationData.coBorrowerEmployerZip) { this.formErrors.coBorrowerEmployerZip = true } else { this.formErrors.coBorrowerEmployerZip = false }
+        }
+        if (!this.applicationData.coBorrowerFirstName) { this.formErrors.coBorrowerFirstName = true } else { this.formErrors.coBorrowerFirstName = false }
+        if (!this.applicationData.coBorrowerHomePhone) { this.formErrors.coBorrowerHomePhone = true } else { this.formErrors.coBorrowerHomePhone = false }
+        if (!this.applicationData.coBorrowerLastName) { this.formErrors.coBorrowerLastName = true } else { this.formErrors.coBorrowerLastName = false }
+        // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.formErrors.coBorrowerMailingAddress = true } else { this.formErrors.coBorrowerMailingAddress = false }
       }
-      if (!this.$store.state.application.data.homePhone) {
-        this.formErrors.push({ field: 'homePhone', error: 'Phone is required' })
+      if (!this.applicationData.loanAmount) { this.formErrors.loanAmount = true } else { this.formErrors.loanAmount = false }
+      if (!this.applicationData.productId) { this.formErrors.productId = true } else { this.formErrors.productId = false }
+      if (!this.applicationData.propertyAddress) { this.formErrors.propertyAddress = true } else { this.formErrors.propertyAddress = false }
+      if (!this.applicationData.propertyZip) { this.formErrors.propertyZip = true } else { this.formErrors.propertyZip = false }
+      if (this.assetsAndLiabilities) {
+        if (this.realEstate_0_address || this.realEstate_0_grossRentalIncome || this.realEstate_0_presentMarketValue || this.realEstate_0_propertyType || this.realEstate_0_totalLiens || this.realEstate_0_zip) {
+          if (!this.applicationData.realEstate_0_address) { this.formErrors.realEstate_0_address = true } else { this.formErrors.realEstate_0_address = false }
+          if (!this.applicationData.realEstate_0_zip) { this.formErrors.realEstate_0_zip = true } else { this.formErrors.realEstate_0_zip = false }
+        }
+        if (this.realEstate_1_address || this.realEstate_1_grossRentalIncome || this.realEstate_1_presentMarketValue || this.realEstate_1_propertyType || this.realEstate_1_totalLiens || this.realEstate_1_zip) {
+          if (!this.applicationData.realEstate_1_address) { this.formErrors.realEstate_1_address = true } else { this.formErrors.realEstate_1_address = false }
+          if (!this.applicationData.realEstate_1_zip) { this.formErrors.realEstate_1_zip = true } else { this.formErrors.realEstate_1_zip = false }
+        }
+        if (this.realEstate_2_address || this.realEstate_2_grossRentalIncome || this.realEstate_2_presentMarketValue || this.realEstate_2_propertyType || this.realEstate_2_totalLiens || this.realEstate_2_zip) {
+          if (!this.applicationData.realEstate_2_address) { this.formErrors.realEstate_2_address = true } else { this.formErrors.realEstate_2_address = false }
+          if (!this.applicationData.realEstate_2_zip) { this.formErrors.realEstate_2_zip = true } else { this.formErrors.realEstate_2_zip = false }
+        }
+        if (!this.applicationData.result) { this.formErrors.result = true } else { this.formErrors.result = false }
       }
-      if (!this.$store.state.application.data.email) {
-        this.formErrors.push({ field: 'email', error: 'Email is required' })
-      }
-      if (this.formErrors.length) {
-        this.$emit('applicationHasErrors', this.formErrors)
-        return false
-      }
-      this.$emit('applicationValid')
-      return true
+      const hasFormErrors = Object.keys(this.formErrors).some(k => this.formErrors[k])
+      this.hasFormErrors = hasFormErrors
+      return hasFormErrors
     },
-    // getLoanRefinanceType () {
-    //   let type = 'No Cash Out'
-    //   if (this.loanPurpose.name === 'Refinance Cash Out') {
-    //     type = 'Cash Out'
-    //     if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
-    //       type = 'No Cash Out'
-    //     }
-    //   }
-    //   return type
-    // },
     async handleSubmit () {
       this.$emit('applicationSubmitStart')
-      const valid = this.formValidate()
-      if (valid) {
+      const hasFormErrors = this.formValidate()
+      if (!hasFormErrors) {
         // console.log('Application Payload:\n', this.applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
@@ -2524,12 +2648,12 @@ export default {
               .catch((err) => {
                 this.$emit('applicationSubmitError')
                 // console.log('There was an error POSTing the ApplicationPayload data\n', err)
-                throw err
+                /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
               })
           })
           .catch((err) => {
             this.$emit('applicationSubmitError')
-            throw err
+            /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
           })
         this.$store.commit('setApplicationResults', data)
       }
@@ -2573,6 +2697,24 @@ export default {
     margin-bottom: 4rem;
   }
   h3 {
+    margin-bottom: 1em;
+  }
+  & .form-group {
+    &.error {
+      label {
+        color: $danger !important;
+      }
+      input, select {
+        border: 1px solid $danger;
+      }
+    }
+  }
+}
+.form-errors {
+  color: $danger;
+  p {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
     margin-bottom: 1em;
   }
 }

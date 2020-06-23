@@ -45,6 +45,25 @@ const handleError = (error, payload = null) => {
   return error
 }
 
+// Default returns if API error
+const defaults = {
+  loanPurpose: [
+    { name: 'Purchase' },
+    { name: 'Refinance' },
+    { name: 'Refinance Cash Out' }
+  ],
+  maritalStatus: [
+    { name: 'Married' },
+    { name: 'Single' }
+  ],
+  state: [
+    { name: 'Arizona', active: true },
+    { name: 'California', active: true },
+    { name: 'Idaho', active: true },
+    { name: 'Massachusetts', active: true }
+  ]
+}
+
 export const authenticate = async () => {
   const { data } = await axios.post(`${apiUrl}/authenticate`, authPayload, axiosConfig)
     .then((res) => {
@@ -104,7 +123,8 @@ export const getLoanPurpose = async (auth) => {
     })
     .catch((error) => {
       handleError(error)
-      throw error
+      // throw error
+      return defaults.loanPurpose
     })
   return data
 }
@@ -130,7 +150,8 @@ export const getMaritalStatus = async (auth) => {
     })
     .catch((error) => {
       handleError(error)
-      throw error
+      // throw error
+      return defaults.maritalStatus
     })
   return data
 }
@@ -169,7 +190,8 @@ export const getState = async (auth) => {
     })
     .catch((error) => {
       handleError(error)
-      throw error
+      // throw error
+      return defaults.state
     })
   return data.filter((state) => {
     return state.active

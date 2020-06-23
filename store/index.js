@@ -126,12 +126,12 @@ export const state = () => ({
   },
   form: {
     options: {
-      creditRatingOptions: {},
-      loanPurposeOptions: {},
-      maritalStatusOptions: {},
-      propertyTypeOptions: {},
-      propertyUseOptions: {},
-      stateOptions: {}
+      creditRatingOptions: [],
+      loanPurposeOptions: [],
+      maritalStatusOptions: [],
+      propertyTypeOptions: [],
+      propertyUseOptions: [],
+      stateOptions: []
     }
   },
   layout: {

@@ -1,16 +1,16 @@
 <template>
   <div class="form-wrapper">
-    <div v-if="hasErrors" class="form-errors">
-      <p class="text-danger">
-        <b>Please correct the following errors:</b>
-      </p>
-    </div>
     <form
       id="search-rates-form"
       @submit.prevent="handleFormSubmit"
       method="POST"
       class="form form--search-rates"
     >
+      <div v-if="hasErrors" class="form-errors">
+        <p class="text-danger">
+          <b>Please correct the following errors:</b>
+        </p>
+      </div>
       <div class="row">
         <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
           <label
@@ -379,7 +379,7 @@
             type="submit"
             class="btn form--search-rates__submit"
           >
-            {{ submitButtonText | titlecase }}
+            {{ searchResults.length ? 'Update Search' : 'Search Live Rates' | titlecase }}
           </button>
         </div>
       </div>
@@ -468,10 +468,6 @@ export default {
     invertedSubmit: {
       type: Boolean,
       default: false
-    },
-    submitButtonText: {
-      type: String,
-      default: 'Search Live Rates'
     }
   },
   data () {
@@ -496,11 +492,12 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
+      creditRatingOptions: state => state.form.options.creditRatingOptions,
       loanPurposeOptions: state => state.form.options.loanPurposeOptions,
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
       propertyTypeOptions: state => state.form.options.propertyTypeOptions,
       propertyUseOptions: state => state.form.options.propertyUseOptions,
-      creditRatingOptions: state => state.form.options.creditRatingOptions,
+      searchResults: state => state.searchResultsReduced,
       stateOptions: state => state.form.options.stateOptions
     }),
     creditRating: {
@@ -840,10 +837,10 @@ export default {
   }
   & .form-group {
     &.error {
-      & label {
+      label {
         color: $danger !important;
       }
-      & input, & select {
+      input, select {
         border: 1px solid $danger;
       }
     }

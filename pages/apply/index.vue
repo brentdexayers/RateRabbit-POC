@@ -1,66 +1,79 @@
 <template>
   <div class="page-content page--apply">
-    <div v-if="!applicationSubmitted">
-      <h3>
-        {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
-      </h3>
-      <table class="table table-striped page--apply__table">
-        <tbody>
-          <tr>
-            <td>
-              {{ 'One Free Guarantee' | titlecase }}
-            </td>
-            <td>
-              {{ loanProduct.fee | currency }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'Loan Amount' | titlecase }}
-            </td>
-            <td>
-              {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
-            </td>
-          </tr>
-          <tr v-if="applicationData.cashAmount">
-            <td>
-              {{ 'Cash Amount' | titlecase }}
-            </td>
-            <td>
-              {{ applicationData.cashAmount }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'Interest Rate' | titlecase }}
-            </td>
-            <td>
-              {{ loanProduct.rate / 100 | percent }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'APR' | capitalize }}
-            </td>
-            <td>
-              {{ loanProduct.apr / 100 | percent }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ 'Monthly Payment' | titlecase }}
-            </td>
-            <td>
-              {{ loanProduct.totalPayment | currency }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="!applicationSubmitted && Object.keys(searchResults).length">
+      <div>
+        <h3>
+          {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
+        </h3>
+        <table class="table table-striped page--apply__table">
+          <tbody>
+            <tr>
+              <td>
+                {{ 'One Free Guarantee' | titlecase }}
+              </td>
+              <td>
+                {{ loanProduct.fee | currency }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'Loan Amount' | titlecase }}
+              </td>
+              <td>
+                {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
+              </td>
+            </tr>
+            <tr v-if="applicationData.cashAmount">
+              <td>
+                {{ 'Cash Amount' | titlecase }}
+              </td>
+              <td>
+                {{ applicationData.cashAmount }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'Interest Rate' | titlecase }}
+              </td>
+              <td>
+                {{ loanProduct.rate / 100 | percent }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'APR' | capitalize }}
+              </td>
+              <td>
+                {{ loanProduct.apr / 100 | percent }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{ 'Monthly Payment' | titlecase }}
+              </td>
+              <td>
+                {{ loanProduct.totalPayment | currency }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <Form
         @applicationSubmitStart="handleSubmitStart"
         @applicationSubmitSuccess="handleSubmitSuccess"
         @applicationSubmitEnd="handleSubmitEnd"
       />
+    </div>
+    <div v-if="!Object.keys(searchResults).length">
+        <p>
+          Please begin by searching Loan Products.
+        </p>
+        <button
+          @click="startNewSearch"
+          class="btn btn-primary"
+        >
+          {{ 'Search Live Rates' | titlecase }}
+        </button>
     </div>
     <div v-if="applicationSubmitted">
       <h3>Thank you</h3>
@@ -88,8 +101,9 @@ export default {
   },
   computed: {
     ...mapState({
+      applicationData: state => state.application.data,
       loanProduct: state => state.application.loanProduct,
-      applicationData: state => state.application.data
+      searchResults: state => state.searchResultsReduced
     })
   },
   methods: {
@@ -109,6 +123,22 @@ export default {
     handleSubmitError () {
       this.applicationSubmitted = true
       this.applicationError = true
+    },
+    scrollToTop () {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      document.body.focus()
+    },
+    startNewSearch () {
+      this.$emit('startNewSearch')
+      // this.updateSidebar('default')
+      this.$router.push({
+        path: '/search'
+      })
+      this.scrollToTop()
     }
   },
   head () {

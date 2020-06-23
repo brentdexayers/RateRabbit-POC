@@ -3,7 +3,6 @@
     class="sidebar col-0 col-md-5 col-lg-4 sidebar--search-form"
   >
     <Form
-      :submitButtonText="submitButtonText"
       :hideExtraFields="true"
       :invertedSubmit="true"
     />
@@ -18,9 +17,7 @@ export default {
     Form
   },
   data () {
-    return {
-      submitButtonText: 'Update Search'
-    }
+    return {}
   }
 }
 </script>
