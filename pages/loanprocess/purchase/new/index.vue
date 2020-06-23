@@ -2,32 +2,33 @@
   <div class="page-content page--loanprocess--purchase">
     <ol>
       <li>
-        <a href="#anchor1">Gather your documents</a>
+        <a href="#gather-your-documents">Gather your documents</a>
       </li>
       <li>
-        <a href="#anchor2">Get pre-qualified</a>
+        <a href="#get-pre-qualified">Get pre-qualified</a>
       </li>
       <li>
-        <a href="#anchor3">Choose a loan program type and rate</a>
+        <a href="#choose-loan-program">Choose a loan program type and rate</a>
       </li>
       <li>
-        <a href="#anchor4">Apply</a>
+        <a href="#apply">Apply</a>
       </li>
       <li>
-        <a href="#anchor5">Receive loan approval</a>
+        <a href="#receive-loan-approval">Receive loan approval</a>
       </li>
       <li>
-        <a href="#anchor6">Sign your documents</a>
+        <a href="#sign-your-documents">Sign your documents</a>
       </li>
       <li>
-        <a href="#anchor7">Fund and close</a>
+        <a href="#fund-and-close">Fund and close</a>
       </li>
     </ol>
     <p>
       Here’s detail that will help to break down these steps for you:
     </p>
-    <h2 name="anchor1">
+    <h2>
       Gather your documents
+      <span id="gather-your-documents" class="anchor" />
     </h2>
     <ul>
       <li>
@@ -63,8 +64,9 @@
         If you are NOT a US citizen, provide a copy of your green card (front and back) or, if you are not a permanent resident, provide your H-1 or L-1 visa.
       </li>
     </ul>
-    <h2 name="anchor2">
+    <h2>
       Get pre-qualified
+      <span id="get-pre-qualified" class="anchor" />
     </h2>
     <p>
       Before you purchase a home, it is important to know how much you can borrow so that you don’t spend valuable time looking at homes you cannot afford. Pre-qualification gives you stronger negotiating power, too, because the seller and his agent will know you can get loan approval quickly and that may be just the edge you need in certain markets. And when you have already started the process, your loan will close more quickly as well.
@@ -72,8 +74,9 @@
     <p>
       Simply fill out our application and you will be on your way to home ownership! We’ll send you a pre-approval letter that you can show to your agent to help you in the buying process.
     </p>
-    <h2 name="anchor3">
+    <h2>
       Choose a loan program and rate
+      <span id="choose-loan-program" class="anchor" />
     </h2>
     <p>
       There are many different loan programs to choose from: fixed, adjustable, interest-only, negative amortization and others. Look over the Loan Programs section and find the one that you think best suits your needs. Keep several things in mind as you review them:
@@ -98,8 +101,9 @@
     <p>
       Once you have an idea as to which loan program you think works best for you, select your rate. With our guaranteed Rate Rabbit options, you are sure to get a great deal. Upfront pricing makes it easy to see what you will pay.
     </p>
-    <h2 name="anchor4">
+    <h2>
       Apply
+      <span id="apply" class="anchor" />
     </h2>
     <p>
       Application is a three-tiered process.
@@ -139,8 +143,9 @@
     <p>
       Please respond as quickly as possible to any requests for additional documents. This is especially critical if your rate is locked and you hope to close by a certain date.
     </p>
-    <h2 name="anchor5">
+    <h2>
       Receive loan approval
+      <span id="receive-loan-approval" class="anchor" />
     </h2>
     <p>
       Once your application is complete, we begin the loan approval process immediately. We verify all of the information given in the applications. While the loan is undergoing the approval process, there are several things you should know:
@@ -156,8 +161,9 @@
         Do not plan to go out of town around the time of closing. If you must be out of town when your loan is expected to close, you may sign a power of attorney to authorize another individual to sign on your behalf. Be sure to tell us.
       </li>
     </ul>
-    <h2 name="anchor6">
+    <h2>
       Sign your documents
+      <span id="sign-your-documents" class="anchor" />
     </h2>
     <p>
       Once the loan is approved you will need to sign the final loan documents. This normally takes place in front of a notary public, usually at the escrow company’s office.
@@ -176,8 +182,9 @@
         Verify that the name and address on the loan docs are accurate and sign the documents. The notary will show you where to sign.
       </li>
     </ul>
-    <h2 name="anchor7">
+    <h2>
       Fund and close
+      <span id="fund-and-close" class="anchor" />
     </h2>
     <p>
       Your loan will fund shortly after you have signed the loan documents. On a new purchase, this is typically within 1-3 days. Pick up the keys from the seller’s agent and welcome to your new home.
@@ -216,4 +223,11 @@ export default {
 </script>
 
 <style>
+h2 {
+  position: relative;
+}
+.anchor {
+  position: absolute;
+  top: -120px;
+}
 </style>

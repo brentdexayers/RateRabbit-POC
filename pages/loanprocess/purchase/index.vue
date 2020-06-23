@@ -13,10 +13,7 @@
       As soon as your application is complete, we’ll immediately begin the loan approval process. Once your loan is approved, you will need to sign the final loan documents. Your loan will fund shortly after Rate Rabbit receives your signed loan documents. On a new purchase, this is typically within 1-3 days. Then that’s it – you’ll pick up the keys to your new home. It couldn’t be easier!
     </p>
     <p>
-      <nuxt-link to="/loanprocess/purchase/2">
-        Click here
-      </nuxt-link>
-      for more details about our easy loan application process.
+      <nuxt-link to="/loanprocess/purchase/new">Click here</nuxt-link> for more details about our easy loan application process.
     </p>
   </div>
 </template>

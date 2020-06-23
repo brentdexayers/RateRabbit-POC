@@ -16,6 +16,7 @@
       <nuxt-link to="/loanprocess/purchase" class="link-decorated">
         Loan Process for Home Purchases
       </nuxt-link>
+      <br>
       <nuxt-link to="/loanprocess/refinance" class="link-decorated">
         Loan Process for Refinancing
       </nuxt-link>
@@ -30,6 +31,7 @@
       <nuxt-link to="/basics" class="link-decorated">
         Home-Buying Basics: Things to Consider When Choosing an Online Lender
       </nuxt-link>
+      <br>
       <nuxt-link to="/basics" class="link-decorated">
         How Can I Improve My Credit?
       </nuxt-link>
