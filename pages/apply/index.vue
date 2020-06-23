@@ -65,15 +65,15 @@
       />
     </div>
     <div v-if="!Object.keys(searchResults).length">
-        <p>
-          Please begin by searching Loan Products.
-        </p>
-        <button
-          @click="startNewSearch"
-          class="btn btn-primary"
-        >
-          {{ 'Search Live Rates' | titlecase }}
-        </button>
+      <p>
+        Please begin by searching Loan Products.
+      </p>
+      <button
+        @click="startNewSearch"
+        class="btn btn-primary"
+      >
+        {{ 'Search Live Rates' | titlecase }}
+      </button>
     </div>
     <div v-if="applicationSubmitted">
       <h3>Thank you</h3>
