@@ -186,7 +186,7 @@
             Show Less
           </span>
           <span v-else>
-            Show {{ loanProductGroup.results.length - 2 }} More
+            Show More Rates
           </span>
           <img
             :alt="showMore.indexOf(loanProductGroupIndex) > -1 ? 'Show Less' : 'Show More'"

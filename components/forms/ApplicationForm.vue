@@ -2573,7 +2573,6 @@ export default {
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
     }
   },
-
   methods: {
     focusClassAdd (event) {
       const self = event.target
@@ -2656,8 +2655,18 @@ export default {
             /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
           })
         this.$store.commit('setApplicationResults', data)
+      } else {
+        this.scrollToTop()
       }
       this.$emit('applicationSubmitEnd')
+    },
+    scrollToTop () {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      document.body.focus()
     }
   }
 }

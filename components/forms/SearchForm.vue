@@ -341,10 +341,10 @@
             for="taxes"
           >
             {{ 'Taxes & Insurance' | titlecase }}
-            <!-- <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information"> -->
-            <!-- <b-tooltip target="taxes-tooltip" triggers="hover">
+            <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+            <b-tooltip target="taxes-tooltip" triggers="hover">
               Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
-            </b-tooltip> -->
+            </b-tooltip>
           </label>
           <select
             id="input-select--taxes"
@@ -720,7 +720,7 @@ export default {
     },
     // Submit Methods
     reduceResults (results) {
-      const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm > b.amortizationTerm) ? 1 : -1)
+      const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1) // < DESC, > ASC
       const reduced = {}
       r.forEach((item, index) => {
         if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
