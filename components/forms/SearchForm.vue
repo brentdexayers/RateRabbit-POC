@@ -746,7 +746,6 @@ export default {
       setTimeout(() => this.toggleLoader(), 250)
     },
     updateSearchResults (results) {
-      console.log(results)
       this.$store.commit('setSearchResultDetails', results)
       const reduced = this.reduceResults(results)
       if (reduced) {
