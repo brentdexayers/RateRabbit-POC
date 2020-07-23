@@ -720,9 +720,9 @@ export default {
     },
     // Submit Methods
     reduceResults (results) {
-      const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1) // < DESC, > ASC
+      // const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1) // < DESC, > ASC
       const reduced = {}
-      r.forEach((item, index) => {
+      results.forEach((item, index) => {
         if (!reduced[item.amortizationTerm + ' Year ' + item.amortizationType]) {
           reduced[item.amortizationTerm + ' Year ' + item.amortizationType] = []
         }
@@ -746,6 +746,7 @@ export default {
       setTimeout(() => this.toggleLoader(), 250)
     },
     updateSearchResults (results) {
+      console.log(results)
       this.$store.commit('setSearchResultDetails', results)
       const reduced = this.reduceResults(results)
       if (reduced) {

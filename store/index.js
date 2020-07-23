@@ -166,9 +166,10 @@ export const mutations = {
     state.searchResultsReduced = payload
   },
   setSearchResultDetails (state, payload) {
-    payload.searchResultDetails.forEach((a) => {
-      state.searchResultDetails.push(a)
-    })
+    // payload.forEach((a) => {
+    //   state.searchResultDetails.push(a)
+    // })
+    state.searchResultDetails = payload
   },
   // Search Form Options
   updateCreditRatingOptions (state, payload) {
