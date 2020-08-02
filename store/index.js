@@ -416,6 +416,9 @@ export const mutations = {
   updateMaritalStatus (state, payload) {
     state.application.data.maritalStatus = payload
   },
+  updatePayOffLoc (state, payload) {
+    state.application.data.payOffLoc = payload
+  },
   updateProductId (state, payload) {
     state.application.data.productId = payload
   },

@@ -2,9 +2,9 @@
   <div class="page-content page--search">
     <div v-if="show.search">
       <h1 class="title">
-        <strong>Search Live Rates</strong>
+        <strong>Search live rates,</strong>
         <br class="d-block d-md-none">
-        and Lock Your Rate In
+        no personal information needed
       </h1>
       <Form />
     </div>

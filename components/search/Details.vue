@@ -208,7 +208,7 @@
                     One Fee Guarantee
                   </td>
                   <td scope="col">
-                    Included
+                    {{ loanProduct.fee | currency }}
                   </td>
                 </tr>
               </tbody>

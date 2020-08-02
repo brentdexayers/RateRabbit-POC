@@ -132,7 +132,7 @@
               class="custom-control-label"
               for="loc"
             >
-              Do you have a home equity line of credit (LOC)?
+              I currently have a home equity line of credit (LOC)
             </label>
           </div>
         </div>
@@ -159,7 +159,7 @@
           >
         </div>
       </div>
-      <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
+      <!-- <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
           <div class="custom-control custom-checkbox">
             <input
@@ -176,7 +176,7 @@
             </label>
           </div>
         </div>
-      </div>
+      </div> -->
       <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
           <div class="custom-control custom-checkbox">
@@ -190,7 +190,25 @@
               class="custom-control-label"
               for="keepingLoc"
             >
-              Are you going to want to keep the LOC in place?
+              I would like to keep the LOC in place
+            </label>
+          </div>
+        </div>
+      </div>
+      <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
+        <div class="form-group col-12">
+          <div class="custom-control custom-checkbox">
+            <input
+              id="payOffLoc"
+              v-model="payOffLoc"
+              type="checkbox"
+              class="custom-control-input"
+            >
+            <label
+              class="custom-control-label"
+              for="payOffLoc"
+            >
+              I would like to pay off the LOC with this loan
             </label>
           </div>
         </div>
@@ -343,7 +361,7 @@
             {{ 'Taxes & Insurance' | titlecase }}
             <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
             <b-tooltip target="taxes-tooltip" triggers="hover">
-              Including your taxes and insurance with your monthly payment may result in a lower rate or loan fee
+              Would you like to add your monthly taxes and insurance to your payment?
             </b-tooltip>
           </label>
           <select
@@ -581,6 +599,14 @@ export default {
       },
       set (value) {
         this.$store.commit('updateLocAmount', value)
+      }
+    },
+    payOffLoc: {
+      get () {
+        return this.$store.state.application.data.payOffLoc
+      },
+      set (value) {
+        this.$store.commit('updatePayOffLoc', value)
       }
     },
     promotionCode: {

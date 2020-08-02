@@ -174,22 +174,22 @@
             >
           </div>
           <div
-            :class="{ error: formErrors.homePhone }"
+            :class="{ error: formErrors.cellPhone }"
             class="form-group col-12 col-lg-6"
           >
             <label
-              :class="{ hasvalue: homePhone }"
-              for="homePhone"
+              :class="{ hasvalue: cellPhone }"
+              for="cellPhone"
             >
-              {{ 'Home Phone' | titlecase }}
+              {{ 'Cell Phone' | titlecase }}
             </label>
             <input
-              v-model="homePhone"
+              v-model="cellPhone"
               v-mask="'(###) ###-####'"
               @focus="focusClassAdd($event)"
               @blur="focusClassRemove($event)"
               type="text"
-              name="homePhone"
+              name="cellPhone"
               class="form-control"
             >
           </div>
@@ -608,22 +608,22 @@
               >
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerHomePhone }"
+              :class="{ error: formErrors.coBorrowerCellPhone }"
               class="form-group col-12 col-lg-6"
             >
               <label
-                :class="{ hasvalue: coBorrowerHomePhone }"
-                for="coBorrowerHomePhone"
+                :class="{ hasvalue: coBorrowerCellPhone }"
+                for="coBorrowerCellPhone"
               >
-                {{ 'Home Phone' | titlecase }}
+                {{ 'Cell Phone' | titlecase }}
               </label>
               <input
-                v-model="coBorrowerHomePhone"
+                v-model="coBorrowerCellPhone"
                 v-mask="'(###) ###-####'"
                 @focus="focusClassAdd($event)"
                 @blur="focusClassRemove($event)"
                 type="text"
-                name="coBorrowerHomePhone"
+                name="coBorrowerCellPhone"
                 class="form-control"
               >
             </div>
@@ -1439,6 +1439,7 @@ export default {
       formErrors: {
         address: false,
         // borrowerType: false,
+        cellPhone: false,
         email: false,
         employerAddress: false,
         employerName: false,
@@ -2431,7 +2432,7 @@ export default {
         fax: this.applicationData.fax,
         firstName: this.applicationData.firstName, // Required
         grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
-        homePhone: this.applicationData.homePhone, // Required
+        homePhone: this.applicationData.homePhone || this.applicationData.cellPhone, // Required
         lastName: this.applicationData.lastName, // Required
         mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
         mailingZip: this.applicationData.mailingZip,
@@ -2584,7 +2585,7 @@ export default {
     },
     formValidate () {
       this.$emit('applicationValidateStart')
-      if (!this.applicationData.firstName) { this.formErrors.loanPurpose = true } else { this.formErrors.loanPurpose = false }
+      if (!this.applicationData.loanPurpose) { this.formErrors.loanPurpose = true } else { this.formErrors.loanPurpose = false }
       if (this.applicationData.zip && !this.applicationData.address) { this.formErrors.address = true } else { this.formErrors.address = false }
       if (!this.applicationData.email) { this.formErrors.email = true } else { this.formErrors.email = false }
       if (this.applicationData.employerAddress || this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong || this.applicationData.employerZip) {
@@ -2593,6 +2594,7 @@ export default {
         if (!this.applicationData.employerZip) { this.formErrors.employerZip = true } else { this.formErrors.employerZip = false }
       }
       if (!this.applicationData.firstName) { this.formErrors.firstName = true } else { this.formErrors.firstName = false }
+      if (!this.applicationData.cellPhone) { this.formErrors.cellPhone = true } else { this.formErrors.cellPhone = false }
       if (!this.applicationData.homePhone) { this.formErrors.homePhone = true } else { this.formErrors.homePhone = false }
       if (!this.applicationData.lastName) { this.formErrors.lastName = true } else { this.formErrors.lastName = false }
       if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.formErrors.mailingAddress = true } else { this.formErrors.mailingAddress = false }
@@ -2605,6 +2607,7 @@ export default {
           if (!this.applicationData.coBorrowerEmployerZip) { this.formErrors.coBorrowerEmployerZip = true } else { this.formErrors.coBorrowerEmployerZip = false }
         }
         if (!this.applicationData.coBorrowerFirstName) { this.formErrors.coBorrowerFirstName = true } else { this.formErrors.coBorrowerFirstName = false }
+        if (!this.applicationData.coBorrowerCellPhone) { this.formErrors.coBorrowerCellPhone = true } else { this.formErrors.coBorrowerCellPhone = false }
         if (!this.applicationData.coBorrowerHomePhone) { this.formErrors.coBorrowerHomePhone = true } else { this.formErrors.coBorrowerHomePhone = false }
         if (!this.applicationData.coBorrowerLastName) { this.formErrors.coBorrowerLastName = true } else { this.formErrors.coBorrowerLastName = false }
         // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.formErrors.coBorrowerMailingAddress = true } else { this.formErrors.coBorrowerMailingAddress = false }
