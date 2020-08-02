@@ -573,6 +573,9 @@ export default {
         if (!this.locAfterFirst || (this.locAfterFirst && this.keepingLoc)) {
           type = 'No Cash Out'
         }
+        if (this.payOffLoc) {
+          type = 'Cash Out'
+        }
       }
       this.$store.commit('updateLoanRefinanceType', type)
       return type
@@ -728,6 +731,9 @@ export default {
         type = 'Cash Out'
         if (!this.applicationData.locAfterFirst || (this.applicationData.locAfterFirst && this.applicationData.keepingLoc)) {
           type = 'No Cash Out'
+        }
+        if (this.applicationData.payOffLoc) {
+          type = 'Cash Out'
         }
       }
       return type
