@@ -1483,6 +1483,7 @@ export default {
       applicationData: state => state.application.data,
       loanProduct: state => state.application.loanProduct,
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
+      productId: state => state.application.loanProduct.productId,
       propertyTypeOptions: state => state.form.options.propertyTypeOptions,
       propertyUseOptions: state => state.form.options.propertyUseOptions,
       searchResults: state => state.searchResultsReduced,
@@ -2088,14 +2089,14 @@ export default {
         this.$store.commit('updateMaritalStatus', value)
       }
     },
-    productId: {
-      get () {
-        return this.$store.state.application.data.productId
-      },
-      set (value) {
-        this.$store.commit('updateProductId', value)
-      }
-    },
+    // productId: {
+    //   get () {
+    //     return this.$store.state.application.data.productId
+    //   },
+    //   set (value) {
+    //     this.$store.commit('updateProductId', value)
+    //   }
+    // },
     promotionCode: {
       get () {
         return this.$store.state.application.data.promotionCode
@@ -2403,7 +2404,7 @@ export default {
           locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
           locAmount: this.$parseCurrency(this.applicationData.locAmount)
         },
-        productId: this.loanProduct.productId,
+        productId: this.productId, // this.loanProduct.productId,
         promotionCode: this.applicationData.promotionCode,
         property: {
           numberUnits: Number(this.applicationData.propertyNumberOfUnits),
@@ -2614,7 +2615,7 @@ export default {
         // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.formErrors.coBorrowerMailingAddress = true } else { this.formErrors.coBorrowerMailingAddress = false }
       }
       if (!this.applicationData.loanAmount) { this.formErrors.loanAmount = true } else { this.formErrors.loanAmount = false }
-      if (!this.applicationData.productId) { this.formErrors.productId = true } else { this.formErrors.productId = false }
+      if (!this.productId) { this.formErrors.productId = true } else { this.formErrors.productId = false }
       if (!this.applicationData.propertyAddress) { this.formErrors.propertyAddress = true } else { this.formErrors.propertyAddress = false }
       if (!this.applicationData.propertyZip) { this.formErrors.propertyZip = true } else { this.formErrors.propertyZip = false }
       if (this.assetsAndLiabilities) {
