@@ -1440,25 +1440,26 @@ export default {
         address: false,
         // borrowerType: false,
         cellPhone: false,
-        email: false,
-        employerAddress: false,
-        employerName: false,
-        employerZip: false,
-        // expenseType: false,
-        firstName: false,
-        homePhone: false,
-        lastName: false,
-        mailingAddress: false,
         coBorrowerAddress: false,
+        coBorrowerCellPhone: false,
         coBorrowerEmail: false,
         coBorrowerEmployerAddress: false,
         coBorrowerEmployerName: false,
         coBorrowerEmployerZip: false,
         // coBorrowerExpenseType: false,
         coBorrowerFirstName: false,
-        coBorrowerHomePhone: false,
+        // coBorrowerHomePhone: false,
         coBorrowerLastName: false,
         coBorrowerMailingAddress: false,
+        email: false,
+        employerAddress: false,
+        employerName: false,
+        employerZip: false,
+        // expenseType: false,
+        firstName: false,
+        // homePhone: false,
+        lastName: false,
+        mailingAddress: false,
         loanAmount: false,
         productId: false,
         propertyAddress: false,
@@ -2432,7 +2433,7 @@ export default {
         fax: this.applicationData.fax,
         firstName: this.applicationData.firstName, // Required
         grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
-        homePhone: this.applicationData.homePhone || this.applicationData.cellPhone, // Required
+        // homePhone: this.applicationData.homePhone, // Required
         lastName: this.applicationData.lastName, // Required
         mailingAddress: this.applicationData.mailingAddress, // Required if `mailingZip`
         mailingZip: this.applicationData.mailingZip,
@@ -2473,7 +2474,7 @@ export default {
           fax: this.applicationData.coBorrowerFax,
           firstName: this.applicationData.coBorrowerFirstName,
           grossIncome: this.$parseCurrency(this.applicationData.coBorrowerGrossIncome),
-          homePhone: this.applicationData.coBorrowerHomePhone,
+          // homePhone: this.applicationData.coBorrowerHomePhone,
           lastName: this.applicationData.coBorrowerLastName,
           maritalStatus: this.applicationData?.coBorrowerMaritalStatus?.name,
           ssn: this.applicationData.coBorrowerSsn,
@@ -2595,7 +2596,7 @@ export default {
       }
       if (!this.applicationData.firstName) { this.formErrors.firstName = true } else { this.formErrors.firstName = false }
       if (!this.applicationData.cellPhone) { this.formErrors.cellPhone = true } else { this.formErrors.cellPhone = false }
-      if (!this.applicationData.homePhone) { this.formErrors.homePhone = true } else { this.formErrors.homePhone = false }
+      // if (!this.applicationData.homePhone) { this.formErrors.homePhone = true } else { this.formErrors.homePhone = false }
       if (!this.applicationData.lastName) { this.formErrors.lastName = true } else { this.formErrors.lastName = false }
       if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.formErrors.mailingAddress = true } else { this.formErrors.mailingAddress = false }
       if (this.hasCoBorrower) {
@@ -2608,7 +2609,7 @@ export default {
         }
         if (!this.applicationData.coBorrowerFirstName) { this.formErrors.coBorrowerFirstName = true } else { this.formErrors.coBorrowerFirstName = false }
         if (!this.applicationData.coBorrowerCellPhone) { this.formErrors.coBorrowerCellPhone = true } else { this.formErrors.coBorrowerCellPhone = false }
-        if (!this.applicationData.coBorrowerHomePhone) { this.formErrors.coBorrowerHomePhone = true } else { this.formErrors.coBorrowerHomePhone = false }
+        // if (!this.applicationData.coBorrowerHomePhone) { this.formErrors.coBorrowerHomePhone = true } else { this.formErrors.coBorrowerHomePhone = false }
         if (!this.applicationData.coBorrowerLastName) { this.formErrors.coBorrowerLastName = true } else { this.formErrors.coBorrowerLastName = false }
         // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.formErrors.coBorrowerMailingAddress = true } else { this.formErrors.coBorrowerMailingAddress = false }
       }
