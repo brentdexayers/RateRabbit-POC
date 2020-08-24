@@ -44,7 +44,11 @@
         <div class="col-12 bottom-space">
           <div class="form-group">
             <div v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'" class="label">
-              {{ 'Total Loan Amount (Current loan amount plus cash out request)' }}
+              {{ 'Total Loan Amount' }}
+              <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+              <b-tooltip target="taxes-tooltip" triggers="hover">
+                Current loan amount plus cash out request
+              </b-tooltip>
             </div>
             <div v-else class="label">
               {{ 'Loan Amount' | titlecase }}
