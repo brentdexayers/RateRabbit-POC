@@ -6,11 +6,6 @@
       method="POST"
       class="form form--search-rates"
     >
-      <div v-if="hasErrors" class="form-errors">
-        <p class="text-danger">
-          <b>Please correct the following errors:</b>
-        </p>
-      </div>
       <div class="row">
         <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
           <label
@@ -22,7 +17,7 @@
           <select
             v-model="loanPurpose"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validateLoanPurpose(loanPurpose)"
             name="loanPurpose"
             class="custom-select"
           >
@@ -35,6 +30,7 @@
               v-for="(option, index) in loanPurposeOptions"
               :key="index"
               :value="option"
+              :selected="option == loanPurpose"
             >
               {{ option.name | titlecase }}
             </option>
@@ -58,12 +54,18 @@
             v-model="propertyValue"
             v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validatePropertyValue(propertyValue)"
             type="text"
             name="propertyValue"
             class="form-control"
             placeholder=""
           >
+          <p v-if="errors.propertyValue && !propertyValue" class="error-inline">
+            {{ loanPurpose && loanPurpose.name === 'Purchase' ? `Purchase price` : `Property value` }} is required
+          </p>
+          <p v-if="errors.propertyValue && propertyValue && propertyValue < loanAmount" class="error-inline">
+            {{ loanPurpose && loanPurpose.name === 'Purchase' ? `Purchase price` : `Property value` }} must not be less than the loan amount
+          </p>
         </div>
       </div>
       <div v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'" class="row">
@@ -87,7 +89,7 @@
         </div>
       </div>
       <div class="row">
-        <div :class="{ error: errors.loanAmount }" class="form-group col-12">
+        <div :class="{ error: errors.loanAmount || errors.ltv }" class="form-group col-12">
           <label
             :class="{ hasvalue: loanAmount, hasError: errors.loanAmount }"
             for="loanAmount"
@@ -107,18 +109,36 @@
             v-model="loanAmount"
             v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validateLoanAmount(loanAmount)"
             type="text"
             name="loanAmount"
             class="form-control"
             placeholder=""
           >
+          <p
+            v-if="errors.loanAmount && !loanAmount"
+            class="error-inline"
+          >
+            Loan amount is required
+          </p>
+          <p
+            v-if="errors.loanAmount && this.$parseCurrency(loanAmount) > 0 && this.$parseCurrency(loanAmount) < minLoanAmount"
+            class="error-inline"
+          >
+            Minimum Loan Amount is {{ minLoanAmount | currency }}
+          </p>
+          <p
+            v-if="errors.ltv && ltv > 0.95"
+            class="error-inline"
+          >
+            Loan amount cannot exceed 95% of the {{ loanPurpose && loanPurpose.name === 'Purchase' ? `purchase price` : `property value` }} (95% LTV)
+          </p>
         </div>
       </div>
       <div class="row justify-content-center">
         <div class="col-auto">
           <div v-if="loanAmount && propertyValue" class="ltv wrapper wrapper--ltv form--search-rates__ltv">
-            {{ this.$parseCurrency(loanAmount) / this.$parseCurrency(propertyValue) | percent(0) }} loan-to-value
+            {{ ltv | percent(0) }} Loan-to-Value (LTV)
           </div>
         </div>
       </div>
@@ -155,39 +175,30 @@
             v-model="locAmount"
             v-currency="{distractionFree: false}"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validateLocAmount(locAmount)"
             type="text"
             name="locAmount"
             class="form-control"
             placeholder=""
           >
+          <p
+            v-if="errors.locAmount && !locAmount"
+            class="error-inline"
+          >
+            LOC balance is required
+          </p>
         </div>
       </div>
-      <!-- <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
-        <div class="form-group col-12">
-          <div class="custom-control custom-checkbox">
-            <input
-              id="locAfterFirst"
-              v-model="locAfterFirst"
-              type="checkbox"
-              class="custom-control-input"
-            >
-            <label
-              class="custom-control-label"
-              for="locAfterFirst"
-            >
-              Was the LOC added after the initial purchase of your current home?
-            </label>
-          </div>
-        </div>
-      </div> -->
       <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
-          <div class="custom-control custom-checkbox">
+          <div class="custom-control custom-radio">
             <input
               id="keepingLoc"
+              :checked="loanPurpose.name === 'Refinance'"
               v-model="keepingLoc"
-              type="checkbox"
+              v-on:change.stop="updateLoanPurpose(loanPurposeOptions[1])"
+              name="locStatus"
+              type="radio"
               class="custom-control-input"
             >
             <label
@@ -201,11 +212,14 @@
       </div>
       <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div class="form-group col-12">
-          <div class="custom-control custom-checkbox">
+          <div class="custom-control custom-radio">
             <input
               id="payOffLoc"
+              :checked="loanPurpose.name === 'Refinance Cash Out'"
               v-model="payOffLoc"
-              type="checkbox"
+              v-on:change.stop="updateLoanPurpose(loanPurposeOptions[2])"
+              name="locStatus"
+              type="radio"
               class="custom-control-input"
             >
             <label
@@ -229,7 +243,7 @@
           <select
             v-model="state"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validateState(state)"
             name="state"
             class="custom-select"
           >
@@ -246,6 +260,12 @@
               {{ option.name }}
             </option>
           </select>
+          <p
+            v-if="errors.state && !state"
+            class="error-inline"
+          >
+            State is required
+          </p>
         </div>
         <div :class="{ error: errors.propertyZip }" class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <label
@@ -257,12 +277,18 @@
           <input
             v-model="propertyZip"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validatePropertyZip(propertyZip)"
             type="text"
             name="propertyZip"
             class="form-control"
             placeholder=""
           >
+          <p
+            v-if="errors.propertyZip && !propertyZip"
+            class="error-inline"
+          >
+            State is required
+          </p>
         </div>
       </div>
       <div class="row">
@@ -276,7 +302,7 @@
           <select
             v-model="propertyType"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validatePropertyType(propertyType)"
             name="propertyType"
             class="custom-select"
           >
@@ -293,6 +319,12 @@
               {{ option.name | titlecase }}
             </option>
           </select>
+          <p
+            v-if="errors.propertyType && !propertyType"
+            class="error-inline"
+          >
+            Property type is required
+          </p>
         </div>
       </div>
       <div class="row">
@@ -306,7 +338,7 @@
           <select
             v-model="propertyUse"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validatePropertyUse(propertyUse)"
             name="propertyUse"
             class="custom-select"
           >
@@ -323,6 +355,12 @@
               {{ option.name | titlecase }}
             </option>
           </select>
+          <p
+            v-if="errors.propertyUse && !propertyUse"
+            class="error-inline"
+          >
+            Property use is required
+          </p>
         </div>
       </div>
       <div class="row">
@@ -336,7 +374,7 @@
           <select
             v-model="creditRating"
             @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
+            @blur="focusClassRemove($event); validateCreditRating(creditRating)"
             name="creditRating"
             class="custom-select"
           >
@@ -353,6 +391,12 @@
               {{ option.name }}
             </option>
           </select>
+          <p
+            v-if="errors.creditRating && !creditRating"
+            class="error-inline"
+          >
+            Credit rating is required
+          </p>
         </div>
       </div>
       <!-- <div class="form--search-rates__spacer form-group w-100" /> -->
@@ -398,6 +442,7 @@
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
             :class="invertedSubmit ? 'btn-outline-primary' : 'btn-primary'"
+            :disabled="formHasErrors"
             type="submit"
             class="btn form--search-rates__submit"
           >
@@ -500,15 +545,14 @@ export default {
         loanAmount: false,
         loanPurpose: false,
         locAmount: false,
+        ltv: false,
         propertyType: false,
         propertyUse: false,
         propertyValue: false,
         propertyZip: false,
         state: false
       },
-      hasErrors: false,
-      ltv: 0
-      // submitButton: 'Search Live Rates'
+      minLoanAmount: 50000
     }
   },
   computed: {
@@ -559,7 +603,7 @@ export default {
         return this.$store.state.application.data.loanPurpose
       },
       set (value) {
-        this.$store.commit('updateLoanPurpose', value)
+        this.updateLoanPurpose(value)
       }
     },
     // loanRefinanceType: {
@@ -607,6 +651,9 @@ export default {
       set (value) {
         this.$store.commit('updateLocAmount', value)
       }
+    },
+    ltv () {
+      return this.$parseCurrency(this.loanAmount) / this.$parseCurrency(this.propertyValue)
     },
     payOffLoc: {
       get () {
@@ -695,6 +742,67 @@ export default {
         'zipCode': this.propertyZip
       }
       return payload
+    },
+    // Error Checking
+    formHasErrors () {
+      let hasErrors
+      if (
+        !this.loanPurpose ||
+        !this.propertyValue ||
+        !this.loanAmount ||
+        !this.state ||
+        !this.propertyZip ||
+        !this.propertyType ||
+        !this.propertyUse ||
+        !this.creditRating
+      ) {
+        hasErrors = true
+      } else {
+        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
+      }
+      return hasErrors
+    }
+  },
+  watch: {
+    loanPurpose (value) {
+      this.loanPurpose = value
+      this.validateLoanPurpose(value)
+    },
+    propertyValue (value) {
+      this.propertyValue = value
+      this.validatePropertyValue(value)
+    },
+    loanAmount (value) {
+      this.loanAmount = value
+      this.validateLoanAmount(value)
+    },
+    locAmount (value) {
+      this.locAmount = value
+      this.validateLocAmount(value)
+    },
+    ltv (value) {
+      this.ltv = value
+      this.validateLtv(value)
+    },
+    state (value) {
+      this.state = value
+      this.validateState(value)
+    },
+    propertyZip (value) {
+      this.propertyZip = value
+      this.validatePropertyZip(value)
+    },
+    propertyType (value) {
+      this.propertyType = value
+      this.validatePropertyType(value)
+    },
+    propertyUse (value) {
+      this.propertyUse = value
+      this.validatePropertyUse(value)
+    },
+    creditRating (value) {
+      this.creditRating = value
+      this.validateCreditRating(value)
     }
   },
   async fetch () {
@@ -721,6 +829,9 @@ export default {
     }
   },
   methods: {
+    calculateLtv () {
+      this.ltv = this.$parseCurrency(this.loanAmount) / this.$parseCurrency(this.propertyValue)
+    },
     focusClassAdd (event) {
       const self = event.target
       self.previousElementSibling.classList.add('focused')
@@ -781,6 +892,9 @@ export default {
       this.$emit('submitEnd')
       setTimeout(() => this.toggleLoader(), 250)
     },
+    updateLoanPurpose (payload) {
+      this.$store.commit('updateLoanPurpose', payload)
+    },
     updateSearchResults (results) {
       this.$store.commit('setSearchResultDetails', results)
       const reduced = this.reduceResults(results)
@@ -797,27 +911,13 @@ export default {
         path: '/search/results'
       })
     },
-    formValidate () {
-      this.$emit('searchValidateStart')
-      if (!this.loanPurpose) { this.errors.loanPurpose = true } else { this.errors.loanPurpose = false }
-      if (!this.propertyValue) { this.errors.propertyValue = true } else { this.errors.propertyValue = false }
-      if (!this.loanAmount) { this.errors.loanAmount = true } else { this.errors.loanAmount = false }
-      if (!this.state) { this.errors.state = true } else { this.errors.state = false }
-      if (!this.propertyZip) { this.errors.propertyZip = true } else { this.errors.propertyZip = false }
-      if (!this.propertyType) { this.errors.propertyType = true } else { this.errors.propertyType = false }
-      if (!this.propertyUse) { this.errors.propertyUse = true } else { this.errors.propertyUse = false }
-      if (!this.creditRating) { this.errors.creditRating = true } else { this.errors.creditRating = false }
-      const hasErrors = Object.keys(this.errors).some(k => this.errors[k])
-      this.hasErrors = hasErrors
-      return hasErrors
-    },
     async handleFormSubmit (e) {
       e.preventDefault()
       this.submitStart()
       // Check for errors
-      const hasErrors = this.formValidate()
+      // const hasErrors = this.formValidate()
       // If no errors
-      if (!hasErrors) {
+      if (!this.formHasErrors) {
         // Get search data (API)
         const data = await authenticate()
           .then((auth) => {
@@ -838,8 +938,93 @@ export default {
       }
       this.scrollToTop(e)
       this.submitEnd()
+    },
+    validateLoanPurpose (value) {
+      if (value) {
+        this.errors.loanPurpose = false
+      } else {
+        this.errors.loanPurpose = true
+      }
+    },
+    validatePropertyValue (value) {
+      if (value) {
+        if (this.loanAmount && this.$parseCurrency(value) < this.$parseCurrency(this.loanAmount)) {
+          this.errors.propertyValue = true
+        } else {
+          this.errors.propertyValue = false
+        }
+      } else {
+        this.errors.propertyValue = true
+      }
+    },
+    validateLoanAmount (value) {
+      if (value) {
+        if (
+          (this.propertyValue &&
+          this.$parseCurrency(value) > this.$parseCurrency(this.propertyValue)) ||
+          this.$parseCurrency(value) < this.minLoanAmount
+        ) {
+          this.errors.loanAmount = true
+        } else {
+          this.errors.loanAmount = false
+        }
+      } else {
+        this.errors.loanAmount = true
+      }
+    },
+    validateLocAmount (value) {
+      if (value) {
+        this.errors.locAmount = false
+      } else {
+        this.errors.locAmount = true
+      }
+    },
+    validateLtv (value) {
+      if (value) {
+        if (this.ltv > 0.95) {
+          this.errors.ltv = true
+        } else {
+          this.errors.ltv = false
+        }
+      } else {
+        this.errors.ltv = true
+      }
+    },
+    validateState (value) {
+      if (value) {
+        this.errors.state = false
+      } else {
+        this.errors.state = true
+      }
+    },
+    validatePropertyZip (value) {
+      if (value) {
+        this.errors.propertyZip = false
+      } else {
+        this.errors.propertyZip = true
+      }
+    },
+    validatePropertyType (value) {
+      if (value) {
+        this.errors.propertyType = false
+      } else {
+        this.errors.propertyType = true
+      }
+    },
+    validatePropertyUse (value) {
+      if (value) {
+        this.errors.propertyUse = false
+      } else {
+        this.errors.propertyUse = true
+      }
+    },
+    validateCreditRating (value) {
+      if (value) {
+        this.errors.creditRating = false
+      } else {
+        this.errors.creditRating = true
+      }
     }
-
   }
 }
 </script>
@@ -880,7 +1065,8 @@ export default {
         border: 1px solid $danger;
       }
     }
-    .custom-checkbox {
+    .custom-checkbox,
+    .custom-radio {
       label {
         color: $primary;
         font-size: $font-size-sm;
@@ -894,6 +1080,15 @@ export default {
       padding-bottom: #{$spacer * 0.6875};
       padding-top: #{$spacer * 0.6875};
       width: 100%;
+    }
+    &:disabled {
+      background-color: $secondary;
+      border-color: $secondary;
+      cursor: not-allowed;
+      &:hover {
+        border-color: $danger;
+        box-shadow: 0 0 6px $danger;
+      }
     }
   }
   &__supplemental-links {
@@ -915,13 +1110,14 @@ export default {
   &__spacer {
     margin-bottom: #{$spacer * 2};
   }
-}
-.form-errors {
-  color: $danger;
-  p {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-bold;
-    margin-bottom: 1em;
+  .error-inline {
+    color: $danger;
+    font-size: small;
+    line-height: 1.2;
+    margin-bottom: .5em;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: .5em;
   }
 }
 </style>
