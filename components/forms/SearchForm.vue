@@ -781,7 +781,7 @@ export default {
       this.validateLocAmount(value)
     },
     ltv (value) {
-      this.ltv = value
+      // this.ltv = value
       this.validateLtv(value)
     },
     state (value) {

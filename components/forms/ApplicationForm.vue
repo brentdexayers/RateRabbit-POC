@@ -272,6 +272,26 @@
               </option>
             </select>
           </div>
+        </div>
+        <div class="justify-content-between align-items-start d-flex">
+          <h3>Address</h3>
+          <div class="custom-control custom-checkbox">
+            <input
+              id="copyPropertyAddress"
+              v-model="copyPropertyAddress"
+              @change="doCopyPropertyAddress($event)"
+              type="checkbox"
+              class="custom-control-input"
+            >
+            <label
+              class="custom-control-label text-primary small"
+              for="copyPropertyAddress"
+            >
+              {{ 'Same as property address' }}
+            </label>
+          </div>
+        </div>
+        <div class="row">
           <div
             :class="{ error: formErrors.address }"
             class="form-group col-12 col-lg-9"
@@ -706,6 +726,9 @@
                 </option>
               </select>
             </div>
+          </div>
+          <h3>Address</h3>
+          <div class="row">
             <div
               :class="{ error: formErrors.coBorrowerAddress }"
               class="form-group col-12 col-lg-8"
@@ -1436,6 +1459,7 @@ export default {
   data () {
     return {
       assetsAndLiabilities: false,
+      copyPropertyAddress: false,
       formErrors: {
         address: false,
         // borrowerType: false,
@@ -2578,6 +2602,16 @@ export default {
     }
   },
   methods: {
+    doCopyPropertyAddress (event) {
+      // const self = event.target
+      if (this.copyPropertyAddress) {
+        this.address = this.propertyAddress
+        this.zip = this.propertyZip
+      } else {
+        this.address = null
+        this.zip = null
+      }
+    },
     focusClassAdd (event) {
       const self = event.target
       self.previousElementSibling.classList.add('focused')
