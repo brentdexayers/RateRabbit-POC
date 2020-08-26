@@ -3,21 +3,15 @@
     <form
       id="search-rates-form"
       @submit.prevent="handleFormSubmit"
+      :class="sidebar ? 'form--sidebar' : null"
       method="POST"
       class="form form--search-rates"
     >
       <div class="row">
         <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
-          <label
-            :class="{ hasvalue: loanPurpose !== null, hasError: errors.loanPurpose }"
-            for="loanPurpose"
-          >
-            {{ 'Loan Purpose' | titlecase }}
-          </label>
           <select
             v-model="loanPurpose"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validateLoanPurpose(loanPurpose)"
+            @blur="validateLoanPurpose(loanPurpose)"
             name="loanPurpose"
             class="custom-select"
           >
@@ -35,10 +29,31 @@
               {{ option.name | titlecase }}
             </option>
           </select>
+          <label
+            :class="{ hasvalue: loanPurpose !== null, hasError: errors.loanPurpose }"
+            for="loanPurpose"
+          >
+            {{ 'Loan Purpose' | titlecase }}
+          </label>
+          <p
+            v-if="errors.loanPurpose && !loanPurpose"
+            class="error-inline"
+          >
+            Loan purpose is required
+          </p>
         </div>
       </div>
       <div class="row">
         <div :class="{ error: errors.propertyValue }" class="form-group col-12">
+          <input
+            v-model="propertyValue"
+            v-currency="{distractionFree: false}"
+            @blur="validatePropertyValue(propertyValue)"
+            type="text"
+            name="propertyValue"
+            class="form-control"
+            placeholder=""
+          >
           <label
             :class="{ hasvalue: propertyValue, hasError: errors.propertyValue }"
             for="propertyValue"
@@ -50,16 +65,6 @@
               {{ 'Property value' | titlecase }}
             </span>
           </label>
-          <input
-            v-model="propertyValue"
-            v-currency="{distractionFree: false}"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validatePropertyValue(propertyValue)"
-            type="text"
-            name="propertyValue"
-            class="form-control"
-            placeholder=""
-          >
           <p v-if="errors.propertyValue && !propertyValue" class="error-inline">
             {{ loanPurpose && loanPurpose.name === 'Purchase' ? `Purchase price` : `Property value` }} is required
           </p>
@@ -79,8 +84,6 @@
           <input
             v-model="loanCashOutAmount"
             v-currency="{distractionFree: false}"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
             type="text"
             name="loanCashOutAmount"
             class="form-control"
@@ -89,7 +92,16 @@
         </div>
       </div>
       <div class="row">
-        <div :class="{ error: errors.loanAmount || errors.ltv }" class="form-group col-12">
+        <div :class="{ error: errors.loanAmount || (errors.ltv && loanAmount && propertyValue) }" class="form-group col-12">
+          <input
+            v-model="loanAmount"
+            v-currency="{distractionFree: false}"
+            @blur="validateLoanAmount(loanAmount)"
+            type="text"
+            name="loanAmount"
+            class="form-control"
+            placeholder=""
+          >
           <label
             :class="{ hasvalue: loanAmount, hasError: errors.loanAmount }"
             for="loanAmount"
@@ -105,16 +117,6 @@
               {{ 'Loan Amount' | titlecase }}
             </span>
           </label>
-          <input
-            v-model="loanAmount"
-            v-currency="{distractionFree: false}"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validateLoanAmount(loanAmount)"
-            type="text"
-            name="loanAmount"
-            class="form-control"
-            placeholder=""
-          >
           <p
             v-if="errors.loanAmount && !loanAmount"
             class="error-inline"
@@ -142,7 +144,7 @@
           </div>
         </div>
       </div>
-      <div class="form--search-rates__spacer form-group w-100" />
+      <div class="form--search-rates__spacer form-group form-group--spacer w-100" />
       <div v-if="loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div :class="{ error: errors.loc }" class="form-group col-12">
           <div class="custom-control custom-checkbox">
@@ -163,6 +165,15 @@
       </div>
       <div v-if="loc && loanPurpose && (loanPurpose.name === 'Refinance Cash Out' || loanPurpose.name === 'Refinance')" class="row">
         <div :class="{ error: errors.locAmount }" class="form-group col-12">
+          <input
+            v-model="locAmount"
+            v-currency="{distractionFree: false}"
+            @blur="validateLocAmount(locAmount)"
+            type="text"
+            name="locAmount"
+            class="form-control"
+            placeholder=""
+          >
           <label
             :class="{ hasvalue: locAmount, hasError: errors.locAmount }"
             for="locAmount"
@@ -171,16 +182,6 @@
               {{ 'LOC Balance' }}
             </span>
           </label>
-          <input
-            v-model="locAmount"
-            v-currency="{distractionFree: false}"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validateLocAmount(locAmount)"
-            type="text"
-            name="locAmount"
-            class="form-control"
-            placeholder=""
-          >
           <p
             v-if="errors.locAmount && !locAmount"
             class="error-inline"
@@ -231,19 +232,12 @@
           </div>
         </div>
       </div>
-      <div class="form--search-rates__spacer form-group w-100" />
+      <div class="form--search-rates__spacer form-group form-group--spacer w-100" />
       <div class="row">
         <div :class="{ error: errors.state }" class="form-group col-12 col-lg-6 form--search-rates__col--state">
-          <label
-            :class="{ hasvalue: state !== null, hasError: errors.state }"
-            for="state"
-          >
-            {{ 'State' | titlecase }}
-          </label>
           <select
             v-model="state"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validateState(state)"
+            @blur="validateState(state)"
             name="state"
             class="custom-select"
           >
@@ -260,6 +254,12 @@
               {{ option.name }}
             </option>
           </select>
+          <label
+            :class="{ hasvalue: state !== null, hasError: errors.state }"
+            for="state"
+          >
+            {{ 'State' | titlecase }}
+          </label>
           <p
             v-if="errors.state && !state"
             class="error-inline"
@@ -268,21 +268,20 @@
           </p>
         </div>
         <div :class="{ error: errors.propertyZip }" class="form-group col-12 col-lg-6 form--search-rates__col--zip">
+          <input
+            v-model="propertyZip"
+            @blur="validatePropertyZip(propertyZip)"
+            type="text"
+            name="propertyZip"
+            class="form-control"
+            placeholder=""
+          >
           <label
             :class="{ hasvalue: propertyZip, hasError: errors.propertyZip }"
             for="propertyZip"
           >
             {{ 'Zip Code' | titlecase }}
           </label>
-          <input
-            v-model="propertyZip"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validatePropertyZip(propertyZip)"
-            type="text"
-            name="propertyZip"
-            class="form-control"
-            placeholder=""
-          >
           <p
             v-if="errors.propertyZip && !propertyZip"
             class="error-inline"
@@ -293,16 +292,9 @@
       </div>
       <div class="row">
         <div :class="{ error: errors.propertyType }" class="form-group col-12">
-          <label
-            :class="{ hasvalue: propertyType !== null, hasError: errors.propertyType }"
-            for="propertyType"
-          >
-            {{ 'Property Type' | titlecase }}
-          </label>
           <select
             v-model="propertyType"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validatePropertyType(propertyType)"
+            @blur="validatePropertyType(propertyType)"
             name="propertyType"
             class="custom-select"
           >
@@ -319,6 +311,12 @@
               {{ option.name | titlecase }}
             </option>
           </select>
+          <label
+            :class="{ hasvalue: propertyType !== null, hasError: errors.propertyType }"
+            for="propertyType"
+          >
+            {{ 'Property Type' | titlecase }}
+          </label>
           <p
             v-if="errors.propertyType && !propertyType"
             class="error-inline"
@@ -329,16 +327,9 @@
       </div>
       <div class="row">
         <div :class="{ error: errors.propertyUse }" class="form-group col-12">
-          <label
-            :class="{ hasvalue: propertyUse !== null, hasError: errors.propertyUse }"
-            for="propertyUse"
-          >
-            {{ 'Property Use' | titlecase }}
-          </label>
           <select
             v-model="propertyUse"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validatePropertyUse(propertyUse)"
+            @blur="validatePropertyUse(propertyUse)"
             name="propertyUse"
             class="custom-select"
           >
@@ -355,6 +346,12 @@
               {{ option.name | titlecase }}
             </option>
           </select>
+          <label
+            :class="{ hasvalue: propertyUse !== null, hasError: errors.propertyUse }"
+            for="propertyUse"
+          >
+            {{ 'Property Use' | titlecase }}
+          </label>
           <p
             v-if="errors.propertyUse && !propertyUse"
             class="error-inline"
@@ -365,16 +362,9 @@
       </div>
       <div class="row">
         <div :class="{ error: errors.creditRating }" class="form-group col-12">
-          <label
-            :class="{ hasvalue: creditRating !== null, hasError: errors.creditRating }"
-            for="creditRating"
-          >
-            {{ 'Credit Rating' | titlecase }}
-          </label>
           <select
             v-model="creditRating"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event); validateCreditRating(creditRating)"
+            @blur="validateCreditRating(creditRating)"
             name="creditRating"
             class="custom-select"
           >
@@ -391,6 +381,12 @@
               {{ option.name }}
             </option>
           </select>
+          <label
+            :class="{ hasvalue: creditRating !== null, hasError: errors.creditRating }"
+            for="creditRating"
+          >
+            {{ 'Credit Rating' | titlecase }}
+          </label>
           <p
             v-if="errors.creditRating && !creditRating"
             class="error-inline"
@@ -399,24 +395,12 @@
           </p>
         </div>
       </div>
-      <!-- <div class="form--search-rates__spacer form-group w-100" /> -->
+      <!-- <div class="form--search-rates__spacer form-group form-group--spacer w-100" /> -->
       <div class="row">
         <div class="form-group col-12">
-          <label
-            :class="{ hasvalue: taxes }"
-            for="taxes"
-          >
-            {{ 'Taxes & Insurance' | titlecase }}
-            <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-            <b-tooltip target="taxes-tooltip" triggers="hover">
-              Would you like to add your monthly taxes and insurance to your payment?
-            </b-tooltip>
-          </label>
           <select
             id="input-select--taxes"
             v-model="taxes"
-            @focus="focusClassAdd($event)"
-            @blur="focusClassRemove($event)"
             name="taxes"
             class="custom-select has-info"
           >
@@ -436,6 +420,16 @@
               No
             </option>
           </select>
+          <label
+            :class="{ hasvalue: taxes }"
+            for="taxes"
+          >
+            {{ 'Taxes & Insurance' | titlecase }}
+            <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+            <b-tooltip target="taxes-tooltip" triggers="hover">
+              Would you like to add your monthly taxes and insurance to your payment?
+            </b-tooltip>
+          </label>
         </div>
       </div>
       <div class="row">
@@ -444,7 +438,7 @@
             :class="invertedSubmit ? 'btn-outline-primary' : 'btn-primary'"
             :disabled="formHasErrors"
             type="submit"
-            class="btn form--search-rates__submit"
+            class="btn btn--submit"
           >
             {{ searchResults.length ? 'Update Search' : 'Search Live Rates' | titlecase }}
           </button>
@@ -472,8 +466,6 @@
                   </label>
                   <input
                     v-model="promotionCode"
-                    @focus="focusClassAdd($event)"
-                    @blur="focusClassRemove($event)"
                     type="text"
                     name="promotionCode"
                     class="form-control"
@@ -533,6 +525,10 @@ export default {
       default: false
     },
     invertedSubmit: {
+      type: Boolean,
+      default: false
+    },
+    sidebar: {
       type: Boolean,
       default: false
     }
@@ -834,11 +830,11 @@ export default {
     },
     focusClassAdd (event) {
       const self = event.target
-      self.previousElementSibling.classList.add('focused')
+      self.closest('div').classList.add('focused')
     },
     focusClassRemove (event) {
       const self = event.target
-      self.previousElementSibling.classList.remove('focused')
+      self.closest('div').classList.remove('focused')
     },
     getLoanRefinanceType () {
       let type = 'No Cash Out'
@@ -1043,54 +1039,6 @@ export default {
     text-align: center;
     padding: 0 #{$spacer * 0.75};
   }
-  &__form-group {
-    &--program-options {
-      &__label {}
-      &__list {
-        margin-bottom: 0;
-        .list-item {
-          font-size: $font-size-sm;
-          line-height: 1.75;
-          margin-bottom: 2px;
-        }
-      }
-    }
-  }
-  & .form-group {
-    &.error {
-      label {
-        color: $danger !important;
-      }
-      input, select {
-        border: 1px solid $danger;
-      }
-    }
-    .custom-checkbox,
-    .custom-radio {
-      label {
-        color: $primary;
-        font-size: $font-size-sm;
-      }
-    }
-  }
-  &__submit {
-    @include media-breakpoint-down('sm') {
-      font-size: $font-size-lg;
-      margin-top: #{$spacer * 1.625};
-      padding-bottom: #{$spacer * 0.6875};
-      padding-top: #{$spacer * 0.6875};
-      width: 100%;
-    }
-    &:disabled {
-      background-color: $secondary;
-      border-color: $secondary;
-      cursor: not-allowed;
-      &:hover {
-        border-color: $danger;
-        box-shadow: 0 0 6px $danger;
-      }
-    }
-  }
   &__supplemental-links {
     margin-bottom: 0;
   }
@@ -1106,18 +1054,6 @@ export default {
         text-decoration: none;
       }
     }
-  }
-  &__spacer {
-    margin-bottom: #{$spacer * 2};
-  }
-  .error-inline {
-    color: $danger;
-    font-size: small;
-    line-height: 1.2;
-    margin-bottom: .5em;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    margin-top: .5em;
   }
 }
 </style>

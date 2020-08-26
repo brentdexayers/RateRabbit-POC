@@ -53,6 +53,7 @@ export default {
     '~/plugins/vue-mask',
     '~/plugins/vue-moment',
     '~/plugins/vue-currency-input',
+    '~/plugins/v-calendar',
     '~/plugins/filters'
   ],
   /*

@@ -21,92 +21,68 @@
             :class="{ error: formErrors.propertyAddress }"
             class="form-group col-12 col-lg-9"
           >
+            <input
+              v-model="propertyAddress"
+              type="text"
+              name="propertyAddress"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: propertyAddress }"
               for="propertyAddress"
             >
               {{ 'Property Address (street, city, state)' }}
             </label>
-            <input
-              v-model="propertyAddress"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="propertyAddress"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.propertyZip }"
             class="form-group col-12 col-lg-3"
           >
+            <input
+              v-model="propertyZip"
+              v-mask="'#####'"
+              type="text"
+              name="propertyZip"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: propertyZip }"
               for="propertyZip"
             >
               {{ 'Zip Code' | titlecase }}
             </label>
-            <input
-              v-model="propertyZip"
-              v-mask="'#####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="propertyZip"
-              class="form-control"
-            >
           </div>
         </div>
         <div v-if="loanPurpose && (loanPurpose.name === 'Refinance' || loanPurpose.name === 'Refinance Cash Out')" class="row">
-          <!-- <div class="form-group col-12 col-lg-6">
-            <label
-              :class="{ hasvalue: propertyNumberOfUnits }"
-              for="propertyNumberOfUnits"
-            >
-              {{ 'Number of Units' | titlecase }}
-            </label>
+          <div class="form-group col-12 col-lg-6">
             <input
-              v-model="propertyNumberOfUnits"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
+              v-model="propertyYearAcquired"
+              v-mask="'####'"
               type="text"
-              name="propertyNumberOfUnits"
+              name="propertyYearAcquired"
               class="form-control"
             >
-          </div> -->
-          <div class="form-group col-12 col-lg-6">
             <label
               :class="{ hasvalue: propertyYearAcquired }"
               for="propertyYearAcquired"
             >
               {{ 'Year Acquired' | titlecase }}
             </label>
-            <input
-              v-model="propertyYearAcquired"
-              v-mask="'####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="propertyYearAcquired"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="propertyPurchasePrice"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="propertyPurchasePrice"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: propertyPurchasePrice }"
               for="propertyPurchasePrice"
             >
               {{ 'Original Cost' | titlecase }}
             </label>
-            <input
-              v-model="propertyPurchasePrice"
-              v-currency="{distractionFree: false}"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="propertyPurchasePrice"
-              class="form-control"
-            >
           </div>
         </div>
       </div>
@@ -120,141 +96,123 @@
             :class="{ error: formErrors.firstName }"
             class="form-group col-12 col-lg-6"
           >
+            <input
+              v-model="firstName"
+              type="text"
+              name="firstName"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: firstName }"
               for="firstName"
             >
               {{ 'First Name' | titlecase }}
             </label>
-            <input
-              v-model="firstName"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="firstName"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.lastName }"
             class="form-group col-12 col-lg-6"
           >
+            <input
+              v-model="lastName"
+              type="text"
+              name="lastName"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: lastName }"
               for="lastName"
             >
               {{ 'Last Name' | titlecase }}
             </label>
-            <input
-              v-model="lastName"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="lastName"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.email }"
             class="form-group col-12 col-lg-6"
           >
+            <input
+              v-model="email"
+              type="text"
+              name="email"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: email }"
               for="email"
             >
               {{ 'Email Address' | titlecase }}
             </label>
-            <input
-              v-model="email"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="email"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.cellPhone }"
             class="form-group col-12 col-lg-6"
           >
+            <input
+              v-model="cellPhone"
+              v-mask="'(###) ###-####'"
+              type="text"
+              name="cellPhone"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: cellPhone }"
               for="cellPhone"
             >
               {{ 'Cell Phone' | titlecase }}
             </label>
-            <input
-              v-model="cellPhone"
-              v-mask="'(###) ###-####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="cellPhone"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="ssn"
+              v-mask="'###-##-####'"
+              type="text"
+              name="ssn"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: ssn }"
               for="ssn"
             >
               {{ 'Social Security Number' | titlecase }}
             </label>
-            <input
-              v-model="ssn"
-              v-mask="'###-##-####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="ssn"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
+            <v-date-picker
+              v-model="dob"
+              v-mask="'##/##/####'"
+              @popoverWillShow="focusClassAdd($event)"
+              @popoverDidHide="focusClassRemove($event)"
+              :input-props="{
+                class: 'form-control'
+              }"
+              type="text"
+              name="dob"
+            />
             <label
               :class="{ hasvalue: dob }"
               for="dob"
             >
               {{ 'DOB (mm/dd/yyyy)' }}
             </label>
-            <input
-              v-model="dob"
-              v-mask="'##/##/####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="dob"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="yearsOfSchool"
+              v-mask="'##'"
+              type="text"
+              name="yearsOfSchool"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: yearsOfSchool }"
               for="yearsOfSchool"
             >
               {{ 'Years School' | titlecase }}
             </label>
-            <input
-              v-model="yearsOfSchool"
-              v-mask="'##'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="yearsOfSchool"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
-            <label
-              :class="{ hasvalue: maritalStatus }"
-              for="maritalStatus"
-            >
-              {{ 'Marital Status' }}
-            </label>
             <select
               v-model="maritalStatus"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
               name="maritalStatus"
               class="custom-select has-info"
             >
@@ -271,6 +229,12 @@
                 {{ option.name | titlecase }}
               </option>
             </select>
+            <label
+              :class="{ hasvalue: maritalStatus }"
+              for="maritalStatus"
+            >
+              {{ 'Marital Status' }}
+            </label>
           </div>
         </div>
         <div class="justify-content-between align-items-start d-flex">
@@ -296,90 +260,80 @@
             :class="{ error: formErrors.address }"
             class="form-group col-12 col-lg-9"
           >
+            <input
+              v-model="address"
+              type="text"
+              name="address"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: address }"
               for="address"
             >
               {{ 'Present Address' }}
             </label>
-            <input
-              v-model="address"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="address"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-3">
+            <input
+              v-model="zip"
+              v-mask="'#####'"
+              type="text"
+              name="zip"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: zip }"
               for="zip"
             >
               {{ 'Zip Code' }}
             </label>
-            <input
-              v-model="zip"
-              v-mask="'#####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="zip"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-12">
+            <input
+              v-model="timeAtCurrentAddress"
+              v-mask="'##'"
+              type="text"
+              name="timeAtCurrentAddress"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: timeAtCurrentAddress }"
               for="timeAtCurrentAddress"
             >
               {{ 'Years at Current Address' }}
             </label>
-            <input
-              v-model="timeAtCurrentAddress"
-              v-mask="'##'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="timeAtCurrentAddress"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.mailingAddress }"
             class="form-group col-12 col-lg-9"
           >
+            <input
+              v-model="mailingAddress"
+              type="text"
+              name="mailingAddress"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: mailingAddress }"
               for="mailingAddress"
             >
               {{ 'Mailing Address (if different from present address)' }}
             </label>
-            <input
-              v-model="mailingAddress"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="mailingAddress"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-3">
+            <input
+              v-model="mailingZip"
+              v-mask="'#####'"
+              type="text"
+              name="mailingZip"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: mailingZip }"
               for="mailingZip"
             >
               {{ 'Zip Code' }}
             </label>
-            <input
-              v-model="mailingZip"
-              v-mask="'#####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="mailingZip"
-              class="form-control"
-            >
           </div>
         </div>
 
@@ -389,72 +343,58 @@
             :class="{ error: formErrors.employerName }"
             class="form-group col-12 col-lg-12"
           >
+            <input
+              v-model="employerName"
+              type="text"
+              name="employerName"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: employerName }"
               for="employerName"
             >
               {{ 'Employer Name' | titlecase }}
             </label>
-            <input
-              v-model="employerName"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="employerName"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.employerAddress }"
             class="form-group col-12 col-lg-8"
           >
+            <input
+              v-model="employerAddress"
+              type="text"
+              name="employerAddress"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: employerAddress }"
               for="employerAddress"
             >
               {{ 'Employer Address' | titlecase }}
             </label>
-            <input
-              v-model="employerAddress"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="employerAddress"
-              class="form-control"
-            >
           </div>
           <div
             :class="{ error: formErrors.employerZip }"
             class="form-group col-12 col-lg-4"
           >
+            <input
+              v-model="employerZip"
+              v-mask="'#####'"
+              type="text"
+              name="employerZip"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: employerZip }"
               for="employerZip"
             >
               {{ 'Employer Zip Code' | titlecase }}
             </label>
-            <input
-              v-model="employerZip"
-              v-mask="'#####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="employerZip"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-4">
-            <label
-              :class="{ hasvalue: selfEmployed }"
-              for="selfEmployed"
-            >
-              {{ 'Self Employed' | titlecase }}
-            </label>
             <select
               id="input-select--selfEmployed"
               v-model="selfEmployed"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
               name="selfEmployed"
               class="custom-select has-info"
             >
@@ -474,73 +414,71 @@
                 No
               </option>
             </select>
+            <label
+              :class="{ hasvalue: selfEmployed }"
+              for="selfEmployed"
+            >
+              {{ 'Self Employed' | titlecase }}
+            </label>
           </div>
           <div class="form-group col-12 col-lg-4">
+            <input
+              v-model="employedHowLong"
+              v-mask="'##'"
+              type="text"
+              name="employedHowLong"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: employedHowLong }"
               for="employedHowLong"
             >
               {{ 'Years at this job' | titlecase }}
             </label>
-            <input
-              v-model="employedHowLong"
-              v-mask="'##'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="employedHowLong"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-4">
+            <input
+              v-model="yearsLineOfWork"
+              v-mask="'##'"
+              type="text"
+              name="yearsLineOfWork"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: yearsLineOfWork }"
               for="yearsLineOfWork"
             >
               {{ 'Years in line of work' | titlecase }}
             </label>
-            <input
-              v-model="yearsLineOfWork"
-              v-mask="'##'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="yearsLineOfWork"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-8">
+            <input
+              v-model="jobTitle"
+              type="text"
+              name="jobTitle"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: jobTitle }"
               for="jobTitle"
             >
               {{ 'Position / Job Title' | titlecase }}
             </label>
-            <input
-              v-model="jobTitle"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="jobTitle"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-4">
+            <input
+              v-model="businessPhone"
+              v-mask="'(###) ###-####'"
+              type="text"
+              name="businessPhone"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: businessPhone }"
               for="businessPhone"
             >
               {{ 'Business Phone' | titlecase }}
             </label>
-            <input
-              v-model="businessPhone"
-              v-mask="'(###) ###-####'"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="businessPhone"
-              class="form-control"
-            >
           </div>
         </div>
       </div>
@@ -574,141 +512,123 @@
               :class="{ error: formErrors.coBorrowerFirstName }"
               class="form-group col-12 col-lg-6"
             >
+              <input
+                v-model="coBorrowerFirstName"
+                type="text"
+                name="coBorrowerFirstName"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerFirstName }"
                 for="coBorrowerFirstName"
               >
                 {{ 'First Name' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerFirstName"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerFirstName"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.coBorrowerLastName }"
               class="form-group col-12 col-lg-6"
             >
+              <input
+                v-model="coBorrowerLastName"
+                type="text"
+                name="coBorrowerLastName"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerLastName }"
                 for="coBorrowerLastName"
               >
                 {{ 'Last Name' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerLastName"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerLastName"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.coBorrowerEmail }"
               class="form-group col-12 col-lg-6"
             >
+              <input
+                v-model="coBorrowerEmail"
+                type="text"
+                name="coBorrowerEmail"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerEmail }"
                 for="coBorrowerEmail"
               >
                 {{ 'Email Address' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerEmail"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerEmail"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.coBorrowerCellPhone }"
               class="form-group col-12 col-lg-6"
             >
+              <input
+                v-model="coBorrowerCellPhone"
+                v-mask="'(###) ###-####'"
+                type="text"
+                name="coBorrowerCellPhone"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerCellPhone }"
                 for="coBorrowerCellPhone"
               >
                 {{ 'Cell Phone' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerCellPhone"
-                v-mask="'(###) ###-####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerCellPhone"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="coBorrowerSsn"
+                v-mask="'###-##-####'"
+                type="text"
+                name="coBorrowerSsn"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerSsn }"
                 for="coBorrowerSsn"
               >
                 {{ 'Social Security Number' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerSsn"
-                v-mask="'###-##-####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerSsn"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <v-date-picker
+                v-model="coBorrowerDob"
+                v-mask="'##/##/####'"
+                @popoverWillShow="focusClassAdd($event)"
+                @popoverDidHide="focusClassRemove($event)"
+                :input-props="{
+                  class: 'form-control'
+                }"
+                type="text"
+                name="coBorrowerDob"
+              />
               <label
                 :class="{ hasvalue: coBorrowerDob }"
                 for="coBorrowerDob"
               >
                 {{ 'DOB (mm/dd/yyyy)' }}
               </label>
-              <input
-                v-model="coBorrowerDob"
-                v-mask="'##/##/####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerDob"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="coBorrowerYearsOfSchool"
+                v-mask="'##'"
+                type="text"
+                name="coBorrowerYearsOfSchool"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerYearsOfSchool }"
                 for="coBorrowerYearsOfSchool"
               >
                 {{ 'Years School' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerYearsOfSchool"
-                v-mask="'##'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerYearsOfSchool"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
-              <label
-                :class="{ hasvalue: coBorrowerMaritalStatus }"
-                for="coBorrowerMaritalStatus"
-              >
-                {{ 'Marital Status' }}
-              </label>
               <select
                 v-model="coBorrowerMaritalStatus"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
                 name="coBorrowerMaritalStatus"
                 class="custom-select has-info"
               >
@@ -725,6 +645,12 @@
                   {{ option.name | titlecase }}
                 </option>
               </select>
+              <label
+                :class="{ hasvalue: coBorrowerMaritalStatus }"
+                for="coBorrowerMaritalStatus"
+              >
+                {{ 'Marital Status' }}
+              </label>
             </div>
           </div>
           <h3>Address</h3>
@@ -733,37 +659,33 @@
               :class="{ error: formErrors.coBorrowerAddress }"
               class="form-group col-12 col-lg-8"
             >
+              <input
+                v-model="coBorrowerAddress"
+                type="text"
+                name="coBorrowerAddress"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerAddress }"
                 for="coBorrowerAddress"
               >
                 {{ 'Present Address' }}
               </label>
-              <input
-                v-model="coBorrowerAddress"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerAddress"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-4">
+              <input
+                v-model="coBorrowerZip"
+                v-mask="'#####'"
+                type="text"
+                name="coBorrowerZip"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerZip }"
                 for="coBorrowerZip"
               >
                 {{ 'Present Zip Code' }}
               </label>
-              <input
-                v-model="coBorrowerZip"
-                v-mask="'#####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerZip"
-                class="form-control"
-              >
             </div>
           </div>
 
@@ -773,72 +695,58 @@
               :class="{ error: formErrors.coBorrowerEmployerName }"
               class="form-group col-12 col-lg-12"
             >
+              <input
+                v-model="coBorrowerEmployerName"
+                type="text"
+                name="coBorrowerEmployerName"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerEmployerName }"
                 for="coBorrowerEmployerName"
               >
                 {{ 'Employer Name' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerEmployerName"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerEmployerName"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.coBorrowerEmployerAddress }"
               class="form-group col-12 col-lg-8"
             >
+              <input
+                v-model="coBorrowerEmployerAddress"
+                type="text"
+                name="coBorrowerEmployerAddress"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerEmployerAddress }"
                 for="coBorrowerEmployerAddress"
               >
                 {{ 'Employer Address' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerEmployerAddress"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerEmployerAddress"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.coBorrowerEmployerZip }"
               class="form-group col-12 col-lg-4"
             >
+              <input
+                v-model="coBorrowerEmployerZip"
+                v-mask="'#####'"
+                type="text"
+                name="coBorrowerEmployerZip"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerEmployerZip }"
                 for="coBorrowerEmployerZip"
               >
                 {{ 'Employer Zip Code' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerEmployerZip"
-                v-mask="'#####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerEmployerZip"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-4">
-              <label
-                :class="{ hasvalue: coBorrowerSelfEmployed }"
-                for="coBorrowerSelfEmployed"
-              >
-                {{ 'Self Employed' | titlecase }}
-              </label>
               <select
                 id="input-select--coBorrowerSelfEmployed"
                 v-model="coBorrowerSelfEmployed"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
                 name="coBorrowerSelfEmployed"
                 class="custom-select has-info"
               >
@@ -858,73 +766,71 @@
                   No
                 </option>
               </select>
+              <label
+                :class="{ hasvalue: coBorrowerSelfEmployed }"
+                for="coBorrowerSelfEmployed"
+              >
+                {{ 'Self Employed' | titlecase }}
+              </label>
             </div>
             <div class="form-group col-12 col-lg-4">
+              <input
+                v-model="coBorrowerEmployedHowLong"
+                v-mask="'##'"
+                type="text"
+                name="coBorrowerEmployedHowLong"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerEmployedHowLong }"
                 for="coBorrowerEmployedHowLong"
               >
                 {{ 'Years at this job' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerEmployedHowLong"
-                v-mask="'##'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerEmployedHowLong"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-4">
+              <input
+                v-model="coBorrowerYearsLineOfWork"
+                v-mask="'##'"
+                type="text"
+                name="coBorrowerYearsLineOfWork"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerYearsLineOfWork }"
                 for="coBorrowerYearsLineOfWork"
               >
                 {{ 'Years in line of work' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerYearsLineOfWork"
-                v-mask="'##'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerYearsLineOfWork"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-8">
+              <input
+                v-model="coBorrowerJobTitle"
+                type="text"
+                name="coBorrowerJobTitle"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerJobTitle }"
                 for="coBorrowerJobTitle"
               >
                 {{ 'Position / Job Title' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerJobTitle"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerJobTitle"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-4">
+              <input
+                v-model="coBorrowerBusinessPhone"
+                v-mask="'(###) ###-####'"
+                type="text"
+                name="coBorrowerBusinessPhone"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerBusinessPhone }"
                 for="coBorrowerBusinessPhone"
               >
                 {{ 'Business Phone' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerBusinessPhone"
-                v-mask="'(###) ###-####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerBusinessPhone"
-                class="form-control"
-              >
             </div>
           </div>
         </div>
@@ -939,38 +845,34 @@
         </h3>
         <div class="row">
           <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="grossIncome"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="grossIncome"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: grossIncome }"
               for="grossIncome"
             >
               {{ 'Base Income *' | titlecase }}
             </label>
-            <input
-              v-model="grossIncome"
-              v-currency="{distractionFree: false}"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="grossIncome"
-              class="form-control"
-            >
           </div>
           <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="hoaDues"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="hoaDues"
+              class="form-control"
+            >
             <label
               :class="{ hasvalue: hoaDues }"
               for="hoaDues"
             >
               {{ 'Homeowner Association Dues' | titlecase }}
             </label>
-            <input
-              v-model="hoaDues"
-              v-currency="{distractionFree: false}"
-              @focus="focusClassAdd($event)"
-              @blur="focusClassRemove($event)"
-              type="text"
-              name="hoaDues"
-              class="form-control"
-            >
           </div>
         </div>
         <div v-if="hasCoBorrower">
@@ -979,38 +881,34 @@
           </h3>
           <div class="row">
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="coBorrowerGrossIncome"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerGrossIncome"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerGrossIncome }"
                 for="coBorrowerGrossIncome"
               >
                 {{ 'Base Income *' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerGrossIncome"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerGrossIncome"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="coBorrowerHoaDues"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerHoaDues"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: coBorrowerHoaDues }"
                 for="coBorrowerHoaDues"
               >
                 {{ 'Homeowner Association Dues' | titlecase }}
               </label>
-              <input
-                v-model="coBorrowerHoaDues"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="coBorrowerHoaDues"
-                class="form-control"
-              >
             </div>
           </div>
         </div>
@@ -1055,52 +953,40 @@
               :class="{ error: formErrors.realEstate_0_address }"
               class="form-group col-12 col-lg-8"
             >
+              <input
+                v-model="realEstate_0_address"
+                type="text"
+                name="realEstate_0_address"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_0_address }"
                 for="realEstate_0_address"
               >
                 {{ 'Property Address' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_0_address"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_0_address"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.realEstate_0_zip }"
               class="form-group col-12 col-lg-4"
             >
+              <input
+                v-model="realEstate_0_zip"
+                v-mask="'#####'"
+                type="text"
+                name="realEstate_0_zip"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_0_zip }"
                 for="realEstate_0_zip"
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_0_zip"
-                v-mask="'#####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_0_zip"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
-              <label
-                :class="{ hasvalue: realEstate_0_propertyType }"
-                for="realEstate_0_propertyType"
-              >
-                {{ 'Property Type' | titlecase }}
-              </label>
               <select
                 v-model="realEstate_0_propertyType"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
                 name="realEstate_0_propertyType"
                 class="custom-select"
               >
@@ -1117,57 +1003,57 @@
                   {{ option.name | titlecase }}
                 </option>
               </select>
+              <label
+                :class="{ hasvalue: realEstate_0_propertyType }"
+                for="realEstate_0_propertyType"
+              >
+                {{ 'Property Type' | titlecase }}
+              </label>
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_0_presentMarketValue"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_0_presentMarketValue"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_0_presentMarketValue }"
                 for="realEstate_0_presentMarketValue"
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_0_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_0_presentMarketValue"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_0_totalLiens"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_0_totalLiens"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_0_totalLiens }"
                 for="realEstate_0_totalLiens"
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_0_totalLiens"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_0_totalLiens"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_0_grossRentalIncome"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_0_grossRentalIncome"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_0_grossRentalIncome }"
                 for="realEstate_0_grossRentalIncome"
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_0_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_0_grossRentalIncome"
-                class="form-control"
-              >
             </div>
           </div>
           <h3>
@@ -1178,52 +1064,40 @@
               :class="{ error: formErrors.realEstate_1_address }"
               class="form-group col-12 col-lg-8"
             >
+              <input
+                v-model="realEstate_1_address"
+                type="text"
+                name="realEstate_1_address"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_1_address }"
                 for="realEstate_1_address"
               >
                 {{ 'Property Address' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_1_address"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_1_address"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.realEstate_1_zip }"
               class="form-group col-12 col-lg-4"
             >
+              <input
+                v-model="realEstate_1_zip"
+                v-mask="'#####'"
+                type="text"
+                name="realEstate_1_zip"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_1_zip }"
                 for="realEstate_1_zip"
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_1_zip"
-                v-mask="'#####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_1_zip"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
-              <label
-                :class="{ hasvalue: realEstate_1_propertyType }"
-                for="realEstate_1_propertyType"
-              >
-                {{ 'Property Type' | titlecase }}
-              </label>
               <select
                 v-model="realEstate_1_propertyType"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
                 name="realEstate_1_propertyType"
                 class="custom-select"
               >
@@ -1240,57 +1114,57 @@
                   {{ option.name | titlecase }}
                 </option>
               </select>
+              <label
+                :class="{ hasvalue: realEstate_1_propertyType }"
+                for="realEstate_1_propertyType"
+              >
+                {{ 'Property Type' | titlecase }}
+              </label>
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_1_presentMarketValue"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_1_presentMarketValue"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_1_presentMarketValue }"
                 for="realEstate_1_presentMarketValue"
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_1_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_1_presentMarketValue"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_1_totalLiens"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_1_totalLiens"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_1_totalLiens }"
                 for="realEstate_1_totalLiens"
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_1_totalLiens"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_1_totalLiens"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_1_grossRentalIncome"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_1_grossRentalIncome"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_1_grossRentalIncome }"
                 for="realEstate_1_grossRentalIncome"
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_1_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_1_grossRentalIncome"
-                class="form-control"
-              >
             </div>
           </div>
           <h3>
@@ -1301,52 +1175,40 @@
               :class="{ error: formErrors.realEstate_2_address }"
               class="form-group col-12 col-lg-8"
             >
+              <input
+                v-model="realEstate_2_address"
+                type="text"
+                name="realEstate_2_address"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_2_address }"
                 for="realEstate_2_address"
               >
                 {{ 'Property Address' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_2_address"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_2_address"
-                class="form-control"
-              >
             </div>
             <div
               :class="{ error: formErrors.realEstate_2_zip }"
               class="form-group col-12 col-lg-4"
             >
+              <input
+                v-model="realEstate_2_zip"
+                v-mask="'#####'"
+                type="text"
+                name="realEstate_2_zip"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_2_zip }"
                 for="realEstate_2_zip"
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_2_zip"
-                v-mask="'#####'"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_2_zip"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
-              <label
-                :class="{ hasvalue: realEstate_2_propertyType }"
-                for="realEstate_2_propertyType"
-              >
-                {{ 'Property Type' | titlecase }}
-              </label>
               <select
                 v-model="realEstate_2_propertyType"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
                 name="realEstate_2_propertyType"
                 class="custom-select"
               >
@@ -1363,57 +1225,57 @@
                   {{ option.name | titlecase }}
                 </option>
               </select>
+              <label
+                :class="{ hasvalue: realEstate_2_propertyType }"
+                for="realEstate_2_propertyType"
+              >
+                {{ 'Property Type' | titlecase }}
+              </label>
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_2_presentMarketValue"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_2_presentMarketValue"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_2_presentMarketValue }"
                 for="realEstate_2_presentMarketValue"
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_2_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_2_presentMarketValue"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_2_totalLiens"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_2_totalLiens"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_2_totalLiens }"
                 for="realEstate_2_totalLiens"
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_2_totalLiens"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_2_totalLiens"
-                class="form-control"
-              >
             </div>
             <div class="form-group col-12 col-lg-6">
+              <input
+                v-model="realEstate_2_grossRentalIncome"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="realEstate_2_grossRentalIncome"
+                class="form-control"
+              >
               <label
                 :class="{ hasvalue: realEstate_2_grossRentalIncome }"
                 for="realEstate_2_grossRentalIncome"
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
-              <input
-                v-model="realEstate_2_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                @focus="focusClassAdd($event)"
-                @blur="focusClassRemove($event)"
-                type="text"
-                name="realEstate_2_grossRentalIncome"
-                class="form-control"
-              >
             </div>
           </div>
         </div>
@@ -1424,7 +1286,7 @@
           <button
             type="submit"
             name="submit"
-            class="btn btn-primary form--apply__submit mt-4"
+            class="btn btn--submit btn-primary form--apply__submit mt-4"
           >
             {{ 'Submit' | titlecase }}
           </button>
@@ -2614,11 +2476,13 @@ export default {
     },
     focusClassAdd (event) {
       const self = event.target
-      self.previousElementSibling.classList.add('focused')
+      console.log(self)
+      // self.closest('div').classList.add('focused')
     },
     focusClassRemove (event) {
       const self = event.target
-      self.previousElementSibling.classList.remove('focused')
+      console.log(self)
+      // self.closest('div').classList.remove('focused')
     },
     formValidate () {
       this.$emit('applicationValidateStart')
@@ -2723,15 +2587,6 @@ export default {
     font-weight: bold;
     line-height: 32px;
   }
-  &__submit {
-    @include media-breakpoint-down('sm') {
-      font-size: $font-size-lg;
-      margin-top: #{$spacer * 1.625};
-      padding-bottom: #{$spacer * 0.6875};
-      padding-top: #{$spacer * 0.6875};
-      width: 100%;
-    }
-  }
   &__footer {
     color: $input-placeholder-color;
     font-size: #{$font-size-sm * 0.75};
@@ -2746,24 +2601,6 @@ export default {
     margin-bottom: 4rem;
   }
   h3 {
-    margin-bottom: 1em;
-  }
-  & .form-group {
-    &.error {
-      label {
-        color: $danger !important;
-      }
-      input, select {
-        border: 1px solid $danger;
-      }
-    }
-  }
-}
-.form-errors {
-  color: $danger;
-  p {
-    font-size: $font-size-sm;
-    font-weight: $font-weight-bold;
     margin-bottom: 1em;
   }
 }

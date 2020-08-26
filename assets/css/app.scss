@@ -284,19 +284,8 @@ code {
 /*
 ** Forms
 */
-.custom-select {
-  background-image: url(~assets/icons/icon-dropdown.png);
-  background-repeat: no-repeat;
-  background-position: calc(100% - 12px) 50%;
-  background-size: auto;
-}
 
-.custom-control-label {
-  &::after,
-  &::before {
-    top: .275em;
-  }
-}
+@import "@/assets/css/form";
 
 /*
 ** Tables

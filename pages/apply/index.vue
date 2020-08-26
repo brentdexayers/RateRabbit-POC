@@ -170,43 +170,6 @@ export default {
     &--submit {
       margin-top: 35px;
     }
-    input, select {
-      height: $input-height-lg;
-      padding-top: $spacer;
-      transition: $transition-base;
-    }
-    label {
-      &:not(.custom-control-label) {
-        color: $gray-600;
-        font-size: $input-font-size;
-        margin-bottom: 0;
-        margin-left: calc(#{$input-padding-x} + #{$input-border-width});
-        // margin-top: -0.75em;
-        pointer-events: none;
-        position: absolute;
-        top: 1em;
-        transition: $transition-base;
-      }
-      img {
-        pointer-events: initial;
-      }
-      &.focused,
-      &.hasvalue {
-        color: $primary;
-        font-size: #{$font-size-sm * 0.8125};
-        top: 0.25em;
-        + input,
-        + select {
-          padding-top: $spacer;
-        }
-      }
-      &.custom-control-label {
-        color: $body-color;
-        margin-left: 0;
-        pointer-events: inherit;
-        position: relative;
-      }
-    }
   }
 }
 </style>

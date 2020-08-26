@@ -3,6 +3,7 @@
     class="sidebar col-0 col-md-5 col-lg-4 sidebar--search-form"
   >
     <Form
+      :sidebar="true"
       :hideExtraFields="true"
       :invertedSubmit="true"
     />
@@ -40,57 +41,6 @@ export default {
     border: 1px solid #DEDEDE;
     width: 100%;
     padding: 15px 22px 40px;
-    .form-group {
-      margin-bottom: 0;
-    }
-    label,
-    .label {
-      bottom: -0.5em;
-      color: $primary;
-      font-size: #{$font-size-sm * 0.8125};
-      font-weight: $font-weight-normal;
-      margin-left: $input-padding-x;
-      margin-bottom: 0;
-      position: relative;
-      &.form--search-rates__form-group--program-options__label,
-      &.label-list {
-        bottom: inherit;
-        color: $body-color;
-        font-size: $font-size-sm;
-        font-weight: $font-weight-bold;
-        line-height: 1.75;
-        margin-left: 0;
-      }
-      &.custom-control-label {
-        bottom: inherit;
-        color: $body-color;
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
-        line-height: 1.75;
-        margin-left: 0;
-      }
-    }
-    input,
-    select,
-    textarea {
-      border-radius: 0;
-      border-bottom: 1px solid #{$gray-500};
-      border-left: none;
-      border-right: none;
-      border-top: none;
-      font-weight: $font-weight-semibold;
-    }
-    [type="submit"] {
-      margin-bottom: 30px;
-      margin-top: 40px;
-      width: 100%;
-    }
-    option[disabled][hidden] {
-      display: none;
-    }
-    .form--search-rates__spacer {
-      margin-bottom: 30px;
-    }
   }
   @include media-breakpoint-down('sm') {
     display: none;
