@@ -129,6 +129,7 @@ export const state = () => ({
       creditRatingOptions: [],
       loanPurposeOptions: [],
       maritalStatusOptions: [],
+      promotionCodeOptions: [],
       propertyTypeOptions: [],
       propertyUseOptions: [],
       stateOptions: []
@@ -170,6 +171,10 @@ export const mutations = {
     //   state.searchResultDetails.push(a)
     // })
     state.searchResultDetails = payload
+  },
+  // Promotion Codes
+  updatePromotionCodeOptions (state, payload) {
+    state.form.options.promotionCodeOptions = payload
   },
   // Search Form Options
   updateCreditRatingOptions (state, payload) {

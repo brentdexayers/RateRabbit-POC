@@ -49,13 +49,12 @@
 label {
   color: $gray-600;
   font-size: $input-font-size;
-  left: $input-padding-x;
+  left: $input-padding-x * 2;
   margin-bottom: 0;
-  margin-left: calc(#{$input-padding-x} + #{$input-border-width});
-  // margin-top: -0.75em;
+  margin-left: 0;
   pointer-events: none;
   position: absolute;
-  top: 1em;
+  top: ($input-height-lg / 2) - ($input-font-size / 1.5);
   transition: $transition-base;
 
   img {
@@ -110,6 +109,12 @@ label {
     &:focus {
       box-shadow: 0px 6px 4px -4px rgba($danger, 0.25);
     }
+  }
+}
+.success {
+  &-inline {
+    @extend .error-inline;
+    color: $primary;
   }
 }
 

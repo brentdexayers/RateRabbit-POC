@@ -458,12 +458,6 @@
                   </p>
                 </div>
                 <div class="form-group col-12 mb-3">
-                  <label
-                    :class="{ hasvalue: promotionCode }"
-                    for="promotionCode"
-                  >
-                    {{ 'Promo Code' | titlecase }}
-                  </label>
                   <input
                     v-model="promotionCode"
                     type="text"
@@ -471,6 +465,18 @@
                     class="form-control"
                     placeholder=""
                   >
+                  <label
+                    :class="{ hasvalue: promotionCode }"
+                    for="promotionCode"
+                  >
+                    {{ 'Promo Code' | titlecase }}
+                  </label>
+                  <p
+                    v-if="promotion.length && promotion[0].hasOwnProperty('displayMessage')"
+                    class="success-inline"
+                  >
+                    {{ promotion[0].displayMessage }}
+                  </p>
                 </div>
               </div>
             </li>
@@ -512,6 +518,7 @@ import {
   getCreditRating,
   getLoanPurpose,
   getMaritalStatus,
+  getPromotionCode,
   getPropertyType,
   getPropertyUse,
   getState,
@@ -548,7 +555,8 @@ export default {
         propertyZip: false,
         state: false
       },
-      minLoanAmount: 50000
+      minLoanAmount: 50000,
+      promotion: false
     }
   },
   computed: {
@@ -557,6 +565,7 @@ export default {
       creditRatingOptions: state => state.form.options.creditRatingOptions,
       loanPurposeOptions: state => state.form.options.loanPurposeOptions,
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
+      promotionCodeOptions: state => state.form.options.promotionCodeOptions,
       propertyTypeOptions: state => state.form.options.propertyTypeOptions,
       propertyUseOptions: state => state.form.options.propertyUseOptions,
       searchResults: state => state.searchResultsReduced,
@@ -799,6 +808,10 @@ export default {
     creditRating (value) {
       this.creditRating = value
       this.validateCreditRating(value)
+    },
+    promotionCode (value) {
+      this.promotionCode = value
+      this.validatePromotionCode(value)
     }
   },
   async fetch () {
@@ -822,6 +835,9 @@ export default {
     }
     if (!this.maritalStatusOptions.length) {
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
+    }
+    if (!this.promotionCodeOptions.length) {
+      this.$store.commit('updatePromotionCodeOptions', await getPromotionCode(this.auth))
     }
   },
   methods: {
@@ -1019,6 +1035,19 @@ export default {
         this.errors.creditRating = false
       } else {
         this.errors.creditRating = true
+      }
+    },
+    validatePromotionCode (value) {
+      if (value) {
+        if (this.promotionCodeOptions.length) {
+          this.promotion = this.promotionCodeOptions.filter(
+            function (promoItem) {
+              return promoItem.promotionCode.toUpperCase() === value.toUpperCase()
+            }
+          )
+        }
+      } else {
+        this.promotion = false
       }
     }
   }

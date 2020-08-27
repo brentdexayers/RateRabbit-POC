@@ -156,6 +156,19 @@ export const getMaritalStatus = async (auth) => {
   return data
 }
 
+export const getPromotionCode = async (auth) => {
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  const { data } = await axios.get(`${apiUrl}/promotioncode`, axiosConfig)
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      handleError(error)
+      // throw error
+    })
+  return data
+}
+
 export const getPropertyType = async (auth) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
   const { data } = await axios.get(`${apiUrl}/propertytype`, axiosConfig)
