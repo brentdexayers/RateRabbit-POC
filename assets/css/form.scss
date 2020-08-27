@@ -63,9 +63,11 @@ label {
 
   &.custom-control-label {
     color: $body-color;
+    left: 0;
     margin-left: 0;
     pointer-events: inherit;
     position: relative;
+    top: 0;
   }
 
   &.hasvalue {
