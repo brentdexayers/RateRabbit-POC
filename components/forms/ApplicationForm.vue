@@ -7,22 +7,18 @@
       method="POST"
       class="form form--apply"
     >
-      <div v-if="hasFormErrors" class="form-errors">
-        <p class="text-danger">
-          Please fix the following errors:
-        </p>
-      </div>
       <div id="property_information" class="section">
         <h2 class="form--section_header">
           Property Information
         </h2>
         <div class="row">
           <div
-            :class="{ error: formErrors.propertyAddress }"
+            :class="{ error: errors.propertyAddress }"
             class="form-group col-12 col-lg-9"
           >
             <input
               v-model="propertyAddress"
+              @blur="validatePropertyAddress(propertyAddress)"
               type="text"
               name="propertyAddress"
               class="form-control"
@@ -33,14 +29,21 @@
             >
               {{ 'Property Address (street, city, state)' }}
             </label>
+            <p
+              v-if="errors.propertyAddress"
+              class="error-inline"
+            >
+              Property address is required
+            </p>
           </div>
           <div
-            :class="{ error: formErrors.propertyZip }"
+            :class="{ error: errors.propertyZip }"
             class="form-group col-12 col-lg-3"
           >
             <input
               v-model="propertyZip"
               v-mask="'#####'"
+              @blur="validatePropertyZip(propertyZip)"
               type="text"
               name="propertyZip"
               class="form-control"
@@ -93,11 +96,12 @@
         </h2>
         <div class="row">
           <div
-            :class="{ error: formErrors.firstName }"
+            :class="{ error: errors.firstName }"
             class="form-group col-12 col-lg-6"
           >
             <input
               v-model="firstName"
+              @blur="validateFirstName(firstName)"
               type="text"
               name="firstName"
               class="form-control"
@@ -110,11 +114,12 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.lastName }"
+            :class="{ error: errors.lastName }"
             class="form-group col-12 col-lg-6"
           >
             <input
               v-model="lastName"
+              @blur="validateLastName(lastName)"
               type="text"
               name="lastName"
               class="form-control"
@@ -127,11 +132,12 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.email }"
+            :class="{ error: errors.email }"
             class="form-group col-12 col-lg-6"
           >
             <input
               v-model="email"
+              @blur="validateEmail(email)"
               type="text"
               name="email"
               class="form-control"
@@ -144,12 +150,13 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.cellPhone }"
+            :class="{ error: errors.cellPhone }"
             class="form-group col-12 col-lg-6"
           >
             <input
               v-model="cellPhone"
               v-mask="'(###) ###-####'"
+              @blur="validateCellPhone(cellPhone)"
               type="text"
               name="cellPhone"
               class="form-control"
@@ -257,11 +264,12 @@
         </div>
         <div class="row">
           <div
-            :class="{ error: formErrors.address }"
+            :class="{ error: errors.address }"
             class="form-group col-12 col-lg-9"
           >
             <input
               v-model="address"
+              @blur="validateAddress(address)"
               type="text"
               name="address"
               class="form-control"
@@ -277,6 +285,7 @@
             <input
               v-model="zip"
               v-mask="'#####'"
+              @blur="validateZip(zip)"
               type="text"
               name="zip"
               class="form-control"
@@ -304,11 +313,12 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.mailingAddress }"
+            :class="{ error: errors.mailingAddress }"
             class="form-group col-12 col-lg-9"
           >
             <input
               v-model="mailingAddress"
+              @blur="validateMailingAddress(mailingAddress)"
               type="text"
               name="mailingAddress"
               class="form-control"
@@ -323,6 +333,7 @@
           <div class="form-group col-12 col-lg-3">
             <input
               v-model="mailingZip"
+              @blur="validateMailingZip(mailingZip)"
               v-mask="'#####'"
               type="text"
               name="mailingZip"
@@ -340,11 +351,12 @@
         <h3>Employer</h3>
         <div class="row">
           <div
-            :class="{ error: formErrors.employerName }"
+            :class="{ error: errors.employerName }"
             class="form-group col-12 col-lg-12"
           >
             <input
               v-model="employerName"
+              @blur="validateEmployerName(employerName)"
               type="text"
               name="employerName"
               class="form-control"
@@ -357,11 +369,12 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.employerAddress }"
+            :class="{ error: errors.employerAddress }"
             class="form-group col-12 col-lg-8"
           >
             <input
               v-model="employerAddress"
+              @blur="validateEmployerAddress(employerAddress)"
               type="text"
               name="employerAddress"
               class="form-control"
@@ -374,11 +387,12 @@
             </label>
           </div>
           <div
-            :class="{ error: formErrors.employerZip }"
+            :class="{ error: errors.employerZip }"
             class="form-group col-12 col-lg-4"
           >
             <input
               v-model="employerZip"
+              @blur="validateEmployerZip(employerZip)"
               v-mask="'#####'"
               type="text"
               name="employerZip"
@@ -509,11 +523,12 @@
         <div v-if="hasCoBorrower">
           <div class="row">
             <div
-              :class="{ error: formErrors.coBorrowerFirstName }"
+              :class="{ error: errors.coBorrowerFirstName }"
               class="form-group col-12 col-lg-6"
             >
               <input
                 v-model="coBorrowerFirstName"
+                @blur="validateCoBorrowerFirstName(coBorrowerFirstName)"
                 type="text"
                 name="coBorrowerFirstName"
                 class="form-control"
@@ -526,11 +541,12 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerLastName }"
+              :class="{ error: errors.coBorrowerLastName }"
               class="form-group col-12 col-lg-6"
             >
               <input
                 v-model="coBorrowerLastName"
+                @blur="validateCoBorrowerLastName(coBorrowerLastName)"
                 type="text"
                 name="coBorrowerLastName"
                 class="form-control"
@@ -543,11 +559,12 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerEmail }"
+              :class="{ error: errors.coBorrowerEmail }"
               class="form-group col-12 col-lg-6"
             >
               <input
                 v-model="coBorrowerEmail"
+                @blur="validateCoBorrowerEmail(coBorrowerEmail)"
                 type="text"
                 name="coBorrowerEmail"
                 class="form-control"
@@ -560,12 +577,13 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerCellPhone }"
+              :class="{ error: errors.coBorrowerCellPhone }"
               class="form-group col-12 col-lg-6"
             >
               <input
                 v-model="coBorrowerCellPhone"
                 v-mask="'(###) ###-####'"
+                @blur="validateCoBorrowerCellPhone(coBorrowerCellPhone)"
                 type="text"
                 name="coBorrowerCellPhone"
                 class="form-control"
@@ -656,11 +674,12 @@
           <h3>Address</h3>
           <div class="row">
             <div
-              :class="{ error: formErrors.coBorrowerAddress }"
+              :class="{ error: errors.coBorrowerAddress }"
               class="form-group col-12 col-lg-8"
             >
               <input
                 v-model="coBorrowerAddress"
+                @blur="validateCoBorrowerAddress(coBorrowerAddress)"
                 type="text"
                 name="coBorrowerAddress"
                 class="form-control"
@@ -675,6 +694,7 @@
             <div class="form-group col-12 col-lg-4">
               <input
                 v-model="coBorrowerZip"
+                @blur="validateCoBorrowerZip(coBorrowerZip)"
                 v-mask="'#####'"
                 type="text"
                 name="coBorrowerZip"
@@ -692,11 +712,12 @@
           <h3>Employer</h3>
           <div class="row">
             <div
-              :class="{ error: formErrors.coBorrowerEmployerName }"
+              :class="{ error: errors.coBorrowerEmployerName }"
               class="form-group col-12 col-lg-12"
             >
               <input
                 v-model="coBorrowerEmployerName"
+                @blur="validateCoBorrowerEmployerName(coBorrowerEmployerName)"
                 type="text"
                 name="coBorrowerEmployerName"
                 class="form-control"
@@ -709,11 +730,12 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerEmployerAddress }"
+              :class="{ error: errors.coBorrowerEmployerAddress }"
               class="form-group col-12 col-lg-8"
             >
               <input
                 v-model="coBorrowerEmployerAddress"
+                @blur="validateCoBorrowerEmployerAddress(coBorrowerEmployerAddress)"
                 type="text"
                 name="coBorrowerEmployerAddress"
                 class="form-control"
@@ -726,12 +748,13 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.coBorrowerEmployerZip }"
+              :class="{ error: errors.coBorrowerEmployerZip }"
               class="form-group col-12 col-lg-4"
             >
               <input
                 v-model="coBorrowerEmployerZip"
                 v-mask="'#####'"
+                @blur="validateCoBorrowerEmployerZip(coBorrowerEmployerZip)"
                 type="text"
                 name="coBorrowerEmployerZip"
                 class="form-control"
@@ -950,11 +973,12 @@
           </h3>
           <div class="row">
             <div
-              :class="{ error: formErrors.realEstate_0_address }"
+              :class="{ error: errors.realEstate_0_address }"
               class="form-group col-12 col-lg-8"
             >
               <input
                 v-model="realEstate_0_address"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_address"
                 class="form-control"
@@ -967,12 +991,13 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.realEstate_0_zip }"
+              :class="{ error: errors.realEstate_0_zip }"
               class="form-group col-12 col-lg-4"
             >
               <input
                 v-model="realEstate_0_zip"
                 v-mask="'#####'"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_zip"
                 class="form-control"
@@ -987,6 +1012,7 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="realEstate_0_propertyType"
+                @blur="validateAssetsAndLiabilities()"
                 name="realEstate_0_propertyType"
                 class="custom-select"
               >
@@ -1014,6 +1040,7 @@
               <input
                 v-model="realEstate_0_presentMarketValue"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_presentMarketValue"
                 class="form-control"
@@ -1029,6 +1056,7 @@
               <input
                 v-model="realEstate_0_totalLiens"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_totalLiens"
                 class="form-control"
@@ -1044,6 +1072,7 @@
               <input
                 v-model="realEstate_0_grossRentalIncome"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_grossRentalIncome"
                 class="form-control"
@@ -1061,11 +1090,12 @@
           </h3>
           <div class="row">
             <div
-              :class="{ error: formErrors.realEstate_1_address }"
+              :class="{ error: errors.realEstate_1_address }"
               class="form-group col-12 col-lg-8"
             >
               <input
                 v-model="realEstate_1_address"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_1_address"
                 class="form-control"
@@ -1078,12 +1108,13 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.realEstate_1_zip }"
+              :class="{ error: errors.realEstate_1_zip }"
               class="form-group col-12 col-lg-4"
             >
               <input
                 v-model="realEstate_1_zip"
                 v-mask="'#####'"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_1_zip"
                 class="form-control"
@@ -1098,6 +1129,7 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="realEstate_1_propertyType"
+                @blur="validateAssetsAndLiabilities()"
                 name="realEstate_1_propertyType"
                 class="custom-select"
               >
@@ -1125,6 +1157,7 @@
               <input
                 v-model="realEstate_1_presentMarketValue"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_1_presentMarketValue"
                 class="form-control"
@@ -1140,6 +1173,7 @@
               <input
                 v-model="realEstate_1_totalLiens"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_1_totalLiens"
                 class="form-control"
@@ -1155,6 +1189,7 @@
               <input
                 v-model="realEstate_1_grossRentalIncome"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_1_grossRentalIncome"
                 class="form-control"
@@ -1172,11 +1207,12 @@
           </h3>
           <div class="row">
             <div
-              :class="{ error: formErrors.realEstate_2_address }"
+              :class="{ error: errors.realEstate_2_address }"
               class="form-group col-12 col-lg-8"
             >
               <input
                 v-model="realEstate_2_address"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_2_address"
                 class="form-control"
@@ -1189,12 +1225,13 @@
               </label>
             </div>
             <div
-              :class="{ error: formErrors.realEstate_2_zip }"
+              :class="{ error: errors.realEstate_2_zip }"
               class="form-group col-12 col-lg-4"
             >
               <input
                 v-model="realEstate_2_zip"
                 v-mask="'#####'"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_2_zip"
                 class="form-control"
@@ -1209,6 +1246,7 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="realEstate_2_propertyType"
+                @blur="validateAssetsAndLiabilities()"
                 name="realEstate_2_propertyType"
                 class="custom-select"
               >
@@ -1236,6 +1274,7 @@
               <input
                 v-model="realEstate_2_presentMarketValue"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_2_presentMarketValue"
                 class="form-control"
@@ -1251,6 +1290,7 @@
               <input
                 v-model="realEstate_2_totalLiens"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_2_totalLiens"
                 class="form-control"
@@ -1266,6 +1306,7 @@
               <input
                 v-model="realEstate_2_grossRentalIncome"
                 v-currency="{distractionFree: false}"
+                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_2_grossRentalIncome"
                 class="form-control"
@@ -1322,9 +1363,9 @@ export default {
     return {
       assetsAndLiabilities: false,
       copyPropertyAddress: false,
-      formErrors: {
+      errors: {
         address: false,
-        // borrowerType: false,
+        assetsAndLiabilities: false,
         cellPhone: false,
         coBorrowerAddress: false,
         coBorrowerCellPhone: false,
@@ -1332,22 +1373,17 @@ export default {
         coBorrowerEmployerAddress: false,
         coBorrowerEmployerName: false,
         coBorrowerEmployerZip: false,
-        // coBorrowerExpenseType: false,
         coBorrowerFirstName: false,
-        // coBorrowerHomePhone: false,
         coBorrowerLastName: false,
         coBorrowerMailingAddress: false,
         email: false,
         employerAddress: false,
         employerName: false,
         employerZip: false,
-        // expenseType: false,
         firstName: false,
-        // homePhone: false,
         lastName: false,
         mailingAddress: false,
         loanAmount: false,
-        productId: false,
         propertyAddress: false,
         propertyZip: false,
         realEstate_0_address: false,
@@ -1975,14 +2011,6 @@ export default {
         this.$store.commit('updateMaritalStatus', value)
       }
     },
-    // productId: {
-    //   get () {
-    //     return this.$store.state.application.data.productId
-    //   },
-    //   set (value) {
-    //     this.$store.commit('updateProductId', value)
-    //   }
-    // },
     promotionCode: {
       get () {
         return this.$store.state.application.data.promotionCode
@@ -2290,7 +2318,7 @@ export default {
           locAfterFirst: this.applicationData.locAfterFirst ? 1 : 0,
           locAmount: this.$parseCurrency(this.applicationData.locAmount)
         },
-        productId: this.productId, // this.loanProduct.productId,
+        productId: this.productId,
         promotionCode: this.applicationData.promotionCode,
         property: {
           numberUnits: Number(this.applicationData.propertyNumberOfUnits),
@@ -2440,6 +2468,98 @@ export default {
       return payload
     }
   },
+  watch: {
+    propertyAddress (value) {
+      this.propertyAddress = value
+      this.validatePropertyAddress(value)
+    },
+    propertyZip (value) {
+      this.propertyZip = value
+      this.validatePropertyZip(value)
+    },
+    // Borrower Information
+    firstName (value) {
+      this.firstName = value
+      this.validateFirstName(value)
+    },
+    lastName (value) {
+      this.lastName = value
+      this.validateLastName(value)
+    },
+    email (value) {
+      this.email = value
+      this.validateEmail(value)
+    },
+    cellPhone (value) {
+      this.cellPhone = value
+      this.validateCellPhone(value)
+    },
+    address (value) {
+      this.address = value
+      this.validateAddress(value)
+    },
+    zip (value) {
+      this.zip = value
+      this.validateZip(value)
+    },
+    mailingAddress (value) {
+      this.mailingAddress = value
+      this.validateMailingAddress(value)
+    },
+    mailingZip (value) {
+      this.mailingZip = value
+      this.validateMailingZip(value)
+    },
+    employerName (value) {
+      this.employerName = value
+      this.validateEmployerName(value)
+    },
+    employerAddress (value) {
+      this.employerAddress = value
+      this.validateEmployerAddress(value)
+    },
+    employerZip (value) {
+      this.employerZip = value
+      this.validateEmployerZip(value)
+    },
+    // Co-Borrower Information
+    coBorrowerFirstName (value) {
+      this.coBorrowerFirstName = value
+      this.validateCoBorrowerFirstName(value)
+    },
+    coBorrowerLastName (value) {
+      this.coBorrowerLastName = value
+      this.validateCoBorrowerLastName(value)
+    },
+    coBorrowerEmail (value) {
+      this.coBorrowerEmail = value
+      this.validateCoBorrowerEmail(value)
+    },
+    coBorrowerCellPhone (value) {
+      this.coBorrowerCellPhone = value
+      this.validateCoBorrowerCellPhone(value)
+    },
+    coBorrowerAddress (value) {
+      this.coBorrowerAddress = value
+      this.validateCoBorrowerAddress(value)
+    },
+    coBorrowerZip (value) {
+      this.coBorrowerZip = value
+      this.validateCoBorrowerZip(value)
+    },
+    coBorrowerEmployerName (value) {
+      this.coBorrowerEmployerName = value
+      this.validateCoBorrowerEmployerName(value)
+    },
+    coBorrowerEmployerAddress (value) {
+      this.coBorrowerEmployerAddress = value
+      this.validateCoBorrowerEmployerAddress(value)
+    },
+    coBorrowerEmployerZip (value) {
+      this.coBorrowerEmployerZip = value
+      this.validateCoBorrowerEmployerZip(value)
+    }
+  },
   async fetch () {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
       this.$store.commit('setAuth', await authenticate())
@@ -2486,53 +2606,27 @@ export default {
     },
     formValidate () {
       this.$emit('applicationValidateStart')
-      if (!this.applicationData.loanPurpose) { this.formErrors.loanPurpose = true } else { this.formErrors.loanPurpose = false }
-      if (this.applicationData.zip && !this.applicationData.address) { this.formErrors.address = true } else { this.formErrors.address = false }
-      if (!this.applicationData.email) { this.formErrors.email = true } else { this.formErrors.email = false }
-      if (this.applicationData.employerAddress || this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong || this.applicationData.employerZip) {
-        if (!this.applicationData.employerAddress) { this.formErrors.employerAddress = true } else { this.formErrors.employerAddress = false }
-        if (!this.applicationData.employerName) { this.formErrors.employerName = true } else { this.formErrors.employerName = false }
-        if (!this.applicationData.employerZip) { this.formErrors.employerZip = true } else { this.formErrors.employerZip = false }
-      }
-      if (!this.applicationData.firstName) { this.formErrors.firstName = true } else { this.formErrors.firstName = false }
-      if (!this.applicationData.cellPhone) { this.formErrors.cellPhone = true } else { this.formErrors.cellPhone = false }
-      // if (!this.applicationData.homePhone) { this.formErrors.homePhone = true } else { this.formErrors.homePhone = false }
-      if (!this.applicationData.lastName) { this.formErrors.lastName = true } else { this.formErrors.lastName = false }
-      if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.formErrors.mailingAddress = true } else { this.formErrors.mailingAddress = false }
-      if (this.hasCoBorrower) {
-        if (this.applicationData.coBorrowerZip && !this.applicationData.coBorrowerAddress) { this.formErrors.coBorrowerAddress = true } else { this.formErrors.coBorrowerAddress = false }
-        if (!this.applicationData.coBorrowerEmail) { this.formErrors.coBorrowerEmail = true } else { this.formErrors.coBorrowerEmail = false }
-        if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
-          if (!this.applicationData.coBorrowerEmployerAddress) { this.formErrors.coBorrowerEmployerAddress = true } else { this.formErrors.coBorrowerEmployerAddress = false }
-          if (!this.applicationData.coBorrowerEmployerName) { this.formErrors.coBorrowerEmployerName = true } else { this.formErrors.coBorrowerEmployerName = false }
-          if (!this.applicationData.coBorrowerEmployerZip) { this.formErrors.coBorrowerEmployerZip = true } else { this.formErrors.coBorrowerEmployerZip = false }
-        }
-        if (!this.applicationData.coBorrowerFirstName) { this.formErrors.coBorrowerFirstName = true } else { this.formErrors.coBorrowerFirstName = false }
-        if (!this.applicationData.coBorrowerCellPhone) { this.formErrors.coBorrowerCellPhone = true } else { this.formErrors.coBorrowerCellPhone = false }
-        // if (!this.applicationData.coBorrowerHomePhone) { this.formErrors.coBorrowerHomePhone = true } else { this.formErrors.coBorrowerHomePhone = false }
-        if (!this.applicationData.coBorrowerLastName) { this.formErrors.coBorrowerLastName = true } else { this.formErrors.coBorrowerLastName = false }
-        // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.formErrors.coBorrowerMailingAddress = true } else { this.formErrors.coBorrowerMailingAddress = false }
-      }
-      if (!this.applicationData.loanAmount) { this.formErrors.loanAmount = true } else { this.formErrors.loanAmount = false }
-      if (!this.productId) { this.formErrors.productId = true } else { this.formErrors.productId = false }
-      if (!this.applicationData.propertyAddress) { this.formErrors.propertyAddress = true } else { this.formErrors.propertyAddress = false }
-      if (!this.applicationData.propertyZip) { this.formErrors.propertyZip = true } else { this.formErrors.propertyZip = false }
-      if (this.assetsAndLiabilities) {
-        if (this.realEstate_0_address || this.realEstate_0_grossRentalIncome || this.realEstate_0_presentMarketValue || this.realEstate_0_propertyType || this.realEstate_0_totalLiens || this.realEstate_0_zip) {
-          if (!this.applicationData.realEstate_0_address) { this.formErrors.realEstate_0_address = true } else { this.formErrors.realEstate_0_address = false }
-          if (!this.applicationData.realEstate_0_zip) { this.formErrors.realEstate_0_zip = true } else { this.formErrors.realEstate_0_zip = false }
-        }
-        if (this.realEstate_1_address || this.realEstate_1_grossRentalIncome || this.realEstate_1_presentMarketValue || this.realEstate_1_propertyType || this.realEstate_1_totalLiens || this.realEstate_1_zip) {
-          if (!this.applicationData.realEstate_1_address) { this.formErrors.realEstate_1_address = true } else { this.formErrors.realEstate_1_address = false }
-          if (!this.applicationData.realEstate_1_zip) { this.formErrors.realEstate_1_zip = true } else { this.formErrors.realEstate_1_zip = false }
-        }
-        if (this.realEstate_2_address || this.realEstate_2_grossRentalIncome || this.realEstate_2_presentMarketValue || this.realEstate_2_propertyType || this.realEstate_2_totalLiens || this.realEstate_2_zip) {
-          if (!this.applicationData.realEstate_2_address) { this.formErrors.realEstate_2_address = true } else { this.formErrors.realEstate_2_address = false }
-          if (!this.applicationData.realEstate_2_zip) { this.formErrors.realEstate_2_zip = true } else { this.formErrors.realEstate_2_zip = false }
-        }
-        if (!this.applicationData.result) { this.formErrors.result = true } else { this.formErrors.result = false }
-      }
-      const hasFormErrors = Object.keys(this.formErrors).some(k => this.formErrors[k])
+      //   if (!this.applicationData.employerAddress) { this.errors.employerAddress = true } else { this.errors.employerAddress = false }
+      //   if (!this.applicationData.employerName) { this.errors.employerName = true } else { this.errors.employerName = false }
+      //   if (!this.applicationData.employerZip) { this.errors.employerZip = true } else { this.errors.employerZip = false }
+      // }
+      // if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.errors.mailingAddress = true } else { this.errors.mailingAddress = false }
+      // if (this.hasCoBorrower) {
+      // if (this.applicationData.coBorrowerZip && !this.applicationData.coBorrowerAddress) { this.errors.coBorrowerAddress = true } else { this.errors.coBorrowerAddress = false }
+      // if (!this.applicationData.coBorrowerEmail) { this.errors.coBorrowerEmail = true } else { this.errors.coBorrowerEmail = false }
+      // if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
+      // if (!this.applicationData.coBorrowerEmployerName) { this.errors.coBorrowerEmployerName = true } else { this.errors.coBorrowerEmployerName = false }
+      // if (!this.applicationData.coBorrowerEmployerAddress) { this.errors.coBorrowerEmployerAddress = true } else { this.errors.coBorrowerEmployerAddress = false }
+      // if (!this.applicationData.coBorrowerEmployerZip) { this.errors.coBorrowerEmployerZip = true } else { this.errors.coBorrowerEmployerZip = false }
+      // }
+      // if (!this.applicationData.coBorrowerFirstName) { this.errors.coBorrowerFirstName = true } else { this.errors.coBorrowerFirstName = false }
+      // if (!this.applicationData.coBorrowerCellPhone) { this.errors.coBorrowerCellPhone = true } else { this.errors.coBorrowerCellPhone = false }
+      // if (!this.applicationData.coBorrowerHomePhone) { this.errors.coBorrowerHomePhone = true } else { this.errors.coBorrowerHomePhone = false }
+      // if (!this.applicationData.coBorrowerLastName) { this.errors.coBorrowerLastName = true } else { this.errors.coBorrowerLastName = false }
+      // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.errors.coBorrowerMailingAddress = true } else { this.errors.coBorrowerMailingAddress = false }
+      // }
+      
+      const hasFormErrors = Object.keys(this.errors).some(k => this.errors[k])
       this.hasFormErrors = hasFormErrors
       return hasFormErrors
     },
@@ -2571,6 +2665,335 @@ export default {
         window.scrollTo(0, c - c / 8)
       }
       document.body.focus()
+    },
+    validatePropertyAddress (value) {
+      if (value) {
+        this.errors.propertyAddress = false
+      } else {
+        this.errors.propertyAddress = true
+      }
+    },
+    validatePropertyZip (value) {
+      if (value) {
+        this.errors.propertyZip = false
+      } else {
+        this.errors.propertyZip = true
+      }
+    },
+    validateFirstName (value) {
+      if (value) {
+        this.errors.firstName = false
+      } else {
+        this.errors.firstName = true
+      }
+    },
+    validateLastName (value) {
+      if (value) {
+        this.errors.lastName = false
+      } else {
+        this.errors.lastName = true
+      }
+    },
+    validateEmail (value) {
+      if (value) {
+        this.errors.email = false
+      } else {
+        this.errors.email = true
+      }
+    },
+    validateCellPhone (value) {
+      if (value) {
+        this.errors.cellPhone = false
+      } else {
+        this.errors.cellPhone = true
+      }
+    },
+    validateAddress (value) {
+      if (value) {
+        this.errors.address = false
+      } else {
+        this.errors.address = true
+      }
+    },
+    validateZip (value) {
+      if (value) {
+        this.errors.zip = false
+      } else {
+        this.errors.zip = true
+      }
+    },
+    validateMailingAddress (value) {
+      if (value) {
+        this.errors.mailingAddress = false
+      } else {
+        if (this.mailingZip) {
+          this.errors.mailingAddress = true
+        } else {
+          this.errors.mailingAddress = false
+        }
+      }
+    },
+    validateMailingZip (value) {
+      if (value) {
+        this.errors.mailingZip = false
+        if (!this.mailingAddress) {
+          this.errors.mailingAddress = true
+        }
+      } else {
+        if (this.mailingAddress) {
+          this.errors.mailingZip = true
+        } else {
+          this.errors.mailingZip = false
+        }
+      }
+    },
+    validateEmployerName (value) {
+      if (
+        this.applicationData.employerAddress ||
+        this.applicationData.employerName ||
+        this.applicationData.jobTitle ||
+        this.applicationData.selfEmployed ||
+        this.applicationData.employedHowLong ||
+        this.applicationData.employerZip
+      ) {
+        if (value) {
+          this.errors.employerName = false
+        } else {
+          this.errors.employerName = true
+        }
+      } else {
+        this.errors.employerName = false
+      }
+    },
+    validateEmployerAddress (value) {
+      if (
+        this.applicationData.employerAddress ||
+        this.applicationData.employerName ||
+        this.applicationData.jobTitle ||
+        this.applicationData.selfEmployed ||
+        this.applicationData.employedHowLong ||
+        this.applicationData.employerZip
+      ) {
+        if (value) {
+          this.errors.employerAddress = false
+        } else {
+          this.errors.employerAddress = true
+        }
+      } else {
+        this.errors.employerAddress = false
+      }
+    },
+    validateEmployerZip (value) {
+      if (
+        this.applicationData.employerAddress ||
+        this.applicationData.employerName ||
+        this.applicationData.jobTitle ||
+        this.applicationData.selfEmployed ||
+        this.applicationData.employedHowLong ||
+        this.applicationData.employerZip
+      ) {
+        if (value) {
+          this.errors.employerZip = false
+        } else {
+          this.errors.employerZip = true
+        }
+      } else {
+        this.errors.employerZip = false
+      }
+    },
+    validateCoBorrowerFirstName (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerFirstName = false
+        } else {
+          this.errors.coBorrowerFirstName = true
+        }
+      } else {
+        this.errors.coBorrowerFirstName = false
+      }
+    },
+    validateCoBorrowerLastName (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerLastName = false
+        } else {
+          this.errors.coBorrowerLastName = true
+        }
+      } else {
+        this.errors.coBorrowerLastName = false
+      }
+    },
+    validateCoBorrowerEmail (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerEmail = false
+        } else {
+          this.errors.coBorrowerEmail = true
+        }
+      } else {
+        this.errors.coBorrowerEmail = false
+      }
+    },
+    validateCoBorrowerCellPhone (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerCellPhone = false
+        } else {
+          this.errors.coBorrowerCellPhone = true
+        }
+      } else {
+        this.errors.coBorrowerCellPhone = false
+      }
+    },
+    validateCoBorrowerAddress (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerAddress = false
+        } else {
+          this.errors.coBorrowerAddress = true
+        }
+      } else {
+        this.errors.coBorrowerAddress = false
+      }
+    },
+    validateCoBorrowerZip (value) {
+      if (this.hasCoBorrower) {
+        if (value) {
+          this.errors.coBorrowerZip = false
+        } else {
+          this.errors.coBorrowerZip = true
+        }
+      } else {
+        this.errors.coBorrowerZip = false
+      }
+    },
+    validateCoBorrowerEmployerName (value) {
+      if (this.hasCoBorrower) {
+        if (
+          this.applicationData.coBorrowerEmployerAddress ||
+          this.applicationData.coBorrowerEmployerName ||
+          this.applicationData.coBorrowerJobTitle ||
+          this.applicationData.coBorrowerSelfEmployed ||
+          this.applicationData.coBorrowerEmployedHowLong ||
+          this.applicationData.coBorrowerEmployerZip
+        ) {
+          if (value) {
+            this.errors.coBorrowerEmployerName = false
+          } else {
+            this.errors.coBorrowerEmployerName = true
+          }
+        } else {
+          this.errors.coBorrowerEmployerName = false
+        }
+      } else {
+        this.errors.coBorrowerEmployerName = false
+      }
+    },
+    validateCoBorrowerEmployerAddress (value) {
+      if (this.hasCoBorrower) {
+        if (
+          this.applicationData.coBorrowerEmployerAddress ||
+          this.applicationData.coBorrowerEmployerName ||
+          this.applicationData.coBorrowerJobTitle ||
+          this.applicationData.coBorrowerSelfEmployed ||
+          this.applicationData.coBorrowerEmployedHowLong ||
+          this.applicationData.coBorrowerEmployerZip
+        ) {
+          if (value) {
+            this.errors.coBorrowerEmployerAddress = false
+          } else {
+            this.errors.coBorrowerEmployerAddress = true
+          }
+        } else {
+          this.errors.coBorrowerEmployerAddress = false
+        }
+      } else {
+        this.errors.coBorrowerEmployerAddress = false
+      }
+    },
+    validateCoBorrowerEmployerZip (value) {
+      if (this.hasCoBorrower) {
+        if (
+          this.applicationData.coBorrowerEmployerAddress ||
+          this.applicationData.coBorrowerEmployerName ||
+          this.applicationData.coBorrowerJobTitle ||
+          this.applicationData.coBorrowerSelfEmployed ||
+          this.applicationData.coBorrowerEmployedHowLong ||
+          this.applicationData.coBorrowerEmployerZip
+        ) {
+          if (value) {
+            this.errors.coBorrowerEmployerZip = false
+          } else {
+            this.errors.coBorrowerEmployerZip = true
+          }
+        } else {
+          this.errors.coBorrowerEmployerZip = false
+        }
+      } else {
+        this.errors.coBorrowerEmployerZip = false
+      }
+    },
+    validateAssetsAndLiabilities () {
+      if (this.assetsAndLiabilities) {
+        if (
+          this.realEstate_0_address ||
+          this.realEstate_0_grossRentalIncome ||
+          this.realEstate_0_presentMarketValue ||
+          this.realEstate_0_propertyType ||
+          this.realEstate_0_totalLiens ||
+          this.realEstate_0_zip
+        ) {
+          if (!this.applicationData.realEstate_0_address) {
+            this.errors.realEstate_0_address = true
+          } else {
+            this.errors.realEstate_0_address = false
+          }
+          if (!this.applicationData.realEstate_0_zip) {
+            this.errors.realEstate_0_zip = true
+          } else {
+            this.errors.realEstate_0_zip = false
+          }
+        }
+        if (
+          this.realEstate_1_address ||
+          this.realEstate_1_grossRentalIncome ||
+          this.realEstate_1_presentMarketValue ||
+          this.realEstate_1_propertyType ||
+          this.realEstate_1_totalLiens ||
+          this.realEstate_1_zip
+        ) {
+          if (!this.applicationData.realEstate_1_address) {
+            this.errors.realEstate_1_address = true
+          } else {
+            this.errors.realEstate_1_address = false
+          }
+          if (!this.applicationData.realEstate_1_zip) {
+            this.errors.realEstate_1_zip = true
+          } else {
+            this.errors.realEstate_1_zip = false
+          }
+        }
+        if (
+          this.realEstate_2_address ||
+          this.realEstate_2_grossRentalIncome ||
+          this.realEstate_2_presentMarketValue ||
+          this.realEstate_2_propertyType ||
+          this.realEstate_2_totalLiens ||
+          this.realEstate_2_zip
+        ) {
+          if (!this.applicationData.realEstate_2_address) {
+            this.errors.realEstate_2_address = true
+          } else {
+            this.errors.realEstate_2_address = false
+          }
+          if (!this.applicationData.realEstate_2_zip) {
+            this.errors.realEstate_2_zip = true
+          } else {
+            this.errors.realEstate_2_zip = false
+          }
+        }
+        if (!this.applicationData.result) { this.errors.result = true } else { this.errors.result = false }
+      }
     }
   }
 }

@@ -286,7 +286,7 @@
             v-if="errors.propertyZip && !propertyZip"
             class="error-inline"
           >
-            State is required
+            Zip code is required
           </p>
         </div>
       </div>
