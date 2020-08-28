@@ -54,6 +54,12 @@
             >
               {{ 'Zip Code' | titlecase }}
             </label>
+            <p
+              v-if="errors.propertyZip"
+              class="error-inline"
+            >
+              Zip code is required
+            </p>
           </div>
         </div>
         <div v-if="loanPurpose && (loanPurpose.name === 'Refinance' || loanPurpose.name === 'Refinance Cash Out')" class="row">
@@ -112,6 +118,12 @@
             >
               {{ 'First Name' | titlecase }}
             </label>
+            <p
+              v-if="errors.firstName"
+              class="error-inline"
+            >
+              First name is required
+            </p>
           </div>
           <div
             :class="{ error: errors.lastName }"
@@ -130,6 +142,12 @@
             >
               {{ 'Last Name' | titlecase }}
             </label>
+            <p
+              v-if="errors.lastName"
+              class="error-inline"
+            >
+              Last name is required
+            </p>
           </div>
           <div
             :class="{ error: errors.email }"
@@ -138,7 +156,7 @@
             <input
               v-model="email"
               @blur="validateEmail(email)"
-              type="text"
+              type="email"
               name="email"
               class="form-control"
             >
@@ -148,6 +166,18 @@
             >
               {{ 'Email Address' | titlecase }}
             </label>
+            <p
+              v-if="errors.email && !email"
+              class="error-inline"
+            >
+              Email is required
+            </p>
+            <p
+              v-if="errors.email && !validEmail(email)"
+              class="error-inline"
+            >
+              Email invalid
+            </p>
           </div>
           <div
             :class="{ error: errors.cellPhone }"
@@ -167,6 +197,12 @@
             >
               {{ 'Cell Phone' | titlecase }}
             </label>
+            <p
+              v-if="errors.cellPhone"
+              class="error-inline"
+            >
+              Cell phone is required
+            </p>
           </div>
           <div class="form-group col-12 col-lg-6">
             <input
@@ -183,12 +219,14 @@
               {{ 'Social Security Number' | titlecase }}
             </label>
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: errors.dob }"
+            class="form-group col-12 col-lg-6"
+          >
             <v-date-picker
               v-model="dob"
               v-mask="'##/##/####'"
-              @popoverWillShow="focusClassAdd($event)"
-              @popoverDidHide="focusClassRemove($event)"
+              @popoverDidHide="validateDob(dob)"
               :input-props="{
                 class: 'form-control'
               }"
@@ -201,6 +239,18 @@
             >
               {{ 'DOB (mm/dd/yyyy)' }}
             </label>
+            <p
+              v-if="errors.dob && this.$moment(dob).isValid()"
+              class="error-inline"
+            >
+              DOB cannot be in the future
+            </p>
+            <p
+              v-if="errors.dob && !this.$moment(dob).isValid()"
+              class="error-inline"
+            >
+              DOB is invalid
+            </p>
           </div>
           <div class="form-group col-12 col-lg-6">
             <input
@@ -214,7 +264,7 @@
               :class="{ hasvalue: yearsOfSchool }"
               for="yearsOfSchool"
             >
-              {{ 'Years School' | titlecase }}
+              {{ 'Years of School' | titlecase }}
             </label>
           </div>
           <div class="form-group col-12 col-lg-6">
@@ -248,15 +298,15 @@
           <h3>Address</h3>
           <div class="custom-control custom-checkbox">
             <input
-              id="copyPropertyAddress"
-              v-model="copyPropertyAddress"
-              @change="doCopyPropertyAddress($event)"
+              id="copyPropertyAddressPrimary"
+              v-model="copyPropertyAddress.primary"
+              @change="doCopyPropertyAddressPrimary()"
               type="checkbox"
               class="custom-control-input"
             >
             <label
               class="custom-control-label text-primary small"
-              for="copyPropertyAddress"
+              for="copyPropertyAddressPrimary"
             >
               {{ 'Same as property address' }}
             </label>
@@ -270,6 +320,7 @@
             <input
               v-model="address"
               @blur="validateAddress(address)"
+              :disabled="copyPropertyAddress.primary"
               type="text"
               name="address"
               class="form-control"
@@ -280,12 +331,19 @@
             >
               {{ 'Present Address' }}
             </label>
+            <p
+              v-if="errors.address"
+              class="error-inline"
+            >
+              Present address is required
+            </p>
           </div>
           <div class="form-group col-12 col-lg-3">
             <input
               v-model="zip"
               v-mask="'#####'"
               @blur="validateZip(zip)"
+              :disabled="copyPropertyAddress.primary"
               type="text"
               name="zip"
               class="form-control"
@@ -296,6 +354,12 @@
             >
               {{ 'Zip Code' }}
             </label>
+            <p
+              v-if="errors.zip"
+              class="error-inline"
+            >
+              Zip code is required
+            </p>
           </div>
           <div class="form-group col-12 col-lg-12">
             <input
@@ -329,6 +393,12 @@
             >
               {{ 'Mailing Address (if different from present address)' }}
             </label>
+            <p
+              v-if="errors.mailingAddress"
+              class="error-inline"
+            >
+              Mailing address is required
+            </p>
           </div>
           <div class="form-group col-12 col-lg-3">
             <input
@@ -345,6 +415,12 @@
             >
               {{ 'Zip Code' }}
             </label>
+            <p
+              v-if="errors.mailingZip"
+              class="error-inline"
+            >
+              Mailing zip code is required
+            </p>
           </div>
         </div>
 
@@ -367,6 +443,12 @@
             >
               {{ 'Employer Name' | titlecase }}
             </label>
+            <p
+              v-if="errors.employerName"
+              class="error-inline"
+            >
+              Employer name is required
+            </p>
           </div>
           <div
             :class="{ error: errors.employerAddress }"
@@ -385,6 +467,12 @@
             >
               {{ 'Employer Address' | titlecase }}
             </label>
+            <p
+              v-if="errors.employerAddress"
+              class="error-inline"
+            >
+              Employer address is required
+            </p>
           </div>
           <div
             :class="{ error: errors.employerZip }"
@@ -404,6 +492,12 @@
             >
               {{ 'Employer Zip Code' | titlecase }}
             </label>
+            <p
+              v-if="errors.employerZip"
+              class="error-inline"
+            >
+              Employer zip code is required
+            </p>
           </div>
           <div class="form-group col-12 col-lg-4">
             <select
@@ -539,6 +633,12 @@
               >
                 {{ 'First Name' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerFirstName"
+                class="error-inline"
+              >
+                First name is required
+              </p>
             </div>
             <div
               :class="{ error: errors.coBorrowerLastName }"
@@ -557,6 +657,12 @@
               >
                 {{ 'Last Name' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerLastName"
+                class="error-inline"
+              >
+                Last name is required
+              </p>
             </div>
             <div
               :class="{ error: errors.coBorrowerEmail }"
@@ -565,7 +671,7 @@
               <input
                 v-model="coBorrowerEmail"
                 @blur="validateCoBorrowerEmail(coBorrowerEmail)"
-                type="text"
+                type="email"
                 name="coBorrowerEmail"
                 class="form-control"
               >
@@ -575,6 +681,18 @@
               >
                 {{ 'Email Address' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerEmail && !coBorrowerEmail"
+                class="error-inline"
+              >
+                Email is required
+              </p>
+              <p
+                v-if="errors.coBorrowerEmail && !validEmail(coBorrowerEmail)"
+                class="error-inline"
+              >
+                Email invalid
+              </p>
             </div>
             <div
               :class="{ error: errors.coBorrowerCellPhone }"
@@ -594,6 +712,12 @@
               >
                 {{ 'Cell Phone' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerCellPhone"
+                class="error-inline"
+              >
+                Cell phone is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -610,12 +734,14 @@
                 {{ 'Social Security Number' | titlecase }}
               </label>
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: errors.cellPhone }"
+              class="form-group col-12 col-lg-6"
+            >
               <v-date-picker
                 v-model="coBorrowerDob"
                 v-mask="'##/##/####'"
-                @popoverWillShow="focusClassAdd($event)"
-                @popoverDidHide="focusClassRemove($event)"
+                @popoverDidHide="validateCoBorrowerDob(coBorrowerDob)"
                 :input-props="{
                   class: 'form-control'
                 }"
@@ -628,6 +754,18 @@
               >
                 {{ 'DOB (mm/dd/yyyy)' }}
               </label>
+              <p
+                v-if="errors.coBorrowerDob && this.$moment(coBorrowerDob).isValid()"
+                class="error-inline"
+              >
+                DOB cannot be in the future
+              </p>
+              <p
+                v-if="errors.coBorrowerDob && !this.$moment(coBorrowerDob).isValid()"
+                class="error-inline"
+              >
+                DOB is invalid
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -671,7 +809,24 @@
               </label>
             </div>
           </div>
-          <h3>Address</h3>
+          <div class="justify-content-between align-items-start d-flex">
+            <h3>Address</h3>
+            <div class="custom-control custom-checkbox">
+              <input
+                id="copyPropertyAddressCoBorrower"
+                v-model="copyPropertyAddress.coBorrower"
+                @change="doCopyPropertyAddressCoBorrower()"
+                type="checkbox"
+                class="custom-control-input"
+              >
+              <label
+                class="custom-control-label text-primary small"
+                for="copyPropertyAddressCoBorrower"
+              >
+                {{ 'Same as property address' }}
+              </label>
+            </div>
+          </div>
           <div class="row">
             <div
               :class="{ error: errors.coBorrowerAddress }"
@@ -680,6 +835,7 @@
               <input
                 v-model="coBorrowerAddress"
                 @blur="validateCoBorrowerAddress(coBorrowerAddress)"
+                :disabled="copyPropertyAddress.coBorrower"
                 type="text"
                 name="coBorrowerAddress"
                 class="form-control"
@@ -690,12 +846,19 @@
               >
                 {{ 'Present Address' }}
               </label>
+              <p
+                v-if="errors.coBorrowerAddress"
+                class="error-inline"
+              >
+                Address is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-4">
               <input
                 v-model="coBorrowerZip"
-                @blur="validateCoBorrowerZip(coBorrowerZip)"
                 v-mask="'#####'"
+                @blur="validateCoBorrowerZip(coBorrowerZip)"
+                :disabled="copyPropertyAddress.coBorrower"
                 type="text"
                 name="coBorrowerZip"
                 class="form-control"
@@ -706,6 +869,12 @@
               >
                 {{ 'Present Zip Code' }}
               </label>
+              <p
+                v-if="errors.coBorrowerZip"
+                class="error-inline"
+              >
+                Zip code is required
+              </p>
             </div>
           </div>
 
@@ -728,6 +897,12 @@
               >
                 {{ 'Employer Name' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerEmployerName"
+                class="error-inline"
+              >
+                Employer name is required
+              </p>
             </div>
             <div
               :class="{ error: errors.coBorrowerEmployerAddress }"
@@ -746,6 +921,12 @@
               >
                 {{ 'Employer Address' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerEmployerAddress"
+                class="error-inline"
+              >
+                Employer address is required
+              </p>
             </div>
             <div
               :class="{ error: errors.coBorrowerEmployerZip }"
@@ -765,6 +946,12 @@
               >
                 {{ 'Employer Zip Code' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerEmployerZip"
+                class="error-inline"
+              >
+                Employer zip code is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-4">
               <select
@@ -989,6 +1176,12 @@
               >
                 {{ 'Property Address' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_address"
+                class="error-inline"
+              >
+                Property address is required
+              </p>
             </div>
             <div
               :class="{ error: errors.realEstate_0_zip }"
@@ -1008,6 +1201,12 @@
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_zip"
+                class="error-inline"
+              >
+                Property zip code is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <select
@@ -1035,6 +1234,12 @@
               >
                 {{ 'Property Type' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_propertyType"
+                class="error-inline"
+              >
+                Property type is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1051,6 +1256,12 @@
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_presentMarketValue"
+                class="error-inline"
+              >
+                Market value is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1067,6 +1278,12 @@
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_totalLiens"
+                class="error-inline"
+              >
+                Total liens is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1083,6 +1300,12 @@
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_0_grossRentalIncome"
+                class="error-inline"
+              >
+                Gross rental income is required
+              </p>
             </div>
           </div>
           <h3>
@@ -1106,6 +1329,12 @@
               >
                 {{ 'Property Address' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_address"
+                class="error-inline"
+              >
+                Property address is required
+              </p>
             </div>
             <div
               :class="{ error: errors.realEstate_1_zip }"
@@ -1125,6 +1354,12 @@
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_zip"
+                class="error-inline"
+              >
+                Property zip code is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <select
@@ -1152,6 +1387,12 @@
               >
                 {{ 'Property Type' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_propertyType"
+                class="error-inline"
+              >
+                Property type is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1168,6 +1409,12 @@
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_presentMarketValue"
+                class="error-inline"
+              >
+                Market value is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1184,6 +1431,12 @@
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_totalLiens"
+                class="error-inline"
+              >
+                Total liens is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1200,6 +1453,12 @@
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_1_grossRentalIncome"
+                class="error-inline"
+              >
+                Gross rental income is required
+              </p>
             </div>
           </div>
           <h3>
@@ -1223,6 +1482,12 @@
               >
                 {{ 'Property Address' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_address"
+                class="error-inline"
+              >
+                Property address is required
+              </p>
             </div>
             <div
               :class="{ error: errors.realEstate_2_zip }"
@@ -1242,6 +1507,12 @@
               >
                 {{ 'Property Zip Code' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_zip"
+                class="error-inline"
+              >
+                Property zip code is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <select
@@ -1269,6 +1540,12 @@
               >
                 {{ 'Property Type' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_propertyType"
+                class="error-inline"
+              >
+                Property type is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1285,6 +1562,12 @@
               >
                 {{ 'Present Market Value' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_presentMarketValue"
+                class="error-inline"
+              >
+                Market value is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1301,6 +1584,12 @@
               >
                 {{ 'Amount of Mortgages & Liens' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_totalLiens"
+                class="error-inline"
+              >
+                Total liens is required
+              </p>
             </div>
             <div class="form-group col-12 col-lg-6">
               <input
@@ -1317,14 +1606,31 @@
               >
                 {{ 'Gross Rental Income' | titlecase }}
               </label>
+              <p
+                v-if="errors.realEstate_2_grossRentalIncome"
+                class="error-inline"
+              >
+                Gross rental income is required
+              </p>
             </div>
           </div>
         </div>
       </div>
 
+      <div
+        v-if="formHasErrors"
+        class="row"
+      >
+        <div class="form-group col-12">
+          <p class="text-danger">
+            Please complete the form before submitting your application.
+          </p>
+        </div>
+      </div>
       <div class="row">
         <div class="form-group col-12">
           <button
+            :disabled="formHasErrors"
             type="submit"
             name="submit"
             class="btn btn--submit btn-primary form--apply__submit mt-4"
@@ -1362,13 +1668,17 @@ export default {
   data () {
     return {
       assetsAndLiabilities: false,
-      copyPropertyAddress: false,
+      copyPropertyAddress: {
+        primary: false,
+        coBorrower: false
+      },
       errors: {
         address: false,
         assetsAndLiabilities: false,
         cellPhone: false,
         coBorrowerAddress: false,
         coBorrowerCellPhone: false,
+        coBorrowerDob: false,
         coBorrowerEmail: false,
         coBorrowerEmployerAddress: false,
         coBorrowerEmployerName: false,
@@ -1376,6 +1686,7 @@ export default {
         coBorrowerFirstName: false,
         coBorrowerLastName: false,
         coBorrowerMailingAddress: false,
+        dob: false,
         email: false,
         employerAddress: false,
         employerName: false,
@@ -1394,7 +1705,6 @@ export default {
         realEstate_2_zip: false,
         result: false
       },
-      hasFormErrors: false,
       hasCoBorrower: false,
       step: 0
     }
@@ -2466,7 +2776,36 @@ export default {
       }
       // RETURN
       return payload
+    },
+    // Form errors
+    formHasErrors () {
+      let hasErrors
+      if (
+        !this.loanPurpose ||
+        !this.propertyAddress ||
+        !this.propertyZip ||
+        !this.firstName ||
+        !this.lastName ||
+        !this.email ||
+        !this.cellPhone ||
+        !this.address ||
+        !this.zip ||
+        (this.hasCoBorrower && (
+          !this.coBorrowerFirstName ||
+          !this.coBorrowerLastName ||
+          !this.coBorrowerEmail ||
+          !this.coBorrowerCellPhone ||
+          !this.coBorrowerAddress ||
+          !this.coBorrowerZip
+        ))
+      ) {
+        hasErrors = true
+      } else {
+        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
+      }
+      return hasErrors
     }
+
   },
   watch: {
     propertyAddress (value) {
@@ -2558,6 +2897,15 @@ export default {
     coBorrowerEmployerZip (value) {
       this.coBorrowerEmployerZip = value
       this.validateCoBorrowerEmployerZip(value)
+    },
+    // Dates
+    dob (value) {
+      this.dob = value
+      this.validateDob(value)
+    },
+    coBorrowerDob (value) {
+      this.coBorrowerDob = value
+      this.validateCoBorrowerDob(value)
     }
   },
   async fetch () {
@@ -2584,56 +2932,29 @@ export default {
     }
   },
   methods: {
-    doCopyPropertyAddress (event) {
-      // const self = event.target
-      if (this.copyPropertyAddress) {
+    doCopyPropertyAddressPrimary () {
+      if (this.copyPropertyAddress.primary) {
         this.address = this.propertyAddress
         this.zip = this.propertyZip
-      } else {
+      }
+      if (!this.copyPropertyAddress.primary) {
         this.address = null
         this.zip = null
       }
     },
-    focusClassAdd (event) {
-      const self = event.target
-      console.log(self)
-      // self.closest('div').classList.add('focused')
-    },
-    focusClassRemove (event) {
-      const self = event.target
-      console.log(self)
-      // self.closest('div').classList.remove('focused')
-    },
-    formValidate () {
-      this.$emit('applicationValidateStart')
-      //   if (!this.applicationData.employerAddress) { this.errors.employerAddress = true } else { this.errors.employerAddress = false }
-      //   if (!this.applicationData.employerName) { this.errors.employerName = true } else { this.errors.employerName = false }
-      //   if (!this.applicationData.employerZip) { this.errors.employerZip = true } else { this.errors.employerZip = false }
-      // }
-      // if (this.applicationData.mailingZip && !this.applicationData.mailingAddress) { this.errors.mailingAddress = true } else { this.errors.mailingAddress = false }
-      // if (this.hasCoBorrower) {
-      // if (this.applicationData.coBorrowerZip && !this.applicationData.coBorrowerAddress) { this.errors.coBorrowerAddress = true } else { this.errors.coBorrowerAddress = false }
-      // if (!this.applicationData.coBorrowerEmail) { this.errors.coBorrowerEmail = true } else { this.errors.coBorrowerEmail = false }
-      // if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
-      // if (!this.applicationData.coBorrowerEmployerName) { this.errors.coBorrowerEmployerName = true } else { this.errors.coBorrowerEmployerName = false }
-      // if (!this.applicationData.coBorrowerEmployerAddress) { this.errors.coBorrowerEmployerAddress = true } else { this.errors.coBorrowerEmployerAddress = false }
-      // if (!this.applicationData.coBorrowerEmployerZip) { this.errors.coBorrowerEmployerZip = true } else { this.errors.coBorrowerEmployerZip = false }
-      // }
-      // if (!this.applicationData.coBorrowerFirstName) { this.errors.coBorrowerFirstName = true } else { this.errors.coBorrowerFirstName = false }
-      // if (!this.applicationData.coBorrowerCellPhone) { this.errors.coBorrowerCellPhone = true } else { this.errors.coBorrowerCellPhone = false }
-      // if (!this.applicationData.coBorrowerHomePhone) { this.errors.coBorrowerHomePhone = true } else { this.errors.coBorrowerHomePhone = false }
-      // if (!this.applicationData.coBorrowerLastName) { this.errors.coBorrowerLastName = true } else { this.errors.coBorrowerLastName = false }
-      // if (this.applicationData.coBorrowerMailingZip && !this.applicationData.coBorrowerMailingAddress) { this.errors.coBorrowerMailingAddress = true } else { this.errors.coBorrowerMailingAddress = false }
-      // }
-      
-      const hasFormErrors = Object.keys(this.errors).some(k => this.errors[k])
-      this.hasFormErrors = hasFormErrors
-      return hasFormErrors
+    doCopyPropertyAddressCoBorrower () {
+      if (this.copyPropertyAddress.coBorrower) {
+        this.coBorrowerAddress = this.propertyAddress
+        this.coBorrowerZip = this.propertyZip
+      }
+      if (!this.copyPropertyAddress.coBorrower) {
+        this.coBorrowerAddress = null
+        this.coBorrowerZip = null
+      }
     },
     async handleSubmit () {
       this.$emit('applicationSubmitStart')
-      const hasFormErrors = this.formValidate()
-      if (!hasFormErrors) {
+      if (!this.formHasErrors) {
         // console.log('Application Payload:\n', this.applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
@@ -2666,6 +2987,10 @@ export default {
       }
       document.body.focus()
     },
+    validEmail (email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email)
+    },
     validatePropertyAddress (value) {
       if (value) {
         this.errors.propertyAddress = false
@@ -2695,10 +3020,11 @@ export default {
       }
     },
     validateEmail (value) {
-      if (value) {
-        this.errors.email = false
-      } else {
+      if (!this.validEmail(value)) {
         this.errors.email = true
+      }
+      if (value && this.validEmail(value)) {
+        this.errors.email = false
       }
     },
     validateCellPhone (value) {
@@ -2725,12 +3051,10 @@ export default {
     validateMailingAddress (value) {
       if (value) {
         this.errors.mailingAddress = false
+      } else if (this.mailingZip) {
+        this.errors.mailingAddress = true
       } else {
-        if (this.mailingZip) {
-          this.errors.mailingAddress = true
-        } else {
-          this.errors.mailingAddress = false
-        }
+        this.errors.mailingAddress = false
       }
     },
     validateMailingZip (value) {
@@ -2739,12 +3063,10 @@ export default {
         if (!this.mailingAddress) {
           this.errors.mailingAddress = true
         }
+      } else if (this.mailingAddress) {
+        this.errors.mailingZip = true
       } else {
-        if (this.mailingAddress) {
-          this.errors.mailingZip = true
-        } else {
-          this.errors.mailingZip = false
-        }
+        this.errors.mailingZip = false
       }
     },
     validateEmployerName (value) {
@@ -2824,13 +3146,10 @@ export default {
       }
     },
     validateCoBorrowerEmail (value) {
-      if (this.hasCoBorrower) {
-        if (value) {
-          this.errors.coBorrowerEmail = false
-        } else {
-          this.errors.coBorrowerEmail = true
-        }
-      } else {
+      if (this.hasCoBorrower && !this.validEmail(value)) {
+        this.errors.coBorrowerEmail = true
+      }
+      if (!this.hasCoBorrower || this.validEmail(value)) {
         this.errors.coBorrowerEmail = false
       }
     },
@@ -2993,6 +3312,20 @@ export default {
           }
         }
         if (!this.applicationData.result) { this.errors.result = true } else { this.errors.result = false }
+      }
+    },
+    validateDob (value) {
+      if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
+        this.errors.dob = true
+      } else {
+        this.errors.dob = false
+      }
+    },
+    validateCoBorrowerDob (value) {
+      if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
+        this.errors.dob = true
+      } else {
+        this.errors.dob = false
       }
     }
   }
