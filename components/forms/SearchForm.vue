@@ -108,8 +108,8 @@
           >
             <span v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'">
               {{ 'Total Loan Amount' }}
-              <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
-              <b-tooltip target="taxes-tooltip" triggers="hover">
+              <img id="loanAmount-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+              <b-tooltip target="loanAmount-tooltip" triggers="hover">
                 Current loan amount plus cash out request
               </b-tooltip>
             </span>

@@ -264,7 +264,11 @@
               :class="{ hasvalue: yearsOfSchool }"
               for="yearsOfSchool"
             >
-              {{ 'Years of School' | titlecase }}
+              {{ 'Total Years in School' | titlecase }}
+              <img id="yearsOfSchool-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+              <b-tooltip target="yearsOfSchool-tooltip" triggers="hover">
+                For example enter "16" years if you completed a four-year degree.
+              </b-tooltip>
             </label>
           </div>
           <div class="form-group col-12 col-lg-6">
