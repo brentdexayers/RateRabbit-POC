@@ -1,35 +1,37 @@
 <template>
   <section class="section--testimonials">
-    <div class="container-start section--testimonials__container-left">
-      <vue-glide
-        :per-view="1"
-        :autoplay="10000"
-      >
-        <vue-glide-slide
-          v-for="(testimonial, index) in featuredTestimonials"
-          :key="index"
+    <div class="row">
+      <div class="col-12 col-lg-6 col-left">
+        <vue-glide
+          :per-view="1"
+          :autoplay="10000"
         >
-          <blockquote
-            :data-testimonial-index="index"
-            class="primary"
+          <vue-glide-slide
+            v-for="(testimonial, index) in featuredTestimonials"
+            :key="index"
           >
-            {{ testimonial.content }}
-            <footer>
-              {{ testimonial.citation }}
-            </footer>
-          </blockquote>
-        </vue-glide-slide>
-        <template slot="control">
-          <button data-glide-dir="<">
-            <img src="~assets/icons/icon-chevron-left.png" alt="Previous">
-          </button><button data-glide-dir=">">
-            <img src="~assets/icons/icon-chevron-right.png" alt="Next">
-          </button>
-        </template>
-      </vue-glide>
-    </div>
-    <div class="section--testimonials__container-right">
-      <img src="~assets/images/testimonials/testimonial-1.png" class="testimonial-image img-fluid">
+            <blockquote
+              :data-testimonial-index="index"
+              class="primary"
+            >
+              {{ testimonial.content }}
+              <footer>
+                {{ testimonial.citation }}
+              </footer>
+            </blockquote>
+          </vue-glide-slide>
+          <template slot="control">
+            <button data-glide-dir="<">
+              <img src="~assets/icons/icon-chevron-left.png" alt="Previous">
+            </button><button data-glide-dir=">">
+              <img src="~assets/icons/icon-chevron-right.png" alt="Next">
+            </button>
+          </template>
+        </vue-glide>
+      </div>
+      <div class="col-6 col-right">
+        <img src="~assets/images/testimonials/testimonial-1.png" class="testimonial-image img-fluid">
+      </div>
     </div>
   </section>
 </template>
@@ -76,24 +78,25 @@ export default {
   @include media-breakpoint-down('sm') {
     background: url(~assets/images/testimonials-bg.jpg) no-repeat top left, linear-gradient(180deg, rgba($light,1) 0%, rgba($light,1) 100%);
   }
-  &__container {
-    &-left {
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      padding-bottom: 164px;
-      @include media-breakpoint-down('sm') {
-        padding-bottom: 0;
-      }
+  .col-left {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 164px;
+    padding-left: 8.333333%;
+    @include media-breakpoint-down('sm') {
+      padding-bottom: 0;
+      padding-left: $spacer;
+      padding-right: $spacer;
     }
-    &-right {
-      max-width: 50%;
-      padding-left: 8.333333%;
-      padding-top: 150px;
-      width: 100%;
-      @include media-breakpoint-down('sm') {
-        display: none;
-      }
+  }
+  .col-right {
+    max-width: 50%;
+    padding-left: 8.333333%;
+    padding-top: 150px;
+    width: 100%;
+    @include media-breakpoint-down('sm') {
+      display: none;
     }
   }
   .glide {
@@ -115,13 +118,13 @@ export default {
     }
     [data-glide-el="controls"] {
       bottom: 164px;
-      left: 0;
+      left: $spacer; // 0;
       line-height: 0;
       position: absolute;
       @include media-breakpoint-down('sm') {
         bottom: 0;
         left: auto;
-        right: 0;
+        right: $spacer;
       }
       button {
         align-items: center;

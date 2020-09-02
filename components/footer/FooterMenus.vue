@@ -58,9 +58,9 @@
       </h5>
       <ul class="nav site-footer__menus__menu">
         <li>
-          <nuxt-link to="tel:+18883950395">
+          <a href="tel:+18883950395">
             (888) 395-0395
-          </nuxt-link>
+          </a>
         </li>
         <li>
           540 Front St.
@@ -97,13 +97,17 @@ export default {
   }
   &__menu {
     flex-direction: column;
-    li, a {
+    li {
       color: $white;
       font-size: 18px;
-      line-height: 32px;
-      &:hover {
-        color: $green;
-        text-decoration: none;
+      a {
+        color: $white;
+        font-size: 18px;
+        line-height: 32px;
+        &:hover {
+          color: $green;
+          text-decoration: none;
+        }
       }
     }
   }

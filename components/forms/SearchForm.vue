@@ -151,6 +151,7 @@
             <input
               id="loc"
               v-model="loc"
+              v-on:change.stop="validateLocAmount(locAmount)"
               type="checkbox"
               class="custom-control-input"
             >
@@ -985,7 +986,7 @@ export default {
       }
     },
     validateLocAmount (value) {
-      if (value) {
+      if (value || !this.loc) {
         this.errors.locAmount = false
       } else {
         this.errors.locAmount = true
