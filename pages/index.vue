@@ -15,6 +15,12 @@ import ContactMeCTA from '~/components/pages/home/ContactMeCTA.vue'
 
 export default {
   layout: 'home',
+  head () {
+    return {
+      title: 'Home',
+      titleTemplate: 'Rate Rabbit / Real Rates, Real Time'
+    }
+  },
   components: {
     Hero,
     OurPromise,
