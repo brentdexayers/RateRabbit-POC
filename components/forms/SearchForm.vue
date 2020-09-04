@@ -458,9 +458,10 @@
                     Do you have a promotional code?
                   </p>
                 </div>
-                <div class="form-group col-12 mb-3">
+                <div :class="{ error: errors.promotionCodeNoSubmit }" class="form-group col-12 mb-3">
                   <input
                     v-model="promotionCode"
+                    @blur="validatePromotionCodeNoSubmit(promotionCode)"
                     type="text"
                     name="promotionCode"
                     class="form-control"
@@ -473,10 +474,16 @@
                     {{ 'Promo Code' | titlecase }}
                   </label>
                   <p
-                    v-if="promotion.length && promotion[0].hasOwnProperty('displayMessage')"
+                    v-if="promotionIsExact && promotion[0].hasOwnProperty('displayMessage')"
                     class="success-inline"
                   >
                     {{ promotion[0].displayMessage }}
+                  </p>
+                  <p
+                    v-if="errors.promotionCodeNoSubmit"
+                    class="error-inline"
+                  >
+                    Invalid promotion code
                   </p>
                 </div>
               </div>
@@ -545,11 +552,14 @@ export default {
     return {
       // Form state
       errors: {
+        authenticate: false,
         creditRating: false,
         loanAmount: false,
         loanPurpose: false,
+        loanSearch: false,
         locAmount: false,
         ltv: false,
+        promotionCodeNoSubmit: false,
         propertyType: false,
         propertyUse: false,
         propertyValue: false,
@@ -557,7 +567,8 @@ export default {
         state: false
       },
       minLoanAmount: 50000,
-      promotion: false
+      promotion: false,
+      promotionIsExact: false
     }
   },
   computed: {
@@ -926,6 +937,7 @@ export default {
     },
     async handleFormSubmit (e) {
       e.preventDefault()
+      this.validatePromotionCodeNoSubmit(this.promotionCode)
       this.submitStart()
       // Check for errors
       // const hasErrors = this.formValidate()
@@ -939,15 +951,19 @@ export default {
                 return res
               })
               .catch((err) => {
-                throw err
+                console.log(err)
+                this.errors.loanSearch = true
               })
           })
           .catch((err) => {
-            throw err
+            console.log(err)
+            this.errors.authenticate = true
           })
         // Check search results are valid
-        this.updateSearchResults(data)
-        this.updateRoute()
+        if (!this.errors.authenticate && !this.errors.loanSearch) {
+          this.updateSearchResults(data)
+          this.updateRoute()
+        }
       }
       this.scrollToTop(e)
       this.submitEnd()
@@ -1039,16 +1055,26 @@ export default {
       }
     },
     validatePromotionCode (value) {
-      if (value) {
-        if (this.promotionCodeOptions.length) {
-          this.promotion = this.promotionCodeOptions.filter(
-            function (promoItem) {
-              return promoItem.promotionCode.toUpperCase() === value.toUpperCase()
-            }
-          )
-        }
+      if (value && this.promotionCodeOptions.length) {
+        this.promotion = this.promotionCodeOptions.filter(
+          function (promoItem) {
+            return promoItem.promotionCode.toUpperCase().includes(value.toUpperCase())
+          }
+        )
       } else {
         this.promotion = false
+      }
+      if (this.promotion.length === 1 && this.promotion[0].promotionCode.toUpperCase() === value.toUpperCase()) {
+        this.promotionIsExact = true
+      } else {
+        this.promotionIsExact = false
+      }
+    },
+    validatePromotionCodeNoSubmit (value) {
+      if (value && !this.promotionIsExact) {
+        this.errors.promotionCodeNoSubmit = true
+      } else {
+        this.errors.promotionCodeNoSubmit = false
       }
     }
   }

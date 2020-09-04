@@ -204,10 +204,14 @@
               Cell phone is required
             </p>
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div
+            :class="{ error: errors.ssn }"
+            class="form-group col-12 col-lg-6"
+          >
             <input
               v-model="ssn"
               v-mask="'###-##-####'"
+              @blur="validateSsn(ssn)"
               type="text"
               name="ssn"
               class="form-control"
@@ -218,6 +222,12 @@
             >
               {{ 'Social Security Number' | titlecase }}
             </label>
+            <p
+              v-if="errors.ssn"
+              class="error-inline"
+            >
+              Invalid SSN
+            </p>
           </div>
           <div
             :class="{ error: errors.dob }"
@@ -723,10 +733,14 @@
                 Cell phone is required
               </p>
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <div
+              :class="{ error: errors.coBorrowerSsn }"
+              class="form-group col-12 col-lg-6"
+            >
               <input
                 v-model="coBorrowerSsn"
                 v-mask="'###-##-####'"
+                @blur="validateCoBorrowerSsn(coBorrowerSsn)"
                 type="text"
                 name="coBorrowerSsn"
                 class="form-control"
@@ -737,6 +751,12 @@
               >
                 {{ 'Social Security Number' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerSsn"
+                class="error-inline"
+              >
+                Invalid SSN
+              </p>
             </div>
             <div
               :class="{ error: errors.cellPhone }"
@@ -1690,6 +1710,7 @@ export default {
         coBorrowerFirstName: false,
         coBorrowerLastName: false,
         coBorrowerMailingAddress: false,
+        coBorrowerSsn: false,
         dob: false,
         email: false,
         employerAddress: false,
@@ -1707,7 +1728,8 @@ export default {
         realEstate_1_zip: false,
         realEstate_2_address: false,
         realEstate_2_zip: false,
-        result: false
+        result: false,
+        ssn: false
       },
       hasCoBorrower: false,
       step: 0
@@ -2865,6 +2887,10 @@ export default {
       this.employerZip = value
       this.validateEmployerZip(value)
     },
+    ssn (value) {
+      this.ssn = value
+      this.validateSsn(value)
+    },
     // Co-Borrower Information
     coBorrowerFirstName (value) {
       this.coBorrowerFirstName = value
@@ -2901,6 +2927,10 @@ export default {
     coBorrowerEmployerZip (value) {
       this.coBorrowerEmployerZip = value
       this.validateCoBorrowerEmployerZip(value)
+    },
+    coBorrowerSsn (value) {
+      this.coBorrowerSsn = value
+      this.validateCoBorrowerSsn(value)
     },
     // Dates
     dob (value) {
@@ -2991,10 +3021,16 @@ export default {
       }
       document.body.focus()
     },
+    // Regex Tests
     validEmail (email) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(email)
     },
+    validSsn (ssn) {
+      const re = /^([0-9]{3})-([0-9]{2})-([0-9]{4})$/
+      return re.test(ssn)
+    },
+    // Validation Methods
     validatePropertyAddress (value) {
       if (value) {
         this.errors.propertyAddress = false
@@ -3330,6 +3366,22 @@ export default {
         this.errors.dob = true
       } else {
         this.errors.dob = false
+      }
+    },
+    validateSsn (value) {
+      if (value && !this.validSsn(value)) {
+        this.errors.ssn = true
+      }
+      if (!value || (value && this.validSsn(value))) {
+        this.errors.ssn = false
+      }
+    },
+    validateCoBorrowerSsn (value) {
+      if (value && !this.validSsn(value)) {
+        this.errors.coBorrowerSsn = true
+      }
+      if (!value || (value && this.validSsn(value))) {
+        this.errors.coBorrowerSsn = false
       }
     }
   }
