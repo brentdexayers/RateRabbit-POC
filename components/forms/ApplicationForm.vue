@@ -2644,6 +2644,7 @@ export default {
         loan: {
           amount: this.$parseCurrency(this.applicationData.loanAmount),
           cashOutAmount: this.$parseCurrency(this.applicationData.loanCashOutAmount),
+          interestRate: this.loanProduct.rate,
           keepingLoc: this.applicationData.keepingLoc ? 1 : 0,
           // loanDocType: 'Full Doc',
           // loanImpounds: 1,
