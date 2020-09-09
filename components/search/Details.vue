@@ -273,8 +273,7 @@
         <div class="row">
           <div class="col">
             <h2>
-              Third Party Fees not included in your
-              One Easy Fee
+              {{ applicationData.loanPurpose.name === 'Purchase' ? 'Third Party Fees not included in your One Easy Fee' : 'Third Party Fees included in your One Easy Fee' }}
             </h2>
             <table class="table table-striped">
               <tbody>
