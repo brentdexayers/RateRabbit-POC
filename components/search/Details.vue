@@ -227,7 +227,7 @@
                     Included
                   </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td scope="col">
                     <strong>
                       Total Third Party
@@ -238,7 +238,7 @@
                       Fees TBD
                     </strong>
                   </td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td scope="col">
                     <strong class="text-primary">One Fee Guarantee</strong>
@@ -306,11 +306,12 @@
             </table>
           </div>
         </div>
-        <!-- <div class="row">
+        <div
+          v-if="applicationData.loanPurpose.name === 'Purchase'"
+          class="row"
+        >
           <div class="col">
-            <h2
-              v-if="applicationData.loanPurpose.name === 'Purchase'"
-            >
+            <h2>
               {{ 'Third Party Fees not included in your One Easy Fee' }}
             </h2>
             <table class="table table-striped">
@@ -354,7 +355,7 @@
               </tbody>
             </table>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
