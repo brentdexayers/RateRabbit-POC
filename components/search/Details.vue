@@ -203,12 +203,48 @@
                     Included
                   </td>
                 </tr>
-                <tr>
+                <tr v-if="applicationData.loanPurpose.name !== 'Purchase'">
                   <td scope="col">
-                    One Fee Guarantee
+                    Settlement: Escrow/Attorney
                   </td>
                   <td scope="col">
-                    {{ loanProduct.fee | currency }}
+                    Included
+                  </td>
+                </tr>
+                <tr v-if="applicationData.loanPurpose.name !== 'Purchase'">
+                  <td scope="col">
+                    Notary Fee
+                  </td>
+                  <td scope="col">
+                    Included
+                  </td>
+                </tr>
+                <tr v-if="applicationData.loanPurpose.name !== 'Purchase'">
+                  <td scope="col">
+                    Title Insurance
+                  </td>
+                  <td scope="col">
+                    Included
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    <strong>
+                      Total Third Party
+                    </strong>
+                  </td>
+                  <td scope="col">
+                    <strong>
+                      Fees TBD
+                    </strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td scope="col">
+                    <strong class="text-primary">One Fee Guarantee</strong>
+                  </td>
+                  <td scope="col">
+                    <strong class="text-primary">{{ loanProduct.fee | currency }}</strong>
                   </td>
                 </tr>
               </tbody>
@@ -270,10 +306,12 @@
             </table>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col">
-            <h2>
-              {{ applicationData.loanPurpose.name === 'Purchase' ? 'Third Party Fees not included in your One Easy Fee' : 'Third Party Fees included in your One Easy Fee' }}
+            <h2
+              v-if="applicationData.loanPurpose.name === 'Purchase'"
+            >
+              {{ 'Third Party Fees not included in your One Easy Fee' }}
             </h2>
             <table class="table table-striped">
               <tbody>
@@ -316,7 +354,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
