@@ -198,10 +198,16 @@
               {{ 'Cell Phone' | titlecase }}
             </label>
             <p
-              v-if="errors.cellPhone"
+              v-if="errors.cellPhone && !cellPhone"
               class="error-inline"
             >
               Cell phone is required
+            </p>
+            <p
+              v-if="errors.cellPhone && cellPhone && !validPhone(cellPhone)"
+              class="error-inline"
+            >
+              Please enter a valid phone number
             </p>
           </div>
           <div
@@ -587,10 +593,14 @@
               {{ 'Position / Job Title' | titlecase }}
             </label>
           </div>
-          <div class="form-group col-12 col-lg-4">
+          <div
+            :class="{ error: errors.businessPhone }"
+            class="form-group col-12 col-lg-4"
+          >
             <input
               v-model="businessPhone"
               v-mask="'(###) ###-####'"
+              @blur="validateBusinessPhone(businessPhone)"
               type="text"
               name="businessPhone"
               class="form-control"
@@ -601,6 +611,12 @@
             >
               {{ 'Business Phone' | titlecase }}
             </label>
+            <p
+              v-if="errors.businessPhone && businessPhone && !validPhone(businessPhone)"
+              class="error-inline"
+            >
+              Please enter a valid phone number
+            </p>
           </div>
         </div>
       </div>
@@ -727,10 +743,16 @@
                 {{ 'Cell Phone' | titlecase }}
               </label>
               <p
-                v-if="errors.coBorrowerCellPhone"
+                v-if="errors.coBorrowerCellPhone && !coBorrowerCellPhone"
                 class="error-inline"
               >
                 Cell phone is required
+              </p>
+              <p
+                v-if="errors.coBorrowerCellPhone && coBorrowerCellPhone && !validPhone(coBorrowerCellPhone)"
+                class="error-inline"
+              >
+                Please enter a valid phone number
               </p>
             </div>
             <div
@@ -759,7 +781,7 @@
               </p>
             </div>
             <div
-              :class="{ error: errors.cellPhone }"
+              :class="{ error: errors.coBorrowerDob }"
               class="form-group col-12 col-lg-6"
             >
               <v-date-picker
@@ -1051,10 +1073,14 @@
                 {{ 'Position / Job Title' | titlecase }}
               </label>
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: errors.coBorrowerBusinessPhone }"
+              class="form-group col-12 col-lg-4"
+            >
               <input
                 v-model="coBorrowerBusinessPhone"
                 v-mask="'(###) ###-####'"
+                @blur="validateCoBorrowerBusinessPhone(coBorrowerBusinessPhone)"
                 type="text"
                 name="coBorrowerBusinessPhone"
                 class="form-control"
@@ -1065,6 +1091,12 @@
               >
                 {{ 'Business Phone' | titlecase }}
               </label>
+              <p
+                v-if="errors.coBorrowerBusinessPhone && coBorrowerBusinessPhone && !validPhone(coBorrowerBusinessPhone)"
+                class="error-inline"
+              >
+                Please enter a valid phone number
+              </p>
             </div>
           </div>
         </div>
@@ -1699,8 +1731,10 @@ export default {
       errors: {
         address: false,
         assetsAndLiabilities: false,
+        businessPhone: false,
         cellPhone: false,
         coBorrowerAddress: false,
+        coBorrowerBusinessPhone: false,
         coBorrowerCellPhone: false,
         coBorrowerDob: false,
         coBorrowerEmail: false,
@@ -2860,6 +2894,10 @@ export default {
       this.cellPhone = value
       this.validateCellPhone(value)
     },
+    businessPhone (value) {
+      this.businessPhone = value
+      this.validateBusinessPhone(value)
+    },
     address (value) {
       this.address = value
       this.validateAddress(value)
@@ -2908,6 +2946,10 @@ export default {
     coBorrowerCellPhone (value) {
       this.coBorrowerCellPhone = value
       this.validateCoBorrowerCellPhone(value)
+    },
+    coBorrowerBusinessPhone (value) {
+      this.coBorrowerBusinessPhone = value
+      this.validateCoBorrowerBusinessPhone(value)
     },
     coBorrowerAddress (value) {
       this.coBorrowerAddress = value
@@ -3027,6 +3069,10 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(email)
     },
+    validPhone (phone) {
+      const re = /^(\([0-9]{3}\))\s([0-9]{3})-([0-9]{4})$/
+      return re.test(phone)
+    },
     validSsn (ssn) {
       const re = /^([0-9]{3})-([0-9]{2})-([0-9]{4})$/
       return re.test(ssn)
@@ -3066,13 +3112,6 @@ export default {
       }
       if (value && this.validEmail(value)) {
         this.errors.email = false
-      }
-    },
-    validateCellPhone (value) {
-      if (value) {
-        this.errors.cellPhone = false
-      } else {
-        this.errors.cellPhone = true
       }
     },
     validateAddress (value) {
@@ -3192,17 +3231,6 @@ export default {
       }
       if (!this.hasCoBorrower || this.validEmail(value)) {
         this.errors.coBorrowerEmail = false
-      }
-    },
-    validateCoBorrowerCellPhone (value) {
-      if (this.hasCoBorrower) {
-        if (value) {
-          this.errors.coBorrowerCellPhone = false
-        } else {
-          this.errors.coBorrowerCellPhone = true
-        }
-      } else {
-        this.errors.coBorrowerCellPhone = false
       }
     },
     validateCoBorrowerAddress (value) {
@@ -3367,6 +3395,50 @@ export default {
         this.errors.dob = true
       } else {
         this.errors.dob = false
+      }
+    },
+    validateCellPhone (value) {
+      if (!value) {
+        this.errors.cellPhone = true
+      }
+      if (value && !this.validPhone(value)) {
+        this.errors.cellPhone = true
+      }
+      if (value && this.validPhone(value)) {
+        this.errors.cellPhone = false
+      }
+    },
+    validateBusinessPhone (value) {
+      if (!value) {
+        this.errors.businessPhone = false
+      }
+      if (value && !this.validPhone(value)) {
+        this.errors.businessPhone = true
+      }
+      if (value && this.validPhone(value)) {
+        this.errors.businessPhone = false
+      }
+    },
+    validateCoBorrowerCellPhone (value) {
+      if (!value) {
+        this.errors.coBorrowerCellPhone = true
+      }
+      if (value && !this.validPhone(value)) {
+        this.errors.coBorrowerCellPhone = true
+      }
+      if (value && this.validPhone(value)) {
+        this.errors.coBorrowerCellPhone = false
+      }
+    },
+    validateCoBorrowerBusinessPhone (value) {
+      if (!value) {
+        this.errors.coBorrowerBusinessPhone = false
+      }
+      if (value && !this.validPhone(value)) {
+        this.errors.coBorrowerBusinessPhone = true
+      }
+      if (value && this.validPhone(value)) {
+        this.errors.coBorrowerBusinessPhone = false
       }
     },
     validateSsn (value) {
