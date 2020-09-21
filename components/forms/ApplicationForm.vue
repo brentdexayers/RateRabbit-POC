@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="hasErrors" class="alert alert-danger form-errors-title">
+      <strong class="text-danger">Please fix the form errros below</strong>
+    </div>
     <form
       id="application-form"
       @submit.prevent="handleSubmit"
@@ -358,7 +361,10 @@
               Present address is required
             </p>
           </div>
-          <div class="form-group col-12 col-lg-3">
+          <div
+            :class="{ error: errors.zip }"
+            class="form-group col-12 col-lg-3"
+          >
             <input
               v-model="zip"
               v-mask="'#####'"
@@ -899,7 +905,10 @@
                 Address is required
               </p>
             </div>
-            <div class="form-group col-12 col-lg-4">
+            <div
+              :class="{ error: errors.coBorrowerZip }"
+              class="form-group col-12 col-lg-4"
+            >
               <input
                 v-model="coBorrowerZip"
                 v-mask="'#####'"
@@ -1221,7 +1230,7 @@
             >
               <input
                 v-model="realEstate_0_address"
-                @blur="validateAssetsAndLiabilities()"
+                @blur="validateRealEstate_0_address(realEstate_0_address)"
                 type="text"
                 name="realEstate_0_address"
                 class="form-control"
@@ -1246,7 +1255,7 @@
               <input
                 v-model="realEstate_0_zip"
                 v-mask="'#####'"
-                @blur="validateAssetsAndLiabilities()"
+                @blur="validateRealEstate_0_zip(realEstate_0_zip)"
                 type="text"
                 name="realEstate_0_zip"
                 class="form-control"
@@ -1267,7 +1276,6 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="realEstate_0_propertyType"
-                @blur="validateAssetsAndLiabilities()"
                 name="realEstate_0_propertyType"
                 class="custom-select"
               >
@@ -1301,7 +1309,6 @@
               <input
                 v-model="realEstate_0_presentMarketValue"
                 v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_presentMarketValue"
                 class="form-control"
@@ -1323,7 +1330,6 @@
               <input
                 v-model="realEstate_0_totalLiens"
                 v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_totalLiens"
                 class="form-control"
@@ -1345,7 +1351,6 @@
               <input
                 v-model="realEstate_0_grossRentalIncome"
                 v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
                 type="text"
                 name="realEstate_0_grossRentalIncome"
                 class="form-control"
@@ -1364,329 +1369,344 @@
               </p>
             </div>
           </div>
-          <h3>
-            Property 2
-          </h3>
-          <div class="row">
-            <div
-              :class="{ error: errors.realEstate_1_address }"
-              class="form-group col-12 col-lg-8"
-            >
+          <div class="justify-content-between align-items-start d-flex">
+            <h3 v-if="assetsAndLiabilities_1">
+              Property 2
+            </h3>
+            <div class="custom-control custom-checkbox ml-auto">
               <input
-                v-model="realEstate_1_address"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_1_address"
-                class="form-control"
+                id="assetsAndLiabilities_1"
+                v-model="assetsAndLiabilities_1"
+                type="checkbox"
+                class="custom-control-input"
               >
               <label
-                :class="{ hasvalue: realEstate_1_address }"
-                for="realEstate_1_address"
+                class="custom-control-label text-primary small"
+                for="assetsAndLiabilities_1"
               >
-                {{ 'Property Address' | titlecase }}
+                {{ 'Include another property' }}
               </label>
-              <p
-                v-if="errors.realEstate_1_address"
-                class="error-inline"
-              >
-                Property address is required
-              </p>
-            </div>
-            <div
-              :class="{ error: errors.realEstate_1_zip }"
-              class="form-group col-12 col-lg-4"
-            >
-              <input
-                v-model="realEstate_1_zip"
-                v-mask="'#####'"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_1_zip"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_1_zip }"
-                for="realEstate_1_zip"
-              >
-                {{ 'Property Zip Code' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_1_zip"
-                class="error-inline"
-              >
-                Property zip code is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <select
-                v-model="realEstate_1_propertyType"
-                @blur="validateAssetsAndLiabilities()"
-                name="realEstate_1_propertyType"
-                class="custom-select"
-              >
-                <option
-                  value="null"
-                  disabled
-                  hidden
-                />
-                <option
-                  v-for="(option, index) in propertyTypeOptions"
-                  :key="index"
-                  :value="option"
-                >
-                  {{ option.name | titlecase }}
-                </option>
-              </select>
-              <label
-                :class="{ hasvalue: realEstate_1_propertyType }"
-                for="realEstate_1_propertyType"
-              >
-                {{ 'Property Type' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_1_propertyType"
-                class="error-inline"
-              >
-                Property type is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_1_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_1_presentMarketValue"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_1_presentMarketValue }"
-                for="realEstate_1_presentMarketValue"
-              >
-                {{ 'Present Market Value' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_1_presentMarketValue"
-                class="error-inline"
-              >
-                Market value is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_1_totalLiens"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_1_totalLiens"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_1_totalLiens }"
-                for="realEstate_1_totalLiens"
-              >
-                {{ 'Amount of Mortgages & Liens' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_1_totalLiens"
-                class="error-inline"
-              >
-                Total liens is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_1_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_1_grossRentalIncome"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_1_grossRentalIncome }"
-                for="realEstate_1_grossRentalIncome"
-              >
-                {{ 'Gross Rental Income' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_1_grossRentalIncome"
-                class="error-inline"
-              >
-                Gross rental income is required
-              </p>
             </div>
           </div>
-          <h3>
-            Property 3
-          </h3>
-          <div class="row">
-            <div
-              :class="{ error: errors.realEstate_2_address }"
-              class="form-group col-12 col-lg-8"
-            >
-              <input
-                v-model="realEstate_2_address"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_2_address"
-                class="form-control"
+          <div v-if="assetsAndLiabilities_1">
+            <div class="row">
+              <div
+                :class="{ error: errors.realEstate_1_address }"
+                class="form-group col-12 col-lg-8"
               >
-              <label
-                :class="{ hasvalue: realEstate_2_address }"
-                for="realEstate_2_address"
-              >
-                {{ 'Property Address' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_address"
-                class="error-inline"
-              >
-                Property address is required
-              </p>
-            </div>
-            <div
-              :class="{ error: errors.realEstate_2_zip }"
-              class="form-group col-12 col-lg-4"
-            >
-              <input
-                v-model="realEstate_2_zip"
-                v-mask="'#####'"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_2_zip"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_2_zip }"
-                for="realEstate_2_zip"
-              >
-                {{ 'Property Zip Code' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_zip"
-                class="error-inline"
-              >
-                Property zip code is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <select
-                v-model="realEstate_2_propertyType"
-                @blur="validateAssetsAndLiabilities()"
-                name="realEstate_2_propertyType"
-                class="custom-select"
-              >
-                <option
-                  value="null"
-                  disabled
-                  hidden
-                />
-                <option
-                  v-for="(option, index) in propertyTypeOptions"
-                  :key="index"
-                  :value="option"
+                <input
+                  v-model="realEstate_1_address"
+                  @blur="validateRealEstate_1_address(realEstate_1_address)"
+                  type="text"
+                  name="realEstate_1_address"
+                  class="form-control"
                 >
-                  {{ option.name | titlecase }}
-                </option>
-              </select>
-              <label
-                :class="{ hasvalue: realEstate_2_propertyType }"
-                for="realEstate_2_propertyType"
+                <label
+                  :class="{ hasvalue: realEstate_1_address }"
+                  for="realEstate_1_address"
+                >
+                  {{ 'Property Address' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_address"
+                  class="error-inline"
+                >
+                  Property address is required
+                </p>
+              </div>
+              <div
+                :class="{ error: errors.realEstate_1_zip }"
+                class="form-group col-12 col-lg-4"
               >
-                {{ 'Property Type' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_propertyType"
-                class="error-inline"
-              >
-                Property type is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_2_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_2_presentMarketValue"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_2_presentMarketValue }"
-                for="realEstate_2_presentMarketValue"
-              >
-                {{ 'Present Market Value' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_presentMarketValue"
-                class="error-inline"
-              >
-                Market value is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_2_totalLiens"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_2_totalLiens"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_2_totalLiens }"
-                for="realEstate_2_totalLiens"
-              >
-                {{ 'Amount of Mortgages & Liens' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_totalLiens"
-                class="error-inline"
-              >
-                Total liens is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_2_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                @blur="validateAssetsAndLiabilities()"
-                type="text"
-                name="realEstate_2_grossRentalIncome"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_2_grossRentalIncome }"
-                for="realEstate_2_grossRentalIncome"
-              >
-                {{ 'Gross Rental Income' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_2_grossRentalIncome"
-                class="error-inline"
-              >
-                Gross rental income is required
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+                <input
+                  v-model="realEstate_1_zip"
+                  v-mask="'#####'"
+                  @blur="validateRealEstate_1_zip(realEstate_1_zip)"
+                  type="text"
+                  name="realEstate_1_zip"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_1_zip }"
+                  for="realEstate_1_zip"
+                >
+                  {{ 'Property Zip Code' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_zip"
+                  class="error-inline"
+                >
+                  Property zip code is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <select
+                  v-model="realEstate_1_propertyType"
 
-      <div
-        v-if="formHasErrors"
-        class="row"
-      >
-        <div class="form-group col-12">
-          <p class="text-danger">
-            Please complete the form before submitting your application.
-          </p>
+                  name="realEstate_1_propertyType"
+                  class="custom-select"
+                >
+                  <option
+                    value="null"
+                    disabled
+                    hidden
+                  />
+                  <option
+                    v-for="(option, index) in propertyTypeOptions"
+                    :key="index"
+                    :value="option"
+                  >
+                    {{ option.name | titlecase }}
+                  </option>
+                </select>
+                <label
+                  :class="{ hasvalue: realEstate_1_propertyType }"
+                  for="realEstate_1_propertyType"
+                >
+                  {{ 'Property Type' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_propertyType"
+                  class="error-inline"
+                >
+                  Property type is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_1_presentMarketValue"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_1_presentMarketValue"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_1_presentMarketValue }"
+                  for="realEstate_1_presentMarketValue"
+                >
+                  {{ 'Present Market Value' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_presentMarketValue"
+                  class="error-inline"
+                >
+                  Market value is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_1_totalLiens"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_1_totalLiens"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_1_totalLiens }"
+                  for="realEstate_1_totalLiens"
+                >
+                  {{ 'Amount of Mortgages & Liens' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_totalLiens"
+                  class="error-inline"
+                >
+                  Total liens is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_1_grossRentalIncome"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_1_grossRentalIncome"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_1_grossRentalIncome }"
+                  for="realEstate_1_grossRentalIncome"
+                >
+                  {{ 'Gross Rental Income' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_1_grossRentalIncome"
+                  class="error-inline"
+                >
+                  Gross rental income is required
+                </p>
+              </div>
+            </div>
+            <div class="justify-content-between align-items-start d-flex">
+              <h3 v-if="assetsAndLiabilities_2">
+                Property 3
+              </h3>
+              <div class="custom-control custom-checkbox ml-auto">
+                <input
+                  id="assetsAndLiabilities_2"
+                  v-model="assetsAndLiabilities_2"
+                  type="checkbox"
+                  class="custom-control-input"
+                >
+                <label
+                  class="custom-control-label text-primary small"
+                  for="assetsAndLiabilities_2"
+                >
+                  {{ 'Include another property' }}
+                </label>
+              </div>
+            </div>
+            <div v-if="assetsAndLiabilities_2" class="row">
+              <div
+                :class="{ error: errors.realEstate_2_address }"
+                class="form-group col-12 col-lg-8"
+              >
+                <input
+                  v-model="realEstate_2_address"
+                  @blur="validateRealEstate_2_address(realEstate_2_address)"
+                  type="text"
+                  name="realEstate_2_address"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_2_address }"
+                  for="realEstate_2_address"
+                >
+                  {{ 'Property Address' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_address"
+                  class="error-inline"
+                >
+                  Property address is required
+                </p>
+              </div>
+              <div
+                :class="{ error: errors.realEstate_2_zip }"
+                class="form-group col-12 col-lg-4"
+              >
+                <input
+                  v-model="realEstate_2_zip"
+                  v-mask="'#####'"
+                  @blur="validateRealEstate_2_zip(realEstate_2_zip)"
+                  type="text"
+                  name="realEstate_2_zip"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_2_zip }"
+                  for="realEstate_2_zip"
+                >
+                  {{ 'Property Zip Code' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_zip"
+                  class="error-inline"
+                >
+                  Property zip code is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <select
+                  v-model="realEstate_2_propertyType"
+                  name="realEstate_2_propertyType"
+                  class="custom-select"
+                >
+                  <option
+                    value="null"
+                    disabled
+                    hidden
+                  />
+                  <option
+                    v-for="(option, index) in propertyTypeOptions"
+                    :key="index"
+                    :value="option"
+                  >
+                    {{ option.name | titlecase }}
+                  </option>
+                </select>
+                <label
+                  :class="{ hasvalue: realEstate_2_propertyType }"
+                  for="realEstate_2_propertyType"
+                >
+                  {{ 'Property Type' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_propertyType"
+                  class="error-inline"
+                >
+                  Property type is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_2_presentMarketValue"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_2_presentMarketValue"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_2_presentMarketValue }"
+                  for="realEstate_2_presentMarketValue"
+                >
+                  {{ 'Present Market Value' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_presentMarketValue"
+                  class="error-inline"
+                >
+                  Market value is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_2_totalLiens"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_2_totalLiens"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_2_totalLiens }"
+                  for="realEstate_2_totalLiens"
+                >
+                  {{ 'Amount of Mortgages & Liens' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_totalLiens"
+                  class="error-inline"
+                >
+                  Total liens is required
+                </p>
+              </div>
+              <div class="form-group col-12 col-lg-6">
+                <input
+                  v-model="realEstate_2_grossRentalIncome"
+                  v-currency="{distractionFree: false}"
+                  type="text"
+                  name="realEstate_2_grossRentalIncome"
+                  class="form-control"
+                >
+                <label
+                  :class="{ hasvalue: realEstate_2_grossRentalIncome }"
+                  for="realEstate_2_grossRentalIncome"
+                >
+                  {{ 'Gross Rental Income' | titlecase }}
+                </label>
+                <p
+                  v-if="errors.realEstate_2_grossRentalIncome"
+                  class="error-inline"
+                >
+                  Gross rental income is required
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group col-12">
           <button
-            :disabled="formHasErrors"
             type="submit"
             name="submit"
             class="btn btn--submit btn-primary form--apply__submit mt-4"
@@ -1724,6 +1744,8 @@ export default {
   data () {
     return {
       assetsAndLiabilities: false,
+      assetsAndLiabilities_1: false,
+      assetsAndLiabilities_2: false,
       copyPropertyAddress: {
         primary: false,
         coBorrower: false
@@ -1765,6 +1787,7 @@ export default {
         result: false,
         ssn: false
       },
+      hasErrors: false,
       hasCoBorrower: false,
       step: 0
     }
@@ -2837,36 +2860,7 @@ export default {
       }
       // RETURN
       return payload
-    },
-    // Form errors
-    formHasErrors () {
-      let hasErrors
-      if (
-        !this.loanPurpose ||
-        !this.propertyAddress ||
-        !this.propertyZip ||
-        !this.firstName ||
-        !this.lastName ||
-        !this.email ||
-        !this.cellPhone ||
-        !this.address ||
-        !this.zip ||
-        (this.hasCoBorrower && (
-          !this.coBorrowerFirstName ||
-          !this.coBorrowerLastName ||
-          !this.coBorrowerEmail ||
-          !this.coBorrowerCellPhone ||
-          !this.coBorrowerAddress ||
-          !this.coBorrowerZip
-        ))
-      ) {
-        hasErrors = true
-      } else {
-        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
-      }
-      return hasErrors
     }
-
   },
   watch: {
     propertyAddress (value) {
@@ -2983,6 +2977,43 @@ export default {
     coBorrowerDob (value) {
       this.coBorrowerDob = value
       this.validateCoBorrowerDob(value)
+    },
+    // Assets and liabilities
+    assetsAndLiabilities (value) {
+      this.assetsAndLiabilities = value
+      this.validateAssetsAndLiabilities(value)
+    },
+    assetsAndLiabilities_1 (value) {
+      this.assetsAndLiabilities_1 = value
+      this.validateAssetsAndLiabilities_1(value)
+    },
+    assetsAndLiabilities_2 (value) {
+      this.assetsAndLiabilities_2 = value
+      this.validateAssetsAndLiabilities_2(value)
+    },
+    realEstate_0_address (value) {
+      this.realEstate_0_address = value
+      this.validateRealEstate_0_address(value)
+    },
+    realEstate_0_zip (value) {
+      this.realEstate_0_zip = value
+      this.validateRealEstate_0_zip(value)
+    },
+    realEstate_1_address (value) {
+      this.realEstate_1_address = value
+      this.validateRealEstate_1_address(value)
+    },
+    realEstate_1_zip (value) {
+      this.realEstate_1_zip = value
+      this.validateRealEstate_1_zip(value)
+    },
+    realEstate_2_address (value) {
+      this.realEstate_2_address = value
+      this.validateRealEstate_2_address(value)
+    },
+    realEstate_2_zip (value) {
+      this.realEstate_2_zip = value
+      this.validateRealEstate_2_zip(value)
     }
   },
   async fetch () {
@@ -3029,9 +3060,101 @@ export default {
         this.coBorrowerZip = null
       }
     },
+    formHasErrors () {
+      let hasErrors = false
+      if (!this.loanPurpose) {
+        hasErrors = true
+        console.log('Form Errors: loanPurpose', '\n')
+      }
+      // if (!this.propertyAddress) {
+      //   hasErrors = true
+      //   console.log('Form Errors: propertyAddress', '\n')
+      // }
+      this.validatePropertyAddress(this.applicationData.propertyAddress)
+      // if (!this.propertyZip) {
+      //   hasErrors = true
+      //   console.log('Form Errors: propertyZip', '\n')
+      // }
+      this.validatePropertyZip(this.applicationData.propertyZip)
+      // if (!this.firstName) {
+      //   hasErrors = true
+      //   console.log('Form Errors: firstName', '\n')
+      // }
+      this.validateFirstName(this.applicationData.firstName)
+      // if (!this.lastName) {
+      //   hasErrors = true
+      //   console.log('Form Errors: lastName', '\n')
+      // }
+      this.validateLastName(this.applicationData.lastName)
+      // if (!this.email) {
+      //   hasErrors = true
+      //   console.log('Form Errors: email', '\n')
+      // }
+      this.validateEmail(this.applicationData.email)
+      // if (!this.cellPhone) {
+      //   hasErrors = true
+      //   console.log('Form Errors: cellPhone', '\n')
+      // }
+      this.validateCellPhone(this.applicationData.cellPhone)
+      // if (!this.address) {
+      //   hasErrors = true
+      //   console.log('Form Errors: address', '\n')
+      // }
+      this.validateAddress(this.applicationData.address)
+      // if (!this.zip) {
+      //   hasErrors = true
+      //   console.log('Form Errors: zip', '\n')
+      // }
+      this.validateZip(this.applicationData.zip)
+      if (this.hasCoBorrower) {
+        // if (!this.coBorrowerFirstName) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerFirstName', '\n')
+        // }
+        this.validateCoBorrowerFirstName(this.applicationData.coBorrowerFirstName)
+        // if (!this.coBorrowerLastName) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerLastName', '\n')
+        // }
+        this.validateCoBorrowerLastName(this.applicationData.coBorrowerLastName)
+        // if (!this.coBorrowerEmail) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerEmail', '\n')
+        // }
+        this.validateCoBorrowerEmail(this.applicationData.coBorrowerEmail)
+        // if (!this.coBorrowerCellPhone) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerCellPhone', '\n')
+        // }
+        this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
+        // if (!this.coBorrowerAddress) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerAddress', '\n')
+        // }
+        this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
+        // if (!this.coBorrowerZip) {
+        //   hasErrors = true
+        //   console.log('Form Error: coBorrowerZip', '\n')
+        // }
+        this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
+      }
+      if (!hasErrors) {
+        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
+        if (hasErrors) {
+          console.log('Form Error Obj: ', '\n', this.errors)
+          this.hasErrors = true
+        } else {
+          this.hasErrors = false
+        }
+      }
+      return hasErrors
+    },
     async handleSubmit () {
       this.$emit('applicationSubmitStart')
-      if (!this.formHasErrors) {
+      // Error checking
+      const hasErrors = this.formHasErrors()
+      // If no errors
+      if (!hasErrors) {
         // console.log('Application Payload:\n', this.applicationPayload)
         const data = await authenticate() // eslint-disable-line no-unused-vars
           .then((auth) => {
@@ -3077,6 +3200,10 @@ export default {
       const re = /^([0-9]{3})-([0-9]{2})-([0-9]{4})$/
       return re.test(ssn)
     },
+    validZip (zip) {
+      const re = /^([0-9]{5})$/
+      return re.test(zip)
+    },
     // Validation Methods
     validatePropertyAddress (value) {
       if (value) {
@@ -3086,7 +3213,7 @@ export default {
       }
     },
     validatePropertyZip (value) {
-      if (value) {
+      if (this.validZip(value)) {
         this.errors.propertyZip = false
       } else {
         this.errors.propertyZip = true
@@ -3194,7 +3321,7 @@ export default {
         this.applicationData.employedHowLong ||
         this.applicationData.employerZip
       ) {
-        if (value) {
+        if (this.validZip(value)) {
           this.errors.employerZip = false
         } else {
           this.errors.employerZip = true
@@ -3246,7 +3373,7 @@ export default {
     },
     validateCoBorrowerZip (value) {
       if (this.hasCoBorrower) {
-        if (value) {
+        if (this.validZip(value)) {
           this.errors.coBorrowerZip = false
         } else {
           this.errors.coBorrowerZip = true
@@ -3319,68 +3446,6 @@ export default {
         }
       } else {
         this.errors.coBorrowerEmployerZip = false
-      }
-    },
-    validateAssetsAndLiabilities () {
-      if (this.assetsAndLiabilities) {
-        if (
-          this.realEstate_0_address ||
-          this.realEstate_0_grossRentalIncome ||
-          this.realEstate_0_presentMarketValue ||
-          this.realEstate_0_propertyType ||
-          this.realEstate_0_totalLiens ||
-          this.realEstate_0_zip
-        ) {
-          if (!this.applicationData.realEstate_0_address) {
-            this.errors.realEstate_0_address = true
-          } else {
-            this.errors.realEstate_0_address = false
-          }
-          if (!this.applicationData.realEstate_0_zip) {
-            this.errors.realEstate_0_zip = true
-          } else {
-            this.errors.realEstate_0_zip = false
-          }
-        }
-        if (
-          this.realEstate_1_address ||
-          this.realEstate_1_grossRentalIncome ||
-          this.realEstate_1_presentMarketValue ||
-          this.realEstate_1_propertyType ||
-          this.realEstate_1_totalLiens ||
-          this.realEstate_1_zip
-        ) {
-          if (!this.applicationData.realEstate_1_address) {
-            this.errors.realEstate_1_address = true
-          } else {
-            this.errors.realEstate_1_address = false
-          }
-          if (!this.applicationData.realEstate_1_zip) {
-            this.errors.realEstate_1_zip = true
-          } else {
-            this.errors.realEstate_1_zip = false
-          }
-        }
-        if (
-          this.realEstate_2_address ||
-          this.realEstate_2_grossRentalIncome ||
-          this.realEstate_2_presentMarketValue ||
-          this.realEstate_2_propertyType ||
-          this.realEstate_2_totalLiens ||
-          this.realEstate_2_zip
-        ) {
-          if (!this.applicationData.realEstate_2_address) {
-            this.errors.realEstate_2_address = true
-          } else {
-            this.errors.realEstate_2_address = false
-          }
-          if (!this.applicationData.realEstate_2_zip) {
-            this.errors.realEstate_2_zip = true
-          } else {
-            this.errors.realEstate_2_zip = false
-          }
-        }
-        if (!this.applicationData.result) { this.errors.result = true } else { this.errors.result = false }
       }
     },
     validateDob (value) {
@@ -3456,6 +3521,103 @@ export default {
       if (!value || (value && this.validSsn(value))) {
         this.errors.coBorrowerSsn = false
       }
+    },
+    validateAssetsAndLiabilities (value) {
+      if (!value) {
+        this.errors.realEstate_0_address = false
+        this.errors.realEstate_0_zip = false
+        this.errors.realEstate_1_address = false
+        this.errors.realEstate_1_zip = false
+        this.errors.realEstate_2_address = false
+        this.errors.realEstate_2_zip = false
+      } else {
+        this.validateRealEstate_0_address(this.applicationData.realEstate_0_address)
+        this.validateRealEstate_0_zip(this.applicationData.realEstate_0_zip)
+      }
+    },
+    validateAssetsAndLiabilities_1 (value) {
+      if (!value) {
+        this.errors.realEstate_1_address = false
+        this.errors.realEstate_1_zip = false
+        this.errors.realEstate_2_address = false
+        this.errors.realEstate_2_zip = false
+      } else {
+        this.validateRealEstate_1_address(this.applicationData.realEstate_1_address)
+        this.validateRealEstate_1_zip(this.applicationData.realEstate_1_zip)
+      }
+    },
+    validateAssetsAndLiabilities_2 (value) {
+      if (!value) {
+        this.errors.realEstate_2_address = false
+        this.errors.realEstate_2_zip = false
+      } else {
+        this.validateRealEstate_2_address(this.applicationData.realEstate_2_address)
+        this.validateRealEstate_2_zip(this.applicationData.realEstate_2_zip)
+      }
+    },
+    validateRealEstate_0_address (value) {
+      if (
+        this.assetsAndLiabilities &&
+        !value
+      ) {
+        this.errors.realEstate_0_address = true
+      } else {
+        this.errors.realEstate_0_address = false
+      }
+    },
+    validateRealEstate_0_zip (value) {
+      if (
+        this.assetsAndLiabilities &&
+        !this.validZip(value)
+      ) {
+        this.errors.realEstate_0_zip = true
+      } else {
+        this.errors.realEstate_0_zip = false
+      }
+    },
+    validateRealEstate_1_address (value) {
+      if (
+        this.assetsAndLiabilities &&
+        this.assetsAndLiabilities_1 &&
+        !value
+      ) {
+        this.errors.realEstate_1_address = true
+      } else {
+        this.errors.realEstate_1_address = false
+      }
+    },
+    validateRealEstate_1_zip (value) {
+      if (
+        this.assetsAndLiabilities &&
+        this.assetsAndLiabilities_1 &&
+        !this.validZip(value)
+      ) {
+        this.errors.realEstate_1_zip = true
+      } else {
+        this.errors.realEstate_1_zip = false
+      }
+    },
+    validateRealEstate_2_address (value) {
+      if (
+        this.assetsAndLiabilities &&
+        this.assetsAndLiabilities_2 &&
+        !value
+      ) {
+        this.errors.realEstate_2_address = true
+      } else {
+        this.errors.realEstate_2_address = false
+      }
+    },
+    validateRealEstate_2_zip (value) {
+      if (
+        this.assetsAndLiabilities &&
+        this.assetsAndLiabilities_2 &&
+        !this.validZip(value)
+      ) {
+        this.errors.realEstate_2_zip = true
+      } else {
+        this.errors.realEstate_2_zip = false
+      }
     }
   }
 }
@@ -3465,6 +3627,9 @@ export default {
 @import '@/assets/css/variables.scss';
 @import '~bootstrap/scss/mixins.scss';
 
+.form-errors-title {
+  margin-bottom: 4rem;
+}
 .form--apply {
   &__header {
     color: $primary;

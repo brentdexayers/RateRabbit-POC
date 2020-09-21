@@ -437,7 +437,6 @@
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
             :class="invertedSubmit ? 'btn-outline-primary' : 'btn-primary'"
-            :disabled="formHasErrors"
             type="submit"
             class="btn btn--submit"
           >
@@ -759,25 +758,6 @@ export default {
         'zipCode': this.propertyZip
       }
       return payload
-    },
-    // Error Checking
-    formHasErrors () {
-      let hasErrors
-      if (
-        !this.loanPurpose ||
-        !this.propertyValue ||
-        !this.loanAmount ||
-        !this.state ||
-        !this.propertyZip ||
-        !this.propertyType ||
-        !this.propertyUse ||
-        !this.creditRating
-      ) {
-        hasErrors = true
-      } else {
-        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
-      }
-      return hasErrors
     }
   },
   watch: {
@@ -864,6 +844,48 @@ export default {
       const self = event.target
       self.closest('div').classList.remove('focused')
     },
+    formHasErrors () {
+      let hasErrors = false
+      if (!this.loanPurpose) {
+        hasErrors = true
+        console.log('Form Error: loanPurpose', '\n')
+      }
+      if (!this.propertyValue) {
+        hasErrors = true
+        console.log('Form Error: propertyValue', '\n')
+      }
+      if (!this.loanAmount) {
+        hasErrors = true
+        console.log('Form Error: loanAmount', '\n')
+      }
+      if (!this.state) {
+        hasErrors = true
+        console.log('Form Error: state', '\n')
+      }
+      if (!this.propertyZip) {
+        hasErrors = true
+        console.log('Form Error: propertyZip', '\n')
+      }
+      if (!this.propertyType) {
+        hasErrors = true
+        console.log('Form Error: propertyType', '\n')
+      }
+      if (!this.propertyUse) {
+        hasErrors = true
+        console.log('Form Error: propertyUse', '\n')
+      }
+      if (!this.creditRating) {
+        hasErrors = true
+        console.log('Form Error: creditRating', '\n')
+      }
+      if (!hasErrors) {
+        hasErrors = Object.keys(this.errors).some(k => this.errors[k])
+        if (hasErrors) {
+          console.log('Form Error Obj:', '\n', this.errors)
+        }
+      }
+      return hasErrors
+    },
     getLoanRefinanceType () {
       let type = 'No Cash Out'
       if (this.loanPurpose.name === 'Refinance Cash Out') {
@@ -877,19 +899,6 @@ export default {
       }
       return type
     },
-    scrollToTop (event) {
-      const c = document.documentElement.scrollTop || document.body.scrollTop
-      if (c > 0) {
-        window.requestAnimationFrame(this.scrollToTop)
-        window.scrollTo(0, c - c / 8)
-      }
-      // window.scrollTo(0, 0)
-      document.body.focus()
-    },
-    toggleLoader () {
-      this.$store.commit('toggleLoader')
-    },
-    // Submit Methods
     reduceResults (results) {
       // const r = results.searchResultDetails.sort((a, b) => (a.amortizationTerm < b.amortizationTerm) ? 1 : -1) // < DESC, > ASC
       const reduced = {}
@@ -908,6 +917,15 @@ export default {
       }
       return reducedMore
     },
+    scrollToTop (event) {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - c / 8)
+      }
+      // window.scrollTo(0, 0)
+      document.body.focus()
+    },
     submitStart () {
       this.$emit('submitStart')
       this.toggleLoader()
@@ -915,6 +933,9 @@ export default {
     submitEnd () {
       this.$emit('submitEnd')
       setTimeout(() => this.toggleLoader(), 250)
+    },
+    toggleLoader () {
+      this.$store.commit('toggleLoader')
     },
     updateLoanPurpose (payload) {
       this.$store.commit('updateLoanPurpose', payload)
@@ -940,9 +961,9 @@ export default {
       this.validatePromotionCodeNoSubmit(this.promotionCode)
       this.submitStart()
       // Check for errors
-      // const hasErrors = this.formValidate()
+      const hasErrors = this.formHasErrors()
       // If no errors
-      if (!this.formHasErrors) {
+      if (!hasErrors) {
         // Get search data (API)
         const data = await authenticate()
           .then((auth) => {
