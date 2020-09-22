@@ -845,7 +845,10 @@ export default {
       self.closest('div').classList.remove('focused')
     },
     formHasErrors () {
+      // (re)Set defaults
+      this.errors.loanSearch = false
       let hasErrors = false
+      // Check for errors
       if (!this.loanPurpose) {
         hasErrors = true
         console.log('Form Error: loanPurpose', '\n')

@@ -3066,78 +3066,47 @@ export default {
         hasErrors = true
         console.log('Form Errors: loanPurpose', '\n')
       }
-      // if (!this.propertyAddress) {
-      //   hasErrors = true
-      //   console.log('Form Errors: propertyAddress', '\n')
-      // }
       this.validatePropertyAddress(this.applicationData.propertyAddress)
-      // if (!this.propertyZip) {
-      //   hasErrors = true
-      //   console.log('Form Errors: propertyZip', '\n')
-      // }
       this.validatePropertyZip(this.applicationData.propertyZip)
-      // if (!this.firstName) {
-      //   hasErrors = true
-      //   console.log('Form Errors: firstName', '\n')
-      // }
       this.validateFirstName(this.applicationData.firstName)
-      // if (!this.lastName) {
-      //   hasErrors = true
-      //   console.log('Form Errors: lastName', '\n')
-      // }
       this.validateLastName(this.applicationData.lastName)
-      // if (!this.email) {
-      //   hasErrors = true
-      //   console.log('Form Errors: email', '\n')
-      // }
       this.validateEmail(this.applicationData.email)
-      // if (!this.cellPhone) {
-      //   hasErrors = true
-      //   console.log('Form Errors: cellPhone', '\n')
-      // }
       this.validateCellPhone(this.applicationData.cellPhone)
-      // if (!this.address) {
-      //   hasErrors = true
-      //   console.log('Form Errors: address', '\n')
-      // }
       this.validateAddress(this.applicationData.address)
-      // if (!this.zip) {
-      //   hasErrors = true
-      //   console.log('Form Errors: zip', '\n')
-      // }
       this.validateZip(this.applicationData.zip)
+      this.validateMailingAddress(this.applicationData.mailingAddress)
+      this.validateMailingZip(this.applicationData.mailingZip)
+      this.validateDob(this.applicationData.dob)
+      this.validateCellPhone(this.applicationData.cellPhone)
+      this.validateBusinessPhone(this.applicationData.businessPhone)
+      this.validateEmployerName(this.applicationData.employerName)
+      this.validateEmployerAddress(this.applicationData.employerAddress)
+      this.validateEmployerZip(this.applicationData.employerZip)
+      this.validateSsn(this.applicationData.ssn)
       if (this.hasCoBorrower) {
-        // if (!this.coBorrowerFirstName) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerFirstName', '\n')
-        // }
         this.validateCoBorrowerFirstName(this.applicationData.coBorrowerFirstName)
-        // if (!this.coBorrowerLastName) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerLastName', '\n')
-        // }
         this.validateCoBorrowerLastName(this.applicationData.coBorrowerLastName)
-        // if (!this.coBorrowerEmail) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerEmail', '\n')
-        // }
         this.validateCoBorrowerEmail(this.applicationData.coBorrowerEmail)
-        // if (!this.coBorrowerCellPhone) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerCellPhone', '\n')
-        // }
         this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
-        // if (!this.coBorrowerAddress) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerAddress', '\n')
-        // }
         this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
-        // if (!this.coBorrowerZip) {
-        //   hasErrors = true
-        //   console.log('Form Error: coBorrowerZip', '\n')
-        // }
         this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
+        this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
+        this.validateCoBorrowerEmployerAddress(this.applicationData.coBorrowerEmployerAddress)
+        this.validateCoBorrowerEmployerZip(this.applicationData.coBorrowerEmployerZip)
+        this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
+        this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
+        this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
+        this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
       }
+      this.validateAssetsAndLiabilities(this.assetsAndLiabilities)
+      this.validateAssetsAndLiabilities_1(this.assetsAndLiabilities_1)
+      this.validateAssetsAndLiabilities_2(this.assetsAndLiabilities_2)
+      this.validateRealEstate_0_address(this.applicationData.realEstate_0_address)
+      this.validateRealEstate_0_zip(this.applicationData.realEstate_0_zip)
+      this.validateRealEstate_1_address(this.applicationData.realEstate_1_address)
+      this.validateRealEstate_1_zip(this.applicationData.realEstate_1_zip)
+      this.validateRealEstate_2_address(this.applicationData.realEstate_2_address)
+      this.validateRealEstate_2_zip(this.applicationData.realEstate_2_zip)
       if (!hasErrors) {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
@@ -3556,67 +3525,137 @@ export default {
       }
     },
     validateRealEstate_0_address (value) {
+      // Is address valid?
       if (
         this.assetsAndLiabilities &&
+        this.applicationData.realEstate_0_zip &&
         !value
       ) {
         this.errors.realEstate_0_address = true
       } else {
         this.errors.realEstate_0_address = false
       }
-    },
-    validateRealEstate_0_zip (value) {
+      // Is zip valid?
       if (
         this.assetsAndLiabilities &&
+        !this.applicationData.realEstate_0_zip &&
+        value
+      ) {
+        this.errors.realEstate_0_zip = true
+      } else {
+        this.errors.realEstate_0_false = false
+      }
+    },
+    validateRealEstate_0_zip (value) {
+      // Is zip valid?
+      if (
+        this.assetsAndLiabilities &&
+        this.applicationData.realEstate_0_address &&
         !this.validZip(value)
       ) {
         this.errors.realEstate_0_zip = true
       } else {
         this.errors.realEstate_0_zip = false
       }
+      // Is address valid?
+      if (
+        this.assetsAndLiabilities &&
+        !this.applicationData.realEstate_0_address &&
+        this.validZip(value)
+      ) {
+        this.errors.realEstate_0_address = true
+      } else {
+        this.errors.realEstate_0_address = false
+      }
     },
     validateRealEstate_1_address (value) {
+      // Is address valid?
       if (
         this.assetsAndLiabilities &&
         this.assetsAndLiabilities_1 &&
+        this.applicationData.realEstate_1_zip &&
         !value
       ) {
         this.errors.realEstate_1_address = true
       } else {
         this.errors.realEstate_1_address = false
       }
-    },
-    validateRealEstate_1_zip (value) {
+      // Is zip valid?
       if (
         this.assetsAndLiabilities &&
         this.assetsAndLiabilities_1 &&
-        !this.validZip(value)
+        !this.applicationData.realEstate_1_zip &&
+        value
       ) {
         this.errors.realEstate_1_zip = true
       } else {
-        this.errors.realEstate_1_zip = false
+        this.errors.realEstate_1_false = false
+      }
+    },
+    validateRealEstate_1_zip (value) {
+      // Is zip valid?
+      if (
+        this.assetsAndLiabilities &&
+        this.applicationData.realEstate_0_address &&
+        !this.validZip(value)
+      ) {
+        this.errors.realEstate_0_zip = true
+      } else {
+        this.errors.realEstate_0_zip = false
+      }
+      // Is address valid?
+      if (
+        this.assetsAndLiabilities &&
+        !this.applicationData.realEstate_0_address &&
+        this.validZip(value)
+      ) {
+        this.errors.realEstate_0_address = true
+      } else {
+        this.errors.realEstate_0_address = false
       }
     },
     validateRealEstate_2_address (value) {
+      // Is address valid?
       if (
         this.assetsAndLiabilities &&
-        this.assetsAndLiabilities_2 &&
+        this.applicationData.realEstate_2_zip &&
         !value
       ) {
         this.errors.realEstate_2_address = true
       } else {
         this.errors.realEstate_2_address = false
       }
-    },
-    validateRealEstate_2_zip (value) {
+      // Is zip valid?
       if (
         this.assetsAndLiabilities &&
-        this.assetsAndLiabilities_2 &&
+        !this.applicationData.realEstate_2_zip &&
+        value
+      ) {
+        this.errors.realEstate_2_zip = true
+      } else {
+        this.errors.realEstate_2_false = false
+      }
+    },
+    validateRealEstate_2_zip (value) {
+      // Is zip valid?
+      if (
+        this.assetsAndLiabilities &&
+        this.applicationData.realEstate_2_address &&
         !this.validZip(value)
       ) {
         this.errors.realEstate_2_zip = true
       } else {
         this.errors.realEstate_2_zip = false
+      }
+      // Is address valid?
+      if (
+        this.assetsAndLiabilities &&
+        !this.applicationData.realEstate_2_address &&
+        this.validZip(value)
+      ) {
+        this.errors.realEstate_2_address = true
+      } else {
+        this.errors.realEstate_2_address = false
       }
     }
   }
