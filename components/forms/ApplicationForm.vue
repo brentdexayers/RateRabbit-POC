@@ -1,7 +1,31 @@
 <template>
   <div>
-    <div v-if="hasErrors" class="alert alert-danger form-errors-title">
-      <strong class="text-danger">Please fix the form errros below</strong>
+    <div v-if="errors.applicationCreate" class="alert alert-danger small">
+      <p v-if="error.status !== 500">
+        <strong class="text-danger">There was a problem creating your application. Please try again later.</strong>
+      </p>
+      <p v-if="error.status === 500">
+        <strong class="text-danger">There was a problem with your application. Please check your application to ensure your data is accurate.</strong>
+      </p>
+      <div v-if="error.message">
+        <p class="small text-right">
+          <a
+            @click="(event) => errorShowDetails(event)"
+            href="#"
+            class="link text-danger"
+          >
+            {{ error.showDetails ? 'Hide Details' : 'Show Details' }}
+          </a>
+        </p>
+        <p v-if="error.showDetails">
+          {{ error.message }}
+        </p>
+      </div>
+    </div>
+    <div v-if="hasErrors" class="alert alert-danger small">
+      <p>
+        <strong class="text-danger">Please fix the form errros below</strong>
+      </p>
     </div>
     <form
       id="application-form"
@@ -1750,8 +1774,15 @@ export default {
         primary: false,
         coBorrower: false
       },
+      error: {
+        message: null,
+        status: null,
+        subject: null,
+        showDetails: false
+      },
       errors: {
         address: false,
+        applicationCreate: false,
         assetsAndLiabilities: false,
         businessPhone: false,
         cellPhone: false,
@@ -3061,7 +3092,14 @@ export default {
       }
     },
     formHasErrors () {
+      // (re)Set defaults
       let hasErrors = false
+      this.errors.applicationCreate = false
+      this.error.message = null
+      this.error.status = null
+      this.error.subject = null
+      this.error.showDetails = false
+      // Check validity
       if (!this.loanPurpose) {
         hasErrors = true
         console.log('Form Errors: loanPurpose', '\n')
@@ -3135,7 +3173,11 @@ export default {
               .catch((err) => {
                 this.$emit('applicationSubmitError')
                 // console.log('There was an error POSTing the ApplicationPayload data\n', err)
-                /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
+                /* throw err */
+                this.errors.applicationCreate = true
+                this.error.status = err.response?.status || false
+                this.error.message = err.response?.data?.description || err
+                this.error.subject = err.response?.data?.subject || null
               })
           })
           .catch((err) => {
@@ -3218,7 +3260,7 @@ export default {
       }
     },
     validateZip (value) {
-      if (value) {
+      if (this.validZip(value)) {
         this.errors.zip = false
       } else {
         this.errors.zip = true
@@ -3666,9 +3708,6 @@ export default {
 @import '@/assets/css/variables.scss';
 @import '~bootstrap/scss/mixins.scss';
 
-.form-errors-title {
-  margin-bottom: 4rem;
-}
 .form--apply {
   &__header {
     color: $primary;

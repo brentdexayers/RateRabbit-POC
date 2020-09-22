@@ -1,18 +1,22 @@
 <template>
   <div class="layout--squeeze">
-    <Header />
-    <div class="wrapper wrapper--squeeze layout--squeeze__wrapper">
-      <div class="container-fluid layout--squeeze__container">
-        <div class="row">
-          <Sidebar />
-          <div class="col">
-            <nuxt />
+    <div :class="{ blur: loader }">
+      <Header />
+      <div class="wrapper wrapper--squeeze layout--squeeze__wrapper">
+        <div class="container-fluid layout--squeeze__container">
+          <div class="row">
+            <Sidebar />
+            <div class="col">
+              <nuxt />
+            </div>
           </div>
         </div>
       </div>
+      <Footer />
     </div>
-    <Footer />
-    <Loader v-if="loader" />
+    <transition name="fade">
+      <Loader v-if="loader" />
+    </transition>
   </div>
 </template>
 

@@ -16,7 +16,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  padding-top: 110px;
+  // padding-top: 110px;
   // scroll-behavior: smooth;
 }
 
@@ -206,6 +206,13 @@ p a {
 }
 
 /*
+** Alerts
+*/
+.alert {
+  margin-bottom: 4rem !important;
+}
+
+/*
 ** Scrollbar
 */
 /* width */
@@ -227,6 +234,13 @@ p a {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: $dark;
+}
+
+/*
+** Effects
+*/
+.blur {
+  filter: blur(2px);
 }
 
 /*

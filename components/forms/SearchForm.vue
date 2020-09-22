@@ -1,5 +1,32 @@
 <template>
   <div class="form-wrapper">
+    <div v-if="error.status && errors.loanSearch" class="alert alert-danger small">
+      <p v-if="error.status !== 500">
+        <strong class="text-danger">There was a problem searching. Please try your search again later.</strong>
+      </p>
+      <p v-if="error.status === 500">
+        <strong class="text-danger">There was a problem with your search. Please check the form to ensure your data is accurate.</strong>
+      </p>
+      <div v-if="error.message">
+        <p class="small text-right">
+          <a
+            @click="(event) => errorShowDetails(event)"
+            href="#"
+            class="link text-danger"
+          >
+            {{ error.showDetails ? 'Hide Details' : 'Show Details' }}
+          </a>
+        </p>
+        <p v-if="error.showDetails">
+          {{ error.message }}
+        </p>
+      </div>
+    </div>
+    <div v-if="errors.loanSearch && (errors.creditRating || errors.loanAmount || errors.loanPurpose || errors.locAmount || errors.propertyType || errors.propertyUse || errors.propertyValue || errors.propertyZip || errors.state)" class="alert alert-danger form-errors-title small">
+      <p>
+        <strong class="text-danger">Please fix the errors below.</strong>
+      </p>
+    </div>
     <form
       id="search-rates-form"
       @submit.prevent="handleFormSubmit"
@@ -565,6 +592,12 @@ export default {
         propertyZip: false,
         state: false
       },
+      error: {
+        message: null,
+        status: null,
+        subject: null,
+        showDetails: false
+      },
       minLoanAmount: 50000,
       promotion: false,
       promotionIsExact: false
@@ -573,6 +606,7 @@ export default {
   computed: {
     ...mapState({
       auth: state => state.auth,
+      applicationData: state => state.application.data,
       creditRatingOptions: state => state.form.options.creditRatingOptions,
       loanPurposeOptions: state => state.form.options.loanPurposeOptions,
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
@@ -836,6 +870,10 @@ export default {
     calculateLtv () {
       this.ltv = this.$parseCurrency(this.loanAmount) / this.$parseCurrency(this.propertyValue)
     },
+    errorShowDetails (e) {
+      e.preventDefault()
+      this.error.showDetails = !this.error.showDetails
+    },
     focusClassAdd (event) {
       const self = event.target
       self.closest('div').classList.add('focused')
@@ -847,43 +885,25 @@ export default {
     formHasErrors () {
       // (re)Set defaults
       this.errors.loanSearch = false
+      this.error.message = null
+      this.error.status = null
+      this.error.subject = null
+      this.error.showDetails = false
       let hasErrors = false
       // Check for errors
-      if (!this.loanPurpose) {
-        hasErrors = true
-        console.log('Form Error: loanPurpose', '\n')
-      }
-      if (!this.propertyValue) {
-        hasErrors = true
-        console.log('Form Error: propertyValue', '\n')
-      }
-      if (!this.loanAmount) {
-        hasErrors = true
-        console.log('Form Error: loanAmount', '\n')
-      }
-      if (!this.state) {
-        hasErrors = true
-        console.log('Form Error: state', '\n')
-      }
-      if (!this.propertyZip) {
-        hasErrors = true
-        console.log('Form Error: propertyZip', '\n')
-      }
-      if (!this.propertyType) {
-        hasErrors = true
-        console.log('Form Error: propertyType', '\n')
-      }
-      if (!this.propertyUse) {
-        hasErrors = true
-        console.log('Form Error: propertyUse', '\n')
-      }
-      if (!this.creditRating) {
-        hasErrors = true
-        console.log('Form Error: creditRating', '\n')
-      }
+      this.validateLoanPurpose(this.applicationData.loanPurpose)
+      this.validatePropertyValue(this.applicationData.propertyValue)
+      this.validateLoanAmount(this.applicationData.loanAmount)
+      this.validateLocAmount(this.applicationData.locAmount)
+      this.validateState(this.applicationData.state)
+      this.validatePropertyZip(this.applicationData.propertyZip)
+      this.validatePropertyType(this.applicationData.propertyType)
+      this.validatePropertyUse(this.applicationData.propertyUse)
+      this.validateCreditRating(this.applicationData.creditRating)
       if (!hasErrors) {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
+          this.errors.loanSearch = true
           console.log('Form Error Obj:', '\n', this.errors)
         }
       }
@@ -958,39 +978,6 @@ export default {
       this.$router.push({
         path: '/search/results'
       })
-    },
-    async handleFormSubmit (e) {
-      e.preventDefault()
-      this.validatePromotionCodeNoSubmit(this.promotionCode)
-      this.submitStart()
-      // Check for errors
-      const hasErrors = this.formHasErrors()
-      // If no errors
-      if (!hasErrors) {
-        // Get search data (API)
-        const data = await authenticate()
-          .then((auth) => {
-            return loanSearch(auth, this.searchPayload)
-              .then((res) => {
-                return res
-              })
-              .catch((err) => {
-                console.log(err)
-                this.errors.loanSearch = true
-              })
-          })
-          .catch((err) => {
-            console.log(err)
-            this.errors.authenticate = true
-          })
-        // Check search results are valid
-        if (!this.errors.authenticate && !this.errors.loanSearch) {
-          this.updateSearchResults(data)
-          this.updateRoute()
-        }
-      }
-      this.scrollToTop(e)
-      this.submitEnd()
     },
     validateLoanPurpose (value) {
       if (value) {
@@ -1100,6 +1087,42 @@ export default {
       } else {
         this.errors.promotionCodeNoSubmit = false
       }
+    },
+    async handleFormSubmit (e) {
+      e.preventDefault()
+      this.validatePromotionCodeNoSubmit(this.promotionCode)
+      this.submitStart()
+      // Check for errors
+      const hasErrors = this.formHasErrors()
+      // If no errors
+      if (!hasErrors) {
+        // Get search data (API)
+        const data = await authenticate()
+          .then((auth) => {
+            return loanSearch(auth, this.searchPayload)
+              .then((res) => {
+                return res
+              })
+              .catch((err) => {
+                console.log(err)
+                this.errors.loanSearch = true
+                this.error.status = err.response?.status || true
+                this.error.message = err.response?.data?.description || err
+                this.error.subject = err.response?.data?.subject || null
+              })
+          })
+          .catch((err) => {
+            console.log(err)
+            this.errors.authenticate = true
+          })
+        // Check search results are valid
+        if (!this.errors.authenticate && !this.errors.loanSearch) {
+          this.updateSearchResults(data)
+          this.updateRoute()
+        }
+      }
+      this.scrollToTop(e)
+      this.submitEnd()
     }
   }
 }

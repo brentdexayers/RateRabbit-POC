@@ -1,25 +1,29 @@
 <template>
   <div class="layout--default">
-    <Header />
-    <div class="layout--default__banner" />
-    <div class="wrapper wrapper--content layout--default__wrapper">
-      <div class="container layout--default__container">
-        <div class="row">
-          <SidebarResults v-if="sidebar === 'results'" />
-          <SidebarSearch v-else />
-          <div class="col layout--default__content">
-            <div class="layout--default__content__title">
-              <h1 class="page-title">
-                {{ title }}
-              </h1>
+    <div
+      :class="{ blur: loader }"
+    >
+      <Header />
+      <div class="layout--default__banner" />
+      <div class="wrapper wrapper--content layout--default__wrapper">
+        <div class="container layout--default__container">
+          <div class="row">
+            <SidebarResults v-if="sidebar === 'results'" />
+            <SidebarSearch v-else />
+            <div class="col layout--default__content">
+              <div class="layout--default__content__title">
+                <h1 class="page-title">
+                  {{ title }}
+                </h1>
+              </div>
+              <nuxt />
             </div>
-            <nuxt />
           </div>
         </div>
       </div>
+      <Footer />
+      <BackToTop />
     </div>
-    <Footer />
-    <BackToTop />
     <transition name="fade">
       <Loader v-if="loader" />
     </transition>

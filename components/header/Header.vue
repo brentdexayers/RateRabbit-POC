@@ -101,7 +101,7 @@ body.main-nav--open {
 
 .site-header {
   left: 0;
-  position: fixed;
+  position: sticky;
   right: 0;
   top: 0;
   z-index: 10002;
