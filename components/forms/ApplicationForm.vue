@@ -3638,22 +3638,22 @@ export default {
       // Is zip valid?
       if (
         this.assetsAndLiabilities &&
-        this.applicationData.realEstate_0_address &&
+        this.applicationData.realEstate_1_address &&
         !this.validZip(value)
       ) {
-        this.errors.realEstate_0_zip = true
+        this.errors.realEstate_1_zip = true
       } else {
-        this.errors.realEstate_0_zip = false
+        this.errors.realEstate_1_zip = false
       }
       // Is address valid?
       if (
         this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_0_address &&
+        !this.applicationData.realEstate_1_address &&
         this.validZip(value)
       ) {
-        this.errors.realEstate_0_address = true
+        this.errors.realEstate_1_address = true
       } else {
-        this.errors.realEstate_0_address = false
+        this.errors.realEstate_1_address = false
       }
     },
     validateRealEstate_2_address (value) {
