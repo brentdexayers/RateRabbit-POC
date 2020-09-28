@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "DEPLOY_ENV=DEVELOPMENT nuxt",
     "build": "DEPLOY_ENV=PRODUCTION nuxt build",
+    "build:dev": "DEPLOY_ENV=DEVELOPMENT nuxt build",
+    "build:staging": "DEPLOY_ENV=STAGING nuxt build",
     "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
     "start": "nuxt start",
     "generate": "DEPLOY_ENV=PRODUCTION nuxt generate",
@@ -25,10 +27,10 @@
     "google-libphonenumber": "^3.2.7",
     "jquery": "^3.4.1",
     "moment": "^2.26.0",
-    "nuxt": "^2.12.0",
+    "nuxt": "^2.13.0",
     "v-calendar": "^1.0.8",
     "v-mask": "^2.1.0",
-    "vue-currency-input": "^1.17.3",
+    "vue-currency-input": "1.17.3",
     "vue-glide-js": "^1.3.14",
     "vue-moment": "^4.1.0",
     "vuex-persistedstate": "^2.7.1"

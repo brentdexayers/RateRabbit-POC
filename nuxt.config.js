@@ -1,3 +1,6 @@
+// dotenv
+require('dotenv').config()
+
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
@@ -6,7 +9,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 } : {}
 
 export default {
-  mode: 'spa',
+  ssr: false, // mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -24,15 +27,17 @@ export default {
     ]
   },
   /*
-  ** Environment Variables
+  ** Runtime Config
+  ** https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
   */
-  env: {
-    baseUrl: process.env.DEPLOY_ENV === 'DEVELOPMENT' ? process.env.BASE_URL || 'http://localhost:3000' : (process.env.DEPLOY_ENV === 'GH_PAGES' ? process.env.BASE_URL || 'https://brentdexayers.github.io/RateRabbit-POC' : ''),
-    mode: process.env.NODE_ENV,
-    // from .env
-    apiEndpoint: process.env.DEPLOY_ENV === 'GH_PAGES' ? 'https://development.raterabbit.com:8181/RateRabbit/webapi' : process.env.NUXT_ENV_API_ENDPOINT || '/api',
-    apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME || 'ninthlink',
-    apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD || 'Y<CJfOD&B;xo5BphMm+D'
+ publicRuntimeConfig: {
+   baseURL: process.env.BASE_URL || 'http://localhost:3000',
+   mode: process.env.NODE_ENV
+  },
+  privateRuntimeConfig: {
+    apiEndpoint: process.env.NUXT_ENV_API_ENDPOINT,
+    apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME,
+    apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD
   },
   /*
   ** Customize the progress-bar color
