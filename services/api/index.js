@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiUrl = process.env.apiEndpont || 'https://development.raterabbit.com:8181/RateRabbit/webapi'
+const apiUrl = process.env.NUXT_ENV_API_ENDPOINT
 
 // const instance = axios.create({
 //   baseURL: apiUrl
@@ -15,8 +15,8 @@ const axiosConfig = {
 }
 
 const authPayload = {
-  'userName': process.env.apiUsername,
-  'password': process.env.apiPassword,
+  'userName': process.env.NUXT_ENV_AUTH_USER_NAME,
+  'password': process.env.NUXT_ENV_AUTH_PASSWORD,
   'grantType': 'PASSWORD'
 }
 

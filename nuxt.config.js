@@ -1,12 +1,12 @@
-// only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+// only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `gh_pages`
+const routerBase = process.env.DEPLOY_ENV === 'gh_pages' ? {
   router: {
     base: '/RateRabbit-POC/'
   }
 } : {}
 
 export default {
-  mode: 'spa',
+  ssr: false, // mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -27,12 +27,12 @@ export default {
   ** Environment Variables
   */
   env: {
-    baseUrl: process.env.DEPLOY_ENV === 'DEVELOPMENT' ? process.env.BASE_URL || 'http://localhost:3000' : (process.env.DEPLOY_ENV === 'GH_PAGES' ? process.env.BASE_URL || 'https://brentdexayers.github.io/RateRabbit-POC' : ''),
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
     mode: process.env.NODE_ENV,
     // from .env
-    apiEndpoint: process.env.DEPLOY_ENV === 'GH_PAGES' ? 'https://development.raterabbit.com:8181/RateRabbit/webapi' : process.env.NUXT_ENV_API_ENDPOINT || '/api',
-    apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME || 'ninthlink',
-    apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD || 'Y<CJfOD&B;xo5BphMm+D'
+    apiEndpoint: process.env.NUXT_ENV_API_ENDPOINT,
+    apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME,
+    apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD
   },
   /*
   ** Customize the progress-bar color
