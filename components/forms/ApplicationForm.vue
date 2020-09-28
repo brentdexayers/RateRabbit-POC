@@ -1194,7 +1194,7 @@
                 {{ 'Base Income *' | titlecase }}
               </label>
             </div>
-            <div class="form-group col-12 col-lg-6">
+            <!-- <div class="form-group col-12 col-lg-6">
               <input
                 v-model="coBorrowerHoaDues"
                 v-currency="{distractionFree: false}"
@@ -1208,7 +1208,7 @@
               >
                 {{ 'Homeowner Association Dues' | titlecase }}
               </label>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row">
@@ -1237,7 +1237,7 @@
                 class="custom-control-label"
                 for="assetsAndLiabilities"
               >
-                Include real estate assets and liabilities?
+                Include additional real estate and liabilities
               </label>
             </div>
           </div>
@@ -2019,14 +2019,14 @@ export default {
         this.$store.commit('updateCoBorrowerGrossIncome', value)
       }
     },
-    coBorrowerHoaDues: {
-      get () {
-        return this.$store.state.application.data.coBorrowerHoaDues
-      },
-      set (value) {
-        this.$store.commit('updateCoBorrowerHoaDues', value)
-      }
-    },
+    // coBorrowerHoaDues: {
+    //   get () {
+    //     return this.$store.state.application.data.coBorrowerHoaDues
+    //   },
+    //   set (value) {
+    //     this.$store.commit('updateCoBorrowerHoaDues', value)
+    //   }
+    // },
     coBorrowerHomePhone: {
       get () {
         return this.$store.state.application.data.coBorrowerHomePhone
@@ -2835,12 +2835,12 @@ export default {
             zip: this.applicationData.coBorrowerEmployerZip
           }
         }
-        if (this.applicationData.coBorrowerHoaDues) {
-          coBorrower.expenses = [{
-            expenseType: 'Present',
-            hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
-          }]
-        }
+        // if (this.applicationData.coBorrowerHoaDues) {
+        //   coBorrower.expenses = [{
+        //     expenseType: 'Present',
+        //     hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
+        //   }]
+        // }
         payload.borrowers.push(coBorrower)
       }
       // Assets and Liabilities
@@ -3121,21 +3121,20 @@ export default {
       this.validateEmployerAddress(this.applicationData.employerAddress)
       this.validateEmployerZip(this.applicationData.employerZip)
       this.validateSsn(this.applicationData.ssn)
-      if (this.hasCoBorrower) {
-        this.validateCoBorrowerFirstName(this.applicationData.coBorrowerFirstName)
-        this.validateCoBorrowerLastName(this.applicationData.coBorrowerLastName)
-        this.validateCoBorrowerEmail(this.applicationData.coBorrowerEmail)
-        this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
-        this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
-        this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
-        this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
-        this.validateCoBorrowerEmployerAddress(this.applicationData.coBorrowerEmployerAddress)
-        this.validateCoBorrowerEmployerZip(this.applicationData.coBorrowerEmployerZip)
-        this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
-        this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
-        this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
-        this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
-      }
+      // Validate CoBorrower
+      this.validateCoBorrowerFirstName(this.applicationData.coBorrowerFirstName)
+      this.validateCoBorrowerLastName(this.applicationData.coBorrowerLastName)
+      this.validateCoBorrowerEmail(this.applicationData.coBorrowerEmail)
+      this.validateCoBorrowerCellPhone(this.applicationData.coBorrowerCellPhone)
+      this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
+      this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
+      this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
+      this.validateCoBorrowerEmployerAddress(this.applicationData.coBorrowerEmployerAddress)
+      this.validateCoBorrowerEmployerZip(this.applicationData.coBorrowerEmployerZip)
+      this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
+      this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
+      this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
+      // Validate assets and liabilities
       this.validateAssetsAndLiabilities(this.assetsAndLiabilities)
       this.validateAssetsAndLiabilities_1(this.assetsAndLiabilities_1)
       this.validateAssetsAndLiabilities_2(this.assetsAndLiabilities_2)
@@ -3496,14 +3495,14 @@ export default {
       }
     },
     validateCoBorrowerCellPhone (value) {
-      if (!value) {
+      if (!this.hasCoBorrower || (value && this.validPhone(value))) {
+        this.errors.coBorrowerCellPhone = false
+      }
+      if (this.hasCoBorrower && !value) {
         this.errors.coBorrowerCellPhone = true
       }
       if (value && !this.validPhone(value)) {
         this.errors.coBorrowerCellPhone = true
-      }
-      if (value && this.validPhone(value)) {
-        this.errors.coBorrowerCellPhone = false
       }
     },
     validateCoBorrowerBusinessPhone (value) {
