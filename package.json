@@ -8,7 +8,7 @@
     "dev": "DEPLOY_ENV=development nuxt",
     "build": "DEPLOY_ENV=production nuxt build",
     "build:staging": "DEPLOY_ENV=staging nuxt build",
-    "build:dev": "DEPLOY_ENV=development nuxt build",
+    "build:development": "DEPLOY_ENV=development nuxt build",
     "build:gh-pages": "DEPLOY_ENV=gh_pages nuxt build",
     "build:local": "DEPLOY_ENV=local nuxt build",
     "start": "nuxt start",
