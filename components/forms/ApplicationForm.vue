@@ -36,7 +36,7 @@
     >
       <div id="property_information" class="section">
         <h2 class="form--section_header">
-          Property Information
+          {{ 'Subject Property' | titlecase }}
         </h2>
         <div class="row">
           <div
@@ -341,8 +341,10 @@
             </label>
           </div>
         </div>
-        <div class="justify-content-between align-items-start d-flex">
-          <h3>Address</h3>
+        <div class="justify-content-start align-items-start d-flex">
+          <h3 class="mr-3">
+            {{ 'Present Address' | titlecase }}
+          </h3>
           <div class="custom-control custom-checkbox">
             <input
               id="copyPropertyAddressPrimary"
@@ -885,8 +887,10 @@
               </label>
             </div>
           </div>
-          <div class="justify-content-between align-items-start d-flex">
-            <h3>Address</h3>
+          <div class="justify-content-start align-items-start d-flex">
+            <h3 class="mr-3">
+              {{ 'Present Address' | titlecase }}
+            </h3>
             <div class="custom-control custom-checkbox">
               <input
                 id="copyPropertyAddressCoBorrower"
@@ -1137,7 +1141,7 @@
 
       <div class="section">
         <h2 class="form--section_header">
-          Monthly Income and Housing Expenses
+          {{ 'Monthly Income' | titlecase }}
         </h2>
         <h3 v-if="hasCoBorrower">
           Borrower
@@ -1155,7 +1159,7 @@
               :class="{ hasvalue: grossIncome }"
               for="grossIncome"
             >
-              {{ 'Base Income *' | titlecase }}
+              {{ 'Monthly Base Income *' | titlecase }}
             </label>
           </div>
           <div class="form-group col-12 col-lg-6">
@@ -1191,7 +1195,7 @@
                 :class="{ hasvalue: coBorrowerGrossIncome }"
                 for="coBorrowerGrossIncome"
               >
-                {{ 'Base Income *' | titlecase }}
+                {{ 'Monthly Base Income *' | titlecase }}
               </label>
             </div>
             <!-- <div class="form-group col-12 col-lg-6">
@@ -1211,18 +1215,18 @@
             </div> -->
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="form-group col-12 col-lg-12">
             <p class="small">
               * Self employed Borrowers <span v-if="coBorrower">and Co-Borrowers </span>may  be required to provide additional documentation such as tax returns and financial statements.
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="section">
         <h2 class="form--section_header">
-          Assets and Liabilities
+          {{ 'Additional Real Estate Assets' | titlecase }}
         </h2>
         <div class="row">
           <div class="form-group col-12 col-lg-12">
