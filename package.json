@@ -5,20 +5,11 @@
   "author": "Tim Spinks",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
-    "dev": "DEPLOY_ENV=development nuxt",
-    "build": "DEPLOY_ENV=production nuxt build",
-    "build:staging": "DEPLOY_ENV=staging nuxt build",
-    "build:development": "DEPLOY_ENV=development nuxt build",
-    "build:gh-pages": "DEPLOY_ENV=gh_pages nuxt build",
-    "build:local": "DEPLOY_ENV=local nuxt build",
-=======
     "dev": "DEPLOY_ENV=DEVELOPMENT nuxt",
     "build": "DEPLOY_ENV=PRODUCTION nuxt build",
     "build:dev": "DEPLOY_ENV=DEVELOPMENT nuxt build",
     "build:staging": "DEPLOY_ENV=STAGING nuxt build",
     "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
->>>>>>> v2.14
     "start": "nuxt start",
     "generate": "DEPLOY_ENV=production nuxt generate",
     "generate:gh-pages": "DEPLOY_ENV=gh_pages nuxt generate",

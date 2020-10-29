@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-// only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `gh_pages`
-const routerBase = process.env.DEPLOY_ENV === 'gh_pages' ? {
-=======
 // dotenv
 require('dotenv').config()
 
 // only add `router.base = '/<repository-name>/'` if `DEPLOY_ENV` is `GH_PAGES`
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
->>>>>>> v2.14
   router: {
     base: '/RateRabbit-POC/'
   }
@@ -35,18 +30,11 @@ export default {
   ** Runtime Config
   ** https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
   */
-<<<<<<< HEAD
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    mode: process.env.NODE_ENV,
-    // from .env
-=======
  publicRuntimeConfig: {
    baseURL: process.env.BASE_URL || 'http://localhost:3000',
    mode: process.env.NODE_ENV
   },
   privateRuntimeConfig: {
->>>>>>> v2.14
     apiEndpoint: process.env.NUXT_ENV_API_ENDPOINT,
     apiUsername: process.env.NUXT_ENV_AUTH_USER_NAME,
     apiPassword: process.env.NUXT_ENV_AUTH_PASSWORD
