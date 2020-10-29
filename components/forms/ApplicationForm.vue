@@ -3055,22 +3055,22 @@ export default {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
       this.$store.commit('setAuth', await authenticate())
     }
-    if (!this.loanPurposeOptions.length) {
+    if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
       this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
     }
-    if (!this.stateOptions.length) {
+    if (!this.stateOptions || !this.stateOptions.length) {
       this.$store.commit('updateStateOptions', await getState(this.auth))
     }
-    if (!this.propertyTypeOptions.length) {
+    if (!this.propertyTypeOptions || !this.propertyTypeOptions.length) {
       this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
     }
-    if (!this.propertyUseOptions.length) {
+    if (!this.propertyUseOptions || !this.propertyUseOptions.length) {
       this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
     }
-    if (!this.creditRatingOptions.length) {
+    if (!this.creditRatingOptions || !this.creditRatingOptions.length) {
       this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
     }
-    if (!this.maritalStatusOptions.length) {
+    if (!this.maritalStatusOptions || !this.maritalStatusOptions.length) {
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
     }
   },
