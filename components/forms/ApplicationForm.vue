@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="errors.applicationCreate" class="alert alert-danger small">
+    <div v-if="error.applicationCreate" class="alert alert-danger small">
       <p v-if="error.status !== 500">
         <strong class="text-danger">There was a problem creating your application. Please try again later.</strong>
       </p>
@@ -22,11 +22,13 @@
         </p>
       </div>
     </div>
+
     <div v-if="hasErrors" class="alert alert-danger small">
       <p>
         <strong class="text-danger">Please fix the form errros below</strong>
       </p>
     </div>
+
     <form
       id="application-form"
       @submit.prevent="handleSubmit"
@@ -152,6 +154,7 @@
               First name is required
             </p>
           </div>
+
           <div
             :class="{ error: errors.lastName }"
             class="form-group col-12 col-lg-6"
@@ -176,6 +179,7 @@
               Last name is required
             </p>
           </div>
+
           <div
             :class="{ error: errors.email }"
             class="form-group col-12 col-lg-6"
@@ -206,6 +210,7 @@
               Email invalid
             </p>
           </div>
+
           <div
             :class="{ error: errors.cellPhone }"
             class="form-group col-12 col-lg-6"
@@ -237,6 +242,7 @@
               Please enter a valid phone number
             </p>
           </div>
+
           <div
             :class="{ error: errors.ssn }"
             class="form-group col-12 col-lg-6"
@@ -262,20 +268,25 @@
               Invalid SSN
             </p>
           </div>
+
           <div
             :class="{ error: errors.dob }"
             class="form-group col-12 col-lg-6"
           >
             <v-date-picker
               v-model="dob"
-              v-mask="'##/##/####'"
-              @popoverDidHide="validateDob(dob)"
-              :input-props="{
-                class: 'form-control'
-              }"
-              type="text"
-              name="dob"
-            />
+              :model-config="modelConfig"
+              color="green"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <input
+                  v-on="inputEvents"
+                  :value="inputValue"
+                  @popoverDidHide="validateDob(dob)"
+                  class="form-control"
+                >
+              </template>
+            </v-date-picker>
             <label
               :class="{ hasvalue: dob }"
               for="dob"
@@ -295,6 +306,7 @@
               DOB is invalid
             </p>
           </div>
+
           <div class="form-group col-12 col-lg-6">
             <input
               v-model="yearsOfSchool"
@@ -314,7 +326,8 @@
               </b-tooltip>
             </label>
           </div>
-          <div class="form-group col-12 col-lg-6">
+
+          <div v-if="maritalStatusOptions && maritalStatusOptions.length > 0" class="form-group col-12 col-lg-6">
             <select
               v-model="maritalStatus"
               name="maritalStatus"
@@ -341,6 +354,7 @@
             </label>
           </div>
         </div>
+
         <div class="justify-content-start align-items-start d-flex">
           <h3 class="mr-3">
             {{ 'Present Address' | titlecase }}
@@ -361,6 +375,7 @@
             </label>
           </div>
         </div>
+
         <div class="row">
           <div
             :class="{ error: errors.address }"
@@ -413,7 +428,7 @@
               Zip code is required
             </p>
           </div>
-          <div class="form-group col-12 col-lg-12">
+          <div class="form-group col-12 col-lg-6">
             <input
               v-model="timeAtCurrentAddress"
               v-mask="'##'"
@@ -426,6 +441,21 @@
               for="timeAtCurrentAddress"
             >
               {{ 'Years at Current Address' }}
+            </label>
+          </div>
+          <div class="form-group col-12 col-lg-6">
+            <input
+              v-model="hoaDues"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="hoaDues"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: hoaDues }"
+              for="hoaDues"
+            >
+              {{ 'Homeowner Association Dues' | titlecase }}
             </label>
           </div>
           <div
@@ -502,55 +532,6 @@
               Employer name is required
             </p>
           </div>
-          <div
-            :class="{ error: errors.employerAddress }"
-            class="form-group col-12 col-lg-8"
-          >
-            <input
-              v-model="employerAddress"
-              @blur="validateEmployerAddress(employerAddress)"
-              type="text"
-              name="employerAddress"
-              class="form-control"
-            >
-            <label
-              :class="{ hasvalue: employerAddress }"
-              for="employerAddress"
-            >
-              {{ 'Employer Address' | titlecase }}
-            </label>
-            <p
-              v-if="errors.employerAddress"
-              class="error-inline"
-            >
-              Employer address is required
-            </p>
-          </div>
-          <div
-            :class="{ error: errors.employerZip }"
-            class="form-group col-12 col-lg-4"
-          >
-            <input
-              v-model="employerZip"
-              @blur="validateEmployerZip(employerZip)"
-              v-mask="'#####'"
-              type="text"
-              name="employerZip"
-              class="form-control"
-            >
-            <label
-              :class="{ hasvalue: employerZip }"
-              for="employerZip"
-            >
-              {{ 'Employer Zip Code' | titlecase }}
-            </label>
-            <p
-              v-if="errors.employerZip"
-              class="error-inline"
-            >
-              Employer zip code is required
-            </p>
-          </div>
           <div class="form-group col-12 col-lg-4">
             <select
               id="input-select--selfEmployed"
@@ -611,7 +592,7 @@
               {{ 'Years in line of work' | titlecase }}
             </label>
           </div>
-          <div class="form-group col-12 col-lg-8">
+          <div class="form-group col-12 col-lg-4">
             <input
               v-model="jobTitle"
               type="text"
@@ -648,6 +629,28 @@
               class="error-inline"
             >
               Please enter a valid phone number
+            </p>
+          </div>
+          <div class="form-group col-12 col-lg-4">
+            <input
+              v-model="grossIncome"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="grossIncome"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: grossIncome }"
+              for="grossIncome"
+            >
+              {{ 'Monthly Base Income *' | titlecase }}
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-12 col-lg-12">
+            <p class="small">
+              * Self employed Borrowers <span v-if="hasCoBorrower">and Co-Borrowers </span>may  be required to provide additional documentation such as tax returns and financial statements.
             </p>
           </div>
         </div>
@@ -818,14 +821,18 @@
             >
               <v-date-picker
                 v-model="coBorrowerDob"
-                v-mask="'##/##/####'"
-                @popoverDidHide="validateCoBorrowerDob(coBorrowerDob)"
-                :input-props="{
-                  class: 'form-control'
-                }"
-                type="text"
-                name="coBorrowerDob"
-              />
+                :model-config="modelConfig"
+                color="green"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <input
+                    v-on="inputEvents"
+                    :value="inputValue"
+                    @popoverDidHide="validateCoBorrowerDob(coBorrowerDob)"
+                    class="form-control"
+                  >
+                </template>
+              </v-date-picker>
               <label
                 :class="{ hasvalue: coBorrowerDob }"
                 for="coBorrowerDob"
@@ -987,55 +994,6 @@
                 Employer name is required
               </p>
             </div>
-            <div
-              :class="{ error: errors.coBorrowerEmployerAddress }"
-              class="form-group col-12 col-lg-8"
-            >
-              <input
-                v-model="coBorrowerEmployerAddress"
-                @blur="validateCoBorrowerEmployerAddress(coBorrowerEmployerAddress)"
-                type="text"
-                name="coBorrowerEmployerAddress"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: coBorrowerEmployerAddress }"
-                for="coBorrowerEmployerAddress"
-              >
-                {{ 'Employer Address' | titlecase }}
-              </label>
-              <p
-                v-if="errors.coBorrowerEmployerAddress"
-                class="error-inline"
-              >
-                Employer address is required
-              </p>
-            </div>
-            <div
-              :class="{ error: errors.coBorrowerEmployerZip }"
-              class="form-group col-12 col-lg-4"
-            >
-              <input
-                v-model="coBorrowerEmployerZip"
-                v-mask="'#####'"
-                @blur="validateCoBorrowerEmployerZip(coBorrowerEmployerZip)"
-                type="text"
-                name="coBorrowerEmployerZip"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: coBorrowerEmployerZip }"
-                for="coBorrowerEmployerZip"
-              >
-                {{ 'Employer Zip Code' | titlecase }}
-              </label>
-              <p
-                v-if="errors.coBorrowerEmployerZip"
-                class="error-inline"
-              >
-                Employer zip code is required
-              </p>
-            </div>
             <div class="form-group col-12 col-lg-4">
               <select
                 id="input-select--coBorrowerSelfEmployed"
@@ -1096,7 +1054,7 @@
                 {{ 'Years in line of work' | titlecase }}
               </label>
             </div>
-            <div class="form-group col-12 col-lg-8">
+            <div class="form-group col-12 col-lg-4">
               <input
                 v-model="coBorrowerJobTitle"
                 type="text"
@@ -1135,55 +1093,7 @@
                 Please enter a valid phone number
               </p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2 class="form--section_header">
-          {{ 'Monthly Income' | titlecase }}
-        </h2>
-        <h3 v-if="hasCoBorrower">
-          Borrower
-        </h3>
-        <div class="row">
-          <div class="form-group col-12 col-lg-6">
-            <input
-              v-model="grossIncome"
-              v-currency="{distractionFree: false}"
-              type="text"
-              name="grossIncome"
-              class="form-control"
-            >
-            <label
-              :class="{ hasvalue: grossIncome }"
-              for="grossIncome"
-            >
-              {{ 'Monthly Base Income *' | titlecase }}
-            </label>
-          </div>
-          <div class="form-group col-12 col-lg-6">
-            <input
-              v-model="hoaDues"
-              v-currency="{distractionFree: false}"
-              type="text"
-              name="hoaDues"
-              class="form-control"
-            >
-            <label
-              :class="{ hasvalue: hoaDues }"
-              for="hoaDues"
-            >
-              {{ 'Homeowner Association Dues' | titlecase }}
-            </label>
-          </div>
-        </div>
-        <div v-if="hasCoBorrower">
-          <h3>
-            Co-Borrower
-          </h3>
-          <div class="row">
-            <div class="form-group col-12 col-lg-6">
+            <div class="form-group col-12 col-lg-4">
               <input
                 v-model="coBorrowerGrossIncome"
                 v-currency="{distractionFree: false}"
@@ -1198,30 +1108,8 @@
                 {{ 'Monthly Base Income *' | titlecase }}
               </label>
             </div>
-            <!-- <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="coBorrowerHoaDues"
-                v-currency="{distractionFree: false}"
-                type="text"
-                name="coBorrowerHoaDues"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: coBorrowerHoaDues }"
-                for="coBorrowerHoaDues"
-              >
-                {{ 'Homeowner Association Dues' | titlecase }}
-              </label>
-            </div> -->
           </div>
         </div>
-        <!-- <div class="row">
-          <div class="form-group col-12 col-lg-12">
-            <p class="small">
-              * Self employed Borrowers <span v-if="coBorrower">and Co-Borrowers </span>may  be required to provide additional documentation such as tax returns and financial statements.
-            </p>
-          </div>
-        </div> -->
       </div>
 
       <div class="section">
@@ -1732,6 +1620,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="form-group col-12">
           <button
@@ -1743,6 +1632,7 @@
           </button>
         </div>
       </div>
+
       <div class="row">
         <div class="col-12 col-md-5">
           <p class="form--apply__footer">
@@ -1795,18 +1685,14 @@ export default {
         coBorrowerCellPhone: false,
         coBorrowerDob: false,
         coBorrowerEmail: false,
-        coBorrowerEmployerAddress: false,
         coBorrowerEmployerName: false,
-        coBorrowerEmployerZip: false,
         coBorrowerFirstName: false,
         coBorrowerLastName: false,
         coBorrowerMailingAddress: false,
         coBorrowerSsn: false,
         dob: false,
         email: false,
-        employerAddress: false,
         employerName: false,
-        employerZip: false,
         firstName: false,
         lastName: false,
         mailingAddress: false,
@@ -1824,7 +1710,11 @@ export default {
       },
       hasErrors: false,
       hasCoBorrower: false,
-      step: 0
+      step: 0,
+      modelConfig: {
+        type: 'string',
+        mask: 'DD/MM/YYYY' // Uses 'iso' if missing
+      }
     }
   },
   computed: {
@@ -1959,14 +1849,6 @@ export default {
         this.$store.commit('updateCoBorrowerEmployedHowLong', value)
       }
     },
-    coBorrowerEmployerAddress: {
-      get () {
-        return this.$store.state.application.data.coBorrowerEmployerAddress
-      },
-      set (value) {
-        this.$store.commit('updateCoBorrowerEmployerAddress', value)
-      }
-    },
     coBorrowerEmployerCity: {
       get () {
         return this.$store.state.application.data.coBorrowerEmployerCity
@@ -1989,14 +1871,6 @@ export default {
       },
       set (value) {
         this.$store.commit('updateCoBorrowerEmployerState', value)
-      }
-    },
-    coBorrowerEmployerZip: {
-      get () {
-        return this.$store.state.application.data.coBorrowerEmployerZip
-      },
-      set (value) {
-        this.$store.commit('updateCoBorrowerEmployerZip', value)
       }
     },
     coBorrowerFax: {
@@ -2231,14 +2105,6 @@ export default {
         this.$store.commit('updateEmployedHowLong', value)
       }
     },
-    employerAddress: {
-      get () {
-        return this.$store.state.application.data.employerAddress
-      },
-      set (value) {
-        this.$store.commit('updateEmployerAddress', value)
-      }
-    },
     employerCity: {
       get () {
         return this.$store.state.application.data.employerCity
@@ -2261,14 +2127,6 @@ export default {
       },
       set (value) {
         this.$store.commit('updateEmployerState', value)
-      }
-    },
-    employerZip: {
-      get () {
-        return this.$store.state.application.data.employerZip
-      },
-      set (value) {
-        this.$store.commit('updateEmployerZip', value)
       }
     },
     fax: {
@@ -2789,14 +2647,13 @@ export default {
         yearsOfSchool: Number(this.applicationData.yearsOfSchool),
         zip: this.applicationData.zip
       }
-      if (this.applicationData.employerAddress || this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong || this.applicationData.employerZip) {
+      if (this.applicationData.employerName || this.applicationData.jobTitle || this.applicationData.selfEmployed || this.applicationData.employedHowLong) {
         primaryBorrower.employer = {
-          address: this.applicationData.employerAddress, // Required if `employer: {}`
           employerName: this.applicationData.employerName, // Required if `employer: {}`
           jobTitle: this.applicationData.jobTitle,
           selfEmployed: Number(this.applicationData.selfEmployed),
-          yearsAtJob: Number(this.applicationData.employedHowLong),
-          zip: this.applicationData.employerZip // Required if `employer: {}`
+          yearsAtJob: Number(this.applicationData.employedHowLong)
+          // zip: this.applicationData.employerZip // Required if `employer: {}`
         }
       }
       if (this.applicationData.hoaDues) {
@@ -2829,14 +2686,13 @@ export default {
           yearsOfSchool: Number(this.applicationData.coBorrowerYearsOfSchool),
           zip: this.applicationData.coBorrowerZip
         }
-        if (this.applicationData.coBorrowerEmployerAddress || this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong || this.applicationData.coBorrowerEmployerZip) {
+        if (this.applicationData.coBorrowerEmployerName || this.applicationData.coBorrowerJobTitle || this.applicationData.coBorrowerSelfEmployed || this.applicationData.coBorrowerEmployedHowLong) {
           coBorrower.employer = {
-            address: this.applicationData.coBorrowerEmployerAddress,
             employerName: this.applicationData.coBorrowerEmployerName,
             jobTitle: this.applicationData.coBorrowerJobTitle,
             selfEmployed: Number(this.applicationData.coBorrowerSelfEmployed),
-            yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong),
-            zip: this.applicationData.coBorrowerEmployerZip
+            yearsAtJob: Number(this.applicationData.coBorrowerEmployedHowLong)
+            // zip: this.applicationData.coBorrowerEmployerZip
           }
         }
         // if (this.applicationData.coBorrowerHoaDues) {
@@ -2947,14 +2803,6 @@ export default {
       this.employerName = value
       this.validateEmployerName(value)
     },
-    employerAddress (value) {
-      this.employerAddress = value
-      this.validateEmployerAddress(value)
-    },
-    employerZip (value) {
-      this.employerZip = value
-      this.validateEmployerZip(value)
-    },
     ssn (value) {
       this.ssn = value
       this.validateSsn(value)
@@ -2991,14 +2839,6 @@ export default {
     coBorrowerEmployerName (value) {
       this.coBorrowerEmployerName = value
       this.validateCoBorrowerEmployerName(value)
-    },
-    coBorrowerEmployerAddress (value) {
-      this.coBorrowerEmployerAddress = value
-      this.validateCoBorrowerEmployerAddress(value)
-    },
-    coBorrowerEmployerZip (value) {
-      this.coBorrowerEmployerZip = value
-      this.validateCoBorrowerEmployerZip(value)
     },
     coBorrowerSsn (value) {
       this.coBorrowerSsn = value
@@ -3053,7 +2893,9 @@ export default {
   },
   async fetch () {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
+      console.log('Auth (pre):', this.auth)
       this.$store.commit('setAuth', await authenticate())
+      console.log('Auth (post):', this.auth)
     }
     if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
       this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
@@ -3098,7 +2940,7 @@ export default {
     formHasErrors () {
       // (re)Set defaults
       let hasErrors = false
-      this.errors.applicationCreate = false
+      this.error.applicationCreate = false
       this.error.message = null
       this.error.status = null
       this.error.subject = null
@@ -3122,8 +2964,6 @@ export default {
       this.validateCellPhone(this.applicationData.cellPhone)
       this.validateBusinessPhone(this.applicationData.businessPhone)
       this.validateEmployerName(this.applicationData.employerName)
-      this.validateEmployerAddress(this.applicationData.employerAddress)
-      this.validateEmployerZip(this.applicationData.employerZip)
       this.validateSsn(this.applicationData.ssn)
       // Validate CoBorrower
       this.validateCoBorrowerFirstName(this.applicationData.coBorrowerFirstName)
@@ -3133,8 +2973,6 @@ export default {
       this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
       this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
       this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
-      this.validateCoBorrowerEmployerAddress(this.applicationData.coBorrowerEmployerAddress)
-      this.validateCoBorrowerEmployerZip(this.applicationData.coBorrowerEmployerZip)
       this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
       this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
       this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
@@ -3177,7 +3015,7 @@ export default {
                 this.$emit('applicationSubmitError')
                 // console.log('There was an error POSTing the ApplicationPayload data\n', err)
                 /* throw err */
-                this.errors.applicationCreate = true
+                this.error.applicationCreate = true
                 this.error.status = err.response?.status || false
                 this.error.message = err.response?.data?.description || err
                 this.error.subject = err.response?.data?.subject || null
@@ -3292,12 +3130,10 @@ export default {
     },
     validateEmployerName (value) {
       if (
-        this.applicationData.employerAddress ||
         this.applicationData.employerName ||
         this.applicationData.jobTitle ||
         this.applicationData.selfEmployed ||
-        this.applicationData.employedHowLong ||
-        this.applicationData.employerZip
+        this.applicationData.employedHowLong
       ) {
         if (value) {
           this.errors.employerName = false
@@ -3306,42 +3142,6 @@ export default {
         }
       } else {
         this.errors.employerName = false
-      }
-    },
-    validateEmployerAddress (value) {
-      if (
-        this.applicationData.employerAddress ||
-        this.applicationData.employerName ||
-        this.applicationData.jobTitle ||
-        this.applicationData.selfEmployed ||
-        this.applicationData.employedHowLong ||
-        this.applicationData.employerZip
-      ) {
-        if (value) {
-          this.errors.employerAddress = false
-        } else {
-          this.errors.employerAddress = true
-        }
-      } else {
-        this.errors.employerAddress = false
-      }
-    },
-    validateEmployerZip (value) {
-      if (
-        this.applicationData.employerAddress ||
-        this.applicationData.employerName ||
-        this.applicationData.jobTitle ||
-        this.applicationData.selfEmployed ||
-        this.applicationData.employedHowLong ||
-        this.applicationData.employerZip
-      ) {
-        if (this.validZip(value)) {
-          this.errors.employerZip = false
-        } else {
-          this.errors.employerZip = true
-        }
-      } else {
-        this.errors.employerZip = false
       }
     },
     validateCoBorrowerFirstName (value) {
@@ -3399,12 +3199,10 @@ export default {
     validateCoBorrowerEmployerName (value) {
       if (this.hasCoBorrower) {
         if (
-          this.applicationData.coBorrowerEmployerAddress ||
           this.applicationData.coBorrowerEmployerName ||
           this.applicationData.coBorrowerJobTitle ||
           this.applicationData.coBorrowerSelfEmployed ||
-          this.applicationData.coBorrowerEmployedHowLong ||
-          this.applicationData.coBorrowerEmployerZip
+          this.applicationData.coBorrowerEmployedHowLong
         ) {
           if (value) {
             this.errors.coBorrowerEmployerName = false
@@ -3416,50 +3214,6 @@ export default {
         }
       } else {
         this.errors.coBorrowerEmployerName = false
-      }
-    },
-    validateCoBorrowerEmployerAddress (value) {
-      if (this.hasCoBorrower) {
-        if (
-          this.applicationData.coBorrowerEmployerAddress ||
-          this.applicationData.coBorrowerEmployerName ||
-          this.applicationData.coBorrowerJobTitle ||
-          this.applicationData.coBorrowerSelfEmployed ||
-          this.applicationData.coBorrowerEmployedHowLong ||
-          this.applicationData.coBorrowerEmployerZip
-        ) {
-          if (value) {
-            this.errors.coBorrowerEmployerAddress = false
-          } else {
-            this.errors.coBorrowerEmployerAddress = true
-          }
-        } else {
-          this.errors.coBorrowerEmployerAddress = false
-        }
-      } else {
-        this.errors.coBorrowerEmployerAddress = false
-      }
-    },
-    validateCoBorrowerEmployerZip (value) {
-      if (this.hasCoBorrower) {
-        if (
-          this.applicationData.coBorrowerEmployerAddress ||
-          this.applicationData.coBorrowerEmployerName ||
-          this.applicationData.coBorrowerJobTitle ||
-          this.applicationData.coBorrowerSelfEmployed ||
-          this.applicationData.coBorrowerEmployedHowLong ||
-          this.applicationData.coBorrowerEmployerZip
-        ) {
-          if (value) {
-            this.errors.coBorrowerEmployerZip = false
-          } else {
-            this.errors.coBorrowerEmployerZip = true
-          }
-        } else {
-          this.errors.coBorrowerEmployerZip = false
-        }
-      } else {
-        this.errors.coBorrowerEmployerZip = false
       }
     },
     validateDob (value) {

@@ -8,7 +8,7 @@
         :key="loanProductGroupIndex"
         class="results-table__results"
       >
-        <h2>
+        <h2 class="results-table__head">
           {{ loanProductGroup.amortization }}
         </h2>
         <div class="results-table__header container-fluid">
@@ -58,7 +58,15 @@
                   <div class="row">
                     <div class="col">
                       <p :class="{ recommended: loanProduct.recommended }" class="ofg-text">
-                        {{ 'One fee guarantee' | titlecase }}: <span :class="{ strong: loanProduct.recommended }">{{ loanProduct.fee | currency }}</span>
+                        {{ 'One fee guarantee' | titlecase }}:
+                        <span
+                          v-if="loanProduct.promotionFee"
+                          :class="{ strong: loanProduct.recommended }"
+                        >
+                          <span style="text-decoration: line-through;">{{ loanProduct.fee | currency }}</span>
+                          <span class="text-primary">{{ loanProduct.promotionFee | currency }}</span>
+                        </span>
+                        <span v-else :class="{ strong: loanProduct.recommended }">{{ loanProduct.fee | currency }}</span>
                         <span v-if="loanProduct.recommended" class="no-cost-loan-text">
                           {{ 'Recommended No-Cost loan' | titlecase }}
                         </span>
@@ -148,7 +156,14 @@
                   </div>
                   <div class="col-auto text-right">
                     <p>
-                      {{ loanProduct.fee | currency }}
+                      <span
+                        v-if="loanProduct.promotionFee"
+                        :class="{ strong: loanProduct.recommended }"
+                      >
+                        <span class="small" style="text-decoration: line-through;">{{ loanProduct.fee | currency }}</span>
+                        <span class="text-primary">{{ loanProduct.promotionFee | currency }}</span>
+                      </span>
+                      <span v-else>{{ loanProduct.fee | currency }}</span>
                     </p>
                   </div>
                 </div>
@@ -280,6 +295,15 @@ export default {
         }
       }
     }
+    &__head {
+      background-color: $gray-200;
+      margin-bottom: 0;
+      padding-top: .5rem;
+      padding-bottom: 1rem;
+      position: sticky;
+      top: 110px;
+      z-index: 1000;
+    }
     &__header {
       background-color: $white;
       border: $border-width solid $gray-450;
@@ -290,7 +314,7 @@ export default {
       padding-left: #{$spacer * 1.25};
       padding-right: #{$spacer * 1.25};
       position: sticky;
-      top: 110px;
+      top: 168px;
       z-index: 1000;
       @include media-breakpoint-down('sm') {
         display: none;
@@ -421,10 +445,11 @@ export default {
           font-weight: $font-weight-bold;
         }
         .no-cost-loan-text {
+          display: block;
           font-size: 0.875em;
           font-style: italic;
+          line-height: 1;
           opacity: .5;
-          display: block;
         }
       }
     }

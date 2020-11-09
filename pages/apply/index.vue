@@ -1,83 +1,86 @@
 <template>
   <div class="page-content page--apply">
-    <div v-if="!applicationSubmitted && Object.keys(searchResults).length">
-      <div>
-        <h3>
-          {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
-        </h3>
-        <table class="table table-striped page--apply__table">
-          <tbody>
-            <tr>
-              <td>
-                {{ 'One Free Guarantee' | titlecase }}
-              </td>
-              <td>
-                {{ loanProduct.fee | currency }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{ 'Loan Amount' | titlecase }}
-              </td>
-              <td>
-                {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
-              </td>
-            </tr>
-            <tr v-if="applicationData.cashAmount">
-              <td>
-                {{ 'Cash Amount' | titlecase }}
-              </td>
-              <td>
-                {{ applicationData.cashAmount }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{ 'Interest Rate' | titlecase }}
-              </td>
-              <td>
-                {{ loanProduct.rate / 100 | percent }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{ 'APR' | capitalize }}
-              </td>
-              <td>
-                {{ loanProduct.apr / 100 | percent }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{ 'Monthly Payment' | titlecase }}
-              </td>
-              <td>
-                {{ loanProduct.totalPayment | currency }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div v-if="!applicationSubmitted">
+      <div v-if="Object.keys(searchResults).length > 0">
+        <div>
+          <h3>
+            {{ loanProduct.amortizationTerm }}-Year {{ loanProduct.amortizationType }}
+          </h3>
+          <table class="table table-striped page--apply__table">
+            <tbody>
+              <tr>
+                <td>
+                  {{ 'One Free Guarantee' | titlecase }}
+                </td>
+                <td>
+                  {{ loanProduct.fee | currency }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'Loan Amount' | titlecase }}
+                </td>
+                <td>
+                  {{ this.$parseCurrency(applicationData.loanAmount) | currency }}
+                </td>
+              </tr>
+              <tr v-if="applicationData.cashAmount">
+                <td>
+                  {{ 'Cash Amount' | titlecase }}
+                </td>
+                <td>
+                  {{ applicationData.cashAmount }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'Interest Rate' | titlecase }}
+                </td>
+                <td>
+                  {{ loanProduct.rate / 100 | percent }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'APR' | capitalize }}
+                </td>
+                <td>
+                  {{ loanProduct.apr / 100 | percent }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ 'Monthly Payment' | titlecase }}
+                </td>
+                <td>
+                  {{ loanProduct.totalPayment | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Form
+          @applicationSubmitStart="handleSubmitStart"
+          @applicationSubmitSuccess="handleSubmitSuccess"
+          @applicationSubmitEnd="handleSubmitEnd"
+        />
       </div>
-      <Form
-        @applicationSubmitStart="handleSubmitStart"
-        @applicationSubmitSuccess="handleSubmitSuccess"
-        @applicationSubmitEnd="handleSubmitEnd"
-      />
+      <div v-else>
+        <p>
+          Please begin by searching Loan Products.
+        </p>
+        <button
+          @click="startNewSearch"
+          class="btn btn-primary"
+        >
+          {{ 'Search Live Rates' | titlecase }}
+        </button>
+      </div>
     </div>
-    <div v-if="!Object.keys(searchResults).length">
-      <p>
-        Please begin by searching Loan Products.
-      </p>
-      <button
-        @click="startNewSearch"
-        class="btn btn-primary"
-      >
-        {{ 'Search Live Rates' | titlecase }}
-      </button>
-    </div>
-    <div v-if="applicationSubmitted">
-      <h3>Thank you</h3>
-      <p>We have received your application and will be in touch shortly.</p>
+    <div v-else>
+      <h3>Thank you! Your application was submitted successfully.</h3>
+      <p>We have received your application and appreciate you trusting Rate Rabbit Home Loans. One of our loan consultants will be contacting you shortly. If you should have any questions, please feel free to call us at <a tel="+1-888-395-0395">(888) 395-0395</a>.</p>
+      <p>***Please note, due to Covid-19 and the unprecedented low rates, it may take a bit longer to contact you. We appreciate your patience and look forward to working with you***</p>
     </div>
   </div>
 </template>

@@ -425,10 +425,11 @@
       </div>
       <!-- <div class="form--search-rates__spacer form-group form-group--spacer w-100" /> -->
       <div class="row">
-        <div class="form-group col-12">
+        <div :class="{ error: errors.taxes }" class="form-group col-12">
           <select
             id="input-select--taxes"
             v-model="taxes"
+            @blur="validateTaxesAndInsurance(taxes)"
             name="taxes"
             class="custom-select has-info"
           >
@@ -487,7 +488,6 @@
                 <div :class="{ error: errors.promotionCodeNoSubmit }" class="form-group col-12 mb-3">
                   <input
                     v-model="promotionCode"
-                    @blur="validatePromotionCodeNoSubmit(promotionCode)"
                     type="text"
                     name="promotionCode"
                     class="form-control"
@@ -514,7 +514,7 @@
                 </div>
               </div>
             </li>
-            <li class="form--search-rates__supplemental-link">
+            <!-- <li class="form--search-rates__supplemental-link">
               <div class="row">
                 <div class="form-group col-12">
                   <p class="mb-0">
@@ -536,7 +536,7 @@
                   </div>
                 </div>
               </div>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -590,7 +590,8 @@ export default {
         propertyUse: false,
         propertyValue: false,
         propertyZip: false,
-        state: false
+        state: false,
+        taxes: false
       },
       error: {
         message: null,
@@ -838,31 +839,35 @@ export default {
     promotionCode (value) {
       this.promotionCode = value
       this.validatePromotionCode(value)
+    },
+    taxes (value) {
+      this.taxes = value
+      this.validateTaxesAndInsurance(value)
     }
   },
   async fetch () {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
       this.$store.commit('setAuth', await authenticate())
     }
-    if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
+    if (!this.loanPurposeOptions?.length) {
       this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
     }
-    if (!this.stateOptions || !this.stateOptions.length) {
+    if (!this.stateOptions?.length) {
       this.$store.commit('updateStateOptions', await getState(this.auth))
     }
-    if (!this.propertyTypeOptions || !this.propertyTypeOptions.length) {
+    if (!this.propertyTypeOptions?.length) {
       this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
     }
-    if (!this.propertyUseOptions || !this.propertyUseOptions.length) {
+    if (!this.propertyUseOptions?.length) {
       this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
     }
-    if (!this.creditRatingOptions || !this.creditRatingOptions.length) {
+    if (!this.creditRatingOptions?.length) {
       this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
     }
-    if (!this.maritalStatusOptions || !this.maritalStatusOptions.length) {
+    if (!this.maritalStatusOptions?.length) {
       this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
     }
-    if (!this.promotionCodeOptions || !this.promotionCodeOptions.length) {
+    if (!this.promotionCodeOptions?.length) {
       this.$store.commit('updatePromotionCodeOptions', await getPromotionCode(this.auth))
     }
   },
@@ -900,6 +905,7 @@ export default {
       this.validatePropertyType(this.applicationData.propertyType)
       this.validatePropertyUse(this.applicationData.propertyUse)
       this.validateCreditRating(this.applicationData.creditRating)
+      this.validateTaxesAndInsurance(this.applicationData.creditRating)
       if (!hasErrors) {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
@@ -1088,6 +1094,13 @@ export default {
         this.errors.promotionCodeNoSubmit = false
       }
     },
+    validateTaxesAndInsurance (value) {
+      if (this.taxes) {
+        this.errors.taxes = false
+      } else {
+        this.errors.taxes = true
+      }
+    },
     async handleFormSubmit (e) {
       e.preventDefault()
       this.validatePromotionCodeNoSubmit(this.promotionCode)
@@ -1119,6 +1132,7 @@ export default {
         // Check search results are valid
         if (!this.errors.authenticate && !this.errors.loanSearch) {
           this.updateSearchResults(data)
+          // console.log('Raw Results: ', data)
           this.updateRoute()
         }
       }
