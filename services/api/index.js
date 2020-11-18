@@ -224,6 +224,32 @@ export const loanSearch = async (auth, payload) => {
   return data
 }
 
+export const leadCreate = async (auth, payload) => {
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  const { data } = await axios.post(`${apiUrl}/lead/create`, payload, axiosConfig)
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      handleError(error)
+      throw error
+    })
+  return data
+}
+
+export const leadProgress = async (auth, payload) => {
+  axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
+  const { data } = await axios.post(`${apiUrl}/progresslead`, payload, axiosConfig)
+    .then((res) => {
+      return res
+    })
+    .catch((error) => {
+      handleError(error)
+      throw error
+    })
+  return data
+}
+
 export const applicationCreate = async (auth, payload) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
   const { data } = await axios.post(`${apiUrl}/application/create`, payload, axiosConfig)
