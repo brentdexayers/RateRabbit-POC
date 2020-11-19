@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Form from '~/components/forms/ConnectForm.vue'
+import Form from '~/components/forms/LeadForm.vue'
 
 export default {
   layout: 'default',
