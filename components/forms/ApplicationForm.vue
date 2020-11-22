@@ -32,6 +32,7 @@
     <form
       id="application-form"
       @submit.prevent="handleSubmit"
+      :class="{ blur: loader }"
       action="/apply"
       method="POST"
       class="form form--apply"
@@ -1628,7 +1629,7 @@
             name="submit"
             class="btn btn--submit btn-primary form--apply__submit mt-4"
           >
-            {{ 'Submit' | titlecase }}
+            {{ submitText | titlecase }}
           </button>
         </div>
       </div>
@@ -1659,6 +1660,13 @@ import {
 } from '~/services/api'
 
 export default {
+  props: {
+    loader: Boolean,
+    submitText: {
+      type: String,
+      default: 'Submit'
+    }
+  },
   data () {
     return {
       assetsAndLiabilities: false,

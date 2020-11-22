@@ -146,6 +146,8 @@ $spacers: map-merge(
   $spacers
 );
 
+$headerHeight: $spacer * 6.875;
+
 // This variable affects the `.h-*` and `.w-*` classes.
 $sizes: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default

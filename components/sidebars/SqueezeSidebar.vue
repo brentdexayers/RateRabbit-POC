@@ -2,36 +2,38 @@
   <aside
     class="sidebar col-0 col-md-5 col-lg-4 sidebar--squeeze"
   >
-    <div class="sidebar--squeeze__intro">
-      <h2 class="sidebar--squeeze__intro__header">
-        Real Rates,<br>Real Time.
-      </h2>
-      <ul class="sidebar--squeeze__intro__list">
-        <li>
-          10 Seconds or Less
-        </li>
-        <li>
-          No Personal Information
-        </li>
-        <li>
-          Transparent
-        </li>
-        <li>
-          Lock Your Rate 24/7
-        </li>
-        <li>
-          Direct Lender
-        </li>
-        <li>
-          Guaranteed Closing Costs
-        </li>
-      </ul>
+    <div class="sidebar--squeeze__inner">
+      <div class="sidebar--squeeze__intro">
+        <h2 class="sidebar--squeeze__intro__header">
+          Real Rates,<br>Real Time.
+        </h2>
+        <ul class="sidebar--squeeze__intro__list">
+          <li>
+            10 Seconds or Less
+          </li>
+          <li>
+            No Personal Information
+          </li>
+          <li>
+            Transparent
+          </li>
+          <li>
+            Lock Your Rate 24/7
+          </li>
+          <li>
+            Direct Lender
+          </li>
+          <li>
+            Guaranteed Closing Costs
+          </li>
+        </ul>
+      </div>
+      <blockquote class="squeeze-sidebar__testimonial">
+        I give very high marks to Rate Rabbit. My loan consultant got me locked in when I asked him to and at what turned out to be a very good rate.
+        <footer>Rick H, California</footer>
+      </blockquote>
+      <div class="w-100" />
     </div>
-    <blockquote class="squeeze-sidebar__testimonial">
-      I give very high marks to Rate Rabbit. My loan consultant got me locked in when I asked him to and at what turned out to be a very good rate.
-      <footer>Rick H, California</footer>
-    </blockquote>
-    <div class="w-100" />
   </aside>
 </template>
 
@@ -45,22 +47,31 @@ export default {
 @import '~bootstrap/scss/mixins.scss';
 
 .sidebar--squeeze {
+  align-items: center;
   background-color: $green;
   background: linear-gradient(74.78deg, $green 0%, #BED72A 100%);
   color: $white;
   display: inline-flex;
   flex: 1 0 100%;
   flex-direction: column;
-  justify-content: space-between;
+  // justify-content: space-between;
   max-width: 488px;
   padding: #{$spacer * 4.125} #{$grid-gutter-width};
   @include media-breakpoint-down('sm') {
     display: none;
   }
+  &__inner {
+    position: sticky;
+    top: #{($spacer * 4.125) + $headerHeight};
+  }
   &__intro {
     align-self: center;
     display: flex;
     flex-direction: column;
+    margin-bottom: 4rem;
+    @include media-breakpoint-down('lg') {
+      margin-bottom: 2rem;
+    }
     margin-left: auto;
     margin-right: auto;
     max-width: 290px;
@@ -99,6 +110,7 @@ export default {
     font-size: $font-size-sm;
     line-height: 1.625;
     font-style: italic;
+    max-width: 440px;
     footer {
       font-size: 14px;
       font-style: normal;

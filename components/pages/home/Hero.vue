@@ -54,7 +54,7 @@ export default {
   background-size: cover;
   color: #ffffff;
   min-height: 100vh;
-  min-height: calc(100vh - 110px);
+  min-height: calc(100vh - #{$headerHeight});
   padding-bottom: 80px;
   padding-top: 80px;
   text-align: center;

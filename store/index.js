@@ -122,7 +122,8 @@ export const state = () => ({
       zip: null
     },
     loanProduct: {},
-    results: {}
+    results: {},
+    submitted: false
   },
   form: {
     options: {
@@ -138,6 +139,7 @@ export const state = () => ({
   layout: {
     sidebar: 'default'
   },
+  lead: {},
   loader: false,
   searchResultDetails: [],
   searchResultsReduced: {}
@@ -162,6 +164,12 @@ export const mutations = {
   },
   setApplicationResults (state, payload) {
     state.application.results = payload
+  },
+  setApplicationSubmitted (state, payload) {
+    state.application.submitted = payload
+  },
+  setLeadResults (state, payload) {
+    state.lead = payload
   },
   setSearchResults (state, payload) {
     state.searchResultsReduced = payload

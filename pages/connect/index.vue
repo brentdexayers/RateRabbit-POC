@@ -15,7 +15,25 @@
     <p>
       <b>Rate Rabbit Headquarters:</b> <a href="https://www.google.com/maps/place/Rate+Rabbit+Home+Loans/@32.7111518,-117.1670554,17z/data=!3m1!4b1!4m5!3m4!1s0x80d9535701dee22d:0xe579c2af2f739e13!8m2!3d32.7111518!4d-117.1648667" target="_blank">540 Front St. San Diego, CA 92101 (Map)</a>
     </p>
-    <Form />
+    <div v-if="leadCreated">
+      <p>Lead created!!!</p>
+    </div>
+    <div v-else>
+      <Form
+        @leadCreateStart="handleLeadStart"
+        @leadCreateSuccess="handleLeadSuccess"
+        @leadCreateError="handleLeadError"
+        @leadCreateEnd="handleLeadEnd"
+        comments
+      />
+      <div class="row">
+        <div class="col-12 col-md-5">
+          <p class="form--apply__footer">
+            Your information is private, and will be submitted over secure connections.
+          </p>
+        </div>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -29,7 +47,30 @@ export default {
   },
   data () {
     return {
+      leadCreated: false,
+      loading: false,
+      step: 0,
+      throwError: false,
       title: 'Connect'
+    }
+  },
+  methods: {
+    handleLeadStart () {
+      this.loading = true
+      this.throwError = false
+      alert('Lead start')
+    },
+    handleLeadSuccess () {
+      this.throwError = false
+      alert('Lead Success')
+    },
+    handleLeadError () {
+      this.throwError = true
+      alert('Lead Error')
+    },
+    handleLeadEnd () {
+      this.loading = false
+      alert('Lead End')
     }
   },
   head () {

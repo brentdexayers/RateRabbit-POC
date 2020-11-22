@@ -108,7 +108,7 @@ body.main-nav--open {
   &__navbar {
     align-items: center;
     background-color: $white;
-    height: 110px;
+    height: $headerHeight;
     padding: 0;
     .container {
       padding-left: $grid-gutter-width;
@@ -172,7 +172,7 @@ body.main-nav--open {
         box-shadow: 0px 4px 10px -10px;
         left: 0;
         overflow-y: auto;
-        padding: 110px $grid-gutter-width $grid-gutter-width;
+        padding: $headerHeight $grid-gutter-width $grid-gutter-width;
         position: fixed;
         right: 0;
         text-align: center;

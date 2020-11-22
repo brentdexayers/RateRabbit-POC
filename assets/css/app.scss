@@ -16,7 +16,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  // padding-top: 110px;
+  // padding-top: $headerHeight; // 110px;
   // scroll-behavior: smooth;
 }
 
@@ -210,6 +210,9 @@ p a {
 */
 .alert {
   margin-bottom: 4rem !important;
+  p {
+    margin-bottom: .5em;
+  }
 }
 
 /*
@@ -241,6 +244,7 @@ p a {
 */
 .blur {
   filter: blur(2px);
+  transition: filter .2s;
 }
 
 /*

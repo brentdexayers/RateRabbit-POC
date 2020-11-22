@@ -301,7 +301,7 @@ export default {
       padding-top: .5rem;
       padding-bottom: 1rem;
       position: sticky;
-      top: 110px;
+      top: $headerHeight;
       z-index: 1000;
     }
     &__header {

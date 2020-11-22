@@ -1114,6 +1114,7 @@ export default {
           .then((auth) => {
             return loanSearch(auth, this.searchPayload)
               .then((res) => {
+                // console.log('result:', '\n', res)
                 return res
               })
               .catch((err) => {

@@ -53,7 +53,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // { src: '~/plugins/LocalStorage', ssr: false },
+    { src: '~/plugins/PersistedState' },
     '~/plugins/vue-glide',
     '~/plugins/vue-mask',
     '~/plugins/vue-moment',
