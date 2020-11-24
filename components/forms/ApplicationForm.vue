@@ -380,7 +380,7 @@
         <div class="row">
           <div
             :class="{ error: errors.address }"
-            class="form-group col-12 col-lg-9"
+            class="form-group col-12 col-lg-6"
           >
             <input
               v-model="address"
@@ -429,7 +429,7 @@
               Zip code is required
             </p>
           </div>
-          <div class="form-group col-12 col-lg-6">
+          <div class="form-group col-12 col-lg-3">
             <input
               v-model="timeAtCurrentAddress"
               v-mask="'##'"
@@ -441,22 +441,7 @@
               :class="{ hasvalue: timeAtCurrentAddress }"
               for="timeAtCurrentAddress"
             >
-              {{ 'Years at Current Address' }}
-            </label>
-          </div>
-          <div class="form-group col-12 col-lg-6">
-            <input
-              v-model="hoaDues"
-              v-currency="{distractionFree: false}"
-              type="text"
-              name="hoaDues"
-              class="form-control"
-            >
-            <label
-              :class="{ hasvalue: hoaDues }"
-              for="hoaDues"
-            >
-              {{ 'Homeowner Association Dues' | titlecase }}
+              {{ 'Years at Address' }}
             </label>
           </div>
           <div
@@ -507,7 +492,7 @@
           </div>
         </div>
 
-        <h3>Employer</h3>
+        <h3>{{ 'Employer' | titlecase }}</h3>
         <div class="row">
           <div
             :class="{ error: errors.employerName }"
@@ -653,6 +638,78 @@
             <p class="small">
               * Self employed Borrowers <span v-if="hasCoBorrower">and Co-Borrowers </span>may  be required to provide additional documentation such as tax returns and financial statements.
             </p>
+          </div>
+        </div>
+
+        <h3>{{ 'Housing Expenses' | titlecase }}</h3>
+        <div class="row">
+          <div
+            class="form-group col-12 col-lg-6"
+          >
+            <input
+              v-model="firstMortgage"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="firstMortgage"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: firstMortgage }"
+              for="firstMortgage"
+            >
+              {{ 'Monthly Principal and Interest' | titlecase }}
+            </label>
+          </div>
+          <div
+            class="form-group col-12 col-lg-6"
+          >
+            <input
+              v-model="realEstateTaxes"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="realEstateTaxes"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: realEstateTaxes }"
+              for="realEstateTaxes"
+            >
+              {{ 'Monthly Taxes' | titlecase }}
+            </label>
+          </div>
+          <div
+            class="form-group col-12 col-lg-6"
+          >
+            <input
+              v-model="hazardInsurance"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="hazardInsurance"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: hazardInsurance }"
+              for="hazardInsurance"
+            >
+              {{ 'Monthly Insurance' | titlecase }}
+            </label>
+          </div>
+          <div
+            class="form-group col-12 col-lg-6"
+          >
+            <input
+              v-model="hoaDues"
+              v-currency="{distractionFree: false}"
+              type="text"
+              name="hoaDues"
+              class="form-control"
+            >
+            <label
+              :class="{ hasvalue: hoaDues }"
+              for="hoaDues"
+            >
+              {{ 'Monthly HOA Dues' | titlecase }}
+            </label>
           </div>
         </div>
       </div>
@@ -969,7 +1026,7 @@
             </div>
           </div>
 
-          <h3>Employer</h3>
+          <h3>{{ 'Employer' | titlecase }}</h3>
           <div class="row">
             <div
               :class="{ error: errors.coBorrowerEmployerName }"
@@ -1107,6 +1164,78 @@
                 for="coBorrowerGrossIncome"
               >
                 {{ 'Monthly Base Income *' | titlecase }}
+              </label>
+            </div>
+          </div>
+
+          <h3>{{ 'Housing Expenses' | titlecase }}</h3>
+          <div class="row">
+            <div
+              class="form-group col-12 col-lg-6"
+            >
+              <input
+                v-model="coBorrowerFirstMortgage"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerFirstMortgage"
+                class="form-control"
+              >
+              <label
+                :class="{ hasvalue: coBorrowerFirstMortgage }"
+                for="coBorrowerFirstMortgage"
+              >
+                {{ 'Monthly Principal and Interest' | titlecase }}
+              </label>
+            </div>
+            <div
+              class="form-group col-12 col-lg-6"
+            >
+              <input
+                v-model="coBorrowerRealEstateTaxes"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerRealEstateTaxes"
+                class="form-control"
+              >
+              <label
+                :class="{ hasvalue: coBorrowerRealEstateTaxes }"
+                for="coBorrowerRealEstateTaxes"
+              >
+                {{ 'Monthly Taxes' | titlecase }}
+              </label>
+            </div>
+            <div
+              class="form-group col-12 col-lg-6"
+            >
+              <input
+                v-model="coBorrowerHazardInsurance"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerHazardInsurance"
+                class="form-control"
+              >
+              <label
+                :class="{ hasvalue: coBorrowerHazardInsurance }"
+                for="coBorrowerHazardInsurance"
+              >
+                {{ 'Monthly Insurance' | titlecase }}
+              </label>
+            </div>
+            <div
+              class="form-group col-12 col-lg-6"
+            >
+              <input
+                v-model="coBorrowerHoaDues"
+                v-currency="{distractionFree: false}"
+                type="text"
+                name="coBorrowerHoaDues"
+                class="form-control"
+              >
+              <label
+                :class="{ hasvalue: coBorrowerHoaDues }"
+                for="coBorrowerHoaDues"
+              >
+                {{ 'Monthly HOA Dues' | titlecase }}
               </label>
             </div>
           </div>
@@ -1729,6 +1858,7 @@ export default {
     ...mapState({
       auth: state => state.auth,
       applicationData: state => state.application.data,
+      leadData: state => state.lead,
       loanProduct: state => state.application.loanProduct,
       maritalStatusOptions: state => state.form.options.maritalStatusOptions,
       productId: state => state.application.loanProduct.productId,
@@ -2145,6 +2275,14 @@ export default {
         this.$store.commit('updateFax', value)
       }
     },
+    firstMortgage: {
+      get () {
+        return this.$store.state.application.data.expenses[0].firstMortgage
+      },
+      set (value) {
+        this.$store.commit('updateExpensesPresentFirstMortgage', value)
+      }
+    },
     firstName: {
       get () {
         return this.$store.state.application.data.firstName
@@ -2161,12 +2299,52 @@ export default {
         this.$store.commit('updateGrossIncome', value)
       }
     },
-    hoaDues: {
+    coBorrowerFirstMortgage: {
       get () {
-        return this.$store.state.application.data.hoaDues
+        return this.$store.state.application.data.coBorrowerExpenses[0].firstMortgage
       },
       set (value) {
-        this.$store.commit('updateHoaDues', value)
+        this.$store.commit('updateCoBorrowerExpensesPresentFirstMortgage', value)
+      }
+    },
+    coBorrowerHazardInsurance: {
+      get () {
+        return this.$store.state.application.data.coBorrowerExpenses[0].hazardInsurance
+      },
+      set (value) {
+        this.$store.commit('updateCoBorrowerExpensesPresentHazardInsurance', value)
+      }
+    },
+    coBorrowerHoaDues: {
+      get () {
+        return this.$store.state.application.data.coBorrowerExpenses[0].hoaDues
+      },
+      set (value) {
+        this.$store.commit('updateCoBorrowerExpensesPresentHoaDues', value)
+      }
+    },
+    coBorrowerRealEstateTaxes: {
+      get () {
+        return this.$store.state.application.data.coBorrowerExpenses[0].realEstateTaxes
+      },
+      set (value) {
+        this.$store.commit('updateCoBorrowerExpensesPresentRealEstateTaxes', value)
+      }
+    },
+    hazardInsurance: {
+      get () {
+        return this.$store.state.application.data.expenses[0].hazardInsurance
+      },
+      set (value) {
+        this.$store.commit('updateExpensesPresentHazardInsurance', value)
+      }
+    },
+    hoaDues: {
+      get () {
+        return this.$store.state.application.data.expenses[0].hoaDues
+      },
+      set (value) {
+        this.$store.commit('updateExpensesPresentHoaDues', value)
       }
     },
     homePhone: {
@@ -2385,6 +2563,14 @@ export default {
         this.$store.commit('updatePropertyZip', value)
       }
     },
+    realEstateTaxes: {
+      get () {
+        return this.$store.state.application.data.expenses[0].realEstateTaxes
+      },
+      set (value) {
+        this.$store.commit('updateExpensesPresentRealEstateTaxes', value)
+      }
+    },
     realEstate_0_address: {
       get () {
         return this.$store.state.application.data.realEstate_0_address
@@ -2597,6 +2783,7 @@ export default {
     applicationPayload () {
       // The Application Payload object
       const payload = {
+        applicationId: this.leadData.id,
         borrowers: [],
         donationAmount: 0.00,
         loan: {
@@ -2664,12 +2851,13 @@ export default {
           // zip: this.applicationData.employerZip // Required if `employer: {}`
         }
       }
-      if (this.applicationData.hoaDues) {
-        primaryBorrower.expenses = [{
-          expenseType: 'Present', // Required if `expenses: {}`
-          hoaDues: this.$parseCurrency(this.applicationData.hoaDues) || 0
-        }]
-      }
+      primaryBorrower.expenses = [{
+        expenseType: 'Present',
+        firstMortgage: this.$parseCurrency(this.applicationData.expenses[0].firstMortgage) || 0,
+        hazardInsurance: this.$parseCurrency(this.applicationData.expenses[0].hazardInsurance) || 0,
+        hoaDues: this.$parseCurrency(this.applicationData.expenses[0].hoaDues) || 0,
+        realEstateTaxes: this.$parseCurrency(this.applicationData.expenses[0].realEstateTaxes) || 0
+      }]
       payload.borrowers.push(primaryBorrower)
       // Co-Borrower information
       if (this.hasCoBorrower) { // if COBORROWER
@@ -2703,12 +2891,13 @@ export default {
             // zip: this.applicationData.coBorrowerEmployerZip
           }
         }
-        // if (this.applicationData.coBorrowerHoaDues) {
-        //   coBorrower.expenses = [{
-        //     expenseType: 'Present',
-        //     hoaDues: this.$parseCurrency(this.applicationData.coBorrowerHoaDues) || 0
-        //   }]
-        // }
+        coBorrower.expenses = [{
+          expenseType: 'Present',
+          firstMortgage: this.$parseCurrency(this.applicationData.coBorrowerExpenses[0].firstMortgage) || 0,
+          hazardInsurance: this.$parseCurrency(this.applicationData.coBorrowerExpenses[0].hazardInsurance) || 0,
+          hoaDues: this.$parseCurrency(this.applicationData.coBorrowerExpenses[0].hoaDues) || 0,
+          realEstateTaxes: this.$parseCurrency(this.applicationData.coBorrowerExpenses[0].realEstateTaxes) || 0
+        }]
         payload.borrowers.push(coBorrower)
       }
       // Assets and Liabilities

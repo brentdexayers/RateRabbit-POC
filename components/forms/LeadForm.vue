@@ -158,6 +158,7 @@
             class="form-group col-12 col-lg-12"
           >
             <textarea
+              ref="customerComment"
               v-model="customerComment"
               type="text"
               name="customerComment"
@@ -230,6 +231,7 @@ export default {
     ...mapState({
       auth: state => state.auth,
       applicationData: state => state.application.data,
+      leadData: state => state.lead,
       loanProduct: state => state.application.loanProduct,
       searchResults: state => state.searchResultsReduced,
       searchResultDetails: state => state.searchResultDetails
@@ -329,13 +331,6 @@ export default {
       this.validateCellPhone(value)
     }
   },
-  // async fetch () {
-  //   if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
-  //     console.log('Auth (pre):', this.auth)
-  //     this.$store.commit('setAuth', await authenticate())
-  //     console.log('Auth (post):', this.auth)
-  //   }
-  // },
   methods: {
     errorShowDetails (e) {
       e.preventDefault()
@@ -377,7 +372,7 @@ export default {
             return leadCreate(auth, this.leadPayload)
               .then((res) => {
                 this.$emit('leadCreateSuccess', res)
-                console.log('Lead Create Result: ', res)
+                console.log('Lead Create Result:\n', res)
                 return res
               })
               .catch((err) => {

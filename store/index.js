@@ -26,6 +26,22 @@ export const state = () => ({
       coBorrowerEmployerName: null,
       coBorrowerEmployerState: null,
       coBorrowerEmployerZip: null,
+      coBorrowerExpenses: [
+        {
+          expenseType: 'Present',
+          firstMortgage: null,
+          hazardInsurance: null,
+          hoaDues: null,
+          realEstateTaxes: null
+        },
+        {
+          expenseType: 'Proposed',
+          firstMortgage: null,
+          hazardInsurance: null,
+          hoaDues: null,
+          realEstateTaxes: null
+        }
+      ],
       coBorrowerFax: null,
       coBorrowerFirstName: null,
       coBorrowerGrossIncome: null,
@@ -60,6 +76,22 @@ export const state = () => ({
       employerName: null,
       employerState: null,
       employerZip: null,
+      expenses: [
+        {
+          expenseType: 'Present',
+          firstMortgage: null,
+          hazardInsurance: null,
+          hoaDues: null,
+          realEstateTaxes: null
+        },
+        {
+          expenseType: 'Proposed',
+          firstMortgage: null,
+          hazardInsurance: null,
+          hoaDues: null,
+          realEstateTaxes: null
+        }
+      ],
       fax: null,
       firstName: null,
       grossIncome: null,
@@ -264,6 +296,30 @@ export const mutations = {
   updateCoBorrowerEmployerZip (state, payload) {
     state.application.data.coBorrowerEmployerZip = payload
   },
+  updateCoBorrowerExpensesPresentFirstMortgage (state, payload) {
+    state.application.data.coBorrowerExpenses[0].firstMortgage = payload
+  },
+  updateCoBorrowerExpensesPresentHazardInsurance (state, payload) {
+    state.application.data.coBorrowerExpenses[0].hazardInsurance = payload
+  },
+  updateCoBorrowerExpensesPresentHoaDues (state, payload) {
+    state.application.data.coBorrowerExpenses[0].hoaDues = payload
+  },
+  updateCoBorrowerExpensesPresentRealEstateTaxes (state, payload) {
+    state.application.data.coBorrowerExpenses[0].realEstateTaxes = payload
+  },
+  updateCoBorrowerExpensesProposedFirstMortgage (state, payload) {
+    state.application.data.coBorrowerExpenses[1].firstMortgage = payload
+  },
+  updateCoBorrowerExpensesProposedHazardInsurance (state, payload) {
+    state.application.data.coBorrowerExpenses[1].hazardInsurance = payload
+  },
+  updateCoBorrowerExpensesProposedHoaDues (state, payload) {
+    state.application.data.coBorrowerExpenses[1].hoaDues = payload
+  },
+  updateCoBorrowerExpensesProposedRealEstateTaxes (state, payload) {
+    state.application.data.coBorrowerExpenses[1].realEstateTaxes = payload
+  },
   updateCoBorrowerFax (state, payload) {
     state.application.data.coBorrowerFax = payload
   },
@@ -272,9 +328,6 @@ export const mutations = {
   },
   updateCoBorrowerGrossIncome (state, payload) {
     state.application.data.coBorrowerGrossIncome = payload
-  },
-  updateCoBorrowerHoaDues (state, payload) {
-    state.application.data.coBorrowerHoaDues = payload
   },
   updateCoBorrowerHomePhone (state, payload) {
     state.application.data.coBorrowerHomePhone = payload
@@ -366,6 +419,30 @@ export const mutations = {
   updateEmployerZip (state, payload) {
     state.application.data.employerZip = payload
   },
+  updateExpensesPresentFirstMortgage (state, payload) {
+    state.application.data.expenses[0].firstMortgage = payload
+  },
+  updateExpensesPresentHazardInsurance (state, payload) {
+    state.application.data.expenses[0].hazardInsurance = payload
+  },
+  updateExpensesPresentHoaDues (state, payload) {
+    state.application.data.expenses[0].hoaDues = payload
+  },
+  updateExpensesPresentRealEstateTaxes (state, payload) {
+    state.application.data.expenses[0].realEstateTaxes = payload
+  },
+  updateExpensesProposedFirstMortgage (state, payload) {
+    state.application.data.expenses[1].firstMortgage = payload
+  },
+  updateExpensesProposedHazardInsurance (state, payload) {
+    state.application.data.expenses[1].hazardInsurance = payload
+  },
+  updateExpensesProposedHoaDues (state, payload) {
+    state.application.data.expenses[1].hoaDues = payload
+  },
+  updateExpensesProposedRealEstateTaxes (state, payload) {
+    state.application.data.expenses[1].realEstateTaxes = payload
+  },
   updateFax (state, payload) {
     state.application.data.fax = payload
   },
@@ -374,9 +451,6 @@ export const mutations = {
   },
   updateGrossIncome (state, payload) {
     state.application.data.grossIncome = payload
-  },
-  updateHoaDues (state, payload) {
-    state.application.data.hoaDues = payload
   },
   updateHomePhone (state, payload) {
     state.application.data.homePhone = payload

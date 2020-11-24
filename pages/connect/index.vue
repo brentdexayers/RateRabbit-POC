@@ -15,8 +15,14 @@
     <p>
       <b>Rate Rabbit Headquarters:</b> <a href="https://www.google.com/maps/place/Rate+Rabbit+Home+Loans/@32.7111518,-117.1670554,17z/data=!3m1!4b1!4m5!3m4!1s0x80d9535701dee22d:0xe579c2af2f739e13!8m2!3d32.7111518!4d-117.1648667" target="_blank">540 Front St. San Diego, CA 92101 (Map)</a>
     </p>
-    <div v-if="leadCreated">
-      <p>Lead created!!!</p>
+    <div v-if="leadCreated" class="alert alert-success p-4">
+      <p>Thank you for contacting RateRabbit. One of our representatives will get back to you shortly.</p>
+      <button
+        @click="startNew"
+        class="btn btn-primary mt-2"
+      >
+        {{ 'Ask Another Question' | titlecase }}
+      </button>
     </div>
     <div v-else>
       <Form
@@ -38,6 +44,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import Form from '~/components/forms/LeadForm.vue'
 
 export default {
@@ -54,23 +62,34 @@ export default {
       title: 'Connect'
     }
   },
+  computed: {
+    ...mapState({
+      applicationData: state => state.application.data,
+      leadData: state => state.lead
+    })
+  },
+  mounted () {
+    if (this.leadData.id) {
+      this.leadCreated = true
+    }
+  },
   methods: {
     handleLeadStart () {
       this.loading = true
       this.throwError = false
-      alert('Lead start')
     },
     handleLeadSuccess () {
       this.throwError = false
-      alert('Lead Success')
+      this.leadCreated = true
     },
     handleLeadError () {
       this.throwError = true
-      alert('Lead Error')
     },
     handleLeadEnd () {
       this.loading = false
-      alert('Lead End')
+    },
+    startNew () {
+      this.leadCreated = false
     }
   },
   head () {

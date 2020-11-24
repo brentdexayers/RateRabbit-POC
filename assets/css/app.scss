@@ -252,6 +252,11 @@ p a {
 */
 .btn {
   white-space: nowrap;
+  @include media-breakpoint-down('sm') {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    width: 100%;
+  }
 }
 
 /*
