@@ -4,7 +4,6 @@
   >
     <Form
       :sidebar="true"
-      :hideExtraFields="true"
       :invertedSubmit="true"
     />
   </aside>

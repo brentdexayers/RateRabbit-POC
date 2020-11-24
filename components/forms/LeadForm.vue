@@ -45,7 +45,6 @@
           >
             <input
               v-model="firstName"
-              @blur="validateFirstName(firstName)"
               type="text"
               name="firstName"
               class="form-control"
@@ -54,7 +53,7 @@
               :class="{ hasvalue: firstName }"
               for="firstName"
             >
-              {{ 'First Name' | titlecase }}
+              {{ 'First Name' | titlecase }} <sup>*</sup>
             </label>
             <p
               v-if="errors.firstName"
@@ -70,7 +69,6 @@
           >
             <input
               v-model="lastName"
-              @blur="validateLastName(lastName)"
               type="text"
               name="lastName"
               class="form-control"
@@ -79,7 +77,7 @@
               :class="{ hasvalue: lastName }"
               for="lastName"
             >
-              {{ 'Last Name' | titlecase }}
+              {{ 'Last Name' | titlecase }} <sup>*</sup>
             </label>
             <p
               v-if="errors.lastName"
@@ -95,8 +93,7 @@
           >
             <input
               v-model="email"
-              @blur="validateEmail(email)"
-              type="email"
+              type="text"
               name="email"
               class="form-control"
             >
@@ -104,7 +101,7 @@
               :class="{ hasvalue: email }"
               for="email"
             >
-              {{ 'Email Address' | titlecase }}
+              {{ 'Email Address' | titlecase }} <sup>*</sup>
             </label>
             <p
               v-if="errors.email && !email"
@@ -113,7 +110,7 @@
               Email is required
             </p>
             <p
-              v-if="errors.email && !validEmail(email)"
+              v-if="errors.email && email && !validEmail(email)"
               class="error-inline"
             >
               Email invalid
@@ -127,7 +124,6 @@
             <input
               v-model="cellPhone"
               v-mask="'(###) ###-####'"
-              @blur="validateCellPhone(cellPhone)"
               type="text"
               name="cellPhone"
               class="form-control"
@@ -136,7 +132,7 @@
               :class="{ hasvalue: cellPhone }"
               for="cellPhone"
             >
-              {{ 'Cell Phone' | titlecase }}
+              {{ 'Cell Phone' | titlecase }} <sup>*</sup>
             </label>
             <p
               v-if="errors.cellPhone && !cellPhone"
@@ -172,6 +168,14 @@
               {{ 'Comments' | titlecase }}
             </label>
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-auto ml-auto">
+          <p class="small form-text text-muted">
+            * Required
+          </p>
         </div>
       </div>
 
@@ -312,25 +316,24 @@ export default {
       return payload
     }
   },
-  watch: {
-    // Borrower Information
-    firstName (value) {
-      this.firstName = value
-      this.validateFirstName(value)
-    },
-    lastName (value) {
-      this.lastName = value
-      this.validateLastName(value)
-    },
-    email (value) {
-      this.email = value
-      this.validateEmail(value)
-    },
-    cellPhone (value) {
-      this.cellPhone = value
-      this.validateCellPhone(value)
-    }
-  },
+  // watch: {
+  //   firstName (value) {
+  //     this.firstName = value
+  //     this.validateFirstName(value)
+  //   },
+  //   lastName (value) {
+  //     this.lastName = value
+  //     this.validateLastName(value)
+  //   },
+  //   email (value) {
+  //     this.email = value
+  //     this.validateEmail(value)
+  //   },
+  //   cellPhone (value) {
+  //     this.cellPhone = value
+  //     this.validateCellPhone(value)
+  //   }
+  // },
   methods: {
     errorShowDetails (e) {
       e.preventDefault()
@@ -391,17 +394,17 @@ export default {
           })
         this.$store.commit('setLeadResults', data)
       } else {
-        this.scrollToTop()
+        this.scrollToRoot()
       }
       this.$emit('leadCreateEnd')
     },
-    scrollToTop () {
-      const c = document.documentElement.scrollTop || document.body.scrollTop
-      if (c > 0) {
-        window.requestAnimationFrame(this.scrollToTop)
-        window.scrollTo(0, c - c / 8)
+    scrollToRoot () {
+      const el = this.$el
+      console.log('EL', el)
+      if (el) {
+        window.requestAnimationFrame(this.scrollToRoot)
+        el.scrollIntoView()
       }
-      document.body.focus()
     },
     // Regex Tests
     validEmail (email) {

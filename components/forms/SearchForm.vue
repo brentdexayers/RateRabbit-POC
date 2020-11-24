@@ -60,7 +60,7 @@
             :class="{ hasvalue: loanPurpose !== null, hasError: errors.loanPurpose }"
             for="loanPurpose"
           >
-            {{ 'Loan Purpose' | titlecase }}
+            {{ 'Loan Purpose' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.loanPurpose && !loanPurpose"
@@ -75,7 +75,6 @@
           <input
             v-model="propertyValue"
             v-currency="{distractionFree: false}"
-            @blur="validatePropertyValue(propertyValue)"
             type="text"
             name="propertyValue"
             class="form-control"
@@ -89,7 +88,7 @@
               {{ 'Purchase price' | titlecase }}
             </span>
             <span v-else>
-              {{ 'Property value' | titlecase }}
+              {{ 'Property value' | titlecase }} <sup>*</sup>
             </span>
           </label>
           <p v-if="errors.propertyValue && !propertyValue" class="error-inline">
@@ -106,7 +105,7 @@
             :class="{ hasvalue: loanCashOutAmount }"
             for="loanCashOutAmount"
           >
-            {{ 'Cash Out Amount' | titlecase }}
+            {{ 'Cash Out Amount' | titlecase }} <sup>*</sup>
           </label>
           <input
             v-model="loanCashOutAmount"
@@ -123,7 +122,6 @@
           <input
             v-model="loanAmount"
             v-currency="{distractionFree: false}"
-            @blur="validateLoanAmount(loanAmount)"
             type="text"
             name="loanAmount"
             class="form-control"
@@ -141,7 +139,7 @@
               </b-tooltip>
             </span>
             <span v-else>
-              {{ 'Loan Amount' | titlecase }}
+              {{ 'Loan Amount' | titlecase }} <sup>*</sup>
             </span>
           </label>
           <p
@@ -178,7 +176,6 @@
             <input
               id="loc"
               v-model="loc"
-              v-on:change.stop="validateLocAmount(locAmount)"
               type="checkbox"
               class="custom-control-input"
             >
@@ -196,7 +193,6 @@
           <input
             v-model="locAmount"
             v-currency="{distractionFree: false}"
-            @blur="validateLocAmount(locAmount)"
             type="text"
             name="locAmount"
             class="form-control"
@@ -207,7 +203,7 @@
             for="locAmount"
           >
             <span>
-              {{ 'LOC Balance' }}
+              {{ 'LOC Balance' }} <sup>*</sup>
             </span>
           </label>
           <p
@@ -265,7 +261,6 @@
         <div :class="{ error: errors.state }" class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <select
             v-model="state"
-            @blur="validateState(state)"
             name="state"
             class="custom-select"
           >
@@ -286,7 +281,7 @@
             :class="{ hasvalue: state !== null, hasError: errors.state }"
             for="state"
           >
-            {{ 'State' | titlecase }}
+            {{ 'State' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.state && !state"
@@ -298,7 +293,6 @@
         <div :class="{ error: errors.propertyZip }" class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <input
             v-model="propertyZip"
-            @blur="validatePropertyZip(propertyZip)"
             type="text"
             name="propertyZip"
             class="form-control"
@@ -308,7 +302,7 @@
             :class="{ hasvalue: propertyZip, hasError: errors.propertyZip }"
             for="propertyZip"
           >
-            {{ 'Zip Code' | titlecase }}
+            {{ 'Zip Code' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.propertyZip && !propertyZip"
@@ -322,7 +316,6 @@
         <div :class="{ error: errors.propertyType }" class="form-group col-12">
           <select
             v-model="propertyType"
-            @blur="validatePropertyType(propertyType)"
             name="propertyType"
             class="custom-select"
           >
@@ -343,7 +336,7 @@
             :class="{ hasvalue: propertyType !== null, hasError: errors.propertyType }"
             for="propertyType"
           >
-            {{ 'Property Type' | titlecase }}
+            {{ 'Property Type' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.propertyType && !propertyType"
@@ -357,7 +350,6 @@
         <div :class="{ error: errors.propertyUse }" class="form-group col-12">
           <select
             v-model="propertyUse"
-            @blur="validatePropertyUse(propertyUse)"
             name="propertyUse"
             class="custom-select"
           >
@@ -378,7 +370,7 @@
             :class="{ hasvalue: propertyUse !== null, hasError: errors.propertyUse }"
             for="propertyUse"
           >
-            {{ 'Property Use' | titlecase }}
+            {{ 'Property Use' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.propertyUse && !propertyUse"
@@ -392,7 +384,6 @@
         <div :class="{ error: errors.creditRating }" class="form-group col-12">
           <select
             v-model="creditRating"
-            @blur="validateCreditRating(creditRating)"
             name="creditRating"
             class="custom-select"
           >
@@ -413,7 +404,7 @@
             :class="{ hasvalue: creditRating !== null, hasError: errors.creditRating }"
             for="creditRating"
           >
-            {{ 'Credit Rating' | titlecase }}
+            {{ 'Credit Rating' | titlecase }} <sup>*</sup>
           </label>
           <p
             v-if="errors.creditRating && !creditRating"
@@ -429,7 +420,6 @@
           <select
             id="input-select--taxes"
             v-model="taxes"
-            @blur="validateTaxesAndInsurance(taxes)"
             name="taxes"
             class="custom-select has-info"
           >
@@ -453,7 +443,7 @@
             :class="{ hasvalue: taxes }"
             for="taxes"
           >
-            {{ 'Taxes & Insurance' | titlecase }}
+            {{ 'Taxes & Insurance' | titlecase }} <sup>*</sup>
             <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
             <b-tooltip target="taxes-tooltip" triggers="hover">
               Would you like to add your monthly taxes and insurance to your payment?
@@ -461,7 +451,48 @@
           </label>
         </div>
       </div>
+      <div class="row row-promo">
+        <div
+          :class="{ error: errors.promotionCodeNoSubmit }"
+          class="form-group col-12"
+        >
+          <input
+            v-model="promotionCode"
+            type="text"
+            name="promotionCode"
+            class="form-control"
+            placeholder=""
+          >
+          <label
+            :class="{ hasvalue: promotionCode }"
+            for="promotionCode"
+          >
+            {{ 'Promotion Code' | titlecase }}
+          </label>
+          <p
+            v-if="promotionIsExact && promotion[0].hasOwnProperty('displayMessage')"
+            class="success-inline"
+          >
+            {{ promotion[0].displayMessage }}
+          </p>
+          <p
+            v-if="errors.promotionCodeNoSubmit"
+            class="error-inline"
+          >
+            Invalid promotion code
+          </p>
+        </div>
+      </div>
+
       <div class="row">
+        <div class="col-auto ml-auto">
+          <p class="small form-text text-muted">
+            * Required
+          </p>
+        </div>
+      </div>
+
+      <div class="row row-submit">
         <div class="form-group col-12 form--search-rates__col--submit">
           <button
             :class="invertedSubmit ? 'btn-outline-primary' : 'btn-primary'"
@@ -470,74 +501,6 @@
           >
             {{ searchResults.length ? 'Update Search' : 'Search Live Rates' | titlecase }}
           </button>
-        </div>
-      </div>
-      <div
-        v-if="!hideExtraFields"
-        class="row"
-      >
-        <div class="form-group col-12">
-          <ul class="list-unstyled form--search-rates__supplemental-links">
-            <li class="form--search-rates__supplemental-link">
-              <div class="row">
-                <div class="col-12">
-                  <p class="mb-1">
-                    Do you have a promotional code?
-                  </p>
-                </div>
-                <div :class="{ error: errors.promotionCodeNoSubmit }" class="form-group col-12 mb-3">
-                  <input
-                    v-model="promotionCode"
-                    type="text"
-                    name="promotionCode"
-                    class="form-control"
-                    placeholder=""
-                  >
-                  <label
-                    :class="{ hasvalue: promotionCode }"
-                    for="promotionCode"
-                  >
-                    {{ 'Promo Code' | titlecase }}
-                  </label>
-                  <p
-                    v-if="promotionIsExact && promotion[0].hasOwnProperty('displayMessage')"
-                    class="success-inline"
-                  >
-                    {{ promotion[0].displayMessage }}
-                  </p>
-                  <p
-                    v-if="errors.promotionCodeNoSubmit"
-                    class="error-inline"
-                  >
-                    Invalid promotion code
-                  </p>
-                </div>
-              </div>
-            </li>
-            <!-- <li class="form--search-rates__supplemental-link">
-              <div class="row">
-                <div class="form-group col-12">
-                  <p class="mb-0">
-                    Sign Up for Rate Alerts?
-                  </p>
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      id="signUp"
-                      v-model="signUp"
-                      type="checkbox"
-                      class="custom-control-input"
-                    >
-                    <label
-                      class="custom-control-label"
-                      for="signUp"
-                    >
-                      Yes, I'd like to sign up!
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </li> -->
-          </ul>
         </div>
       </div>
     </form>
@@ -561,10 +524,6 @@ import {
 
 export default {
   props: {
-    hideExtraFields: {
-      type: Boolean,
-      default: false
-    },
     invertedSubmit: {
       type: Boolean,
       default: false
@@ -657,14 +616,6 @@ export default {
         this.updateLoanPurpose(value)
       }
     },
-    // loanRefinanceType: {
-    //   get () {
-    //     return this.$store.state.application.data.loanRefinanceType
-    //   },
-    //   set (value) {
-    //     this.$store.commit('updateLoanRefinanceType', value)
-    //   }
-    // },
     loanRefinanceType () {
       let type = 'No Cash Out'
       if (this.loanPurpose.name === 'Refinance Cash Out') {
@@ -1019,7 +970,7 @@ export default {
       }
     },
     validateLocAmount (value) {
-      if (value || !this.loc) {
+      if (value || !this.loc || this.loanPurpose.name === 'Purchase') {
         this.errors.locAmount = false
       } else {
         this.errors.locAmount = true
@@ -1083,6 +1034,7 @@ export default {
       }
       if (this.promotion.length === 1 && this.promotion[0].promotionCode.toUpperCase() === value.toUpperCase()) {
         this.promotionIsExact = true
+        this.validatePromotionCodeNoSubmit(this.promotionCode)
       } else {
         this.promotionIsExact = false
       }
@@ -1149,6 +1101,8 @@ export default {
 @import '~bootstrap/scss/mixins.scss';
 
 .form--search-rates {
+  display: flex;
+  flex-direction: column;
   &__ltv {
     margin: auto;
     // margin-top: $spacer;
