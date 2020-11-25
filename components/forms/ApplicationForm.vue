@@ -40,6 +40,10 @@
       <div id="property_information" class="section">
         <h2 class="form--section_header">
           {{ 'Subject Property' | titlecase }}
+          <img id="subjectProperty-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
+          <b-tooltip target="subjectProperty-tooltip" triggers="hover">
+            This is the property we are doing the loan on
+          </b-tooltip>
         </h2>
         <div class="row">
           <div
