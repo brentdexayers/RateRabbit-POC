@@ -277,6 +277,7 @@
             <v-date-picker
               v-model="dob"
               :model-config="modelConfig"
+              :max-date="new Date()"
               color="green"
             >
               <template v-slot="{ inputValue, inputEvents }">
@@ -880,13 +881,14 @@
               <v-date-picker
                 v-model="coBorrowerDob"
                 :model-config="modelConfig"
+                :max-date="new Date()"
                 color="green"
               >
                 <template v-slot="{ inputValue, inputEvents }">
                   <input
                     v-on="inputEvents"
                     :value="inputValue"
-                    @popoverDidHide="validateCoBorrowerDob(coBorrowerDob)"
+                    @popoverDidHide="validateDob(coBorrowerDob)"
                     class="form-control"
                   >
                 </template>
@@ -1779,13 +1781,13 @@ import { mapState } from 'vuex'
 
 import {
   authenticate,
-  applicationCreate,
-  getCreditRating,
-  getLoanPurpose,
-  getMaritalStatus,
-  getPropertyType,
-  getPropertyUse,
-  getState
+  // getCreditRating,
+  // getLoanPurpose,
+  // getMaritalStatus,
+  // getPropertyType,
+  // getPropertyUse,
+  // getState,
+  applicationCreate
 } from '~/services/api'
 
 export default {
@@ -3048,7 +3050,7 @@ export default {
     },
     coBorrowerDob (value) {
       this.coBorrowerDob = value
-      this.validateCoBorrowerDob(value)
+      this.validateDob(value)
     },
     // Assets and liabilities
     assetsAndLiabilities (value) {
@@ -3090,28 +3092,26 @@ export default {
   },
   async fetch () {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
-      console.log('Auth (pre):', this.auth)
       this.$store.commit('setAuth', await authenticate())
-      console.log('Auth (post):', this.auth)
     }
-    if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
-      this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
-    }
-    if (!this.stateOptions || !this.stateOptions.length) {
-      this.$store.commit('updateStateOptions', await getState(this.auth))
-    }
-    if (!this.propertyTypeOptions || !this.propertyTypeOptions.length) {
-      this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
-    }
-    if (!this.propertyUseOptions || !this.propertyUseOptions.length) {
-      this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
-    }
-    if (!this.creditRatingOptions || !this.creditRatingOptions.length) {
-      this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
-    }
-    if (!this.maritalStatusOptions || !this.maritalStatusOptions.length) {
-      this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
-    }
+    // if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
+    //   this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
+    // }
+    // if (!this.stateOptions || !this.stateOptions.length) {
+    //   this.$store.commit('updateStateOptions', await getState(this.auth))
+    // }
+    // if (!this.propertyTypeOptions || !this.propertyTypeOptions.length) {
+    //   this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
+    // }
+    // if (!this.propertyUseOptions || !this.propertyUseOptions.length) {
+    //   this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
+    // }
+    // if (!this.creditRatingOptions || !this.creditRatingOptions.length) {
+    //   this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
+    // }
+    // if (!this.maritalStatusOptions || !this.maritalStatusOptions.length) {
+    //   this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
+    // }
   },
   methods: {
     doCopyPropertyAddressPrimary () {
@@ -3170,7 +3170,7 @@ export default {
       this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
       this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
       this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
-      this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
+      this.validateDob(this.applicationData.coBorrowerDob)
       this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
       this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
       // Validate assets and liabilities
@@ -3420,13 +3420,13 @@ export default {
         this.errors.dob = false
       }
     },
-    validateCoBorrowerDob (value) {
-      if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
-        this.errors.dob = true
-      } else {
-        this.errors.dob = false
-      }
-    },
+    // validateCoBorrowerDob (value) {
+    //   if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
+    //     this.errors.dob = true
+    //   } else {
+    //     this.errors.dob = false
+    //   }
+    // },
     validateCellPhone (value) {
       if (!value) {
         this.errors.cellPhone = true
