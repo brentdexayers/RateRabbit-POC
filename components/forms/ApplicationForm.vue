@@ -37,13 +37,14 @@
       method="POST"
       class="form form--apply"
     >
+      {{ errors }}
       <div id="property_information" class="section">
         <h2 class="form--section_header">
           {{ 'Subject Property' | titlecase }}
         </h2>
         <div class="row">
           <div
-            :class="{ error: errors.propertyAddress }"
+            :class="{ error: hasError('propertyAddress') }"
             class="form-group col-12 col-lg-9"
           >
             <input
@@ -60,14 +61,14 @@
               {{ 'Property Address (street, city, state)' }}
             </label>
             <p
-              v-if="errors.propertyAddress"
+              v-if="hasError('propertyAddress')"
               class="error-inline"
             >
-              Property address is required
+              {{ getErrorMessage('propertyAddress') }}
             </p>
           </div>
           <div
-            :class="{ error: errors.propertyZip }"
+            :class="{ error: hasError('propertyZip') }"
             class="form-group col-12 col-lg-3"
           >
             <input
@@ -85,10 +86,10 @@
               {{ 'Zip Code' | titlecase }}
             </label>
             <p
-              v-if="errors.propertyZip"
+              v-if="hasError('propertyZip')"
               class="error-inline"
             >
-              Zip code is required
+              {{ getErrorMessage('propertyZip') }}
             </p>
           </div>
         </div>
@@ -1268,230 +1269,53 @@
         </div>
 
         <div v-if="assetsAndLiabilities">
-          <h3>
-            Property 1
-          </h3>
-          <div class="row">
-            <div
-              :class="{ error: errors.realEstate_0_address }"
-              class="form-group col-12 col-lg-8"
-            >
-              <input
-                v-model="realEstate_0_address"
-                @blur="validateRealEstate_0_address(realEstate_0_address)"
-                type="text"
-                name="realEstate_0_address"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_0_address }"
-                for="realEstate_0_address"
-              >
-                {{ 'Property Address' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_address"
-                class="error-inline"
-              >
-                Property address is required
-              </p>
-            </div>
-            <div
-              :class="{ error: errors.realEstate_0_zip }"
-              class="form-group col-12 col-lg-4"
-            >
-              <input
-                v-model="realEstate_0_zip"
-                v-mask="'#####'"
-                @blur="validateRealEstate_0_zip(realEstate_0_zip)"
-                type="text"
-                name="realEstate_0_zip"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_0_zip }"
-                for="realEstate_0_zip"
-              >
-                {{ 'Property Zip Code' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_zip"
-                class="error-inline"
-              >
-                Property zip code is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <select
-                v-model="realEstate_0_propertyType"
-                name="realEstate_0_propertyType"
-                class="custom-select"
-              >
-                <option
-                  value="null"
-                  disabled
-                  hidden
-                />
-                <option
-                  v-for="(option, index) in propertyTypeOptions"
-                  :key="index"
-                  :value="option"
-                >
-                  {{ option.name | titlecase }}
-                </option>
-              </select>
-              <label
-                :class="{ hasvalue: realEstate_0_propertyType }"
-                for="realEstate_0_propertyType"
-              >
-                {{ 'Property Type' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_propertyType"
-                class="error-inline"
-              >
-                Property type is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_0_presentMarketValue"
-                v-currency="{distractionFree: false}"
-                type="text"
-                name="realEstate_0_presentMarketValue"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_0_presentMarketValue }"
-                for="realEstate_0_presentMarketValue"
-              >
-                {{ 'Present Market Value' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_presentMarketValue"
-                class="error-inline"
-              >
-                Market value is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_0_totalLiens"
-                v-currency="{distractionFree: false}"
-                type="text"
-                name="realEstate_0_totalLiens"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_0_totalLiens }"
-                for="realEstate_0_totalLiens"
-              >
-                {{ 'Amount of Mortgages & Liens' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_totalLiens"
-                class="error-inline"
-              >
-                Total liens is required
-              </p>
-            </div>
-            <div class="form-group col-12 col-lg-6">
-              <input
-                v-model="realEstate_0_grossRentalIncome"
-                v-currency="{distractionFree: false}"
-                type="text"
-                name="realEstate_0_grossRentalIncome"
-                class="form-control"
-              >
-              <label
-                :class="{ hasvalue: realEstate_0_grossRentalIncome }"
-                for="realEstate_0_grossRentalIncome"
-              >
-                {{ 'Gross Rental Income' | titlecase }}
-              </label>
-              <p
-                v-if="errors.realEstate_0_grossRentalIncome"
-                class="error-inline"
-              >
-                Gross rental income is required
-              </p>
-            </div>
-          </div>
-          <div class="justify-content-between align-items-start d-flex">
-            <h3 v-if="assetsAndLiabilities_1">
-              Property 2
+          {{ realEstate }}
+          <div
+            v-for="(asset, index) in realEstate"
+            :key="index"
+            class="assets-fields-wrapper"
+          >
+            <h3>
+              Property {{ index + 1 }}
             </h3>
-            <div class="custom-control custom-checkbox ml-auto">
-              <input
-                id="assetsAndLiabilities_1"
-                v-model="assetsAndLiabilities_1"
-                type="checkbox"
-                class="custom-control-input"
-              >
-              <label
-                class="custom-control-label text-primary small"
-                for="assetsAndLiabilities_1"
-              >
-                {{ 'Include another property' }}
-              </label>
-            </div>
-          </div>
-          <div v-if="assetsAndLiabilities_1">
             <div class="row">
               <div
-                :class="{ error: errors.realEstate_1_address }"
                 class="form-group col-12 col-lg-8"
               >
                 <input
-                  v-model="realEstate_1_address"
-                  @blur="validateRealEstate_1_address(realEstate_1_address)"
+                  v-model="asset.address"
+                  :name="'asset_' + index + '_address'"
                   type="text"
-                  name="realEstate_1_address"
                   class="form-control"
                 >
                 <label
-                  :class="{ hasvalue: realEstate_1_address }"
-                  for="realEstate_1_address"
+                  :class="{ hasvalue: asset.address }"
+                  :for="'asset_' + index + '_address'"
                 >
                   {{ 'Property Address' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_address"
-                  class="error-inline"
-                >
-                  Property address is required
-                </p>
               </div>
               <div
-                :class="{ error: errors.realEstate_1_zip }"
                 class="form-group col-12 col-lg-4"
               >
                 <input
-                  v-model="realEstate_1_zip"
+                  v-model="asset.zip"
                   v-mask="'#####'"
-                  @blur="validateRealEstate_1_zip(realEstate_1_zip)"
+                  :name="'asset_' + index + '_zip'"
                   type="text"
-                  name="realEstate_1_zip"
                   class="form-control"
                 >
                 <label
-                  :class="{ hasvalue: realEstate_1_zip }"
-                  for="realEstate_1_zip"
+                  :class="{ hasvalue: asset.zip }"
+                  :for="'asset_' + index + '_zip'"
                 >
                   {{ 'Property Zip Code' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_zip"
-                  class="error-inline"
-                >
-                  Property zip code is required
-                </p>
               </div>
               <div class="form-group col-12 col-lg-6">
                 <select
-                  v-model="realEstate_1_propertyType"
-
-                  name="realEstate_1_propertyType"
+                  :name="'asset_' + index + '_propertyType'"
+                  v-model="asset.propertyType"
                   class="custom-select"
                 >
                   <option
@@ -1500,253 +1324,64 @@
                     hidden
                   />
                   <option
-                    v-for="(option, index) in propertyTypeOptions"
-                    :key="index"
+                    v-for="(option, propertyTypeIndex) in propertyTypeOptions"
+                    :key="propertyTypeIndex"
                     :value="option"
                   >
                     {{ option.name | titlecase }}
                   </option>
                 </select>
                 <label
-                  :class="{ hasvalue: realEstate_1_propertyType }"
-                  for="realEstate_1_propertyType"
+                  :class="{ hasvalue: asset.propertyType }"
+                  :for="'asset_' + index + '_propertyType'"
                 >
                   {{ 'Property Type' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_propertyType"
-                  class="error-inline"
-                >
-                  Property type is required
-                </p>
               </div>
               <div class="form-group col-12 col-lg-6">
                 <input
-                  v-model="realEstate_1_presentMarketValue"
+                  v-model="asset.presentMarketValue"
                   v-currency="{distractionFree: false}"
+                  :name="'asset_' + index + '_presentMarketValue'"
                   type="text"
-                  name="realEstate_1_presentMarketValue"
                   class="form-control"
                 >
                 <label
-                  :class="{ hasvalue: realEstate_1_presentMarketValue }"
-                  for="realEstate_1_presentMarketValue"
+                  :class="{ hasvalue: asset.presentMarketValue }"
+                  :for="'asset_' + index + '_presentMarketValue'"
                 >
                   {{ 'Present Market Value' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_presentMarketValue"
-                  class="error-inline"
-                >
-                  Market value is required
-                </p>
               </div>
               <div class="form-group col-12 col-lg-6">
                 <input
-                  v-model="realEstate_1_totalLiens"
+                  v-model="asset.totalLiens"
                   v-currency="{distractionFree: false}"
+                  :name="'asset_' + index + '_totalLiens'"
                   type="text"
-                  name="realEstate_1_totalLiens"
                   class="form-control"
                 >
                 <label
-                  :class="{ hasvalue: realEstate_1_totalLiens }"
-                  for="realEstate_1_totalLiens"
+                  :class="{ hasvalue: asset.totalLiens }"
+                  :for="'asset_' + index + '_totalLiens'"
                 >
                   {{ 'Amount of Mortgages & Liens' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_totalLiens"
-                  class="error-inline"
-                >
-                  Total liens is required
-                </p>
               </div>
               <div class="form-group col-12 col-lg-6">
                 <input
-                  v-model="realEstate_1_grossRentalIncome"
+                  v-model="asset.grossRentalIncome"
                   v-currency="{distractionFree: false}"
+                  :name="'asset_' + index + '_grossRentalIncome'"
                   type="text"
-                  name="realEstate_1_grossRentalIncome"
                   class="form-control"
                 >
                 <label
-                  :class="{ hasvalue: realEstate_1_grossRentalIncome }"
-                  for="realEstate_1_grossRentalIncome"
+                  :class="{ hasvalue: asset.grossRentalIncome }"
+                  :for="'asset_' + index + '_grossRentalIncome'"
                 >
                   {{ 'Gross Rental Income' | titlecase }}
                 </label>
-                <p
-                  v-if="errors.realEstate_1_grossRentalIncome"
-                  class="error-inline"
-                >
-                  Gross rental income is required
-                </p>
-              </div>
-            </div>
-            <div class="justify-content-between align-items-start d-flex">
-              <h3 v-if="assetsAndLiabilities_2">
-                Property 3
-              </h3>
-              <div class="custom-control custom-checkbox ml-auto">
-                <input
-                  id="assetsAndLiabilities_2"
-                  v-model="assetsAndLiabilities_2"
-                  type="checkbox"
-                  class="custom-control-input"
-                >
-                <label
-                  class="custom-control-label text-primary small"
-                  for="assetsAndLiabilities_2"
-                >
-                  {{ 'Include another property' }}
-                </label>
-              </div>
-            </div>
-            <div v-if="assetsAndLiabilities_2" class="row">
-              <div
-                :class="{ error: errors.realEstate_2_address }"
-                class="form-group col-12 col-lg-8"
-              >
-                <input
-                  v-model="realEstate_2_address"
-                  @blur="validateRealEstate_2_address(realEstate_2_address)"
-                  type="text"
-                  name="realEstate_2_address"
-                  class="form-control"
-                >
-                <label
-                  :class="{ hasvalue: realEstate_2_address }"
-                  for="realEstate_2_address"
-                >
-                  {{ 'Property Address' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_address"
-                  class="error-inline"
-                >
-                  Property address is required
-                </p>
-              </div>
-              <div
-                :class="{ error: errors.realEstate_2_zip }"
-                class="form-group col-12 col-lg-4"
-              >
-                <input
-                  v-model="realEstate_2_zip"
-                  v-mask="'#####'"
-                  @blur="validateRealEstate_2_zip(realEstate_2_zip)"
-                  type="text"
-                  name="realEstate_2_zip"
-                  class="form-control"
-                >
-                <label
-                  :class="{ hasvalue: realEstate_2_zip }"
-                  for="realEstate_2_zip"
-                >
-                  {{ 'Property Zip Code' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_zip"
-                  class="error-inline"
-                >
-                  Property zip code is required
-                </p>
-              </div>
-              <div class="form-group col-12 col-lg-6">
-                <select
-                  v-model="realEstate_2_propertyType"
-                  name="realEstate_2_propertyType"
-                  class="custom-select"
-                >
-                  <option
-                    value="null"
-                    disabled
-                    hidden
-                  />
-                  <option
-                    v-for="(option, index) in propertyTypeOptions"
-                    :key="index"
-                    :value="option"
-                  >
-                    {{ option.name | titlecase }}
-                  </option>
-                </select>
-                <label
-                  :class="{ hasvalue: realEstate_2_propertyType }"
-                  for="realEstate_2_propertyType"
-                >
-                  {{ 'Property Type' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_propertyType"
-                  class="error-inline"
-                >
-                  Property type is required
-                </p>
-              </div>
-              <div class="form-group col-12 col-lg-6">
-                <input
-                  v-model="realEstate_2_presentMarketValue"
-                  v-currency="{distractionFree: false}"
-                  type="text"
-                  name="realEstate_2_presentMarketValue"
-                  class="form-control"
-                >
-                <label
-                  :class="{ hasvalue: realEstate_2_presentMarketValue }"
-                  for="realEstate_2_presentMarketValue"
-                >
-                  {{ 'Present Market Value' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_presentMarketValue"
-                  class="error-inline"
-                >
-                  Market value is required
-                </p>
-              </div>
-              <div class="form-group col-12 col-lg-6">
-                <input
-                  v-model="realEstate_2_totalLiens"
-                  v-currency="{distractionFree: false}"
-                  type="text"
-                  name="realEstate_2_totalLiens"
-                  class="form-control"
-                >
-                <label
-                  :class="{ hasvalue: realEstate_2_totalLiens }"
-                  for="realEstate_2_totalLiens"
-                >
-                  {{ 'Amount of Mortgages & Liens' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_totalLiens"
-                  class="error-inline"
-                >
-                  Total liens is required
-                </p>
-              </div>
-              <div class="form-group col-12 col-lg-6">
-                <input
-                  v-model="realEstate_2_grossRentalIncome"
-                  v-currency="{distractionFree: false}"
-                  type="text"
-                  name="realEstate_2_grossRentalIncome"
-                  class="form-control"
-                >
-                <label
-                  :class="{ hasvalue: realEstate_2_grossRentalIncome }"
-                  for="realEstate_2_grossRentalIncome"
-                >
-                  {{ 'Gross Rental Income' | titlecase }}
-                </label>
-                <p
-                  v-if="errors.realEstate_2_grossRentalIncome"
-                  class="error-inline"
-                >
-                  Gross rental income is required
-                </p>
               </div>
             </div>
           </div>
@@ -1801,8 +1436,6 @@ export default {
   data () {
     return {
       assetsAndLiabilities: false,
-      assetsAndLiabilities_1: false,
-      assetsAndLiabilities_2: false,
       copyPropertyAddress: {
         primary: false,
         coBorrower: false
@@ -1813,40 +1446,36 @@ export default {
         subject: null,
         showDetails: false
       },
-      errors: {
-        address: false,
-        applicationCreate: false,
-        assetsAndLiabilities: false,
-        businessPhone: false,
-        cellPhone: false,
-        coBorrowerAddress: false,
-        coBorrowerBusinessPhone: false,
-        coBorrowerCellPhone: false,
-        coBorrowerDob: false,
-        coBorrowerEmail: false,
-        coBorrowerEmployerName: false,
-        coBorrowerFirstName: false,
-        coBorrowerLastName: false,
-        coBorrowerMailingAddress: false,
-        coBorrowerSsn: false,
-        dob: false,
-        email: false,
-        employerName: false,
-        firstName: false,
-        lastName: false,
-        mailingAddress: false,
-        loanAmount: false,
-        propertyAddress: false,
-        propertyZip: false,
-        realEstate_0_address: false,
-        realEstate_0_zip: false,
-        realEstate_1_address: false,
-        realEstate_1_zip: false,
-        realEstate_2_address: false,
-        realEstate_2_zip: false,
-        result: false,
-        ssn: false
-      },
+      errors: [],
+      // errors: {
+      //   address: false,
+      //   applicationCreate: false,
+      //   assetsAndLiabilities: false,
+      //   businessPhone: false,
+      //   cellPhone: false,
+      //   coBorrowerAddress: false,
+      //   coBorrowerBusinessPhone: false,
+      //   coBorrowerCellPhone: false,
+      //   coBorrowerDob: false,
+      //   coBorrowerEmail: false,
+      //   coBorrowerEmployerName: false,
+      //   coBorrowerFirstName: false,
+      //   coBorrowerLastName: false,
+      //   coBorrowerMailingAddress: false,
+      //   coBorrowerSsn: false,
+      //   dob: false,
+      //   email: false,
+      //   employerName: false,
+      //   firstName: false,
+      //   lastName: false,
+      //   mailingAddress: false,
+      //   loanAmount: false,
+      //   propertyAddress: false,
+      //   propertyZip: false,
+      //   realEstate: false,
+      //   result: false,
+      //   ssn: false
+      // },
       hasErrors: false,
       hasCoBorrower: false,
       step: 0,
@@ -2565,156 +2194,20 @@ export default {
         this.$store.commit('updatePropertyZip', value)
       }
     },
+    realEstate: {
+      get () {
+        return this.$store.state.application.data.realEstate
+      },
+      set (value) {
+        this.$store.commit('updateRealEstate', value)
+      }
+    },
     realEstateTaxes: {
       get () {
         return this.$store.state.application.data.expenses[0].realEstateTaxes
       },
       set (value) {
         this.$store.commit('updateExpensesPresentRealEstateTaxes', value)
-      }
-    },
-    realEstate_0_address: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_address', value)
-      }
-    },
-    realEstate_0_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_grossRentalIncome', value)
-      }
-    },
-    realEstate_0_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_presentMarketValue', value)
-      }
-    },
-    realEstate_0_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_propertyType', value)
-      }
-    },
-    realEstate_0_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_totalLiens', value)
-      }
-    },
-    realEstate_0_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate_0_zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_0_zip', value)
-      }
-    },
-    realEstate_1_address: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_address', value)
-      }
-    },
-    realEstate_1_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_grossRentalIncome', value)
-      }
-    },
-    realEstate_1_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_presentMarketValue', value)
-      }
-    },
-    realEstate_1_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_propertyType', value)
-      }
-    },
-    realEstate_1_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_totalLiens', value)
-      }
-    },
-    realEstate_1_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate_1_zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_1_zip', value)
-      }
-    },
-    realEstate_2_address: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_address
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_address', value)
-      }
-    },
-    realEstate_2_grossRentalIncome: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_grossRentalIncome
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_grossRentalIncome', value)
-      }
-    },
-    realEstate_2_presentMarketValue: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_presentMarketValue
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_presentMarketValue', value)
-      }
-    },
-    realEstate_2_propertyType: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_propertyType
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_propertyType', value)
-      }
-    },
-    realEstate_2_totalLiens: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_totalLiens
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_totalLiens', value)
-      }
-    },
-    realEstate_2_zip: {
-      get () {
-        return this.$store.state.application.data.realEstate_2_zip
-      },
-      set (value) {
-        this.$store.commit('updateRealEstate_2_zip', value)
       }
     },
     result: {
@@ -2905,48 +2398,20 @@ export default {
       // Assets and Liabilities
       if (this.assetsAndLiabilities) {
         payload.realEstate = []
-        if (this.applicationData.realEstate_0_propertyType) {
+        this.realEstate.forEach((asset) => {
           payload.realEstate.push({
-            address: this.applicationData.realEstate_0_address,
+            address: asset.address,
             propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_0_propertyType?.name,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_0_presentMarketValue),
-            totalLeins: this.$parseCurrency(this.applicationData.realEstate_0_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_0_grossRentalIncome),
+            propertyType: asset.propertyType?.name,
+            presentMarketValue: this.$parseCurrency(asset.presentMarketValue),
+            totalLeins: this.$parseCurrency(asset.totalLiens),
+            grossRentalIncome: this.$parseCurrency(asset.grossRentalIncome),
             mortgagePayments: null,
             taxesAndInsurance: null,
             netRentalIncome: null,
-            zip: this.applicationData.realEstate_0_zip
+            zip: asset.zip
           })
-        }
-        if (this.applicationData.realEstate_1_propertyType) {
-          payload.realEstate.push({
-            address: this.applicationData.realEstate_1_address,
-            propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_1_propertyType?.name,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_1_presentMarketValue),
-            totalLeins: this.$parseCurrency(this.applicationData.realEstate_1_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_1_grossRentalIncome),
-            mortgagePayments: null,
-            taxesAndInsurance: null,
-            netRentalIncome: null,
-            zip: this.applicationData.realEstate_1_zip
-          })
-        }
-        if (this.applicationData.realEstate_2_propertyType) {
-          payload.realEstate.push({
-            address: this.applicationData.realEstate_2_address,
-            propertyStatus: null, // 'Sold',
-            propertyType: this.applicationData.realEstate_2_propertyType?.name,
-            presentMarketValue: this.$parseCurrency(this.applicationData.realEstate_2_presentMarketValue),
-            totalLeins: this.$parseCurrency(this.applicationData.realEstate_2_totalLiens),
-            grossRentalIncome: this.$parseCurrency(this.applicationData.realEstate_2_grossRentalIncome),
-            mortgagePayments: null,
-            taxesAndInsurance: null,
-            netRentalIncome: null,
-            zip: this.applicationData.realEstate_2_zip
-          })
-        }
+        })
       }
       // RETURN
       return payload
@@ -2955,7 +2420,7 @@ export default {
   watch: {
     propertyAddress (value) {
       this.propertyAddress = value
-      this.validatePropertyAddress(value)
+      this.validateRequired(value, 'propertyAddress', 'Property Address')
     },
     propertyZip (value) {
       this.propertyZip = value
@@ -3055,39 +2520,10 @@ export default {
     // Assets and liabilities
     assetsAndLiabilities (value) {
       this.assetsAndLiabilities = value
-      this.validateAssetsAndLiabilities(value)
     },
-    assetsAndLiabilities_1 (value) {
-      this.assetsAndLiabilities_1 = value
-      this.validateAssetsAndLiabilities_1(value)
-    },
-    assetsAndLiabilities_2 (value) {
-      this.assetsAndLiabilities_2 = value
-      this.validateAssetsAndLiabilities_2(value)
-    },
-    realEstate_0_address (value) {
-      this.realEstate_0_address = value
-      this.validateRealEstate_0_address(value)
-    },
-    realEstate_0_zip (value) {
-      this.realEstate_0_zip = value
-      this.validateRealEstate_0_zip(value)
-    },
-    realEstate_1_address (value) {
-      this.realEstate_1_address = value
-      this.validateRealEstate_1_address(value)
-    },
-    realEstate_1_zip (value) {
-      this.realEstate_1_zip = value
-      this.validateRealEstate_1_zip(value)
-    },
-    realEstate_2_address (value) {
-      this.realEstate_2_address = value
-      this.validateRealEstate_2_address(value)
-    },
-    realEstate_2_zip (value) {
-      this.realEstate_2_zip = value
-      this.validateRealEstate_2_zip(value)
+    realEstate (value) {
+      this.realEstate = value
+      this.validateRealEstate(value)
     }
   },
   async fetch () {
@@ -3174,15 +2610,7 @@ export default {
       this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
       this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
       // Validate assets and liabilities
-      this.validateAssetsAndLiabilities(this.assetsAndLiabilities)
-      this.validateAssetsAndLiabilities_1(this.assetsAndLiabilities_1)
-      this.validateAssetsAndLiabilities_2(this.assetsAndLiabilities_2)
-      this.validateRealEstate_0_address(this.applicationData.realEstate_0_address)
-      this.validateRealEstate_0_zip(this.applicationData.realEstate_0_zip)
-      this.validateRealEstate_1_address(this.applicationData.realEstate_1_address)
-      this.validateRealEstate_1_zip(this.applicationData.realEstate_1_zip)
-      this.validateRealEstate_2_address(this.applicationData.realEstate_2_address)
-      this.validateRealEstate_2_zip(this.applicationData.realEstate_2_zip)
+      this.validateRealEstate(this.applicationData.realEstate)
       if (!hasErrors) {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
@@ -3253,77 +2681,134 @@ export default {
       const re = /^([0-9]{5})$/
       return re.test(zip)
     },
-    // Validation Methods
-    validatePropertyAddress (value) {
-      if (value) {
-        this.errors.propertyAddress = false
-      } else {
-        this.errors.propertyAddress = true
+    // Return error values
+    hasError (fieldId) {
+      const error = this.errors.find((obj) => { return obj.field === fieldId })
+      if (error) {
+        return true
       }
+      return false
+    },
+    getError (fieldId) {
+      const error = this.errors.find((obj) => { return obj.field === fieldId })
+      return error || false
+    },
+    getErrorMessage (fieldId) {
+      const error = this.getError(fieldId)
+      if (error) {
+        return error.errorMessage
+      }
+      return null
+    },
+    setError (fieldId, fieldName, errorMessage, errorType = null) {
+      this.unsetError(fieldId)
+      fieldName = fieldName || 'This field'
+      const field = fieldId
+      const error = { field, errorMessage, errorType }
+      this.errors.push(error)
+    },
+    unsetError (fieldId) {
+      const filteredErrors = this.errors.filter(function (er) { return er.field !== fieldId })
+      this.errors = filteredErrors
+    },
+    // Validation Methods
+    validateRequired (fieldValue, fieldId, fieldName) {
+      if (fieldValue) {
+        this.unsetError(fieldId)
+        return true
+      } else {
+        const errorMessage = fieldName + ' is required'
+        this.setError(fieldId, fieldName, errorMessage, 'required')
+        return false
+      }
+    },
+    // Validation Methods Field Specific
+    validatePropertyAddress (value) {
+      const exists = this.validateRequired(value, 'propertyAddress', 'Property Address')
+      return exists
     },
     validatePropertyZip (value) {
-      if (this.validZip(value)) {
-        this.errors.propertyZip = false
-      } else {
-        this.errors.propertyZip = true
+      const fieldId = 'propertyZip'
+      const fieldName = 'Zip Code'
+      const exists = this.validateRequired(value, fieldId, fieldName)
+      if (exists) {
+        if (!this.validZip(value)) {
+          const field = fieldId
+          const errorMessage = fieldName + ' is not valid'
+          const error = { field, errorMessage }
+          this.errors.push(error)
+          return false
+        }
+        return true
       }
+      return false
     },
     validateFirstName (value) {
-      if (value) {
-        this.errors.firstName = false
-      } else {
-        this.errors.firstName = true
-      }
+      const exists = this.validateRequired(value, 'firstName', 'First Name')
+      return exists
     },
     validateLastName (value) {
-      if (value) {
-        this.errors.lastName = false
-      } else {
-        this.errors.lastName = true
-      }
+      const exists = this.validateRequired(value, 'lastName', 'Last Name')
+      return exists
     },
     validateEmail (value) {
-      if (!this.validEmail(value)) {
-        this.errors.email = true
+      const fieldId = 'email'
+      const fieldName = 'Email'
+      const exists = this.validateRequired(value, fieldId, fieldName)
+      if (exists) {
+        if (!this.validEmail(value)) {
+          const field = fieldId
+          const errorMessage = fieldName + ' is not valid'
+          const error = { field, errorMessage }
+          this.errors.push(error)
+          return false
+        }
+        return true
       }
-      if (value && this.validEmail(value)) {
-        this.errors.email = false
-      }
+      return false
     },
     validateAddress (value) {
-      if (value) {
-        this.errors.address = false
-      } else {
-        this.errors.address = true
-      }
+      const exists = this.validateRequired(value, 'address', 'Address')
+      return exists
     },
     validateZip (value) {
-      if (this.validZip(value)) {
-        this.errors.zip = false
-      } else {
-        this.errors.zip = true
+      const fieldId = 'zip'
+      const fieldName = 'Zip Code'
+      const exists = this.validateRequired(value, fieldId, fieldName)
+      if (exists) {
+        if (!this.validZip(value)) {
+          const field = fieldId
+          const errorMessage = fieldName + ' is not valid'
+          const error = { field, errorMessage }
+          this.errors.push(error)
+          return false
+        }
+        return true
       }
+      return false
     },
     validateMailingAddress (value) {
-      if (value) {
-        this.errors.mailingAddress = false
-      } else if (this.mailingZip) {
-        this.errors.mailingAddress = true
-      } else {
-        this.errors.mailingAddress = false
+      if (this.mailingZip) {
+        const exists = this.validateRequired(value, 'mailingAddress', 'Mailing Address')
+        return exists
       }
+      return true
     },
     validateMailingZip (value) {
-      if (value) {
-        this.errors.mailingZip = false
-        if (!this.mailingAddress) {
-          this.errors.mailingAddress = true
-        }
-      } else if (this.mailingAddress) {
-        this.errors.mailingZip = true
-      } else {
-        this.errors.mailingZip = false
+      const fieldId = 'mailingZip'
+      const fieldName = 'Zip Code'
+      if (this.mailingAddress) {
+        const exists = this.validateRequired(value, fieldId, fieldName)
+        return exists
       }
+      if (value && !this.validZip(value)) {
+        const field = fieldId
+        const errorMessage = fieldName + ' is not valid'
+        const error = { field, errorMessage }
+        this.errors.push(error)
+        return false
+      }
+      return true
     },
     validateEmployerName (value) {
       if (
@@ -3485,173 +2970,6 @@ export default {
       }
       if (!value || (value && this.validSsn(value))) {
         this.errors.coBorrowerSsn = false
-      }
-    },
-    validateAssetsAndLiabilities (value) {
-      if (!value) {
-        this.errors.realEstate_0_address = false
-        this.errors.realEstate_0_zip = false
-        this.errors.realEstate_1_address = false
-        this.errors.realEstate_1_zip = false
-        this.errors.realEstate_2_address = false
-        this.errors.realEstate_2_zip = false
-      } else {
-        this.validateRealEstate_0_address(this.applicationData.realEstate_0_address)
-        this.validateRealEstate_0_zip(this.applicationData.realEstate_0_zip)
-      }
-    },
-    validateAssetsAndLiabilities_1 (value) {
-      if (!value) {
-        this.errors.realEstate_1_address = false
-        this.errors.realEstate_1_zip = false
-        this.errors.realEstate_2_address = false
-        this.errors.realEstate_2_zip = false
-      } else {
-        this.validateRealEstate_1_address(this.applicationData.realEstate_1_address)
-        this.validateRealEstate_1_zip(this.applicationData.realEstate_1_zip)
-      }
-    },
-    validateAssetsAndLiabilities_2 (value) {
-      if (!value) {
-        this.errors.realEstate_2_address = false
-        this.errors.realEstate_2_zip = false
-      } else {
-        this.validateRealEstate_2_address(this.applicationData.realEstate_2_address)
-        this.validateRealEstate_2_zip(this.applicationData.realEstate_2_zip)
-      }
-    },
-    validateRealEstate_0_address (value) {
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.applicationData.realEstate_0_zip &&
-        !value
-      ) {
-        this.errors.realEstate_0_address = true
-      } else {
-        this.errors.realEstate_0_address = false
-      }
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_0_zip &&
-        value
-      ) {
-        this.errors.realEstate_0_zip = true
-      } else {
-        this.errors.realEstate_0_false = false
-      }
-    },
-    validateRealEstate_0_zip (value) {
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.applicationData.realEstate_0_address &&
-        !this.validZip(value)
-      ) {
-        this.errors.realEstate_0_zip = true
-      } else {
-        this.errors.realEstate_0_zip = false
-      }
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_0_address &&
-        this.validZip(value)
-      ) {
-        this.errors.realEstate_0_address = true
-      } else {
-        this.errors.realEstate_0_address = false
-      }
-    },
-    validateRealEstate_1_address (value) {
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.assetsAndLiabilities_1 &&
-        this.applicationData.realEstate_1_zip &&
-        !value
-      ) {
-        this.errors.realEstate_1_address = true
-      } else {
-        this.errors.realEstate_1_address = false
-      }
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.assetsAndLiabilities_1 &&
-        !this.applicationData.realEstate_1_zip &&
-        value
-      ) {
-        this.errors.realEstate_1_zip = true
-      } else {
-        this.errors.realEstate_1_false = false
-      }
-    },
-    validateRealEstate_1_zip (value) {
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.applicationData.realEstate_1_address &&
-        !this.validZip(value)
-      ) {
-        this.errors.realEstate_1_zip = true
-      } else {
-        this.errors.realEstate_1_zip = false
-      }
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_1_address &&
-        this.validZip(value)
-      ) {
-        this.errors.realEstate_1_address = true
-      } else {
-        this.errors.realEstate_1_address = false
-      }
-    },
-    validateRealEstate_2_address (value) {
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.applicationData.realEstate_2_zip &&
-        !value
-      ) {
-        this.errors.realEstate_2_address = true
-      } else {
-        this.errors.realEstate_2_address = false
-      }
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_2_zip &&
-        value
-      ) {
-        this.errors.realEstate_2_zip = true
-      } else {
-        this.errors.realEstate_2_false = false
-      }
-    },
-    validateRealEstate_2_zip (value) {
-      // Is zip valid?
-      if (
-        this.assetsAndLiabilities &&
-        this.applicationData.realEstate_2_address &&
-        !this.validZip(value)
-      ) {
-        this.errors.realEstate_2_zip = true
-      } else {
-        this.errors.realEstate_2_zip = false
-      }
-      // Is address valid?
-      if (
-        this.assetsAndLiabilities &&
-        !this.applicationData.realEstate_2_address &&
-        this.validZip(value)
-      ) {
-        this.errors.realEstate_2_address = true
-      } else {
-        this.errors.realEstate_2_address = false
       }
     }
   }

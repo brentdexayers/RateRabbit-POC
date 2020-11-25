@@ -29,7 +29,6 @@
     <form
       id="lead-form"
       @submit.prevent="handleSubmit"
-      :class="{ blur: loader }"
       action="/apply"
       method="POST"
       class="form form--lead"
@@ -205,7 +204,6 @@ import {
 export default {
   props: {
     comments: Boolean,
-    loader: Boolean,
     submitText: {
       type: String,
       default: 'Submit'

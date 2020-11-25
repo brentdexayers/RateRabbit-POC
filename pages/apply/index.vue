@@ -68,22 +68,26 @@
             </tr>
           </tbody>
         </table>
-        <LeadForm
-          v-if="show.leadForm.form"
-          @leadCreateStart="handleLeadStart"
-          @leadCreateSuccess="handleLeadSuccess"
-          @leadCreateError="handleLeadError"
-          @leadCreateEnd="handleLeadEnd"
-          v-bind:loader="show.leadForm.loader"
-          submit-text="Begin Application"
-        />
-        <ApplicationForm
-          v-if="show.applicationForm.form"
-          @applicationSubmitStart="handleApplicationStart"
-          @applicationSubmitSuccess="handleApplicationSuccess"
-          @applicationSubmitEnd="handleApplicationEnd"
-          @applicationSubmitError="handleApplicationError"
-        />
+        <div
+          :class="{ blur: show.loader }"
+          class="form-wrapper"
+        >
+          <LeadForm
+            v-if="show.leadForm.form"
+            @leadCreateStart="handleLeadStart"
+            @leadCreateSuccess="handleLeadSuccess"
+            @leadCreateError="handleLeadError"
+            @leadCreateEnd="handleLeadEnd"
+            submit-text="Begin Application"
+          />
+          <ApplicationForm
+            v-if="show.applicationForm.form"
+            @applicationSubmitStart="handleApplicationStart"
+            @applicationSubmitSuccess="handleApplicationSuccess"
+            @applicationSubmitEnd="handleApplicationEnd"
+            @applicationSubmitError="handleApplicationError"
+          />
+        </div>
       </div>
     </div>
 
@@ -114,14 +118,13 @@ export default {
       show: {
         applicationForm: {
           error: false,
-          form: false,
-          loader: false
+          form: false
         },
         leadForm: {
           error: false,
-          form: false,
-          loader: false
-        }
+          form: false
+        },
+        loader: false
       }
     }
   },
@@ -143,35 +146,34 @@ export default {
   },
   mounted () {
     if (!this.leadData || (typeof this.leadData === 'object' && !Object.keys(this.leadData).length)) {
-      this.showLeadForm()
+      this.toggleLeadForm()
     } else if (!this.applicationSubmitted) {
-      this.showApplicationForm()
+      this.toggleApplicationForm()
     }
   },
   methods: {
-    // FORM HANDLERS
+    // LEAD FORM HANDLERS
     handleLeadStart () {
-      this.showLeadLoader()
+      this.showLoader()
     },
     handleLeadSuccess () {
-      this.hideLeadForm()
-      this.showApplicationForm()
+      this.toggleLeadForm()
+      this.toggleApplicationForm()
     },
     handleLeadError () {
-      // [TO DO] show an error of some sort?
+      // TO-DO
     },
     handleLeadEnd () {
-      this.hideLeadLoader()
+      this.hideLoader()
       window.scrollTo(0, 0)
       document.body.focus()
     },
+    // APPLICATION FORM HANDLERS
     handleApplicationStart () {
-      this.showApplicationLoader()
-    },
-    handleApplicationEnd () {
-      this.hideApplicationLoader()
+      this.showLoader()
     },
     handleApplicationSuccess (result) {
+      this.toggleApplicationForm()
       // console.log('Application Submit Success\n', result)
       this.applicationSubmitted = true
       this.show.applicationForm.error = false
@@ -182,32 +184,21 @@ export default {
       // this.applicationSubmitted = true
       this.show.applicationForm.error = true
     },
+    handleApplicationEnd () {
+      this.hideLoader()
+    },
     // FORM HELPERS
-    hideLeadForm () {
-      this.show.leadForm.form = false
+    hideLoader () {
+      this.show.loader = false
     },
-    hideLeadLoader () {
-      this.show.leadForm.loader = false
+    showLoader () {
+      this.show.loader = true
     },
-    showLeadForm () {
-      this.hideLeadLoader()
-      this.show.leadForm.form = true
+    toggleLeadForm () {
+      this.show.leadForm.form = !this.show.leadForm.form
     },
-    showLeadLoader () {
-      this.show.leadForm.loader = true
-    },
-    hideApplicationForm () {
-      this.show.applicationForm.form = false
-    },
-    hideApplicationLoader () {
-      this.show.applicationForm.loader = false
-    },
-    showApplicationForm () {
-      this.hideApplicationLoader()
-      this.show.applicationForm.form = true
-    },
-    showApplicationLoader () {
-      this.show.applicationForm.loader = true
+    toggleApplicationForm () {
+      this.show.applicationForm.form = !this.show.applicationForm.form
     },
     // PAGE HELPERS
     scrollToTop () {

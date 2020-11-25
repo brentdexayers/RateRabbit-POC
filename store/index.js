@@ -124,24 +124,20 @@ export const state = () => ({
       propertyValue: null,
       propertyYearAcquired: null,
       propertyZip: null,
-      realEstate_0_address: null,
-      realEstate_0_grossRentalIncome: null,
-      realEstate_0_presentMarketValue: null,
-      realEstate_0_propertyType: null,
-      realEstate_0_totalLiens: null,
-      realEstate_0_zip: null,
-      realEstate_1_address: null,
-      realEstate_1_grossRentalIncome: null,
-      realEstate_1_presentMarketValue: null,
-      realEstate_1_propertyType: null,
-      realEstate_1_totalLiens: null,
-      realEstate_1_zip: null,
-      realEstate_2_address: null,
-      realEstate_2_grossRentalIncome: null,
-      realEstate_2_presentMarketValue: null,
-      realEstate_2_propertyType: null,
-      realEstate_2_totalLiens: null,
-      realEstate_2_zip: null,
+      realEstate: [
+        {
+          address: null,
+          grossRentalIncome: null,
+          mortgagePayments: null,
+          netRentalIncome: null,
+          propertyStatus: null,
+          propertyType: null,
+          presentMarketValue: null,
+          taxesAndInsurance: null,
+          totalLeins: null,
+          zip: null
+        }
+      ],
       result: null,
       selfEmployed: null,
       signUp: null,
@@ -570,58 +566,7 @@ export const mutations = {
     state.application.data.zip = payload
   },
   // Real Estate
-  updateRealEstate_0_address (state, payload) {
-    state.application.data.realEstate_0_address = payload
-  },
-  updateRealEstate_0_grossRentalIncome (state, payload) {
-    state.application.data.realEstate_0_grossRentalIncome = payload
-  },
-  updateRealEstate_0_presentMarketValue (state, payload) {
-    state.application.data.realEstate_0_presentMarketValue = payload
-  },
-  updateRealEstate_0_propertyType (state, payload) {
-    state.application.data.realEstate_0_propertyType = payload
-  },
-  updateRealEstate_0_totalLiens (state, payload) {
-    state.application.data.realEstate_0_totalLiens = payload
-  },
-  updateRealEstate_0_zip (state, payload) {
-    state.application.data.realEstate_0_zip = payload
-  },
-  updateRealEstate_1_address (state, payload) {
-    state.application.data.realEstate_1_address = payload
-  },
-  updateRealEstate_1_grossRentalIncome (state, payload) {
-    state.application.data.realEstate_1_grossRentalIncome = payload
-  },
-  updateRealEstate_1_presentMarketValue (state, payload) {
-    state.application.data.realEstate_1_presentMarketValue = payload
-  },
-  updateRealEstate_1_propertyType (state, payload) {
-    state.application.data.realEstate_1_propertyType = payload
-  },
-  updateRealEstate_1_totalLiens (state, payload) {
-    state.application.data.realEstate_1_totalLiens = payload
-  },
-  updateRealEstate_1_zip (state, payload) {
-    state.application.data.realEstate_1_zip = payload
-  },
-  updateRealEstate_2_address (state, payload) {
-    state.application.data.realEstate_2_address = payload
-  },
-  updateRealEstate_2_grossRentalIncome (state, payload) {
-    state.application.data.realEstate_2_grossRentalIncome = payload
-  },
-  updateRealEstate_2_presentMarketValue (state, payload) {
-    state.application.data.realEstate_2_presentMarketValue = payload
-  },
-  updateRealEstate_2_propertyType (state, payload) {
-    state.application.data.realEstate_2_propertyType = payload
-  },
-  updateRealEstate_2_totalLiens (state, payload) {
-    state.application.data.realEstate_2_totalLiens = payload
-  },
-  updateRealEstate_2_zip (state, payload) {
-    state.application.data.realEstate_2_zip = payload
+  updateRealEstate (state, payload) {
+    state.application.data.realEstate = payload
   }
 }
