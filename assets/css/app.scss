@@ -176,6 +176,7 @@ blockquote {
     }
   }
   &-decorated {
+    cursor: pointer;
     display: inline-block;
     font-weight: $font-weight-semibold;
     // margin-bottom: 2em;

@@ -25,8 +25,15 @@
     <Details
       v-if="detailedLoanProduct"
       :loanProduct="detailedLoanProduct"
+      :showRateAlert="showRateAlert"
       @hideDetails="hideDetails"
       @apply="apply"
+      @rateAlert="toggleRateAlert"
+    />
+    <RateAlertWrapper
+      v-if="showRateAlert"
+      :loanProduct="detailedLoanProduct"
+      @rateAlert="toggleRateAlert"
     />
   </div>
 </template>
@@ -34,17 +41,20 @@
 <script>
 import { mapState } from 'vuex'
 import Details from '~/components/search/Details.vue'
+import RateAlertWrapper from '~/components/search/RateAlertWrapper.vue'
 import LoanProducts from '~/components/search/LoanProducts.vue'
 
 export default {
   layout: 'default',
   components: {
     LoanProducts,
-    Details
+    Details,
+    RateAlertWrapper
   },
   data () {
     return {
       detailedLoanProduct: null,
+      showRateAlert: false,
       title: 'Your One Fee, Real Time Guaranteed Rates'
     }
   },
@@ -63,6 +73,9 @@ export default {
     },
     hideDetails () {
       this.detailedLoanProduct = null
+    },
+    toggleRateAlert () {
+      this.showRateAlert = !this.showRateAlert
     },
     scrollToTop () {
       const c = document.documentElement.scrollTop || document.body.scrollTop

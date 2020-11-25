@@ -43,6 +43,14 @@
                 {{ 'Talk to a Loan Consultant' }}
               </nuxt-link>
             </p>
+            <p class="search-results-details__rate-alert">
+              <a
+                @click="toggleRateAlert"
+                class="link-decorated search-results-details__rate-alert__link"
+              >
+                {{ 'Sign up for rate alerts' | titlecase }}
+              </a>
+            </p>
           </div>
         </div>
         <div class="row">
@@ -371,6 +379,10 @@ export default {
       default () {
         return {}
       }
+    },
+    showRateAlert: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -385,6 +397,9 @@ export default {
     apply (loanProduct) {
       this.$store.commit('setApplicationLoanProduct', loanProduct)
       this.$emit('apply', loanProduct)
+    },
+    toggleRateAlert () {
+      this.$emit('rateAlert')
     }
   }
 }
@@ -481,6 +496,17 @@ export default {
     width: 100%;
   }
   &__connect {
+    margin-bottom: 0;
+    text-align: center;
+    @include media-breakpoint-down('sm') {
+      // margin-bottom: #{$spacer * 3.875} !important;
+    }
+    &__link {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-normal;
+    }
+  }
+  &__rate-alert {
     text-align: center;
     @include media-breakpoint-down('sm') {
       margin-bottom: #{$spacer * 3.875} !important;
