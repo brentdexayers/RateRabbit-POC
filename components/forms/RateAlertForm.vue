@@ -53,7 +53,7 @@
               :class="{ hasvalue: firstName }"
               for="firstName"
             >
-              {{ 'First Name' | titlecase }} <sup>*</sup>
+              {{ 'First Name' | titlecase }} *
             </label>
             <p
               v-if="errors.firstName"
@@ -77,7 +77,7 @@
               :class="{ hasvalue: lastName }"
               for="lastName"
             >
-              {{ 'Last Name' | titlecase }} <sup>*</sup>
+              {{ 'Last Name' | titlecase }} *
             </label>
             <p
               v-if="errors.lastName"
@@ -101,7 +101,7 @@
               :class="{ hasvalue: email }"
               for="email"
             >
-              {{ 'Email Address' | titlecase }} <sup>*</sup>
+              {{ 'Email Address' | titlecase }} *
             </label>
             <p
               v-if="errors.email && !email"
@@ -132,7 +132,7 @@
               :class="{ hasvalue: cellPhone }"
               for="cellPhone"
             >
-              {{ 'Cell Phone' | titlecase }} <sup>*</sup>
+              {{ 'Cell Phone' | titlecase }} *
             </label>
             <p
               v-if="errors.cellPhone && !cellPhone"

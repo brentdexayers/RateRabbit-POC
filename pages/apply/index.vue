@@ -88,7 +88,7 @@
     </div>
 
     <div v-if="applicationSubmitted">
-      <h3>Thank you! Your application was submitted successfully.</h3>
+      <h3>Your application was submitted successfully.</h3>
       <p>We have received your application and appreciate you trusting Rate Rabbit Home Loans. One of our loan consultants will be contacting you shortly. If you should have any questions, please feel free to call us at <a tel="+1-888-395-0395">(888) 395-0395</a>.</p>
       <p>***Please note, due to Covid-19 and the unprecedented low rates, it may take a bit longer to contact you. We appreciate your patience and look forward to working with you***</p>
     </div>
@@ -109,7 +109,7 @@ export default {
   },
   data () {
     return {
-      title: 'Apply For a Loan',
+      // title: 'Apply For a Loan',
       applicationError: false,
       show: {
         applicationForm: {
@@ -139,6 +139,9 @@ export default {
       set (value) {
         this.$store.commit('setApplicationSubmitted', value)
       }
+    },
+    title () {
+      return this.applicationSubmitted ? 'Thank You!' : 'Apply For a Loan'
     }
   },
   mounted () {

@@ -455,7 +455,6 @@
           >
             <input
               v-model="mailingAddress"
-              @blur="validateMailingAddress(mailingAddress)"
               type="text"
               name="mailingAddress"
               class="form-control"
@@ -476,7 +475,6 @@
           <div class="form-group col-12 col-lg-3">
             <input
               v-model="mailingZip"
-              @blur="validateMailingZip(mailingZip)"
               v-mask="'#####'"
               type="text"
               name="mailingZip"
@@ -2996,11 +2994,11 @@ export default {
     },
     mailingAddress (value) {
       this.mailingAddress = value
-      this.validateMailingAddress(value)
+      // this.validateMailingAddress(value)
     },
     mailingZip (value) {
       this.mailingZip = value
-      this.validateMailingZip(value)
+      // this.validateMailingZip(value)
     },
     employerName (value) {
       this.employerName = value
@@ -3159,8 +3157,8 @@ export default {
       this.validateCellPhone(this.applicationData.cellPhone)
       this.validateAddress(this.applicationData.address)
       this.validateZip(this.applicationData.zip)
-      this.validateMailingAddress(this.applicationData.mailingAddress)
-      this.validateMailingZip(this.applicationData.mailingZip)
+      // this.validateMailingAddress(this.applicationData.mailingAddress)
+      // this.validateMailingZip(this.applicationData.mailingZip)
       this.validateDob(this.applicationData.dob)
       this.validateCellPhone(this.applicationData.cellPhone)
       this.validateBusinessPhone(this.applicationData.businessPhone)
@@ -3308,27 +3306,27 @@ export default {
         this.errors.zip = true
       }
     },
-    validateMailingAddress (value) {
-      if (value) {
-        this.errors.mailingAddress = false
-      } else if (this.mailingZip) {
-        this.errors.mailingAddress = true
-      } else {
-        this.errors.mailingAddress = false
-      }
-    },
-    validateMailingZip (value) {
-      if (value) {
-        this.errors.mailingZip = false
-        if (!this.mailingAddress) {
-          this.errors.mailingAddress = true
-        }
-      } else if (this.mailingAddress) {
-        this.errors.mailingZip = true
-      } else {
-        this.errors.mailingZip = false
-      }
-    },
+    // validateMailingAddress (value) {
+    //   if (value) {
+    //     this.errors.mailingAddress = false
+    //   } else if (this.mailingZip) {
+    //     this.errors.mailingAddress = true
+    //   } else {
+    //     this.errors.mailingAddress = false
+    //   }
+    // },
+    // validateMailingZip (value) {
+    //   if (value) {
+    //     this.errors.mailingZip = false
+    //     if (!this.mailingAddress) {
+    //       this.errors.mailingAddress = true
+    //     }
+    //   } else if (this.mailingAddress) {
+    //     this.errors.mailingZip = true
+    //   } else {
+    //     this.errors.mailingZip = false
+    //   }
+    // },
     validateEmployerName (value) {
       if (
         this.applicationData.employerName ||

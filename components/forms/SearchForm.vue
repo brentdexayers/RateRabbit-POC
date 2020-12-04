@@ -60,7 +60,7 @@
             :class="{ hasvalue: loanPurpose !== null, hasError: errors.loanPurpose }"
             for="loanPurpose"
           >
-            {{ 'Loan Purpose' | titlecase }} <sup>*</sup>
+            {{ 'Loan Purpose' | titlecase }} *
           </label>
           <p
             v-if="errors.loanPurpose && !loanPurpose"
@@ -88,7 +88,7 @@
               {{ 'Purchase price' | titlecase }}
             </span>
             <span v-else>
-              {{ 'Property value' | titlecase }} <sup>*</sup>
+              {{ 'Property value' | titlecase }} *
             </span>
           </label>
           <p v-if="errors.propertyValue && !propertyValue" class="error-inline">
@@ -105,7 +105,7 @@
             :class="{ hasvalue: loanCashOutAmount }"
             for="loanCashOutAmount"
           >
-            {{ 'Cash Out Amount' | titlecase }} <sup>*</sup>
+            {{ 'Cash Out Amount' | titlecase }} *
           </label>
           <input
             v-model="loanCashOutAmount"
@@ -139,7 +139,7 @@
               </b-tooltip>
             </span>
             <span v-else>
-              {{ 'Loan Amount' | titlecase }} <sup>*</sup>
+              {{ 'Loan Amount' | titlecase }} *
             </span>
           </label>
           <p
@@ -203,7 +203,7 @@
             for="locAmount"
           >
             <span>
-              {{ 'LOC Balance' }} <sup>*</sup>
+              {{ 'LOC Balance' }} *
             </span>
           </label>
           <p
@@ -281,7 +281,7 @@
             :class="{ hasvalue: state !== null, hasError: errors.state }"
             for="state"
           >
-            {{ 'State' | titlecase }} <sup>*</sup>
+            {{ 'State' | titlecase }} *
           </label>
           <p
             v-if="errors.state && !state"
@@ -302,7 +302,7 @@
             :class="{ hasvalue: propertyZip, hasError: errors.propertyZip }"
             for="propertyZip"
           >
-            {{ 'Zip Code' | titlecase }} <sup>*</sup>
+            {{ 'Zip Code' | titlecase }} *
           </label>
           <p
             v-if="errors.propertyZip && !propertyZip"
@@ -336,7 +336,7 @@
             :class="{ hasvalue: propertyType !== null, hasError: errors.propertyType }"
             for="propertyType"
           >
-            {{ 'Property Type' | titlecase }} <sup>*</sup>
+            {{ 'Property Type' | titlecase }} *
           </label>
           <p
             v-if="errors.propertyType && !propertyType"
@@ -370,7 +370,7 @@
             :class="{ hasvalue: propertyUse !== null, hasError: errors.propertyUse }"
             for="propertyUse"
           >
-            {{ 'Property Use' | titlecase }} <sup>*</sup>
+            {{ 'Property Use' | titlecase }} *
           </label>
           <p
             v-if="errors.propertyUse && !propertyUse"
@@ -404,7 +404,7 @@
             :class="{ hasvalue: creditRating !== null, hasError: errors.creditRating }"
             for="creditRating"
           >
-            {{ 'Credit Rating' | titlecase }} <sup>*</sup>
+            {{ 'Credit Rating' | titlecase }} *
           </label>
           <p
             v-if="errors.creditRating && !creditRating"
@@ -443,7 +443,7 @@
             :class="{ hasvalue: taxes }"
             for="taxes"
           >
-            {{ 'Taxes & Insurance' | titlecase }} <sup>*</sup>
+            {{ 'Taxes & Insurance' | titlecase }} *
             <img id="taxes-tooltip" src="~assets/icons/icon-info.png" height="16" width="16" alt="Additional Information">
             <b-tooltip target="taxes-tooltip" triggers="hover">
               Would you like to add your monthly taxes and insurance to your payment?
