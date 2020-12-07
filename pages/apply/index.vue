@@ -88,8 +88,26 @@
     </div>
 
     <div v-if="applicationSubmitted">
-      <h3>Your application was submitted successfully.</h3>
-      <p>We have received your application and appreciate you trusting Rate Rabbit Home Loans. One of our loan consultants will be contacting you shortly. If you should have any questions, please feel free to call us at <a tel="+1-888-395-0395">(888) 395-0395</a>.</p>
+      <p>Thank you for submitting an application with Rate Rabbit. A loan consultant will contact you within 1 business day to review your application. Your rate will not be locked until you speak with a loan consultant. If you would like to expedite the process please call and ask to speak to a loan consultant regarding your online loan application.</p>
+      <p>Use this link to our secure upload system to submit all your documents fast and safe. Documents will be securely stored and only accessible by our processing staff.</p>
+      <p><a href="https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548" target="_blank">https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548</a></p>
+      <p>You may also chose to mail your documents to our office at 540 Front Street, San Diego, Ca 92101 (this may take longer and slow your loan process)</p>
+      <p>
+        Documentation Needed to Process Your Home Loan. Click Here to upload documents securely:
+        <ul>
+          <li>Valid Driver’s License.</li>
+          <li>Most recent mortgage statement (including line of credit statements) for all properties owned.</li>
+          <li>Current homeowner’s insurance policy for all properties owned.</li>
+          <li>Current HOA bill for all properties owned, if applicable.</li>
+          <li>Most recent one month pay stubs (if retired, provide most recent monthly retirement paystub or most recent award letter for all social security, pensions, etc)</li>
+          <li>2019 and 2018 W2’s/1099’s.</li>
+          <li>ALL PAGES of most recent 2 months statements for all checking, savings, investment, and retirement accounts. <strong>We need all pages including blank pages and pages without any important information. We also cannot use internet printouts without the borrower’s full name or account number.</strong></li>
+          <li>2019 and 2018 Personal federal tax returns – If 2019 taxes have not been filed yet, send the 2019 extension and the 2018 and 2017 returns instead <strong>(required only if you have self-employed income, rental properties or earned income from retirement)</strong></li>
+          <li>2019 and 2018 Federal K1 forms – If 2019 K1s have not been received yet, send 2018 and 2017 K1s instead <strong>(required only if you have self-employed income reporting on your schedule E)</strong></li>
+          <li>2019 and 2018 Business federal tax returns – If 2019 taxes have not been filed yet, send the 2019 extension and the 2018 and 2017 returns instead <strong>(required only if the K1s provided in the previous step show you own 25% or more of the business)</strong></li>
+          <li>Please call us if you have any questions or to expedite your loan process.</li>
+        </ul>
+      </p>
       <p>***Please note, due to Covid-19 and the unprecedented low rates, it may take a bit longer to contact you. We appreciate your patience and look forward to working with you***</p>
     </div>
   </div>
