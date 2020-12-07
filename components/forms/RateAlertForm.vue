@@ -257,9 +257,9 @@ export default {
       const payload = {
         lead: {
           vendorLeadId: '',
-          filterId: 'New Loan Lead',
-          leadSource: 'New Loan Applicant Lead',
-          leadDescription: 'Partial application submission',
+          filterId: 'Rate Alert Lead',
+          leadSource: 'Rate Alert',
+          leadDescription: 'Rate alert submission',
           investor: this.loanProduct.investor || null,
           product: this.loanProduct.productName || null,
           productId: this.loanProduct.productId || null,

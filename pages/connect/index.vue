@@ -31,6 +31,7 @@
         @leadCreateError="handleLeadError"
         @leadCreateEnd="handleLeadEnd"
         comments
+        lead-description="Connect form submission"
       />
       <div class="row">
         <div class="col-12 col-md-5">

@@ -205,6 +205,18 @@ import {
 export default {
   props: {
     comments: Boolean,
+    filterId: {
+      type: String,
+      default: 'New Loan Lead'
+    },
+    leadDescription: {
+      type: String,
+      default: 'Partial application submission'
+    },
+    leadSource: {
+      type: String,
+      default: 'New Loan Applicant Lead'
+    },
     loader: Boolean,
     submitText: {
       type: String,
@@ -278,9 +290,9 @@ export default {
       const payload = {
         lead: {
           vendorLeadId: '',
-          filterId: 'New Loan Lead',
-          leadSource: 'New Loan Applicant Lead',
-          leadDescription: 'Partial application submission',
+          filterId: this.filterId,
+          leadSource: this.leadSource,
+          leadDescription: this.leadDescription,
           investor: this.loanProduct.investor || null,
           product: this.loanProduct.productName || null,
           productId: this.loanProduct.productId || null,
@@ -291,6 +303,7 @@ export default {
         loan: {
           amount: this.$parseCurrency(this.applicationData.loanAmount) || 0,
           amortizationType: this.loanProduct.amortizationType || null,
+          fee: this.loanProduct.fee || null,
           interestRate: this.loanProduct.rate || null,
           loanPurpose: this.applicationData.loanPurpose?.name || null
         },
