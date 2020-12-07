@@ -263,13 +263,13 @@ export default {
           investor: this.loanProduct.investor || null,
           product: this.loanProduct.productName || null,
           productId: this.loanProduct.productId || null,
-          result: this.searchResultDetails.length ? JSON.stringify(this.searchResultDetails) : null,
-          customerComment: this.customerComment
+          result: this.searchResultDetails.length ? JSON.stringify(this.searchResultDetails) : null
         },
         borrowers: [],
         loan: {
           amount: this.$parseCurrency(this.applicationData.loanAmount) || 0,
           amortizationType: this.loanProduct.amortizationType || null,
+          fee: this.loanProduct.fee || null,
           interestRate: this.loanProduct.rate || null,
           loanPurpose: this.applicationData.loanPurpose?.name || null
         },
