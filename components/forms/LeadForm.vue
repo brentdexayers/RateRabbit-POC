@@ -398,7 +398,7 @@ export default {
             return leadCreate(auth, this.leadPayload)
               .then((res) => {
                 this.$emit('leadCreateSuccess', res)
-                console.log('Lead Create Result:\n', res)
+                console.log('Lead Create Result:\n', res, this.leadPayload)
                 return res
               })
               .catch((err) => {
