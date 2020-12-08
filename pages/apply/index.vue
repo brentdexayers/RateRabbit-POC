@@ -93,7 +93,7 @@
       <p><a href="https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548" target="_blank">https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548</a></p>
       <p>You may also chose to mail your documents to our office at 540 Front Street, San Diego, Ca 92101 (this may take longer and slow your loan process)</p>
       <p>
-        Documentation Needed to Process Your Home Loan. Click Here to upload documents securely:
+        Documentation Needed to Process Your Home Loan. <a href="https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548" target="_blank">Click here</a> to upload documents securely:
         <ul>
           <li>Valid Driver’s License.</li>
           <li>Most recent mortgage statement (including line of credit statements) for all properties owned.</li>
@@ -105,9 +105,9 @@
           <li>2019 and 2018 Personal federal tax returns – If 2019 taxes have not been filed yet, send the 2019 extension and the 2018 and 2017 returns instead <strong>(required only if you have self-employed income, rental properties or earned income from retirement)</strong></li>
           <li>2019 and 2018 Federal K1 forms – If 2019 K1s have not been received yet, send 2018 and 2017 K1s instead <strong>(required only if you have self-employed income reporting on your schedule E)</strong></li>
           <li>2019 and 2018 Business federal tax returns – If 2019 taxes have not been filed yet, send the 2019 extension and the 2018 and 2017 returns instead <strong>(required only if the K1s provided in the previous step show you own 25% or more of the business)</strong></li>
-          <li>Please call us if you have any questions or to expedite your loan process.</li>
         </ul>
       </p>
+      <p>Please call us if you have any questions or to expedite your loan process.</p>
       <p>***Please note, due to Covid-19 and the unprecedented low rates, it may take a bit longer to contact you. We appreciate your patience and look forward to working with you***</p>
     </div>
   </div>
