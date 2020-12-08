@@ -37,6 +37,7 @@
             </nuxt-link>
             <p class="search-results-details__connect">
               <nuxt-link
+                @click.native="connect(loanProduct)"
                 to="/connect"
                 class="link-decorated search-results-details__connect__link"
               >
@@ -397,6 +398,10 @@ export default {
     apply (loanProduct) {
       this.$store.commit('setApplicationLoanProduct', loanProduct)
       this.$emit('apply', loanProduct)
+    },
+    connect (loanProduct) {
+      this.$store.commit('setApplicationLoanProduct', loanProduct)
+      this.$emit('connect', loanProduct)
     },
     toggleRateAlert () {
       this.$emit('rateAlert')
