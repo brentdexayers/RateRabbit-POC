@@ -300,13 +300,13 @@
               {{ 'DOB (mm/dd/yyyy)' }}
             </label>
             <p
-              v-if="errors.dob && this.$moment(dob).isValid()"
+              v-if="errors.dob === 2"
               class="error-inline"
             >
               DOB cannot be in the future
             </p>
             <p
-              v-if="errors.dob && !this.$moment(dob).isValid()"
+              v-if="errors.dob === 3"
               class="error-inline"
             >
               DOB is invalid
@@ -889,6 +889,7 @@
                 <template v-slot="{ inputValue, inputEvents }">
                   <input
                     v-on="inputEvents"
+                    v-mask="'##/##/####'"
                     :value="inputValue"
                     @popoverDidHide="validateDob(coBorrowerDob)"
                     class="form-control"
@@ -902,13 +903,13 @@
                 {{ 'DOB (mm/dd/yyyy)' }}
               </label>
               <p
-                v-if="errors.coBorrowerDob && this.$moment(coBorrowerDob).isValid()"
+                v-if="errors.coBorrowerDob === 2"
                 class="error-inline"
               >
                 DOB cannot be in the future
               </p>
               <p
-                v-if="errors.coBorrowerDob && !this.$moment(coBorrowerDob).isValid()"
+                v-if="errors.coBorrowerDob === 3"
                 class="error-inline"
               >
                 DOB is invalid
@@ -3052,7 +3053,7 @@ export default {
     },
     coBorrowerDob (value) {
       this.coBorrowerDob = value
-      this.validateDob(value)
+      this.validateCoBorrowerDob(value)
     },
     // Assets and liabilities
     assetsAndLiabilities (value) {
@@ -3172,7 +3173,7 @@ export default {
       this.validateCoBorrowerAddress(this.applicationData.coBorrowerAddress)
       this.validateCoBorrowerZip(this.applicationData.coBorrowerZip)
       this.validateCoBorrowerEmployerName(this.applicationData.coBorrowerEmployerName)
-      this.validateDob(this.applicationData.coBorrowerDob)
+      this.validateCoBorrowerDob(this.applicationData.coBorrowerDob)
       this.validateCoBorrowerBusinessPhone(this.applicationData.coBorrowerBusinessPhone)
       this.validateCoBorrowerSsn(this.applicationData.coBorrowerSsn)
       // Validate assets and liabilities
@@ -3417,18 +3418,44 @@ export default {
     },
     validateDob (value) {
       if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
-        this.errors.dob = true
+        const m = this.$moment(value, ['DD/MM/YYYY', 'DD/M/YYYY'])
+        console.log('m', m)
+        if (!value) {
+          this.errors.dob = 1
+          console.log('DOB value', value)
+        }
+        if (m.isAfter(this.$moment())) {
+          this.errors.dob = 2
+          console.log('DOB isAfter', m)
+        }
+        if (!m.isValid()) {
+          this.errors.dob = 3
+          console.log('DOB invalidAt()', m.invalidAt())
+        }
       } else {
         this.errors.dob = false
       }
     },
-    // validateCoBorrowerDob (value) {
-    //   if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
-    //     this.errors.dob = true
-    //   } else {
-    //     this.errors.dob = false
-    //   }
-    // },
+    validateCoBorrowerDob (value) {
+      if (value && (this.$moment(value).isAfter(this.$moment()) || !this.$moment(value).isValid())) {
+        const m = this.$moment(value, ['DD/MM/YYYY', 'DD/M/YYYY'])
+        console.log('m', m)
+        if (!value) {
+          this.errors.coBorrowerDob = 1
+          console.log('cDOB value', value)
+        }
+        if (m.isAfter(this.$moment())) {
+          this.errors.coBorrowerDob = 2
+          console.log('cDOB isAfter', m)
+        }
+        if (!m.isValid()) {
+          this.errors.coBorrowerDob = 3
+          console.log('cDOB invalidAt()', m.invalidAt())
+        }
+      } else {
+        this.errors.coBorrowerDob = false
+      }
+    },
     validateCellPhone (value) {
       if (!value) {
         this.errors.cellPhone = true
