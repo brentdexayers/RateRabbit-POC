@@ -52,7 +52,8 @@
           >
             <input
               v-model="propertyAddress"
-              @blur="validatePropertyAddress(propertyAddress)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validatePropertyAddress(propertyAddress);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="propertyAddress"
               class="form-control"
@@ -77,7 +78,8 @@
             <input
               v-model="propertyZip"
               v-mask="'#####'"
-              @blur="validatePropertyZip(propertyZip)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validatePropertyZip(propertyZip);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="propertyZip"
               class="form-control"
@@ -101,6 +103,8 @@
             <input
               v-model="propertyYearAcquired"
               v-mask="'####'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="propertyYearAcquired"
               class="form-control"
@@ -116,6 +120,8 @@
             <input
               v-model="propertyPurchasePrice"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="propertyPurchasePrice"
               class="form-control"
@@ -141,7 +147,8 @@
           >
             <input
               v-model="firstName"
-              @blur="validateFirstName(firstName)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateFirstName(firstName);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="firstName"
               class="form-control"
@@ -166,7 +173,8 @@
           >
             <input
               v-model="lastName"
-              @blur="validateLastName(lastName)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateLastName(lastName);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="lastName"
               class="form-control"
@@ -191,7 +199,8 @@
           >
             <input
               v-model="email"
-              @blur="validateEmail(email)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateEmail(email);$event.target.closest('.form-group').classList.toggle('focus');"
               type="email"
               name="email"
               class="form-control"
@@ -209,7 +218,7 @@
               Email is required
             </p>
             <p
-              v-if="errors.email && !validEmail(email)"
+              v-if="errors.email && email && !validEmail(email)"
               class="error-inline"
             >
               Email invalid
@@ -223,7 +232,8 @@
             <input
               v-model="cellPhone"
               v-mask="'(###) ###-####'"
-              @blur="validateCellPhone(cellPhone)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateCellPhone(cellPhone);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="cellPhone"
               class="form-control"
@@ -255,7 +265,8 @@
             <input
               v-model="ssn"
               v-mask="'###-##-####'"
-              @blur="validateSsn(ssn)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateSsn(ssn);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="ssn"
               class="form-control"
@@ -288,6 +299,8 @@
                 <input
                   v-on="inputEvents"
                   :value="inputValue"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   @popoverDidHide="validateDob(dob)"
                   class="form-control"
                 >
@@ -317,6 +330,8 @@
             <input
               v-model="yearsOfSchool"
               v-mask="'##'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="yearsOfSchool"
               class="form-control"
@@ -389,7 +404,8 @@
           >
             <input
               v-model="address"
-              @blur="validateAddress(address)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateAddress(address);$event.target.closest('.form-group').classList.toggle('focus');"
               :disabled="copyPropertyAddress.primary"
               type="text"
               name="address"
@@ -415,7 +431,8 @@
             <input
               v-model="zip"
               v-mask="'#####'"
-              @blur="validateZip(zip)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateZip(zip);$event.target.closest('.form-group').classList.toggle('focus');"
               :disabled="copyPropertyAddress.primary"
               type="text"
               name="zip"
@@ -438,6 +455,8 @@
             <input
               v-model="timeAtCurrentAddress"
               v-mask="'##'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="timeAtCurrentAddress"
               class="form-control"
@@ -455,6 +474,8 @@
           >
             <input
               v-model="mailingAddress"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="mailingAddress"
               class="form-control"
@@ -476,6 +497,8 @@
             <input
               v-model="mailingZip"
               v-mask="'#####'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="mailingZip"
               class="form-control"
@@ -503,7 +526,8 @@
           >
             <input
               v-model="employerName"
-              @blur="validateEmployerName(employerName)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateEmployerName(employerName);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="employerName"
               class="form-control"
@@ -525,6 +549,8 @@
             <select
               id="input-select--selfEmployed"
               v-model="selfEmployed"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               name="selfEmployed"
               class="custom-select has-info"
             >
@@ -555,6 +581,8 @@
             <input
               v-model="employedHowLong"
               v-mask="'##'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="employedHowLong"
               class="form-control"
@@ -570,6 +598,8 @@
             <input
               v-model="yearsLineOfWork"
               v-mask="'##'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="yearsLineOfWork"
               class="form-control"
@@ -584,6 +614,8 @@
           <div class="form-group col-12 col-lg-4">
             <input
               v-model="jobTitle"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="jobTitle"
               class="form-control"
@@ -602,7 +634,8 @@
             <input
               v-model="businessPhone"
               v-mask="'(###) ###-####'"
-              @blur="validateBusinessPhone(businessPhone)"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="validateBusinessPhone(businessPhone);$event.target.closest('.form-group').classList.toggle('focus');"
               type="text"
               name="businessPhone"
               class="form-control"
@@ -624,6 +657,8 @@
             <input
               v-model="grossIncome"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="grossIncome"
               class="form-control"
@@ -652,6 +687,8 @@
             <input
               v-model="firstMortgage"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="firstMortgage"
               class="form-control"
@@ -669,6 +706,8 @@
             <input
               v-model="realEstateTaxes"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="realEstateTaxes"
               class="form-control"
@@ -686,6 +725,8 @@
             <input
               v-model="hazardInsurance"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="hazardInsurance"
               class="form-control"
@@ -703,6 +744,8 @@
             <input
               v-model="hoaDues"
               v-currency="{distractionFree: false}"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="hoaDues"
               class="form-control"
@@ -748,7 +791,8 @@
             >
               <input
                 v-model="coBorrowerFirstName"
-                @blur="validateCoBorrowerFirstName(coBorrowerFirstName)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerFirstName(coBorrowerFirstName);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerFirstName"
                 class="form-control"
@@ -772,7 +816,8 @@
             >
               <input
                 v-model="coBorrowerLastName"
-                @blur="validateCoBorrowerLastName(coBorrowerLastName)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerLastName(coBorrowerLastName);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerLastName"
                 class="form-control"
@@ -796,7 +841,8 @@
             >
               <input
                 v-model="coBorrowerEmail"
-                @blur="validateCoBorrowerEmail(coBorrowerEmail)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerEmail(coBorrowerEmail);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="email"
                 name="coBorrowerEmail"
                 class="form-control"
@@ -814,7 +860,7 @@
                 Email is required
               </p>
               <p
-                v-if="errors.coBorrowerEmail && !validEmail(coBorrowerEmail)"
+                v-if="errors.coBorrowerEmail && coBorrowerEmail && !validEmail(coBorrowerEmail)"
                 class="error-inline"
               >
                 Email invalid
@@ -827,7 +873,8 @@
               <input
                 v-model="coBorrowerCellPhone"
                 v-mask="'(###) ###-####'"
-                @blur="validateCoBorrowerCellPhone(coBorrowerCellPhone)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerCellPhone(coBorrowerCellPhone);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerCellPhone"
                 class="form-control"
@@ -858,7 +905,8 @@
               <input
                 v-model="coBorrowerSsn"
                 v-mask="'###-##-####'"
-                @blur="validateCoBorrowerSsn(coBorrowerSsn)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerSsn(coBorrowerSsn);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerSsn"
                 class="form-control"
@@ -891,6 +939,8 @@
                     v-on="inputEvents"
                     v-mask="'##/##/####'"
                     :value="inputValue"
+                    @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                    @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                     @popoverDidHide="validateDob(coBorrowerDob)"
                     class="form-control"
                   >
@@ -919,6 +969,8 @@
               <input
                 v-model="coBorrowerYearsOfSchool"
                 v-mask="'##'"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerYearsOfSchool"
                 class="form-control"
@@ -933,6 +985,8 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="coBorrowerMaritalStatus"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 name="coBorrowerMaritalStatus"
                 class="custom-select has-info"
               >
@@ -984,7 +1038,8 @@
             >
               <input
                 v-model="coBorrowerAddress"
-                @blur="validateCoBorrowerAddress(coBorrowerAddress)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerAddress(coBorrowerAddress);$event.target.closest('.form-group').classList.toggle('focus');"
                 :disabled="copyPropertyAddress.coBorrower"
                 type="text"
                 name="coBorrowerAddress"
@@ -1010,7 +1065,8 @@
               <input
                 v-model="coBorrowerZip"
                 v-mask="'#####'"
-                @blur="validateCoBorrowerZip(coBorrowerZip)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerZip(coBorrowerZip);$event.target.closest('.form-group').classList.toggle('focus');"
                 :disabled="copyPropertyAddress.coBorrower"
                 type="text"
                 name="coBorrowerZip"
@@ -1039,7 +1095,8 @@
             >
               <input
                 v-model="coBorrowerEmployerName"
-                @blur="validateCoBorrowerEmployerName(coBorrowerEmployerName)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerEmployerName(coBorrowerEmployerName);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerEmployerName"
                 class="form-control"
@@ -1061,6 +1118,8 @@
               <select
                 id="input-select--coBorrowerSelfEmployed"
                 v-model="coBorrowerSelfEmployed"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 name="coBorrowerSelfEmployed"
                 class="custom-select has-info"
               >
@@ -1091,6 +1150,8 @@
               <input
                 v-model="coBorrowerEmployedHowLong"
                 v-mask="'##'"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerEmployedHowLong"
                 class="form-control"
@@ -1106,6 +1167,8 @@
               <input
                 v-model="coBorrowerYearsLineOfWork"
                 v-mask="'##'"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerYearsLineOfWork"
                 class="form-control"
@@ -1120,6 +1183,8 @@
             <div class="form-group col-12 col-lg-4">
               <input
                 v-model="coBorrowerJobTitle"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerJobTitle"
                 class="form-control"
@@ -1138,7 +1203,8 @@
               <input
                 v-model="coBorrowerBusinessPhone"
                 v-mask="'(###) ###-####'"
-                @blur="validateCoBorrowerBusinessPhone(coBorrowerBusinessPhone)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateCoBorrowerBusinessPhone(coBorrowerBusinessPhone);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="coBorrowerBusinessPhone"
                 class="form-control"
@@ -1160,6 +1226,8 @@
               <input
                 v-model="coBorrowerGrossIncome"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerGrossIncome"
                 class="form-control"
@@ -1181,6 +1249,8 @@
               <input
                 v-model="coBorrowerFirstMortgage"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerFirstMortgage"
                 class="form-control"
@@ -1198,6 +1268,8 @@
               <input
                 v-model="coBorrowerRealEstateTaxes"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerRealEstateTaxes"
                 class="form-control"
@@ -1215,6 +1287,8 @@
               <input
                 v-model="coBorrowerHazardInsurance"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerHazardInsurance"
                 class="form-control"
@@ -1232,6 +1306,8 @@
               <input
                 v-model="coBorrowerHoaDues"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="coBorrowerHoaDues"
                 class="form-control"
@@ -1281,7 +1357,8 @@
             >
               <input
                 v-model="realEstate_0_address"
-                @blur="validateRealEstate_0_address(realEstate_0_address)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateRealEstate_0_address(realEstate_0_address);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="realEstate_0_address"
                 class="form-control"
@@ -1306,7 +1383,8 @@
               <input
                 v-model="realEstate_0_zip"
                 v-mask="'#####'"
-                @blur="validateRealEstate_0_zip(realEstate_0_zip)"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="validateRealEstate_0_zip(realEstate_0_zip);$event.target.closest('.form-group').classList.toggle('focus');"
                 type="text"
                 name="realEstate_0_zip"
                 class="form-control"
@@ -1327,6 +1405,8 @@
             <div class="form-group col-12 col-lg-6">
               <select
                 v-model="realEstate_0_propertyType"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 name="realEstate_0_propertyType"
                 class="custom-select"
               >
@@ -1360,6 +1440,8 @@
               <input
                 v-model="realEstate_0_presentMarketValue"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="realEstate_0_presentMarketValue"
                 class="form-control"
@@ -1381,6 +1463,8 @@
               <input
                 v-model="realEstate_0_totalLiens"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="realEstate_0_totalLiens"
                 class="form-control"
@@ -1402,6 +1486,8 @@
               <input
                 v-model="realEstate_0_grossRentalIncome"
                 v-currency="{distractionFree: false}"
+                @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                 type="text"
                 name="realEstate_0_grossRentalIncome"
                 class="form-control"
@@ -1447,7 +1533,8 @@
               >
                 <input
                   v-model="realEstate_1_address"
-                  @blur="validateRealEstate_1_address(realEstate_1_address)"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="validateRealEstate_1_address(realEstate_1_address);$event.target.closest('.form-group').classList.toggle('focus');"
                   type="text"
                   name="realEstate_1_address"
                   class="form-control"
@@ -1472,7 +1559,8 @@
                 <input
                   v-model="realEstate_1_zip"
                   v-mask="'#####'"
-                  @blur="validateRealEstate_1_zip(realEstate_1_zip)"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="validateRealEstate_1_zip(realEstate_1_zip);$event.target.closest('.form-group').classList.toggle('focus');"
                   type="text"
                   name="realEstate_1_zip"
                   class="form-control"
@@ -1493,7 +1581,8 @@
               <div class="form-group col-12 col-lg-6">
                 <select
                   v-model="realEstate_1_propertyType"
-
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   name="realEstate_1_propertyType"
                   class="custom-select"
                 >
@@ -1527,6 +1616,8 @@
                 <input
                   v-model="realEstate_1_presentMarketValue"
                   v-currency="{distractionFree: false}"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   type="text"
                   name="realEstate_1_presentMarketValue"
                   class="form-control"
@@ -1548,6 +1639,8 @@
                 <input
                   v-model="realEstate_1_totalLiens"
                   v-currency="{distractionFree: false}"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   type="text"
                   name="realEstate_1_totalLiens"
                   class="form-control"
@@ -1569,6 +1662,8 @@
                 <input
                   v-model="realEstate_1_grossRentalIncome"
                   v-currency="{distractionFree: false}"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   type="text"
                   name="realEstate_1_grossRentalIncome"
                   class="form-control"
@@ -1613,7 +1708,8 @@
               >
                 <input
                   v-model="realEstate_2_address"
-                  @blur="validateRealEstate_2_address(realEstate_2_address)"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="validateRealEstate_2_address(realEstate_2_address);$event.target.closest('.form-group').classList.toggle('focus');"
                   type="text"
                   name="realEstate_2_address"
                   class="form-control"
@@ -1638,7 +1734,8 @@
                 <input
                   v-model="realEstate_2_zip"
                   v-mask="'#####'"
-                  @blur="validateRealEstate_2_zip(realEstate_2_zip)"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="validateRealEstate_2_zip(realEstate_2_zip);$event.target.closest('.form-group').classList.toggle('focus');"
                   type="text"
                   name="realEstate_2_zip"
                   class="form-control"
@@ -1659,6 +1756,8 @@
               <div class="form-group col-12 col-lg-6">
                 <select
                   v-model="realEstate_2_propertyType"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   name="realEstate_2_propertyType"
                   class="custom-select"
                 >
@@ -1692,6 +1791,8 @@
                 <input
                   v-model="realEstate_2_presentMarketValue"
                   v-currency="{distractionFree: false}"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   type="text"
                   name="realEstate_2_presentMarketValue"
                   class="form-control"
@@ -1734,6 +1835,8 @@
                 <input
                   v-model="realEstate_2_grossRentalIncome"
                   v-currency="{distractionFree: false}"
+                  @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+                  @blur="$event.target.closest('.form-group').classList.toggle('focus')"
                   type="text"
                   name="realEstate_2_grossRentalIncome"
                   class="form-control"

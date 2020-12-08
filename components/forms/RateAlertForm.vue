@@ -45,6 +45,8 @@
           >
             <input
               v-model="firstName"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="firstName"
               class="form-control"
@@ -69,6 +71,8 @@
           >
             <input
               v-model="lastName"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="lastName"
               class="form-control"
@@ -93,6 +97,8 @@
           >
             <input
               v-model="email"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="email"
               class="form-control"
@@ -124,6 +130,8 @@
             <input
               v-model="cellPhone"
               v-mask="'(###) ###-####'"
+              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
               type="text"
               name="cellPhone"
               class="form-control"

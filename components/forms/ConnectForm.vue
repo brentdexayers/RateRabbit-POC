@@ -6,6 +6,8 @@
     <div class="row">
       <div class="form-group col-12 col-md-6">
         <input
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           type="text"
           class="form-control form-control-lg"
           name="firstname"
@@ -14,6 +16,8 @@
       </div>
       <div class="form-group col-12 col-md-6">
         <input
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           type="text"
           class="form-control form-control-lg"
           name="lastname"
@@ -24,6 +28,8 @@
     <div class="row">
       <div class="form-group col-12 col-md-6">
         <input
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           type="text"
           class="form-control form-control-lg"
           name="email"
@@ -32,6 +38,8 @@
       </div>
       <div class="form-group col-12 col-md-6">
         <input
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           type="text"
           class="form-control form-control-lg"
           name="phone"
@@ -43,6 +51,8 @@
     <div class="row">
       <div class="form-group col-12">
         <select
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           class="form-control form-control-lg custom-select custom-select-lg"
           name="loanpurpose"
           placeholder="Loan Purpose"
@@ -59,6 +69,8 @@
     <div class="row">
       <div class="form-group col-12">
         <textarea
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           class="form-control form-control-lg"
           placehoder="Questions/comments"
         />
@@ -67,6 +79,8 @@
     <div class="row">
       <div class="form-group col-12">
         <select
+          @focus="$event.target.closest('.form-group').classList.toggle('focus')"
+          @blur="$event.target.closest('.form-group').classList.toggle('focus')"
           class="form-control form-control-lg custom-select custom-select-lg"
           name="howHearAboutUs"
           placeholder="How did you hear about us?"
