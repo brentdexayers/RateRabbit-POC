@@ -23,7 +23,11 @@
                 {{ 'One Free Guarantee' | titlecase }}
               </td>
               <td>
-                {{ loanProduct.fee | currency }}
+                <span v-if="loanProduct.promotionFee">
+                  <strong class="text-primary">{{ loanProduct.promotionFee | currency }}</strong>
+                  <span style="text-decoration: line-through;">{{ loanProduct.fee | currency }}</span>
+                </span>
+                <span v-else>{{ loanProduct.fee | currency }}</span>
               </td>
             </tr>
             <tr>
