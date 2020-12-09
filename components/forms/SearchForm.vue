@@ -581,9 +581,7 @@ export default {
         subject: null,
         showDetails: false
       },
-      minLoanAmount: 50000,
-      promotion: false,
-      promotionIsExact: false
+      minLoanAmount: 50000
     }
   },
   computed: {
@@ -688,6 +686,14 @@ export default {
         this.$store.commit('updatePayOffLoc', value)
       }
     },
+    promotion: {
+      get () {
+        return this.$store.state.application.data.promotion
+      },
+      set (value) {
+        this.$store.commit('updatePromotion', value)
+      }
+    },
     promotionCode: {
       get () {
         return this.$store.state.application.data.promotionCode
@@ -695,6 +701,9 @@ export default {
       set (value) {
         this.$store.commit('updatePromotionCode', value)
       }
+    },
+    promotionIsExact () {
+      return this.validatePromotionIsExact(this.promotionCode)
     },
     propertyType: {
       get () {
@@ -1055,11 +1064,13 @@ export default {
       } else {
         this.promotion = false
       }
+      // this.validatePromotionIsExact(value)
+    },
+    validatePromotionIsExact (value) {
       if (this.promotion.length === 1 && this.promotion[0].promotionCode.toUpperCase() === value.toUpperCase()) {
-        this.promotionIsExact = true
-        this.validatePromotionCodeNoSubmit(this.promotionCode)
+        return true
       } else {
-        this.promotionIsExact = false
+        return false
       }
     },
     validatePromotionCodeNoSubmit (value) {

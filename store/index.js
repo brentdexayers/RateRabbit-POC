@@ -114,6 +114,7 @@ export const state = () => ({
       mailingZip: null,
       maritalStatus: null,
       productId: null,
+      promotion: null,
       promotionCode: null,
       propertyAddress: null,
       propertyCity: null,
@@ -508,6 +509,9 @@ export const mutations = {
   },
   updateProductId (state, payload) {
     state.application.data.productId = payload
+  },
+  updatePromotion (state, payload) {
+    state.application.data.promotion = payload
   },
   updatePromotionCode (state, payload) {
     state.application.data.promotionCode = payload

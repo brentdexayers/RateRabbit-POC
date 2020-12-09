@@ -95,7 +95,7 @@ label {
   }
 }
 
-// Error(s)
+// Error(s) and Success(es)
 .error {
   &-inline {
     color: $danger;
@@ -214,15 +214,15 @@ label {
 
   // Error(s)
   .error {
-    &-inline {
-      color: $danger;
-      font-size: small;
-      line-height: 1.2;
-      margin-bottom: .5em;
-      margin-left: 1rem;
-      margin-right: 1rem;
-      margin-top: .5em;
-    }
+    // &-inline {
+    //   color: $danger;
+    //   font-size: small;
+    //   line-height: 1.2;
+    //   margin-bottom: .5em;
+    //   margin-left: 1rem;
+    //   margin-right: 1rem;
+    //   margin-top: .5em;
+    // }
 
     label {
       color: $danger !important;

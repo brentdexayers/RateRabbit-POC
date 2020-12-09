@@ -24,7 +24,9 @@
               :class="{ recommended: loanProduct.recommended }"
               class="search-results-details__p"
             >
-              <strong>One Fee Guarantee:</strong> {{ loanProduct.fee | currency }}
+              <strong>One Fee Guarantee:</strong>
+              <span v-if="loanProduct.promotionFee" class="text-primary">{{ loanProduct.promotionFee | currency }}</span>
+              <span v-else>{{ loanProduct.fee | currency }}</span>
             </p>
           </div>
           <div class="col-12 col-md-5">
@@ -59,6 +61,9 @@
             <!-- <p class="search-results-details__datetime">
               {{ searchDate[searchDate.length - 1] | datetime }}
             </p> -->
+            <p v-if="loanProduct.promotionFee" class="text-primary small">
+              <strong>{{ loanProduct.investor | uppercase }}:</strong> {{ loanProduct.displayMessage }}
+            </p>
             <table class="table table-striped">
               <tbody>
                 <tr>
@@ -66,7 +71,11 @@
                     {{ 'One Fee Guarantee' | titlecase }}
                   </td>
                   <td scope="col">
-                    {{ loanProduct.fee | currency }}
+                    <span v-if="loanProduct.promotionFee">
+                      <span class="text-primary">{{ loanProduct.promotionFee | currency }}</span>
+                      <span style="text-decoration: line-through;">{{ loanProduct.fee | currency }}</span>
+                    </span>
+                    <span v-else>{{ loanProduct.fee | currency }}</span>
                   </td>
                 </tr>
                 <tr
@@ -253,7 +262,11 @@
                     <strong class="text-primary">One Fee Guarantee</strong>
                   </td>
                   <td scope="col">
-                    <strong class="text-primary">{{ loanProduct.fee | currency }}</strong>
+                    <strong v-if="loanProduct.promotionFee">
+                      <span class="text-primary">{{ loanProduct.promotionFee | currency }}</span>
+                      <span style="text-decoration: line-through;">{{ loanProduct.fee | currency }}</span>
+                    </strong>
+                    <strong v-else>{{ loanProduct.fee | currency }}</strong>
                   </td>
                 </tr>
               </tbody>
