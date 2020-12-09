@@ -1067,7 +1067,7 @@ export default {
       // this.validatePromotionIsExact(value)
     },
     validatePromotionIsExact (value) {
-      if (this.promotion.length === 1 && this.promotion[0].promotionCode.toUpperCase() === value.toUpperCase()) {
+      if (this.promotion && this.promotion.length === 1 && this.promotion[0].promotionCode.toUpperCase() === value.toUpperCase()) {
         return true
       } else {
         return false
