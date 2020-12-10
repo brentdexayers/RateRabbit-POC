@@ -2932,9 +2932,8 @@ export default {
         businessPhone: this.applicationData.businessPhone,
         cellPhone: this.applicationData.cellPhone,
         creditRating: this.applicationData.creditRating?.name,
-        dob: this.applicationData.dob ? this.$moment(this.applicationData.dob).format('YYYY-MM-DD') : null,
+        dob: this.applicationData.dob ? this.$moment(this.applicationData.dob, ['DD/MM/YYYY', 'DD/M/YYYY']).format('YYYY-MM-DD') : null,
         email: this.applicationData.email, // Required
-
         fax: this.applicationData.fax,
         firstName: this.applicationData.firstName, // Required
         grossIncome: this.$parseCurrency(this.applicationData.grossIncome),
@@ -2974,7 +2973,7 @@ export default {
           borrowerType: 'Co Borrower',
           businessPhone: this.applicationData.coBorrowerBusinessPhone,
           cellPhone: this.applicationData.coBorrowerCellPhone,
-          dob: this.applicationData.coBorrowerDob ? this.$moment(this.applicationData.coBorrowerDob).format('YYYY-MM-DD') : null,
+          dob: this.applicationData.coBorrowerDob ? this.$moment(this.applicationData.coBorrowerDob, ['DD/MM/YYYY', 'DD/M/YYYY']).format('YYYY-MM-DD') : null,
           email: this.applicationData.coBorrowerEmail,
 
           fax: this.applicationData.coBorrowerFax,
