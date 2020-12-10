@@ -45,8 +45,8 @@
           >
             <input
               v-model="firstName"
-              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+              @focus="$event.target.closest('.form-group').classList.add('focus')"
+              @blur="$event.target.closest('.form-group').classList.remove('focus')"
               type="text"
               name="firstName"
               class="form-control"
@@ -71,8 +71,8 @@
           >
             <input
               v-model="lastName"
-              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+              @focus="$event.target.closest('.form-group').classList.add('focus')"
+              @blur="$event.target.closest('.form-group').classList.remove('focus')"
               type="text"
               name="lastName"
               class="form-control"
@@ -97,8 +97,8 @@
           >
             <input
               v-model="email"
-              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+              @focus="$event.target.closest('.form-group').classList.add('focus')"
+              @blur="$event.target.closest('.form-group').classList.remove('focus')"
               type="text"
               name="email"
               class="form-control"
@@ -130,8 +130,8 @@
             <input
               v-model="cellPhone"
               v-mask="'(###) ###-####'"
-              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+              @focus="$event.target.closest('.form-group').classList.add('focus')"
+              @blur="$event.target.closest('.form-group').classList.remove('focus')"
               type="text"
               name="cellPhone"
               class="form-control"
@@ -164,8 +164,8 @@
             <textarea
               ref="customerComment"
               v-model="customerComment"
-              @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-              @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+              @focus="$event.target.closest('.form-group').classList.add('focus')"
+              @blur="$event.target.closest('.form-group').classList.remove('focus')"
               type="text"
               name="customerComment"
               class="form-control"
@@ -315,7 +315,8 @@ export default {
           amortizationType: this.loanProduct.amortizationType || null,
           fee: this.loanProduct.fee || null,
           interestRate: this.loanProduct.rate || null,
-          loanPurpose: this.applicationData.loanPurpose?.name || null
+          loanPurpose: this.applicationData.loanPurpose?.name || null,
+          numberOfMonths: this.loanProduct.amortizationTerm * 12 || null
         },
         property: {
           address: this.applicationData.propertyAddress || null,
@@ -335,7 +336,7 @@ export default {
       payload.borrowers.push(primaryBorrower)
 
       // RETURN
-      console.log('Payload:', payload)
+      // console.log('Payload:', payload)
       return payload
     }
   },
@@ -378,7 +379,7 @@ export default {
       if (!hasErrors) {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
-          console.log('Form Error Obj: ', '\n', this.errors)
+          console.log('Errors (obj): ', '\n', this.errors)
           this.hasErrors = true
         } else {
           this.hasErrors = false
@@ -398,7 +399,7 @@ export default {
             return leadCreate(auth, this.leadPayload)
               .then((res) => {
                 this.$emit('leadCreateSuccess', res)
-                console.log('Lead Create Result:\n', res, this.leadPayload)
+                console.log('Lead Created')
                 return res
               })
               .catch((err) => {
@@ -423,7 +424,7 @@ export default {
     },
     scrollToRoot () {
       const el = this.$el
-      console.log('EL', el)
+      // console.log('EL', el)
       if (el) {
         window.requestAnimationFrame(this.scrollToRoot)
         el.scrollIntoView()

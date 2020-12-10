@@ -38,8 +38,8 @@
         <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
           <select
             v-model="loanPurpose"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="validateLoanPurpose(loanPurpose);$event.target.closest('.form-group').classList.toggle('focus');"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="validateLoanPurpose(loanPurpose);$event.target.closest('.form-group').classList.remove('focus');"
             name="loanPurpose"
             class="custom-select"
           >
@@ -76,8 +76,8 @@
           <input
             v-model="propertyValue"
             v-currency="{distractionFree: false}"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="propertyValue"
             class="form-control"
@@ -113,8 +113,8 @@
           <input
             v-model="loanCashOutAmount"
             v-currency="{distractionFree: false}"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="loanCashOutAmount"
             class="form-control"
@@ -127,8 +127,8 @@
           <input
             v-model="loanAmount"
             v-currency="{distractionFree: false}"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="loanAmount"
             class="form-control"
@@ -200,8 +200,8 @@
           <input
             v-model="locAmount"
             v-currency="{distractionFree: false}"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="locAmount"
             class="form-control"
@@ -270,8 +270,8 @@
         <div :class="{ error: errors.state }" class="form-group col-12 col-lg-6 form--search-rates__col--state">
           <select
             v-model="state"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             name="state"
             class="custom-select"
           >
@@ -304,8 +304,8 @@
         <div :class="{ error: errors.propertyZip }" class="form-group col-12 col-lg-6 form--search-rates__col--zip">
           <input
             v-model="propertyZip"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="propertyZip"
             class="form-control"
@@ -329,8 +329,8 @@
         <div :class="{ error: errors.propertyType }" class="form-group col-12">
           <select
             v-model="propertyType"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             name="propertyType"
             class="custom-select"
           >
@@ -365,8 +365,8 @@
         <div :class="{ error: errors.propertyUse }" class="form-group col-12">
           <select
             v-model="propertyUse"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             name="propertyUse"
             class="custom-select"
           >
@@ -401,8 +401,8 @@
         <div :class="{ error: errors.creditRating }" class="form-group col-12">
           <select
             v-model="creditRating"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             name="creditRating"
             class="custom-select"
           >
@@ -439,8 +439,8 @@
           <select
             id="input-select--taxes"
             v-model="taxes"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             name="taxes"
             class="custom-select has-info"
           >
@@ -479,8 +479,8 @@
         >
           <input
             v-model="promotionCode"
-            @focus="$event.target.closest('.form-group').classList.toggle('focus')"
-            @blur="$event.target.closest('.form-group').classList.toggle('focus')"
+            @focus="$event.target.closest('.form-group').classList.add('focus')"
+            @blur="$event.target.closest('.form-group').classList.remove('focus')"
             type="text"
             name="promotionCode"
             class="form-control"
@@ -893,7 +893,7 @@ export default {
         hasErrors = Object.keys(this.errors).some(k => this.errors[k])
         if (hasErrors) {
           this.errors.loanSearch = true
-          console.log('Form Error Obj:', '\n', this.errors)
+          console.log('Errors (obj):', '\n', this.errors)
         }
       }
       return hasErrors
