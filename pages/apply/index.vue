@@ -133,6 +133,7 @@ export default {
     return {
       // title: 'Apply For a Loan',
       applicationError: false,
+      applicationSubmitted: false,
       show: {
         applicationForm: {
           error: false,
@@ -154,14 +155,14 @@ export default {
       loanProduct: state => state.application.loanProduct,
       searchResults: state => state.searchResultsReduced
     }),
-    applicationSubmitted: {
-      get () {
-        return this.$store.state.application.submitted
-      },
-      set (value) {
-        this.$store.commit('setApplicationSubmitted', value)
-      }
-    },
+    // applicationSubmitted: {
+    //   get () {
+    //     return this.$store.state.application.submitted
+    //   },
+    //   set (value) {
+    //     this.$store.commit('setApplicationSubmitted', value)
+    //   }
+    // },
     title () {
       return this.applicationSubmitted ? 'Thank You!' : 'Apply For a Loan'
     }

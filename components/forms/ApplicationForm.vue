@@ -298,6 +298,7 @@
               <template v-slot="{ inputValue, inputEvents }">
                 <input
                   v-on="inputEvents"
+                  v-mask="'##/##/####'"
                   :value="inputValue"
                   @focus="$event.target.closest('.form-group').classList.toggle('focus')"
                   @blur="$event.target.closest('.form-group').classList.toggle('focus')"
