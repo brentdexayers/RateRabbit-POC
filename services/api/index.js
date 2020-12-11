@@ -239,7 +239,7 @@ export const leadCreate = async (auth, payload) => {
 
 export const leadProgress = async (auth, payload) => {
   axiosConfig.headers.Authorization = 'Bearer ' + auth.JWT
-  const { data } = await axios.post(`${apiUrl}/progresslead`, payload, axiosConfig)
+  const { data } = await axios.post(`${apiUrl}/application/progresslead`, payload, axiosConfig)
     .then((res) => {
       return res
     })
