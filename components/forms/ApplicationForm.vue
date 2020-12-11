@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div v-if="error.applicationCreate" class="alert alert-danger small">
+    <div v-if="error.leadProgress || error.applicationCreate" class="alert alert-danger small">
       <p v-if="error.status !== 500">
-        <strong class="text-danger">There was a problem creating your application. Please try again later.</strong>
+        <strong class="text-danger">There was a problem submitting your application. Please try again later.</strong>
       </p>
       <p v-if="error.status === 500">
-        <strong class="text-danger">There was a problem with your application. Please check your application to ensure your data is accurate.</strong>
+        <strong class="text-danger">There was a problem with your application. Please check your application to ensure your data is accurate and try again.</strong>
       </p>
       <div v-if="error.message">
         <p class="small text-right">
           <a
-            @click="(event) => errorShowDetails(event)"
+            @click.prevent="(event) => error.showDetails = !error.showDetails"
             href="#"
             class="link text-danger"
           >
@@ -1242,7 +1242,7 @@
             </div>
           </div>
 
-          <h3>{{ 'Housing Expenses' | titlecase }}</h3>
+          <!-- <h3>{{ 'Housing Expenses' | titlecase }}</h3>
           <div class="row">
             <div
               class="form-group col-12 col-lg-6"
@@ -1320,7 +1320,7 @@
                 {{ 'Monthly HOA Dues' | titlecase }}
               </label>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -1887,14 +1887,9 @@
 import { mapState } from 'vuex'
 
 import {
+  applicationCreate,
   authenticate,
-  // getCreditRating,
-  // getLoanPurpose,
-  // getMaritalStatus,
-  // getPropertyType,
-  // getPropertyUse,
-  // getState,
-  applicationCreate
+  leadProgress
 } from '~/services/api'
 
 export default {
@@ -1941,8 +1936,9 @@ export default {
         employerName: false,
         firstName: false,
         lastName: false,
-        mailingAddress: false,
+        leadProgress: false,
         loanAmount: false,
+        mailingAddress: false,
         propertyAddress: false,
         propertyZip: false,
         realEstate_0_address: false,
@@ -2929,6 +2925,19 @@ export default {
           searchResultDetails: this.searchResultDetails
         })
       }
+      // Lead data for App w/ no lead
+      if (!this.leadData.id) {
+        payload.lead = {
+          vendorLeadId: '',
+          filterId: 'New Loan Lead',
+          leadSource: 'New Loan Applicant Lead',
+          leadDescription: 'Application submission',
+          investor: this.loanProduct.investor || null,
+          product: this.loanProduct.productName || null,
+          productId: this.loanProduct.productId || null,
+          result: this.searchResultDetails.length ? JSON.stringify(this.searchResultDetails) : null
+        }
+      }
       // Primary Borrower information
       const primaryBorrower = {
         address: this.applicationData.address, // Required if `zip`
@@ -3203,24 +3212,6 @@ export default {
     if (!this.auth?.expirationDate || this.$moment(this.auth.expirationDate).isBefore(this.$moment())) {
       this.$store.commit('setAuth', await authenticate())
     }
-    // if (!this.loanPurposeOptions || !this.loanPurposeOptions.length) {
-    //   this.$store.commit('updateLoanPurposeOptions', await getLoanPurpose(this.auth))
-    // }
-    // if (!this.stateOptions || !this.stateOptions.length) {
-    //   this.$store.commit('updateStateOptions', await getState(this.auth))
-    // }
-    // if (!this.propertyTypeOptions || !this.propertyTypeOptions.length) {
-    //   this.$store.commit('updatePropertyTypeOptions', await getPropertyType(this.auth))
-    // }
-    // if (!this.propertyUseOptions || !this.propertyUseOptions.length) {
-    //   this.$store.commit('updatePropertyUseOptions', await getPropertyUse(this.auth))
-    // }
-    // if (!this.creditRatingOptions || !this.creditRatingOptions.length) {
-    //   this.$store.commit('updateCreditRatingOptions', await getCreditRating(this.auth))
-    // }
-    // if (!this.maritalStatusOptions || !this.maritalStatusOptions.length) {
-    //   this.$store.commit('updateMaritalStatusOptions', await getMaritalStatus(this.auth))
-    // }
   },
   methods: {
     doCopyPropertyAddressPrimary () {
@@ -3247,6 +3238,7 @@ export default {
       // (re)Set defaults
       let hasErrors = false
       this.error.applicationCreate = false
+      this.error.leadProgress = false
       this.error.message = null
       this.error.status = null
       this.error.subject = null
@@ -3310,27 +3302,52 @@ export default {
       // If no errors
       if (!hasErrors) {
         // console.log('Application Payload:\n', this.applicationPayload)
-        const data = await authenticate() // eslint-disable-line no-unused-vars
-          .then((auth) => {
-            return applicationCreate(auth, this.applicationPayload)
-              .then((res) => {
-                this.$emit('applicationSubmitSuccess', res)
-                return res
-              })
-              .catch((err) => {
-                this.$emit('applicationSubmitError')
-                // console.log('There was an error POSTing the ApplicationPayload data\n', err)
-                /* throw err */
-                this.error.applicationCreate = true
-                this.error.status = err.response?.status || false
-                this.error.message = err.response?.data?.description || err
-                this.error.subject = err.response?.data?.subject || null
-              })
-          })
-          .catch((err) => {
-            this.$emit('applicationSubmitError')
-            /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
-          })
+        let data = false
+        if (this.leadData.id) {
+          data = await authenticate() // eslint-disable-line no-unused-vars
+            .then((auth) => {
+              return leadProgress(auth, this.applicationPayload)
+                .then((res) => {
+                  this.$emit('applicationSubmitSuccess', res)
+                  return res
+                })
+                .catch((err) => {
+                  this.$emit('applicationSubmitError')
+                  // console.log('There was an error POSTing the ApplicationPayload data\n', err)
+                  /* throw err */
+                  this.error.leadProgress = true
+                  this.error.status = err.response?.status || false
+                  this.error.message = err.response?.data?.description || err
+                  this.error.subject = err.response?.data?.subject || null
+                })
+            })
+            .catch((err) => {
+              this.$emit('applicationSubmitError')
+              /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
+            })
+        } else {
+          data = await authenticate() // eslint-disable-line no-unused-vars
+            .then((auth) => {
+              return applicationCreate(auth, this.applicationPayload)
+                .then((res) => {
+                  this.$emit('applicationSubmitSuccess', res)
+                  return res
+                })
+                .catch((err) => {
+                  this.$emit('applicationSubmitError')
+                  // console.log('There was an error POSTing the ApplicationPayload data\n', err)
+                  /* throw err */
+                  this.error.applicationCreate = true
+                  this.error.status = err.response?.status || false
+                  this.error.message = err.response?.data?.description || err
+                  this.error.subject = err.response?.data?.subject || null
+                })
+            })
+            .catch((err) => {
+              this.$emit('applicationSubmitError')
+              /* throw err */ alert(err.response.data.subject + '\n\n' + err.response.data.description)
+            })
+        }
         this.$store.commit('setApplicationResults', data)
       } else {
         this.scrollToTop()
