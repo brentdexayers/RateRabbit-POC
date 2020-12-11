@@ -206,6 +206,10 @@ p a {
   text-decoration: underline;
 }
 
+.text-strong {
+  font-weight: $font-weight-semibold !important;
+}
+
 /*
 ** Alerts
 */

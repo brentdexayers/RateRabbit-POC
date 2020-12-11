@@ -296,7 +296,7 @@ export default {
     },
     // Lead Payload
     leadPayload () {
-      // The Application Payload object
+      // The Lead Payload object
       const payload = {
         lead: {
           vendorLeadId: '',
@@ -336,7 +336,7 @@ export default {
       payload.borrowers.push(primaryBorrower)
 
       // RETURN
-      // console.log('Payload:', payload)
+      console.log('Lead Payload:', payload)
       return payload
     }
   },
@@ -399,7 +399,7 @@ export default {
             return leadCreate(auth, this.leadPayload)
               .then((res) => {
                 this.$emit('leadCreateSuccess', res)
-                console.log('Lead Created')
+                console.log('Lead Created', '\n', res)
                 return res
               })
               .catch((err) => {

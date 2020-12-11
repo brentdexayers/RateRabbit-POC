@@ -45,7 +45,7 @@ import RateAlertWrapper from '~/components/search/RateAlertWrapper.vue'
 import LoanProducts from '~/components/search/LoanProducts.vue'
 
 export default {
-  layout: 'default',
+  layout: 'apply',
   components: {
     LoanProducts,
     Details,

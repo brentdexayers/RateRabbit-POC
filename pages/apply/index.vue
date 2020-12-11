@@ -124,7 +124,7 @@ import LeadForm from '~/components/forms/LeadForm.vue'
 import ApplicationForm from '~/components/forms/ApplicationForm.vue'
 
 export default {
-  layout: 'default',
+  layout: 'apply',
   components: {
     ApplicationForm,
     LeadForm

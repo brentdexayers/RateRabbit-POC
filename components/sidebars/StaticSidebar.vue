@@ -8,7 +8,7 @@
               {{ 'Loan Purpose' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ loanPurpose.name || `&nbsp;` }}
               </p>
             </div>
@@ -23,7 +23,7 @@
               {{ 'Property value' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ propertyValue || `&nbsp;` }}
               </p>
             </div>
@@ -35,13 +35,13 @@
               {{ 'Cash Out Amount' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ loanCashOutAmount || `&nbsp;` }}
               </p>
             </div>
           </div>
         </div>
-        <div class="col-12 bottom-space">
+        <div class="col-12">
           <div class="form-group">
             <div v-if="loanPurpose && loanPurpose.name === 'Refinance Cash Out'" class="label">
               {{ 'Total Loan Amount' }}
@@ -54,7 +54,7 @@
               {{ 'Loan Amount' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ loanAmount || `&nbsp;` }}
               </p>
             </div>
@@ -66,19 +66,20 @@
               {{ 'LOC Balance' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ locAmount || `&nbsp;` }}
               </p>
             </div>
           </div>
         </div>
+        <div class="w-100 bottom-space" />
         <div class="col-12 col-lg-6">
           <div class="form-group">
             <div class="label">
               {{ 'State' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ state.name || `&nbsp;` }}
               </p>
             </div>
@@ -90,7 +91,7 @@
               {{ 'Zip Code' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ propertyZip || `&nbsp;` }}
               </p>
             </div>
@@ -102,7 +103,7 @@
               {{ 'Property Type' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ propertyType.name || `&nbsp;` }}
               </p>
             </div>
@@ -114,7 +115,7 @@
               {{ 'Property Use' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ propertyUse.name || `&nbsp;` }}
               </p>
             </div>
@@ -126,7 +127,7 @@
               {{ 'Credit Rating' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ creditRating.name || `&nbsp;` }}
               </p>
             </div>
@@ -138,7 +139,7 @@
               {{ 'Taxes and Insurance' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ taxesAndInsurance || 'No' }}
               </p>
             </div>
@@ -150,8 +151,15 @@
               {{ 'Promo Code' | titlecase }}
             </div>
             <div class="value">
-              <p>
+              <p class="small text-strong">
                 {{ promotionCode || `&nbsp;` }}
+              </p>
+            </div>
+            <div
+              v-if="promotion && promotion.length && promotion[0].hasOwnProperty('displayMessage')"
+            >
+              <p class="success-inline mx-0">
+                {{ promotion[0].displayMessage }}
               </p>
             </div>
           </div>
@@ -195,6 +203,7 @@ export default {
       loc: state => state.application.data.loc,
       locAfterFirst: state => state.application.data.locAfterFirst,
       locAmount: state => state.application.data.locAmount,
+      promotion: state => state.application.data.promotion,
       promotionCode: state => state.application.data.promotionCode,
       propertyType: state => state.application.data.propertyType,
       propertyUse: state => state.application.data.propertyUse,
