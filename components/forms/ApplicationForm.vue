@@ -2923,21 +2923,10 @@ export default {
         // realEstate: [], // Moved this to conditional below
         result: JSON.stringify({
           searchResultDetails: this.searchResultDetails
-        })
+        }),
+        investor: this.loanProduct.investor || null,
+        product: this.loanProduct.productName || null
       }
-      // Lead data for App w/ no lead
-      // if (!this.leadData.id) {
-      //   payload.lead = {
-      //     vendorLeadId: '',
-      //     filterId: 'New Loan Lead',
-      //     leadSource: 'New Loan Applicant Lead',
-      //     leadDescription: 'Application submission',
-      //     investor: this.loanProduct.investor || null,
-      //     product: this.loanProduct.productName || null,
-      //     productId: this.loanProduct.productId || null,
-      //     result: this.searchResultDetails.length ? JSON.stringify(this.searchResultDetails) : null
-      //   }
-      // }
       // Primary Borrower information
       const primaryBorrower = {
         address: this.applicationData.address, // Required if `zip`

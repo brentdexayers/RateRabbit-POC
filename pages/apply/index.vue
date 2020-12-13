@@ -92,7 +92,7 @@
     </div>
 
     <div v-if="applicationSubmitted">
-      <p>Thank you for submitting an application with Rate Rabbit Home Loans. A loan consultant will contact you within 1 to 2 business days to review your application. Your rate will not be locked until you speak with a loan consultant. If you would like to expedite the process please call and ask to speak to a loan consultant regarding your online loan application.</p>
+      <p>Thank you for submitting an application with Rate Rabbit Home Loans. A loan consultant will contact you within 1 business day or less to review your application. Your rate will not be locked until you speak with a loan consultant. If you would like to expedite the process please call and ask to speak to a loan consultant regarding your online loan application.</p>
       <p>Use this link to our secure upload system to submit all your documents fast and safe. Documents will be securely stored and only accessible by our processing staff.</p>
       <p><a href="https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548" target="_blank">https://raterabbithomeloans.sharefile.com/r-r20c756146ee47548</a></p>
       <p>You may also chose to mail your documents to our office at 540 Front Street, San Diego, Ca 92101 (this may take longer and slow your loan process)</p>
