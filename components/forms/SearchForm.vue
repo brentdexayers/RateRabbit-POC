@@ -35,6 +35,14 @@
       class="form form--search-rates"
     >
       <div class="row">
+        <div class="col-auto ml-auto mb-2">
+          <p class="small form-text text-muted">
+            * Required
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
         <div :class="{ error: errors.loanPurpose }" class="form-group col-12">
           <select
             v-model="loanPurpose"
@@ -503,14 +511,6 @@
             class="error-inline"
           >
             Invalid promotion code
-          </p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-auto ml-auto">
-          <p class="small form-text text-muted">
-            * Required
           </p>
         </div>
       </div>
